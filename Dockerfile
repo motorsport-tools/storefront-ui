@@ -1,10 +1,10 @@
 ARG NODE_VERSION=20.10
 ARG YARN_VERSION=3.6.1
-ARG NUXT_PUBLIC_ODOO_BASE_URL="https://vsfdemo15.labs.odoogap.com/"
-ARG NUXT_PUBLIC_ODOO_BASE_IMAGE_URL="https://vsfdemo15.labs.odoogap.com/"
-ARG NUXT_PUBLIC_MIDDLEWARE_URL="http://localhost:3000/"
+ARG NUXT_PUBLIC_ODOO_BASE_URL="https://odoo.motorsport-tools.co.uk/"
+ARG NUXT_PUBLIC_ODOO_BASE_IMAGE_URL="https://odoo.motorsport-tools.co.uk/"
+ARG NUXT_PUBLIC_MIDDLEWARE_URL="https://storefront-ui-1021360354611.europe-west2.run.app:3000/"
 ARG NUXT_PUBLIC_MIDDLEWARE_PORT=8443
-ARG REDIS_URL="redis://redis:6379"
+ARG REDIS_URL="redis://10.154.0.39:6379"
 ARG NUXT_ALGOLIA_API_KEY="change_api_key"
 ARG NUXT_ALGOLIA_APPLICATION_ID="change_application_id"
 ARG PORT=3000
@@ -43,8 +43,8 @@ RUN yarn add -W nuxt \
 
 # Run
 FROM base
-ARG NUXT_PUBLIC_ODOO_BASE_URL: "https://vsfdemo15.labs.odoogap.com/"
-ARG NUXT_PUBLIC_ODOO_BASE_IMAGE_URL: "https://vsfdemo15.labs.odoogap.com/"
+ARG NUXT_PUBLIC_ODOO_BASE_URL: "https://odoo.motorsport-tools.co.uk/"
+ARG NUXT_PUBLIC_ODOO_BASE_IMAGE_URL: "https://odoo.motorsport-tools.co.uk/"
 
 ENV PORT=$PORT
 ENV NODE_ENV=production

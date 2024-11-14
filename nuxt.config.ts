@@ -125,12 +125,14 @@ export default defineNuxtConfig({
       cache: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
+        password: process.env.NUXT_STORAGE_PASSWORD,
       },
     },
     devStorage: {
       cache: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
+        password: process.env.NUXT_STORAGE_PASSWORD,
       },
     },
   },

@@ -19,8 +19,8 @@ services:
       context: ../
       dockerfile: Dockerfile
       args:
-        NUXT_PUBLIC_ODOO_BASE_URL: "https://vsfdemo15.labs.odoogap.com/"
-        NUXT_PUBLIC_ODOO_BASE_IMAGE_URL: "https://vsfdemo15.labs.odoogap.com/"
+        NUXT_PUBLIC_ODOO_BASE_URL: "https://odoo.motorsport-tools.com.com/"
+        NUXT_PUBLIC_ODOO_BASE_IMAGE_URL: "https://odoo.motorsport-tools.com/"
         NUXT_PUBLIC_MIDDLEWARE_URL: "http://localhost:3000/"
         NUXT_PUBLIC_MIDDLEWARE_PORT: 8443
         REDIS_HOST: "redis"

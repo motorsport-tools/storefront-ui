@@ -9,7 +9,7 @@ steps:
       - .
       - '-f'
       - Dockerfile
-      - '.'
+      - .
       - '--build-arg'
       - 'NUXT_STORAGE_PASSWORD=$$NUXT_STORAGE_PASSWORD'
     id: Build

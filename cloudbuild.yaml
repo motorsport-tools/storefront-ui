@@ -3,7 +3,7 @@ steps:
     entrypoint: bash
     args: [
       '-c',
-      'build --no-cache -f=Dockerfile . --build-arg NUXT_STORAGE_PASSWORD=$$NUXT_STORAGE_PASSWORD -t $_AR_HOSTNAME/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
+      'docker build --no-cache -f=Dockerfile . --build-arg NUXT_STORAGE_PASSWORD=$$NUXT_STORAGE_PASSWORD -t $_AR_HOSTNAME/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
       '
     ]
     id: Build

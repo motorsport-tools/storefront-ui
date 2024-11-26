@@ -44,7 +44,6 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "nuxt-delay-hydration",
     "nuxt-typed-router",
-   //"@vue-storefront/health-check",
   ],
   runtimeConfig: {
     shouldByPassCacheQueryNames: [

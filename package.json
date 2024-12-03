@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@adyen/adyen-web": "4.7.3",
+    "@elastic/elasticsearch": "^8.16.2",
     "@erpgap/odoo-sdk": "^0.7.0",
     "@erpgap/odoo-sdk-api-client": "^0.7.0",
     "@nuxt/image": "^1.7.0",

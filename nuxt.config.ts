@@ -26,7 +26,8 @@ export default defineNuxtConfig({
     "./domains/my-account",
     "./domains/product",
     //"./domains/search-algolia",
-    "./domains/search-default",
+    //"./domains/search-default",
+    "./domains/search-elastic",
     "./domains/wishlist",
   ],
   modules: [
@@ -150,5 +151,11 @@ export default defineNuxtConfig({
   },
   experimental: {
     asyncContext: false,
+  },
+  devServer: {
+    https: {
+      key: process.env.NUXT_SERVER_KEY,
+      cert: process.env.NUXT_SERVER_CERT,
+    },
   },
 });

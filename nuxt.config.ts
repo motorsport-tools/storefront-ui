@@ -4,11 +4,13 @@ export default defineNuxtConfig({
   app: {
     head: {
       viewport: "minimum-scale=1, initial-scale=1, width=device-width",
-      title: "Alokai",
+      title: "Motorsport-Tools.com - The Mk1 and Mk2 Ford Escort Rally Specialists",
       htmlAttrs: {
         lang: "en",
       },
-      meta: [{ name: "robots", content: "index, follow" }],
+      meta: [
+        { name: "robots", content: "index, follow" }
+      ],
     },
   },
 
@@ -139,8 +141,8 @@ export default defineNuxtConfig({
   },
   site: {
     url: "https://vsfsdk.labs.odoogap.com/",
-    name: "ERPGAP VSF",
-    description: "Welcome to an awesome ecommerce site!",
+    name: "Motorsport-Tools.com - The Mk1 and Mk2 Ford Escort Rally Specialists",
+    description: "Mk1 and Mk2 Ford Escort Race and Rally Specialists. We stock everything you need to convert your Mk1 or Mk2 Ford Escort into a fully ready race or rally car, or get your car back to concourse spec",
     defaultLocale: "en",
   },
   tailwindcss: {

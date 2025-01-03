@@ -17,8 +17,8 @@ export const useSearch = (formSearchTemplateRef?: any) => {
   const isSearchModalOpen = computed(() => searchModalOpen.value);
 
   // elastic search
-  const loading = useState("odoo-search-loading", () => false);
-  const searchInputValue = useState("odoo-search-input", () => "");
+  const loading = useState("elastic-search-loading", () => false);
+  const searchInputValue = useState("elastic-search-input", () => "");
   const highlightedIndex = ref(-1);
   const showResultSearch = ref(false);
 
@@ -52,12 +52,11 @@ export const useSearch = (formSearchTemplateRef?: any) => {
         return
       }
       
+      showResultSearch.value = true;
+      searchModalOpen.value = true;
     } catch (err) {
       console.error('Search error:', err);
     } finally {
-      showResultSearch.value = true;
-      searchModalOpen.value = true;
-
       loading.value = false;
     }
   };
@@ -78,7 +77,6 @@ export const useSearch = (formSearchTemplateRef?: any) => {
     if (!searchInputValue.value || searchInputValue.value.length < 3) return;
     showResultSearch.value = false;
     searchModalOpen.value = false;
-    console.log('Is Modal Value? ',searchModalOpen.value)
     router.push(`/search?search=${searchInputValue.value}`);
   };
 

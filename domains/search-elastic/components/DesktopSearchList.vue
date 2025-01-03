@@ -17,15 +17,6 @@ const makeSearchBold = (text: string) => {
     );
 };
 
-const getMainImageUrl = (img: object | false) => {
-  const config = useRuntimeConfig()
-  const odooUrl = config.public.odooBaseImageUrl;
-  if(img == false || image == 'undefined') {
-    return `${odooUrl}web/image/fs.product.image/0/image/54x54`
-  }
-  return `${odooUrl}web/image/fs.product.image/${img[0]}/image/54x54/${img[1]}`
-}
-
 const displaySku = (text: string) => {
   return text
 }
@@ -47,16 +38,23 @@ const displaySku = (text: string) => {
       <div 
         class="flex"
       >
-        <!--
-        <NuxtImg
-          :src="getMainImageUrl(hit.main_image_id)"
-          height="54"
-          width="54"
-          class="w-14 h-14 pr-4 self-center"
-          :placeholder="[54, 54]"
-        />
-        -->
-        <div class="flex flex-col">
+        <div
+          class="flex flex-col w-14 h-14 pr-4 justify-center items-center"
+        >
+          <NuxtImg
+            :src="$getImage(
+              String(hit.image_ids[0].image_url),
+              54,
+              54,
+              String(hit.image_ids[0].name)
+            )"
+            height="54"
+            width="54"
+            class="self-center"
+            :placeholder="[54, 54]"
+          />
+        </div>
+        <div class="flex flex-col pr-4">
         <span
           class="text-black text-sm font-medium capitalize"
           v-html="makeSearchBold(hit.name)"

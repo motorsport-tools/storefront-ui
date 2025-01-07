@@ -11,6 +11,10 @@
 <script setup lang="ts">
 import type { PaymentProvider } from "~/graphql";
 
+const emit = defineEmits<{
+  (e: 'update:active-payment', provider: PaymentProvider): void;
+}>();
+
 const {
   loadPaymentMethods,
   paymentProviders,
@@ -29,5 +33,6 @@ if (paymentProviders.value.length > 0) {
 
 function updateSelectedProvider(provider: PaymentProvider) {
   selectedProvider.value = provider;
+  emit('update:active-payment', provider);
 }
 </script>

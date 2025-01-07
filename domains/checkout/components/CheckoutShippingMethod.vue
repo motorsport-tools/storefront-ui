@@ -46,10 +46,13 @@ const handleSelectShippingMethod = async (shippingMethodId: number) => {
           :key="id"
           tag="label"
           class="border rounded-md items-start"
-          @click="handleSelectShippingMethod(id)"
         >
           <div class="flex gap-2">
-            <SfRadio v-model="radioModel" :value="String(id)" />
+            <SfRadio 
+              v-model="radioModel" 
+              :value="String(id)" 
+              @click="handleSelectShippingMethod(id)"
+            />
             <div>
               <p>{{ name }}</p>
               <p class="text-xs text-neutral-500">{{ shippingDate }}</p>

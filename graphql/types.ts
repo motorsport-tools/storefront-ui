@@ -13,6 +13,11 @@ import type {
   AdyenPaymentMethodsResult,
   AdyenPaymentDetailsResult,
   AdyenPaymentsResult,
+  RvvupTransactionResult,
+  RvvupProviderInfoResult,
+  RvvupPaymentMethodsResult,
+  RvvupPaymentDetailsResult,
+  RvvupPaymentsResult,
   PaymentProvider,
   Orders,
   Order,
@@ -345,6 +350,43 @@ export type GetOrderResponse = AsyncData<
 export type NewsletterSubscribeResponse = AsyncData<
   {
     newsletterSubscribe: boolean;
+  },
+  H3Error
+>;
+
+/* Rvvup Payment */
+
+export type RvvupTransactionResponse = AsyncData<
+  {
+    rvvupTransaction: RvvupTransactionResult;
+  },
+  H3Error
+>;
+
+export type RvvupProviderInfoResponse = AsyncData<
+  {
+    rvvupProviderInfo: RvvupProviderInfoResult;
+  },
+  H3Error
+>;
+
+export type RvvupPaymentMethodsResponse = AsyncData<
+  {
+    rvvupPaymentMethods: RvvupPaymentMethodsResult;
+  },
+  H3Error
+>;
+
+export type RvvupPaymentDetailsResponse = AsyncData<
+  {
+    rvvupPaymentDetails: RvvupPaymentDetailsResult;
+  },
+  H3Error
+>;
+
+export type RvvupPaymentsResponse = AsyncData<
+  {
+    rvvupPayments: RvvupPaymentsResult;
   },
   H3Error
 >;

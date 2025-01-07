@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     "./domains/core",
     "./domains/my-account",
     "./domains/product",
+    "./domains/payment_rvvup",
     //"./domains/search-algolia",
     "./domains/search-default",
     "./domains/wishlist",
@@ -150,5 +151,11 @@ export default defineNuxtConfig({
   },
   experimental: {
     asyncContext: false,
+  },
+  devServer: {
+    https: {
+      key: process.env.NUXT_SERVER_KEY,
+      cert: process.env.NUXT_SERVER_CERT,
+    },
   },
 });

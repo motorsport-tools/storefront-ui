@@ -15,6 +15,13 @@ await loadCountries();
 if (totalItemsInCart?.value === 0) {
   router.push("/category/53");
 }
+
+const selectedProvider = ref<PaymentProvider | null>(null);
+
+function handleSelectedProviderUpdate(newProvider) {
+  selectedProvider.value = newProvider;
+}
+
 </script>
 <template>
   <div class="md:px-0 mb-20">
@@ -53,12 +60,17 @@ if (totalItemsInCart?.value === 0) {
 
           <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
 
-          <LazyCheckoutPayment />
+          <LazyCheckoutPayment 
+            :selected-provider="selectedProvider"
+            @update:active-payment="handleSelectedProviderUpdate"
+          />
 
           <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0 mb-10" />
         </div>
         <div class="col-span-5 md:sticky md:top-20 h-fit">
-          <CheckoutSummary />
+          <CheckoutSummary 
+            :selected-provider="selectedProvider"
+          />
         </div>
       </div>
     </div>

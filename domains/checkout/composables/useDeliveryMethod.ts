@@ -39,7 +39,7 @@ export const useDeliveryMethod = () => {
     }
   };
 
-  const setDeliveryMethod = async (shippingMethodId: number) => {
+  const setDeliveryMethod = async (shippingMethodId: number) => { 
     loading.value = true;
 
     const { data, error } = await $sdk().odoo.mutation<

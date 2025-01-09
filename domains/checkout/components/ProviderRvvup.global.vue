@@ -6,11 +6,7 @@
   
   <script lang="ts" setup>
   console.log('ProviderRvvupGlobal loaded...')
-  import { RvvupClient } from "@rvvup/node-sdk";
-  /*
-  import AdyenCheckout from '@adyen/adyen-web';
-  import '@adyen/adyen-web/dist/adyen.css';
-  */
+
   import type { PaymentProvider } from '~/graphql';
   
   interface RvvupDropinType {
@@ -50,22 +46,34 @@
     rvvupMakeDirectPayment,
     transaction,
     getRvvupPaymentDetails,
-  } = useRvvupDirectPayment(props.provider.id, props.cart?.order?.id);
+  } = useRvvupDirectPayment(props.provider.id, props.cart?.order?.id, props.cart?.order?.partner?.id);
   
   onMounted(async () => {
     console.log('Rvvup Provider Mounted')
+    useHead({
+      script: [
+        {
+          src: 'https://checkout.dev.rvvuptech.com/sdk/v1.js',
+          type: 'text/javascript', // Optional, if required
+          async: true,  // It's better to load it asynchronously
+        },
+      ],
+    })
     emit('isPaymentReady', true);
     loading.value = true;
+
     await openRvvupTransaction();
     await getRvvupAcquirerInfo();
     await getRvvupPaymentMethods();
     
-    console.log('Acquierer Info:', acquirerInfo)
+    console.log('Acquierer Info:', acquirerInfo.value)
 
-    const configuration = acquirerInfo.value.api_key
-  
-    const checkout = new RvvupClient(configuration);
-  
+    const configuration = acquirerInfo.value?.api_key
+
+
+
+    //const checkout = new RvvupClient(configuration);
+    /*
     rvvupDropin.value = checkout
       .create('dropin', {
         openFirstPaymentMethod: true,
@@ -87,11 +95,13 @@
     loading.value = false;
   
     emit('providerPaymentHandler', rvvupDropin.value.submit);
+  */
   });
   
   onBeforeUnmount(() => {
     rvvupDropin.value?.unmount();
     rvvupDropin.value = null;
   });
+  
   </script>
   

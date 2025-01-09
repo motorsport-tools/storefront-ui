@@ -15,7 +15,7 @@ import type {
   } from "~/graphql";
   import { MutationName } from "~/server/mutations";
   
-  const useRvvupDirectPayment = (providerId: number, cartId?: number) => {
+  const useRvvupDirectPayment = (providerId: number, cartId?: number, partnerId?: number) => {
     const { $sdk } = useNuxtApp();
   
     const transaction = useState<PaymentTransaction>(
@@ -35,7 +35,7 @@ import type {
       () => ({}) as Mutation["rvvupPaymentDetails"]
     );
   
-    const openRvvupTransaction = async () => {
+    const openRvvupTransaction = async () => { 
       const { data } = await $sdk().odoo.mutation<
         MutationRvvupTransactionArgs,
         RvvupTransactionResponse
@@ -69,7 +69,7 @@ import type {
         const { data } = await $sdk().odoo.mutation<
           MutationRvvupPaymentMethodsArgs,
           RvvupPaymentMethodsResponse
-        >({ mutationName: MutationName.RvvupPaymentMethods }, { providerId });
+        >({ mutationName: MutationName.RvvupPaymentMethods }, { providerId, partnerId });
   
         return data.value;
       });
@@ -124,5 +124,5 @@ import type {
     };
   };
   
-  export default useRvvupDirectPayment;
+export default useRvvupDirectPayment;
   

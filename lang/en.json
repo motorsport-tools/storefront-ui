@@ -112,6 +112,9 @@
     "googlePayIconAlt": "Google Pay icon",
     "promoOrGiftcard": "Promo code or gift card"
   },
+  "checkoutMethod": {
+    "heading": "Payment method",
+  },
   "shippingMethod": {
     "heading": "Shipping details",
     "description": "Not available until a shipping address is provided."

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { SfButton, SfLink } from "@storefront-ui/vue";
 
-import type { PaymentProvider } from "~/graphql";
+import type { PaymentMethod } from "~/graphql";
 
 // Props
 const props = defineProps({
-  selectedProvider: {
-    type: Object as () => PaymentProvider | null,
+  selectedMethod: {
+    type: Object as () => PaymentMethod | null,
     required: false,
     default: () => null, 
   },
@@ -95,12 +95,12 @@ watch(isPaymentWithCardReady, (newValue) => {
     <component
       v-if="
         showPaymentModal &&
-        !!props.selectedProvider?.code &&
+        !!props.selectedMethod?.providerCode &&
         !hasFullPaymentWithGiftCard
       "
-      :is="getPaymentProviderComponentName(props.selectedProvider?.code)"
-      :key="props.selectedProvider?.id"
-      :provider="props.selectedProvider"
+      :is="getPaymentProviderComponentName(props.selectedMethod?.providerCode)"
+      :key="props.selectedMethod?.id"
+      :method="props.selectedMethod"
       :cart="cart"
       @is-payment-ready="($event: any) => (isPaymentWithCardReady = $event)"
       @provider-payment-handler="

@@ -16,7 +16,7 @@ if (totalItemsInCart?.value === 0) {
   router.push("/category/53");
 }
 
-const selectedProvider = ref<PaymentProvider | null>(null);
+const selectedProvider = ref<PaymentMethod | null>(null);
 
 function handleSelectedProviderUpdate(newProvider) {
   selectedProvider.value = newProvider;
@@ -69,7 +69,7 @@ function handleSelectedProviderUpdate(newProvider) {
         </div>
         <div class="col-span-5 md:sticky md:top-20 h-fit">
           <CheckoutSummary 
-            :selected-provider="selectedProvider"
+            :selected-method="selectedProvider"
           />
         </div>
       </div>

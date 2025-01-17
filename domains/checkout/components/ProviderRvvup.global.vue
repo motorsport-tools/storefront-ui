@@ -5,9 +5,7 @@
   </template>
   
   <script lang="ts" setup>
-  console.log('ProviderRvvupGlobal loaded...')
-
-  import type { PaymentProvider } from '~/graphql';
+  import type { PaymentMethod } from '~/graphql';
   
   interface RvvupDropinType {
     handleAction: (action: any) => void;
@@ -17,9 +15,9 @@
   }
   
   const props = defineProps({
-    provider: {
+    method: {
       required: true,
-      type: Object as PropType<PaymentProvider>,
+      type: Object as PropType<PaymentMethod>,
     },
     cart: {
       required: true,
@@ -37,17 +35,19 @@
   const loading = ref(false);
   const { getPaymentConfirmation } = usePayment();
   
+  console.log('Props', props.cart)
+
   const {
     openRvvupTransaction,
-    getRvvupAcquirerInfo,
+    
     getRvvupPaymentMethods,
     paymentMethods,
-    acquirerInfo,
+ 
     rvvupMakeDirectPayment,
     transaction,
     getRvvupPaymentDetails,
-  } = useRvvupDirectPayment(props.provider.id, props.cart?.order?.id, props.cart?.order?.partner?.id);
-  
+  } = useRvvupDirectPayment(props.method.providerId, props.cart?.order?.id, props.cart?.order?.partner?.id,props.cart?.order?.amountTotal, props.method.code);
+
   onMounted(async () => {
     console.log('Rvvup Provider Mounted')
     useHead({
@@ -59,16 +59,38 @@
         },
       ],
     })
-    emit('isPaymentReady', true);
     loading.value = true;
 
-    await openRvvupTransaction();
-    await getRvvupAcquirerInfo();
+    //await getRvvupAcquirerInfo();
     await getRvvupPaymentMethods();
     
-    console.log('Acquierer Info:', acquirerInfo.value)
+    const fetchCheckoutUrl = () => {
+      console.log('Payment Method Response', paymentMethods.value)
+      return paymentMethods.value.url
+    }
+    const rvvup = Rvvup();
+    const checkout = await rvvup.createEmbeddedCheckout({
+                    fetchCheckoutUrl,
+                    options:{hideHeader:!0}
+                })
+    checkout.mount({
+      type: 'inline',
+      selector: '#dropin-container'
+    })
 
-    const configuration = acquirerInfo.value?.api_key
+    checkout.on('payment-started', async (event) => {
+      console.log('Payment Started: ', event.detail);
+      //Initiate Payment
+      await openRvvupTransaction(paymentMethods.value.id);
+      console.log('Transaction Started: ', transaction)
+    })
+    checkout.on('payment-complete', async (event) => {
+      console.log('Payment Complete Event:', event.detail);
+      //Payment Status
+    })
+
+    loading.value = false;
+    emit('isPaymentReady', true);
 
 
 

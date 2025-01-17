@@ -294,6 +294,7 @@ export type WebsiteHomepageResponse = AsyncData<
 export type PaymentMethodListResponse = AsyncData<
   {
     paymentProviders: PaymentProvider[];
+    //paymentMethods: PaymentMethod[];
   },
   H3Error
 >;

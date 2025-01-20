@@ -16,7 +16,7 @@ defineProps({
 
 await loadDeliveryMethods();
 
-if (deliveryMethods?.value?.length === 1) {
+if (deliveryMethods?.value?.length >= 1) {
   radioModel.value = String(deliveryMethods.value[0].id);
   await setDeliveryMethod(deliveryMethods.value[0].id);
 }

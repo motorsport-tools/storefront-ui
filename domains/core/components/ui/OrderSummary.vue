@@ -47,6 +47,16 @@ const { cart } = useCart();
           {{ $currency(Number(cart.order?.amountDiscounts)) }}
         </p>
       </div>
+      <div 
+          v-if="cart.order?.coupons"
+          v-for="coupon in cart.order.coupons"
+          :key="coupon.id"
+          class="flex justify-between mb-2"
+        >
+          <p class="flex grow text-sm text-gray-500 ml-2">
+            {{ coupon.code }}
+          </p>
+        </div>
       <div
         v-if="cart.order?.giftCards"
         class="flex justify-between typography-text-base mb-4"

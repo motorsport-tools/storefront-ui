@@ -71,12 +71,15 @@ console.log(order)
             </p>
             <p><span>{{ $currency(order?.amountTotal) }}</span></p>
           </li>
-          <li class="mt-4">
+          <li
+          v-if="order.transactions?.length > 0" 
+            class="mt-4"
+          >
             <p class="font-medium">
               {{ $t("account.myOrders.orderDetails.status") }}
             </p>
-            <p v-if="order"><span>{{
-              order.transactions ? order.transactions.length - 1 : "--"
+            <p><span>{{
+              order.lastTransaction ? order?.lastTransaction.state : "--"
             }}</span></p>
           </li>
         </ul>

@@ -26,6 +26,8 @@ const linesWithoutUndefinedProducts = computed(() => {
 });
 
 const NuxtLink = resolveComponent("NuxtLink");
+
+console.log(order)
 </script>
 <template>
   <UiOverlay visible>
@@ -55,27 +57,27 @@ const NuxtLink = resolveComponent("NuxtLink");
             <p class="font-medium">
               {{ $t("account.myOrders.orderDetails.orderId") }}
             </p>
-            <span>{{ order?.name }}</span>
+            <p><span>{{ order?.name }}</span></p>
           </li>
           <li class="my-4 md:mb-0">
             <p class="font-medium">
               {{ $t("account.myOrders.orderDetails.orderDate") }}
             </p>
-            <span>{{ order?.dateOrder }}</span>
+            <p><span>{{ order?.dateOrder }}</span></p>
           </li>
           <li>
             <p class="font-medium">
               {{ $t("account.myOrders.orderDetails.paymentAmount") }}
             </p>
-            <span>${{ order?.amountTotal }}</span>
+            <p><span>{{ $currency(order?.amountTotal) }}</span></p>
           </li>
           <li class="mt-4">
             <p class="font-medium">
               {{ $t("account.myOrders.orderDetails.status") }}
             </p>
-            <span v-if="order">{{
+            <p v-if="order"><span>{{
               order.transactions ? order.transactions.length - 1 : "--"
-            }}</span>
+            }}</span></p>
           </li>
         </ul>
         <table

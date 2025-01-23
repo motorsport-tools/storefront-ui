@@ -3,8 +3,11 @@ import { SfButton, SfLoaderCircular } from "@storefront-ui/vue";
 import { useOrders } from "~/domains/orders/composable/useOrders";
 import {
   PaymentTransactionState,
+  type QueryOrderArgs,
+  type QueryOrdersArgs,
   type Order,
   type PaymentTransaction,
+  SortEnum,
 } from "~/graphql";
 
 definePageMeta({
@@ -12,10 +15,19 @@ definePageMeta({
   middleware: ["auth-check"],
 });
 
-const { getOrders, orders, loading } = useOrders();
+const { getOrders, orders, loading, totalOrders } = useOrders();
+
+//pagination states
+const currentPage = ref(1);
+const perPage = ref(10);
 
 onMounted(async () => {
-  await getOrders();
+  const params:QueryOrdersArgs = {
+    currentPage: currentPage.value,
+    pageSize: perPage.value,
+    sort: { dateOrder: SortEnum.Desc },
+  };
+  await getOrders(params);
 });
 
 const isTransactionCancelled = (

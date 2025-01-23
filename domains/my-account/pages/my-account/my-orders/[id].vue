@@ -70,14 +70,14 @@ const NuxtLink = resolveComponent("NuxtLink");
             <p><span>{{ $currency(order?.amountTotal) }}</span></p>
           </li>
           <li
-          v-if="order.transactions?.length > 0" 
+            v-if="order?.transactions"
             class="mt-4"
           >
             <p class="font-medium">
               {{ $t("account.myOrders.orderDetails.status") }}
             </p>
             <p><span>{{
-              order.lastTransaction ? order?.lastTransaction.state : "--"
+              order?.lastTransaction ? order?.lastTransaction?.state : "--"
             }}</span></p>
           </li>
         </ul>

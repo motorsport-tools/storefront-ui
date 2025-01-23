@@ -34,7 +34,7 @@ defineProps({
       />
     </div>
     <div class="flex flex-col pl-4 min-w-[180px] flex-1 typography-text-base">
-      {{ product?.name }}
+      <p class="mb-0 break-words whitespace-normal">{{ product?.name }}</p>
       <div class="my-2 sm:mb-0">
         <ul
           class="font-normal leading-5 typography-text-xs sm:typography-text-sm text-neutral-700"

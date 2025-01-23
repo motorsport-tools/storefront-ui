@@ -26,8 +26,6 @@ const linesWithoutUndefinedProducts = computed(() => {
 });
 
 const NuxtLink = resolveComponent("NuxtLink");
-
-console.log(order)
 </script>
 <template>
   <UiOverlay visible>

@@ -23,7 +23,7 @@ export const useOrders = () => {
     );
     loading.value = false;
     orders.value = (data.value?.orders as Orders) || {};
-    totalOrders.value = data.value?.totalOrders || 0;
+    totalOrders.value = data.value?.orders?.totalCount || 0;
   };
 
   const getOrderById = async (params: QueryOrderArgs) => {

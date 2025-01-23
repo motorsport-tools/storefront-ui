@@ -16,18 +16,30 @@ definePageMeta({
 });
 
 const { getOrders, orders, loading, totalOrders } = useOrders();
+const route = useRoute();
+
 
 //pagination states
 const currentPage = ref(1);
 const perPage = ref(10);
 
-onMounted(async () => {
-  const params:QueryOrdersArgs = {
+const fetchOrders = async () => {
+  const params: QueryOrdersArgs = {
     currentPage: currentPage.value,
     pageSize: perPage.value,
     sort: { dateOrder: SortEnum.Desc },
   };
   await getOrders(params);
+};
+
+onMounted(async () => {
+  const page = route.query.page ? Number(route.query.page) : 1;
+  currentPage.value = page;
+  await fetchOrders();
+});
+
+watch(currentPage, () => {
+  fetchOrders();
 });
 
 const isTransactionCancelled = (
@@ -50,6 +62,12 @@ const NuxtLink = resolveComponent("NuxtLink");
   </h2>
 
   <div v-if="orders?.orders" class="col-span-3">
+    <div class="flex justify-between items-center mx-4">
+      <span class="text-sm ml-auto">
+        Showing {{ (currentPage - 1) * perPage + 1 }} -
+        {{ Math.min(currentPage * perPage, totalOrders) }} of {{ totalOrders }} orders
+      </span>
+    </div>
     <table class="hidden md:block text-left typography-text-sm mx-4">
       <caption class="hidden">
         List of orders
@@ -109,6 +127,14 @@ const NuxtLink = resolveComponent("NuxtLink");
         </tr>
       </tbody>
     </table>
+
+    <LazyUiPagination
+      :currentPage="currentPage"
+      :pageSize="perPage"
+      :totalItems="totalOrders"
+      :maxVisiblePages="5"
+    />    
+
   </div>
   <div v-else class="w-full text-center">
     <SfLoaderCircular size="xl" class="mt-[160px]" />

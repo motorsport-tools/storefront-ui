@@ -93,7 +93,7 @@ const NuxtLink = resolveComponent("NuxtLink");
         <tr
           v-for="order in orders.orders"
           :key="order?.id"
-          class="border-b border-neutral-200"
+          class="border-b border-neutral-200 last:border-transparent"
         >
           <td class="py-4 pr-4 lg:whitespace-nowrap">{{ order?.name }}</td>
           <td class="p-4 lg:whitespace-nowrap">{{ order?.dateOrder }}</td>

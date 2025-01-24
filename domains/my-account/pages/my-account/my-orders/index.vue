@@ -57,7 +57,7 @@ const isTransactionCancelled = (
 };
 
 const getLastOrderTransaction = (order: Order): PaymentTransaction | null => {
-  return order.transactions?.[order.transactions.length - 1] ?? null;
+  return order.transactions?.[0] ?? null;
 };
 
 const NuxtLink = resolveComponent("NuxtLink");

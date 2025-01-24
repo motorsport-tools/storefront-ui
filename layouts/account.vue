@@ -113,6 +113,7 @@ import {
 
 const NuxtLink = resolveComponent("NuxtLink");
 const { t } = useI18n();
+const route = useRoute();
 const router = useRouter();
 const { logout } = useAuth();
 const sections = [
@@ -150,18 +151,33 @@ const currentPath = computed(() => router.currentRoute.value.path);
 const path = "/my-account";
 const rootPathRegex = new RegExp(`^${path}/?$`);
 const isRoot = computed(() => rootPathRegex.test(currentPath.value));
-const findCurrentPage = computed(() =>
-  sections
+
+const findCurrentPage = computed(() => {
+  if (currentPath.value.startsWith(`${path}/my-orders`)) {
+    if (route.params.id) {
+      return {
+        label: `${t("account.myOrders.orderDetails.heading")} #${route.params.id}`,
+        link: currentPath.value,
+      };
+    } else {
+      return {
+        label: t("account.myOrders.heading"),
+        link: `${path}/my-orders`, 
+      };
+    }
+  }
+
+  return sections
     .flatMap(({ subsections }) => subsections)
-    .find(({ link }) => currentPath.value.includes(link))
-);
+    .find(({ link }) => currentPath.value.includes(link));
+});
 
 const breadcrumbs = computed(() => [
   { name: t("home"), link: "/" },
   { name: t("account.heading"), link: "/my-account" },
   ...(isRoot.value
-    ? []
-    : [{ name: findCurrentPage.value?.label, link: currentPath.value }]),
+    ? [] 
+    : [{ name: findCurrentPage.value?.label, link: findCurrentPage.value?.link }]),
 ]);
 
 const handleLogout = async () => {

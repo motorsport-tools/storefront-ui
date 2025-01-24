@@ -16,6 +16,7 @@ export const useOrders = () => {
   const totalOrders = ref(0);
 
   const getOrders = async (params: QueryOrdersArgs) => {
+    if (orders?.value?.length > 0) return;
     loading.value = true;
     const { data } = await $sdk().odoo.query<QueryOrdersArgs, GetOrdersResponse>(
       { queryName: QueryName.GetOrdersQuery },

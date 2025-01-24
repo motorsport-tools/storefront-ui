@@ -17,11 +17,13 @@ definePageMeta({
 
 const { getOrders, orders, loading, totalOrders } = useOrders();
 const route = useRoute();
+const router = useRouter();
 
 
 //pagination states
 const currentPage = ref(1);
 const perPage = ref(10);
+
 
 const fetchOrders = async () => {
   const params: QueryOrdersArgs = {
@@ -38,9 +40,15 @@ onMounted(async () => {
   await fetchOrders();
 });
 
-watch(currentPage, () => {
-  fetchOrders();
-});
+watch(
+  () => route.query.page,
+  async (newPage) => {
+    if (newPage && newPage !== currentPage.value) {
+      currentPage.value = Number(newPage);
+      await fetchOrders();
+    }
+  }
+);
 
 const isTransactionCancelled = (
   transaction?: PaymentTransaction | null
@@ -60,7 +68,6 @@ const NuxtLink = resolveComponent("NuxtLink");
   <h2 class="hidden md:block typography-headline-4 font-bold mx-4 capitalize">
     {{ $t("account.myOrders.heading") }}
   </h2>
-
   <div v-if="orders?.orders" class="col-span-3">
     <div class="flex justify-between items-center mx-4">
       <span class="text-sm ml-auto">
@@ -119,7 +126,7 @@ const NuxtLink = resolveComponent("NuxtLink");
               :tag="NuxtLink"
               size="sm"
               variant="tertiary"
-              :to="`/my-account/my-orders/${order?.id}`"
+              :to="`/my-account/my-orders/${order.id}`"
             >
               {{ $t("account.myOrders.details") }}
             </SfButton>
@@ -133,9 +140,9 @@ const NuxtLink = resolveComponent("NuxtLink");
       :pageSize="perPage"
       :totalItems="totalOrders"
       :maxVisiblePages="5"
-    />    
-
+    />
   </div>
+  
   <div v-else class="w-full text-center">
     <SfLoaderCircular size="xl" class="mt-[160px]" />
   </div>
@@ -155,5 +162,4 @@ const NuxtLink = resolveComponent("NuxtLink");
       {{ $t("account.myOrders.continue") }}</SfButton
     >
   </div>
-  <NuxtPage />
 </template>

@@ -160,10 +160,7 @@ const findCurrentPage = computed(() => {
         link: currentPath.value,
       };
     } else {
-      return {
-        label: t("account.myOrders.heading"),
-        link: `${path}/my-orders`, 
-      };
+      return null;
     }
   }
 
@@ -172,13 +169,37 @@ const findCurrentPage = computed(() => {
     .find(({ link }) => currentPath.value.includes(link));
 });
 
-const breadcrumbs = computed(() => [
-  { name: t("home"), link: "/" },
-  { name: t("account.heading"), link: "/my-account" },
-  ...(isRoot.value
-    ? [] 
-    : [{ name: findCurrentPage.value?.label, link: findCurrentPage.value?.link }]),
-]);
+const breadcrumbs = computed(() => {
+  const breadcrumbsArray = [
+    { name: t("home"), link: "/" },
+    { name: t("account.heading"), link: "/my-account" },
+  ];
+
+  if (currentPath.value.startsWith(`${path}/my-orders`) && !route.params.id) {
+    breadcrumbsArray.push({
+      name: t("account.myOrders.heading"),
+      link: `${path}/my-orders`,
+    });
+  }
+
+  if (route.params.id) {
+    breadcrumbsArray.push({
+      name: t("account.myOrders.heading"),
+      link: `${path}/my-orders`,
+    });
+    breadcrumbsArray.push({
+      name: `${t("account.myOrders.orderDetails.heading")} #${route.params.id}`,
+      link: currentPath.value,
+    });
+  } else if (findCurrentPage.value) {
+    breadcrumbsArray.push({
+      name: findCurrentPage.value?.label,
+      link: findCurrentPage.value?.link,
+    });
+  }
+
+  return breadcrumbsArray;
+});
 
 const handleLogout = async () => {
   await logout();

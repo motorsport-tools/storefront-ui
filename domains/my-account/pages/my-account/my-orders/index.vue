@@ -70,10 +70,10 @@ const NuxtLink = resolveComponent("NuxtLink");
   </h2>
   <div v-if="orders?.orders" class="col-span-3">
     <div class="flex justify-between items-center mx-4">
-      <span class="text-sm ml-auto">
-        Showing {{ (currentPage - 1) * perPage + 1 }} -
-        {{ Math.min(currentPage * perPage, totalOrders) }} of {{ totalOrders }} orders
-      </span>
+      <div class="bg-gray-100 text-sm ml-auto px-4 py-2 rounded-md">
+        <span class="font-medium">{{ (currentPage - 1) * perPage + 1 }}</span> -
+        <span class="font-medium">{{ Math.min(currentPage * perPage, totalOrders) }}</span> of <span class="font-medium">{{ totalOrders }}</span>
+      </div>
     </div>
     <table class="hidden md:block text-left typography-text-sm mx-4">
       <caption class="hidden">
@@ -119,7 +119,7 @@ const NuxtLink = resolveComponent("NuxtLink");
               ,
             ]"
           >
-            {{ getLastOrderTransaction(order)?.state ?? "--" }}
+            {{ order?.stage ?? "--" }}
           </td>
           <td class="py-1.5 pl-4 text-right w-full">
             <SfButton

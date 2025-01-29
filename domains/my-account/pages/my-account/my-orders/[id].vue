@@ -59,7 +59,7 @@ const NuxtLink = resolveComponent("NuxtLink");
             </p>
             <p><span>{{ $currency(order?.amountTotal) }}</span></p>
             </li>
-            <li v-if="order?.transactions" class="mt-4">
+            <li class="mt-4">
             <p class="font-medium">
                 {{ $t("account.myOrders.orderDetails.status") }}
             </p>

@@ -142,6 +142,7 @@ partner {
   name
   isPublic
 }
+locked
 lastTransaction{
   id
   reference

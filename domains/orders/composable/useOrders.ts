@@ -28,12 +28,15 @@ export const useOrders = () => {
 
   const getOrderById = async (params: QueryOrderArgs) => {
     loading.value = true;
-    const { data } = await $sdk().odoo.query<QueryOrderArgs, GetOrderResponse>(
-      { queryName: QueryName.GetOrderQuery },
-      params
-    );
-    loading.value = false;
-    order.value = data?.value?.order || ({} as Order);
+    try {
+      const { data } = await $sdk().odoo.query<QueryOrderArgs, GetOrderResponse>(
+        { queryName: QueryName.GetOrderQuery },
+        params
+      );
+      order.value = data?.value?.order || ({} as Order);
+    } finally {
+      loading.value = false;
+    }
   };
 
   return {

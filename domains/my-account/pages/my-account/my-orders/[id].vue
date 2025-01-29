@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SfButton, SfLoaderCircular } from "@storefront-ui/vue";
+import { SfButton, SfLoaderCircular, SfIconDownload } from "@storefront-ui/vue";
 
 definePageMeta({
   layout: "account",
@@ -37,7 +37,19 @@ const NuxtLink = resolveComponent("NuxtLink");
     >
         {{ $t("account.myOrders.backToOrders") }}
     </SfButton>
-
+    <div v-if="order" class="col-span-3">
+        <SfButton
+            v-if="order?.orderUrl"
+            variant="secondary"
+            :tag="NuxtLink"
+            :to="`${order.orderUrl}&report_type=pdf`"
+            :prefetch-on="{ interaction: true }"
+            target="_blank"
+        >
+        <SfIconDownload/>
+        {{ $t("account.myOrders.viewDetails") }}
+        </SfButton>
+    </div>
     <div v-if="order" class="col-span-3">
         <!-- Order Overview -->
         <ul class="bg-neutral-100 p-4 rounded-md md:columns-2 mb-6">

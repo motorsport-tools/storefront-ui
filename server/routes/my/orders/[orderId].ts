@@ -1,5 +1,4 @@
 import { joinURL } from 'ufo'
-import { Queries } from '~/server/queries'
 import { QueryName } from "~/server/queries";
 import type { Endpoints } from "@erpgap/odoo-sdk-api-client";
 import type {
@@ -7,6 +6,7 @@ import type {
     Order,
     QueryOrderArgs,
   } from "~/graphql";
+  
 export default defineEventHandler(async (event) => {
 
     const queryVars = getQuery(event)
@@ -34,10 +34,13 @@ export default defineEventHandler(async (event) => {
     const order = (response?.data?.order as Order) || {}
     if (Object.keys(order).length === 0) {
         throw createError({
-        statusCode: 403,
+        statusCode: 500,
         statusMessage: 'Forbidden: You do not have access to this order',
         })
     }
+
+    const fileName = `${order.dateOrder}_Order_${order.id}_${order.partner?.name || 'Details'}.pdf`;
+    event.node.res.setHeader('Content-Disposition', `inline; filename="${fileName}"`);
 
     const proxyUrl: string = process.env.NUXT_PUBLIC_ODOO_BASE_URL || ''
     const path = event.path

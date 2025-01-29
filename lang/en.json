@@ -327,11 +327,13 @@
       "amount": "Amount",
       "status": "Status",
       "details": "Details",
+      "done": "Done",
       "myOrders": "My orders",
       "noOrders": "You haven’t shopped with us yet",
       "continue": "Continue shopping",
       "noOrdersAltText": "No orders",
       "backToOrders": "Back to orders",
+      "viewDetails": "View Details",
       "section": {
         "myOrders": "My Orders"
       },

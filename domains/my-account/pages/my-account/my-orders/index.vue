@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SfButton, SfLoaderCircular } from "@storefront-ui/vue";
+import { SfButton, SfLoaderCircular, SfIconCheckCircle } from "@storefront-ui/vue";
 import { useOrders } from "~/domains/orders/composable/useOrders";
 import {
   PaymentTransactionState,
@@ -91,7 +91,7 @@ const NuxtLink = resolveComponent("NuxtLink");
             {{ $t("account.myOrders.amount") }}
           </th>
           <th class="py-4 px-4 font-medium">
-            {{ $t("account.myOrders.status") }}
+            
           </th>
           <th class="py-4 pl-4"></th>
         </tr>
@@ -107,19 +107,14 @@ const NuxtLink = resolveComponent("NuxtLink");
           <td class="p-4">
             {{ $currency(order?.amountTotal ? order?.amountTotal : 0) }}
           </td>
-          <td
-            v-if="order"
-            :class="[
-              'p-4',
-              {
-                'text-negative-700': isTransactionCancelled(
-                  getLastOrderTransaction(order)
-                ),
-              },
-              ,
-            ]"
-          >
-            {{ order?.stage ?? "--" }}
+          <td class="p-4">
+            <UiAlert 
+              v-if="order.locked"
+              class="font-semibold"
+            >
+            <SfIconCheckCircle class="text-positive-700 shrink-0" size="sm" />
+            {{ $t("account.myOrders.done") }}
+            </UiAlert>
           </td>
           <td class="py-1.5 pl-4 text-right w-full">
             <SfButton

@@ -80,7 +80,7 @@ export default (homepage: Homepage, fullPath: string) => {
     link: [
       {
         rel: "canonical",
-        href: `https://vsfsdk.labs.odoogap.com${fullPath}`,
+        href: `https://motorsport-tools.com${fullPath}`,
       },
     ],
   };

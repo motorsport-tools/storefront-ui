@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       viewport: "minimum-scale=1, initial-scale=1, width=device-width",
-      title: "Alokai",
+      title: "Motorsport-Tools.com - The Mk1 and Mk2 Ford Escort Rally Specialists",
       htmlAttrs: {
         lang: "en",
       },

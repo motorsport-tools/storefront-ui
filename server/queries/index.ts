@@ -11,6 +11,7 @@ import GetProductTemplateQuery from './GetProductTemplateQuery';
 import GetProductVariantQuery from './GetProductVariantQuery';
 import GetOrdersQuery from './GetOrdersQuery';
 import GetOrderQuery from './GetOrderQuery';
+import GetInvoiceQuery from './GetInvoiceQuery';
 import LoadCartQuery from './LoadCartQuery';
 import LoadUserQuery from './LoadUserQuery';
 import StockLotsQuery from './StockLotsQuery';
@@ -38,6 +39,7 @@ enum QueryName {
   GetOrdersQuery = 'GetOrdersQuery',
   GetOrderQuery = 'GetOrderQuery',
   GetWebsiteHomepageQuery = 'GetWebsiteHomepageQuery',
+  GetInvoiceQuery = 'GetInvoiceQuery'
 }
 
 const Queries: Record<QueryName, DocumentNode> = {
@@ -57,6 +59,7 @@ const Queries: Record<QueryName, DocumentNode> = {
   GetPaymentConfirmation,
   GetOrdersQuery,
   GetOrderQuery,
+  GetInvoiceQuery,
   GetStatesQuery,
   GetWebsiteHomepageQuery,
 };

@@ -324,7 +324,7 @@
       "heading": "Orders",
       "orderId": "ID",
       "orderDate": "Order date",
-      "amount": "Amount",
+      "amount": "Total",
       "status": "Status",
       "details": "Details",
       "done": "Done",
@@ -338,10 +338,10 @@
         "myOrders": "My Orders"
       },
       "orderDetails": {
-        "heading": "Order details",
+        "heading": "Order Details",
         "orderId": "Order ID",
         "orderDate": "Order date",
-        "paymentAmount": "Payment amount",
+        "paymentAmount": "Total",
         "status": "Status",
         "price": "Price",
         "quantity": "Quantity",
@@ -355,6 +355,19 @@
         "billingAddress": "Billing address",
         "paymentMethod": "Payment method",
         "shippingAddress": "Shipping address"
+      },
+      "lastInvoices": {
+        "heading": "Last Invoices",
+        "tableCaption": "Last Invoices",
+        "status": "Status",
+        "details": "View Invoice",
+        "state": {
+          "paid": "Paid",
+          "notPaid": "Awaiting Payment",
+          "inPayment": "In Payment",
+          "partial": "Partially Paid",
+          "reversed": "Reversed"
+        }
       }
     }
   },

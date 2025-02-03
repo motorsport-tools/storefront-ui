@@ -21,6 +21,7 @@ import type {
   PaymentProvider,
   Orders,
   Order,
+  Invoice,
   Countries,
   AddressEnum,
   State,
@@ -344,6 +345,13 @@ export type GetOrdersResponse = AsyncData<
 export type GetOrderResponse = AsyncData<
   {
     order: Order;
+  },
+  H3Error
+>;
+
+export type GetInvoiceResponse = AsyncData<
+  {
+    invoice: Invoice;
   },
   H3Error
 >;

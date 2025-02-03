@@ -4,6 +4,11 @@ import AdyenPaymentMethods from "./AdyenPaymentMethods";
 import AdyenPayments from "./AdyenPayments";
 import AdyenProviderInfo from "./AdyenProviderInfo";
 import AdyenTransaction from "./AdyenTransaction";
+import RvvupPaymentDetails from "./RvvupPaymentDetails";
+import RvvupPaymentMethods from "./RvvupPaymentMethods";
+import RvvupPayments from "./RvvupPayments";
+import RvvupProviderInfo from "./RvvupProviderInfo";
+import RvvupTransaction from "./RvvupTransaction";
 import ApplyGiftCardMutation from "./ApplyGiftCardMutation";
 import ApplyCouponMutation from "./ApplyCouponMutation";
 import CartAddItem from "./CartAddItem";
@@ -50,6 +55,11 @@ enum MutationName {
   AdyenPaymentMethods = "AdyenPaymentMethods",
   AdyenPaymentDetails = "AdyenPaymentDetails",
   AdyenPayments = "AdyenPayments",
+  RvvupTransaction = "RvvupTransaction",
+  RvvupProviderInfo = "RvvupProviderInfo",
+  RvvupPaymentMethods = "RvvupPaymentMethods",
+  RvvupPaymentDetails = "RvvupPaymentDetails",
+  RvvupPayments = "RvvupPayments",
   SelectCurrentAddress = "SelectCurrentAddress",
   DeleteAddress = "DeleteAddress",
   NewsletterSubscribeMutation = "NewsletterSubscribeMutation",
@@ -81,6 +91,11 @@ const Mutations: Record<MutationName, DocumentNode> = {
   AdyenPaymentMethods,
   AdyenPaymentDetails,
   AdyenPayments,
+  RvvupTransaction,
+  RvvupProviderInfo,
+  RvvupPaymentMethods,
+  RvvupPaymentDetails,
+  RvvupPayments,
   SelectCurrentAddress,
   DeleteAddress,
   NewsletterSubscribeMutation,

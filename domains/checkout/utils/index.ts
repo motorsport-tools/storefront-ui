@@ -1,4 +1,5 @@
 const getPaymentProviderComponentName = (providerCode: string) => {
+  console.log('Provider Code', providerCode)
   switch (providerCode) {
     case "adyen":
       return "ProviderAdyen";
@@ -6,6 +7,8 @@ const getPaymentProviderComponentName = (providerCode: string) => {
       return "ProviderPayPal";
     case "klarna":
       return "ProviderKarna";
+    case "rvvup":
+      return "ProviderRvvup"
     default:
       return "UnknownPaymentProvider";
   }

@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   app: {
     head: {
       viewport: "minimum-scale=1, initial-scale=1, width=device-width",
@@ -15,6 +16,7 @@ export default defineNuxtConfig({
   robots: {
     allow: "/category/*",
   },
+
   extends: [
     "./domains/auth",
     "./domains/recent-view-products",
@@ -25,10 +27,12 @@ export default defineNuxtConfig({
     "./domains/core",
     "./domains/my-account",
     "./domains/product",
+    "./domains/payment_rvvup",
     //"./domains/search-algolia",
     "./domains/search-default",
     "./domains/wishlist",
   ],
+
   modules: [
     "@pinia/nuxt",
     "@nuxtjs/tailwindcss",
@@ -45,6 +49,7 @@ export default defineNuxtConfig({
     "nuxt-delay-hydration",
     "nuxt-typed-router",
   ],
+
   runtimeConfig: {
     shouldByPassCacheQueryNames: [
       "LoadCartQuery",
@@ -60,11 +65,13 @@ export default defineNuxtConfig({
       currencyPrecision: "",
     },
   },
+
   googleFonts: {
     families: {
       "Red Hat Display": [400, 500, 700],
     },
   },
+
   i18n: {
     locales: [
       {
@@ -77,14 +84,17 @@ export default defineNuxtConfig({
     langDir: "lang",
     defaultLocale: "en",
   },
+
   delayHydration: {
     mode: "init",
   },
+
   vite: {
     optimizeDeps: {
       include: ["lodash-es"],
     },
   },
+
   build: {
     transpile: [
       "tslib",
@@ -97,6 +107,7 @@ export default defineNuxtConfig({
       "@erpgap/odoo-sdk-api-client",
     ],
   },
+
   image: {
     providers: {
       odooProvider: {
@@ -114,11 +125,13 @@ export default defineNuxtConfig({
       xs: 376,
     },
   },
+
   routeRules: {
     "/": { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
     "/category/*": { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
     "/product/*": { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
   },
+
   nitro: {
     // compressPublicAssets: true,
     storage: {
@@ -136,19 +149,34 @@ export default defineNuxtConfig({
       },
     },
   },
+  experimental: {
+    crossOriginPrefetch: true,
+  },
   site: {
     url: "https://vsfsdk.labs.odoogap.com/",
     name: "ERPGAP VSF",
     description: "Welcome to an awesome ecommerce site!",
     defaultLocale: "en",
   },
+
   tailwindcss: {
     viewer: false,
   },
+
   device: {
     refreshOnResize: true,
   },
+
   experimental: {
     asyncContext: false,
   },
+
+  devServer: {
+    https: {
+      key: process.env.NUXT_SERVER_KEY,
+      cert: process.env.NUXT_SERVER_CERT,
+    },
+  },
+
+  compatibilityDate: "2025-01-29",
 });

@@ -4,6 +4,7 @@ import type {
   Order,
   Orders,
   QueryOrderArgs,
+  QueryOrdersArgs,
 } from "~/graphql";
 import { QueryName } from "~/server/queries";
 
@@ -12,25 +13,30 @@ export const useOrders = () => {
   const loading = ref(false);
   const orders = ref<Orders>();
   const order = ref<Order>();
+  const totalOrders = ref(0);
 
-  const getOrders = async () => {
+  const getOrders = async (params: QueryOrdersArgs) => {
     loading.value = true;
-    const { data } = await $sdk().odoo.query<null, GetOrdersResponse>(
+    const { data } = await $sdk().odoo.query<QueryOrdersArgs, GetOrdersResponse>(
       { queryName: QueryName.GetOrdersQuery },
-      null
+      params
     );
     loading.value = false;
     orders.value = (data.value?.orders as Orders) || {};
+    totalOrders.value = data.value?.orders?.totalCount || 0;
   };
 
   const getOrderById = async (params: QueryOrderArgs) => {
     loading.value = true;
-    const { data } = await $sdk().odoo.query<QueryOrderArgs, GetOrderResponse>(
-      { queryName: QueryName.GetOrderQuery },
-      params
-    );
-    loading.value = false;
-    order.value = data?.value?.order || ({} as Order);
+    try {
+      const { data } = await $sdk().odoo.query<QueryOrderArgs, GetOrderResponse>(
+        { queryName: QueryName.GetOrderQuery },
+        params
+      );
+      order.value = data?.value?.order || ({} as Order);
+    } finally {
+      loading.value = false;
+    }
   };
 
   return {
@@ -39,5 +45,6 @@ export const useOrders = () => {
     getOrderById,
     orders,
     order,
+    totalOrders
   };
 };

@@ -10,6 +10,8 @@ export default gql`
         id
         name
         image
+        code
+        sequence
         brands {
           id
           name

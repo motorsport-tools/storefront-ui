@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { SfButton } from '@storefront-ui/vue';
 const { loadCart } = useCart();
+const { getPaymentConfirmation } = usePayment();
 
-await loadCart(false);
+onMounted(async () => {
+  const data = await getPaymentConfirmation();
+  await loadCart(true);
+});
+
 </script>
 
 <template>

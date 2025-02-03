@@ -15,7 +15,6 @@ export const usePayment = () => {
     const { data } = await $sdk().odoo.query<any, PaymentMethodListResponse>({
       queryName: QueryName.GetPaymentMethodsQuery,
     });
-
     if (data.value) {
       paymentProviders.value = data.value.paymentProviders || [];
     }

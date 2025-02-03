@@ -113,6 +113,7 @@ import {
 
 const NuxtLink = resolveComponent("NuxtLink");
 const { t } = useI18n();
+const route = useRoute();
 const router = useRouter();
 const { logout } = useAuth();
 const sections = [
@@ -150,19 +151,55 @@ const currentPath = computed(() => router.currentRoute.value.path);
 const path = "/my-account";
 const rootPathRegex = new RegExp(`^${path}/?$`);
 const isRoot = computed(() => rootPathRegex.test(currentPath.value));
-const findCurrentPage = computed(() =>
-  sections
-    .flatMap(({ subsections }) => subsections)
-    .find(({ link }) => currentPath.value.includes(link))
-);
 
-const breadcrumbs = computed(() => [
-  { name: t("home"), link: "/" },
-  { name: t("account.heading"), link: "/my-account" },
-  ...(isRoot.value
-    ? []
-    : [{ name: findCurrentPage.value?.label, link: currentPath.value }]),
-]);
+const findCurrentPage = computed(() => {
+  if (currentPath.value.startsWith(`${path}/my-orders`)) {
+    if (route.params.id) {
+      return {
+        label: `${t("account.myOrders.orderDetails.heading")} #${route.params.id}`,
+        link: currentPath.value,
+      };
+    } else {
+      return null;
+    }
+  }
+
+  return sections
+    .flatMap(({ subsections }) => subsections)
+    .find(({ link }) => currentPath.value.includes(link));
+});
+
+const breadcrumbs = computed(() => {
+  const breadcrumbsArray = [
+    { name: t("home"), link: "/" },
+    { name: t("account.heading"), link: "/my-account" },
+  ];
+
+  if (currentPath.value.startsWith(`${path}/my-orders`) && !route.params.id) {
+    breadcrumbsArray.push({
+      name: t("account.myOrders.heading"),
+      link: `${path}/my-orders`,
+    });
+  }
+
+  if (route.params.id) {
+    breadcrumbsArray.push({
+      name: t("account.myOrders.heading"),
+      link: `${path}/my-orders`,
+    });
+    breadcrumbsArray.push({
+      name: `${t("account.myOrders.orderDetails.heading")} #${route.params.id}`,
+      link: currentPath.value,
+    });
+  } else if (findCurrentPage.value) {
+    breadcrumbsArray.push({
+      name: findCurrentPage.value?.label,
+      link: findCurrentPage.value?.link,
+    });
+  }
+
+  return breadcrumbsArray;
+});
 
 const handleLogout = async () => {
   await logout();

@@ -43,11 +43,6 @@ onMounted(async () => {
 const handleGiftCardPayment = async () => {
   await makeGiftCardPayment();
 };
-
-
-watch(isPaymentWithCardReady, (newValue) => {
-  console.log('isPaymentWithCardReady updated:', newValue);
-});
 </script>
 
 <template>

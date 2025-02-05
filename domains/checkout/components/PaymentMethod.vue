@@ -57,12 +57,6 @@ const allPaymentMethods = computed(() => {
   return props.paymentMethods || [];
 });
 
-onMounted(() => {
-  if (allPaymentMethods.value.length > 0) {
-    selectedMethod.value = allPaymentMethods.value[0];
-    emit("update:activePayment", selectedMethod.value);
-  }
-});
 
 function updateSelectedMethod(method: PaymentMethod) {
   selectedMethod.value = method;

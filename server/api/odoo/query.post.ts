@@ -6,7 +6,7 @@ const customCache = cachedFunction(
     const body = await readBody(event);
     const api: Endpoints = event.context.apolloClient.api;
     const response = await api.query(body?.[0], body?.[1]);
-
+    
     if ((response.data as any)?.cookie) {
       appendResponseHeader(
         event,

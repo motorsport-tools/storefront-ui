@@ -7,9 +7,7 @@ export default defineEventHandler(async (event) => {
   const api: Endpoints = event.context.apolloClient.api;
 
   try {
-    console.log('Trying Call:', body[0], body[1]);
     const response = await api.mutation(body?.[0], body?.[1]);
-    console.log('Response:', response);
     if ((response.data as any)?.cookie) {
       appendResponseHeader(event, "Set-cookie", (response.data as any)?.cookie);
     }

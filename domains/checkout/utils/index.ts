@@ -1,5 +1,4 @@
 const getPaymentProviderComponentName = (providerCode: string) => {
-  console.log('Provider Code', providerCode)
   switch (providerCode) {
     case "adyen":
       return "ProviderAdyen";

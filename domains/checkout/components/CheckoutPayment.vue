@@ -54,10 +54,8 @@ const allPaymentMethods = computed(() => {
 
 if (allPaymentMethods.value.length > 0) {
   showPaymentModal.value = true;
-  selectedMethod.value = allPaymentMethods.value[0];
+  //selectedMethod.value = allPaymentMethods.value[0];
 }
-
-console.log('Payment Methods: ', allPaymentMethods.value)
 
 // Handle selecting a payment method
 function selectPaymentMethod(method: PaymentMethod) {

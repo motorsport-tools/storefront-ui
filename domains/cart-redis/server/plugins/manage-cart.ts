@@ -15,6 +15,7 @@ export default defineNitroPlugin((nitro) => {
         cartRemoveItem(event, body),
         cartUpdateItem(event, body),
         updateAddress(event, body),
+        updateShipping(event, body),
         addAddress(event, body),
         createUpdatePartner(event, body),
         applyCoupon(event, body),
@@ -158,6 +159,29 @@ async function updateAddress(event: any, body: any) {
     }
 
     await useStorage().setItem(keyName, currentCart);
+  }
+}
+
+async function updateShipping(event: any, body: any) {
+  const requestBody = await readBody(event);
+  if (requestBody[0]?.mutationName === MutationName.ShippingMethod) {
+    const session = await useSession(event, {
+      password: "b013b03ac2231e0b448e9a22ba488dcf",
+    });
+    const keyName = `cache:cart:${session?.id}`;
+    const currentCart =
+      (await useStorage().getItem<{ cart: Cart }>(keyName)) || ({} as any);
+    let cart = {}
+      cart = {
+        cart: {
+          ...currentCart.cart, 
+          order: {
+            ...currentCart.cart.order,
+            ...body.setShippingMethod.order,
+          },
+        },
+      };
+      await useStorage().setItem(keyName, cart);
   }
 }
 

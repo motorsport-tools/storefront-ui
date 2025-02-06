@@ -2,6 +2,8 @@
 import { ref, onMounted } from "vue";
 import { SfListItem, SfRadio, SfIconBlock } from "@storefront-ui/vue";
 
+const { cart, loadCart } = useCart();
+
 const { deliveryMethods, loadDeliveryMethods, setDeliveryMethod } =
   useDeliveryMethod();
 
@@ -14,16 +16,23 @@ defineProps({
   },
 });
 
-await loadDeliveryMethods();
+onMounted(async () => {
+  await loadDeliveryMethods();
+  if (deliveryMethods?.value?.length >= 1) {
+    deliveryMethods.value.forEach((val, i) => {
+      if (val.id === cart.value?.order?.shippingMethod?.id) {
+        radioModel.value = String(val.id);
+      }
+    })
+  }
+});
 
-if (deliveryMethods?.value?.length === 1) {
-  radioModel.value = String(deliveryMethods.value[0].id);
-  await setDeliveryMethod(deliveryMethods.value[0].id);
-}
+
 
 const handleSelectShippingMethod = async (shippingMethodId: number) => {
   radioModel.value = String(shippingMethodId);
   await setDeliveryMethod(shippingMethodId);
+  await loadCart(true)
 };
 </script>
 
@@ -46,10 +55,13 @@ const handleSelectShippingMethod = async (shippingMethodId: number) => {
           :key="id"
           tag="label"
           class="border rounded-md items-start"
-          @click="handleSelectShippingMethod(id)"
         >
           <div class="flex gap-2">
-            <SfRadio v-model="radioModel" :value="String(id)" />
+            <SfRadio 
+              v-model="radioModel" 
+              :value="String(id)" 
+              @click="handleSelectShippingMethod(id)"
+            />
             <div>
               <p>{{ name }}</p>
               <p class="text-xs text-neutral-500">{{ shippingDate }}</p>

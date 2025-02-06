@@ -1,14 +1,23 @@
 <script setup lang="ts">
 import { SfButton, SfLink } from "@storefront-ui/vue";
 
-import type { PaymentProvider } from "~/graphql";
+import type { PaymentMethod } from "~/graphql";
+
+// Props
+const props = defineProps({
+  selectedMethod: {
+    type: Object as () => PaymentMethod | null,
+    required: false,
+    default: () => null, 
+  },
+});
 
 const { cart } = useCart();
 const router = useRouter();
 const { makeGiftCardPayment, loading: discountLoading } = useDiscount();
 const { loadPaymentMethods, paymentProviders } = usePayment();
 
-const selectedProvider = ref<PaymentProvider | null>(null);
+//const selectedProvider = ref<PaymentProvider | null>(null);
 const isPaymentWithCardReady = ref(false);
 const providerPaymentHandler = ref();
 const loading = ref(false);
@@ -21,13 +30,15 @@ const hasFullPaymentWithGiftCard = computed(() => {
   }
 });
 
+
 onMounted(async () => {
   await loadPaymentMethods();
   if (paymentProviders.value.length > 0) {
     showPaymentModal.value = true;
-    selectedProvider.value = paymentProviders.value[0];
+    //selectedProvider.value = paymentProviders.value[0];
   }
 });
+
 
 const handleGiftCardPayment = async () => {
   await makeGiftCardPayment();
@@ -50,7 +61,7 @@ const handleGiftCardPayment = async () => {
       v-else
       size="lg"
       class="w-full mb-4 md:mb-0"
-      :disabled="!selectedProvider || !isPaymentWithCardReady || loading"
+      :disabled="!props.selectedProvider || !isPaymentWithCardReady || loading"
       @click="providerPaymentHandler"
     >
       {{ $t("placeOrder") }}
@@ -79,12 +90,12 @@ const handleGiftCardPayment = async () => {
     <component
       v-if="
         showPaymentModal &&
-        !!selectedProvider?.code &&
+        !!props.selectedMethod?.providerCode &&
         !hasFullPaymentWithGiftCard
       "
-      :is="getPaymentProviderComponentName(selectedProvider?.code)"
-      :key="selectedProvider?.id"
-      :provider="selectedProvider"
+      :is="getPaymentProviderComponentName(props.selectedMethod?.providerCode)"
+      :key="props.selectedMethod?.id"
+      :method="props.selectedMethod"
       :cart="cart"
       @is-payment-ready="($event: any) => (isPaymentWithCardReady = $event)"
       @provider-payment-handler="

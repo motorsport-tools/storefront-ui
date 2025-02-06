@@ -8,7 +8,6 @@ export default defineEventHandler(async (event) => {
 
   try {
     const response = await api.mutation(body?.[0], body?.[1]);
-
     if ((response.data as any)?.cookie) {
       appendResponseHeader(event, "Set-cookie", (response.data as any)?.cookie);
     }

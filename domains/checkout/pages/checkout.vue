@@ -1,20 +1,29 @@
 <script setup lang="ts">
 import { useCountryList } from "~/domains/core/composable/useCountryList";
 import { AddressEnum, type Partner } from "~/graphql";
+import { SfLoaderCircular } from "@storefront-ui/vue";
 
-const { cart, loadCart, totalItemsInCart } = useCart();
+const { cart, totalItemsInCart } = useCart();
 const { loadCountries } = useCountryList();
+const { loadUser } = useAuth();
 const router = useRouter();
 
-const { loadUser } = useAuth();
+const selectedProvider = ref<PaymentMethod | null>(null);
+const loading = ref(true);
 
-await loadUser(true);
-await loadCart(false);
-await loadCountries();
+onMounted(async () => {
+  await Promise.all([loadUser(true), loadCountries()]);
+  loading.value = false;
 
-if (totalItemsInCart?.value === 0) {
-  router.push("/category/53");
+  if (totalItemsInCart?.value === 0) {
+    router.push("/cart");
+  }
+})
+
+function handleSelectedProviderUpdate(newProvider: Number) {
+  selectedProvider.value = newProvider;
 }
+
 </script>
 <template>
   <div class="md:px-0 mb-20">
@@ -49,18 +58,28 @@ if (totalItemsInCart?.value === 0) {
 
           <UiDivider class-name="w-screen md:w-auto -mx-4 md:mx-0" />
 
-          <LazyCheckoutShippingMethod />
+          <LazyCheckoutShippingMethod/>
 
           <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
 
-          <LazyCheckoutPayment />
+          <LazyCheckoutPayment 
+            :selected-provider="selectedProvider"
+            @update:active-payment="handleSelectedProviderUpdate"
+          />
 
           <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0 mb-10" />
         </div>
         <div class="col-span-5 md:sticky md:top-20 h-fit">
-          <CheckoutSummary />
+          <CheckoutSummary 
+            :selected-method="selectedProvider"
+          />
         </div>
       </div>
+    </div>
+    <!-- Loading State -->
+    <div v-else class="text-center py-10">
+      <SfLoaderCircular size="xl" class="mt-[160px] mb-[10px]" />
+      <p>Loading checkout details...</p>
     </div>
   </div>
 </template>

@@ -2,10 +2,14 @@
 import { SfButton, SfBadge } from "@storefront-ui/vue";
 
 const NuxtLink = resolveComponent("NuxtLink");
-const { loadCart, totalItemsInCart } = useCart();
+const { cart, loadCart, totalItemsInCart } = useCart();
 
 onMounted(async () => {
-  await loadCart(true);
+ 
+    console.log('Cart Value Before: ', cart.value)
+    await loadCart(true);
+    console.log('Cart Value after: ', cart.value)
+  
 });
 </script>
 

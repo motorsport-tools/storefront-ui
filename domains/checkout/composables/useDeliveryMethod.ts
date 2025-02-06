@@ -8,9 +8,9 @@ import type {
 import { MutationName } from "~/server/mutations";
 import { QueryName } from "~/server/queries";
 
+
 export const useDeliveryMethod = () => {
   const { $sdk } = useNuxtApp();
-
   const loading = ref(false);
   const toast = useToast();
   const deliveryMethods = useState<ShippingMethod[]>(
@@ -39,7 +39,7 @@ export const useDeliveryMethod = () => {
     }
   };
 
-  const setDeliveryMethod = async (shippingMethodId: number) => {
+  const setDeliveryMethod = async (shippingMethodId: number) => { 
     loading.value = true;
 
     const { data, error } = await $sdk().odoo.mutation<
@@ -50,10 +50,8 @@ export const useDeliveryMethod = () => {
     if (error.value) {
       return toast.error(error.value.data.message);
     }
-
-    //toast.success("Address has been successfully saved");
+    toast.success("Shipping Method updated successfully");
     loading.value = false;
-
     // deliveryMethods.value = [method];
   };
 

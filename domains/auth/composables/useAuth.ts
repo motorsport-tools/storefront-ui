@@ -22,7 +22,7 @@ import { QueryName } from "~/server/queries";
 export const useAuth = () => {
   const { $sdk } = useNuxtApp();
   const router = useRouter();
-  const userCookie = useCookie<any | null>("odoo-user", { maxAge: 3600 * 30 });
+  const userCookie = useCookie<any | null>("odoo-user", { maxAge: 3600 * 30, sameSite: "Lax" });
   const user = useState<Partner>("user", () => ({}) as Partner);
 
   const toast = useToast();

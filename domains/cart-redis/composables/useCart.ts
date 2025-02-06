@@ -10,26 +10,25 @@ import type {
   MutationCartUpdateMultipleItemsArgs,
 } from "~/graphql";
 import { MutationName } from "~/server/mutations";
+import { QueryName } from "~/server/queries";
 import { useToast } from "vue-toastification";
 
 export const useCart = () => {
   const { $sdk } = useNuxtApp();
   const toast = useToast();
   const cart = useState<Cart>("cart", () => ({}) as Cart);
-
   const loading = ref(false);
 
   const loadCart = async (skipCache: boolean) => {
+    loading.value = true;
     if (skipCache) {
-      loading.value = true;
       const data = await $fetch<{ cart: Cart }>(`/api/odoo/cart-load`);
-      loading.value = false;
-
       cart.value = data?.cart || ({} as Cart);
-      return;
+      loading.value = false;
+      return
     }
 
-    loading.value = true;
+
     const { data } = await useFetch<{ cart: Cart }>(`/api/odoo/cart-load`);
     loading.value = false;
 
@@ -100,7 +99,7 @@ export const useCart = () => {
   };
 
   const totalItemsInCart = computed(() => {
-    return cart.value.order?.orderLines?.length || 0;
+    return cart.value?.order?.orderLines?.reduce((total, line) => total + line.quantity, 0) || 0;
   });
 
   return {

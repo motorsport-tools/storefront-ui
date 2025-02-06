@@ -142,11 +142,13 @@ const handleCloseModal = () => {
     </div>
 
     <div v-if="savedAddress.id" class="mt-2 md:w-[520px]">
-      <p>{{ `${name} ${street || ""}` }}</p>
-      <p>{{ phone }}</p>
-      <p>{{ selectedCountry?.name || "" }}</p>
+      <p>{{ `${name}` }}</p>
+      <p>{{ `${street || ""}` }}</p>
+      <p>{{ `${city || "" }` }}</p>
       <p>{{ selectedState?.name || "" }}</p>
-      <p>{{ `${city || ""} ${zip || ""}` }}</p>
+      <p>{{ selectedCountry?.name || "" }}</p>
+      <p>{{ `${zip || ""}` }}</p>
+      <p>{{ phone }}</p>
     </div>
 
     <div v-if="!savedAddress" class="w-full md:max-w-[520px]">
@@ -192,7 +194,7 @@ const handleCloseModal = () => {
           data-testid="address-form"
           @submit.prevent="handleSaveAddress"
         >
-          <label>
+          <label class="md:col-span-3">
             <UiFormLabel>{{ $t("form.NameLabel") }}</UiFormLabel>
             <SfInput
               v-model="name"
@@ -202,7 +204,7 @@ const handleCloseModal = () => {
               :placeholder="$t('form.NameLabel')"
             />
           </label>
-          <label class="md:col-span-2">
+          <label class="md:col-span-3">
             <UiFormLabel>{{ $t("form.streetNameLabel") }}</UiFormLabel>
             <SfInput
               v-model="street"
@@ -213,15 +215,31 @@ const handleCloseModal = () => {
             />
           </label>
           <label class="md:col-span-3">
-            <UiFormLabel>{{ $t("form.phoneLabel") }}</UiFormLabel>
+            <UiFormLabel>{{ $t("form.cityLabel") }}</UiFormLabel>
             <SfInput
-              v-model="phone"
-              name="phone"
-              type="tel"
-              autocomplete="tel"
+              v-model="city"
+              name="city"
+              autocomplete="address-level2"
               required
-              :placeholder="$t('form.phoneLabel')"
+              :placeholder="$t('form.cityLabel')"
             />
+          </label>
+          <label class="md:col-span-3">
+            <UiFormLabel>{{ $t("form.stateLabel") }}</UiFormLabel>
+            <SfSelect
+              v-model="stateId"
+              name="state"
+              autocomplete="state-name"
+              :disabled="!states.length"
+              required
+            >
+              <option key="placeholder" :value="null">
+                {{ $t("form.selectPlaceholder") }}
+              </option>
+              <option v-for="state in states" :key="state.id" :value="state.id">
+                {{ state.name }}
+              </option>
+            </SfSelect>
           </label>
           <label class="md:col-span-3">
             <UiFormLabel>{{ $t("form.countryLabel") }}</UiFormLabel>
@@ -243,34 +261,6 @@ const handleCloseModal = () => {
               </option>
             </SfSelect>
           </label>
-          <label class="md:col-span-3">
-            <UiFormLabel>{{ $t("form.stateLabel") }}</UiFormLabel>
-            <SfSelect
-              v-model="stateId"
-              name="state"
-              autocomplete="state-name"
-              :disabled="!states.length"
-              required
-            >
-              <option key="placeholder" :value="null">
-                {{ $t("form.selectPlaceholder") }}
-              </option>
-              <option v-for="state in states" :key="state.id" :value="state.id">
-                {{ state.name }}
-              </option>
-            </SfSelect>
-          </label>
-
-          <label class="md:col-span-2">
-            <UiFormLabel>{{ $t("form.cityLabel") }}</UiFormLabel>
-            <SfInput
-              v-model="city"
-              name="city"
-              autocomplete="address-level2"
-              required
-              :placeholder="$t('form.cityLabel')"
-            />
-          </label>
           <label>
             <UiFormLabel>{{ $t("form.postalCodeLabel") }}</UiFormLabel>
             <SfInput
@@ -281,7 +271,17 @@ const handleCloseModal = () => {
               :placeholder="$t('form.postalCodeLabel')"
             />
           </label>
-
+          <label class="md:col-span-3">
+            <UiFormLabel>{{ $t("form.phoneLabel") }}</UiFormLabel>
+            <SfInput
+              v-model="phone"
+              name="phone"
+              type="tel"
+              autocomplete="tel"
+              required
+              :placeholder="$t('form.phoneLabel')"
+            />
+          </label>
           <label
             v-if="props.type === 'billingAddress'"
             class="md:col-span-3 flex items-center gap-2"

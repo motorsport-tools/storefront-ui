@@ -16,12 +16,12 @@
     "phoneLabel": "Phone",
     "countryLabel": "Country",
     "streetNameLabel": "Street",
-    "streetNameHelp": "Street address or P.O. Box",
+    "streetNameHelp": "Street address",
     "streetNumberLabel": "Apt#, Suite, etc",
     "streetNumberHelp": "Optional",
     "cityLabel": "City",
     "stateLabel": "State",
-    "postalCodeLabel": "ZIP Code",
+    "postalCodeLabel": "Postcode",
     "useAsShippingLabel": "Use as shipping address",
     "selectPlaceholder": "-- Select --",
     "emailLabel": "Email",
@@ -111,6 +111,9 @@
     "applePayIconAlt": "Apple Pay Icon",
     "googlePayIconAlt": "Google Pay icon",
     "promoOrGiftcard": "Promo code or gift card"
+  },
+  "checkoutMethod": {
+    "heading": "Payment method",
   },
   "shippingMethod": {
     "heading": "Shipping details",
@@ -319,23 +322,26 @@
     },
     "myOrders": {
       "heading": "Orders",
-      "orderId": "Order ID",
+      "orderId": "ID",
       "orderDate": "Order date",
-      "amount": "Amount",
+      "amount": "Total",
       "status": "Status",
       "details": "Details",
+      "done": "Done",
       "myOrders": "My orders",
       "noOrders": "You haven’t shopped with us yet",
       "continue": "Continue shopping",
       "noOrdersAltText": "No orders",
+      "backToOrders": "Back to orders",
+      "viewDetails": "View Details",
       "section": {
         "myOrders": "My Orders"
       },
       "orderDetails": {
-        "heading": "Order details",
+        "heading": "Order Details",
         "orderId": "Order ID",
         "orderDate": "Order date",
-        "paymentAmount": "Payment amount",
+        "paymentAmount": "Total",
         "status": "Status",
         "price": "Price",
         "quantity": "Quantity",
@@ -349,6 +355,19 @@
         "billingAddress": "Billing address",
         "paymentMethod": "Payment method",
         "shippingAddress": "Shipping address"
+      },
+      "lastInvoices": {
+        "heading": "Last Invoices",
+        "tableCaption": "Last Invoices",
+        "status": "Status",
+        "details": "View Invoice",
+        "state": {
+          "paid": "Paid",
+          "notPaid": "Awaiting Payment",
+          "inPayment": "In Payment",
+          "partial": "Partially Paid",
+          "reversed": "Reversed"
+        }
       }
     }
   },

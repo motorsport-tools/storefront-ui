@@ -5,7 +5,9 @@ import Discount from '~/domains/core/components/ui/Discount.vue';
 const NuxtLink = resolveComponent('NuxtLink');
 const { cart, loadCart } = useCart();
 
-await loadCart();
+if (!cart?.value?.order) {
+  await loadCart();
+}
 </script>
 
 <template>

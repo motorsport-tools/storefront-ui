@@ -97,6 +97,8 @@
   </main>
   <Newsletter />
   <TheFooter />
+  <WishlistSidebar />
+  <LiveChat />
   <BottomNavbar />
 </template>
 

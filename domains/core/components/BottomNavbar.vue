@@ -9,28 +9,28 @@ import {
   useDisclosure,
 } from "@storefront-ui/vue";
 
-const {
-  isOpen: wishlistIsOpen,
-  toggle: wishlistToggle,
-  close: wishlistClose,
-} = useDisclosure();
-const { wishlist } = useWishlist();
+const { toggleWishlistSideBar } = useWishlistUiState();
+const { loadWishlist, wishlistTotalItems } = useWishlist();
+
+const { cart, loadCart, totalItemsInCart } = useCart();
+
+
 const NuxtLink = resolveComponent("NuxtLink");
 
-const collectedProducts: any = ref("");
 const isActive = ref(false);
 const setIsActive = (param: boolean) => {
   isActive.value = param;
 };
 
-const wishlistTotalItems: any = ref();
-const setWishlistCount = async (count: number) => {
-  wishlistTotalItems.value = count;
-};
+
 const handleWishlistSideBar = async () => {
-  wishlistToggle();
-  setIsActive(true);
+  toggleWishlistSideBar();
+  await loadWishlist();
 };
+
+onMounted(async () => {
+  await loadCart(true);
+});
 </script>
 
 <template>
@@ -96,7 +96,7 @@ const handleWishlistSideBar = async () => {
         <div class="relative">
           <SfIconShoppingCart />
           <SfBadge
-            :content="3"
+            :content="totalItemsInCart"
             class="outline-white bg-white !text-neutral-900 translate-x-[5px] translate-y-[-3px]"
           />
         </div>

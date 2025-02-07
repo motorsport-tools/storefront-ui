@@ -41,7 +41,6 @@ export const useAuth = () => {
 
     userCookie.value = data.value?.partner?.id;
     user.value = data.value?.partner;
-
     loading.value = false;
   };
 

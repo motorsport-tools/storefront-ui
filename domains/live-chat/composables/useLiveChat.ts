@@ -24,7 +24,7 @@ export const useLiveChat = async () => {
                   "default_message": "Hi Welcome to Motorsport Tools, how may I help you?", 
                   "channel_name": "motorsport-tools.co.uk", 
                   "channel_id": 1,
-                  "current_partner_id": user.value?.partner?.id || 1, 
+                  "current_partner_id": 1, 
                   "default_username": "Visitor"},
         },
     });

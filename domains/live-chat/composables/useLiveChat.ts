@@ -2,8 +2,10 @@ import { useAuth } from "~/domains/auth/composables/useAuth";
 import { onMounted } from "vue";
 
 export const useLiveChat = async () => {
+
   const { user, isAuthenticated } = useAuth(); // Get user session info
   const loadLiveChat = async () => {
+
 
     if (!window.odoo) {
       window.odoo = {};
@@ -37,4 +39,5 @@ export const useLiveChat = async () => {
   onMounted(() => {
     loadLiveChat();
   });
+
 };

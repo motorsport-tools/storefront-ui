@@ -1152,7 +1152,6 @@ export type ShippingMethod = {
   id: Scalars['Int']['output'];
   name: Maybe<Scalars['String']['output']>;
   price: Maybe<Scalars['Float']['output']>;
-  estimatedDelivery: Maybe<Scalars['String']['output']>;
   product: Maybe<Product>;
 };
 

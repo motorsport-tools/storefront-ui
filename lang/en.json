@@ -117,7 +117,18 @@
   },
   "shippingMethod": {
     "heading": "Shipping details",
-    "description": "Not available until a shipping address is provided."
+    "description": "No methods available until a shipping address is provided.",
+    "subHeading": "Would you like your order delivered or when your order is ready and you've been notified, you can come to our shop to collect.",
+    "deliveryTime": {
+      "estimate": "Est:",
+      "hour": "1 hour",
+      "tomorrow": "9.30am Tomorrow",
+      "monday": "9.30am Monday",
+      "standard": "1-2 days",
+      "international": "3-5 days",
+      "palletUk": "1 week",
+      "palletWorld": "2-3 weeks"
+    },
   },
   "validation": {
     "heading": "To complete order:",

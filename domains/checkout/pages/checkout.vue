@@ -63,6 +63,7 @@ function handleSelectedProviderUpdate(newProvider: Number) {
           <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
 
           <LazyCheckoutPayment 
+            v-if="cart?.order?.shippingMethod?.id"
             :selected-provider="selectedProvider"
             @update:active-payment="handleSelectedProviderUpdate"
           />

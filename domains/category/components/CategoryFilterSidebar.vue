@@ -9,9 +9,9 @@ import {
   SfRadio,
   SfSelect,
   SfThumbnail,
-} from "@storefront-ui/vue";
+} from "@storefront-ui/vue"
 
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["close"])
 const props = defineProps({
   attributes: {
     type: Array,
@@ -24,20 +24,20 @@ const props = defineProps({
 });
 const route = useRoute();
 const router = useRouter();
-const { changeFilters, facetsFromUrlToFilter } = useUiHelpers();
+const { changeFilters, facetsFromUrlToFilter } = useUiHelpers()
 
 const sort = useState("sort", () =>
-  route.query?.sort ? route.query?.sort : ""
+  route.query?.sort ? route.query?.sort : '',
 );
 
 const sortBy = computed(() => getSortOptions({ input: { sort: sort.value } }));
 const changeSorting = async (newSort: string) => {
-  sort.value = newSort;
-};
+  sort.value = newSort
+}
 const getSortOptions = (searchData: { input: any }) => ({
   options: sortOptions,
-  selected: searchData.input.sort || "name asc",
-});
+  selected: searchData.input.sort || 'name,ASC',
+})
 
 const selectedFilters = useState("category-selected-filters", () => []);
 const isFilterSelected = (option: any) => {
@@ -137,9 +137,9 @@ watch(priceModel, (newValue) => {
   );
   if (newValue) {
     selectedFilters.value.push({
-      filterName: "price",
+      filterName: 'price',
       id: newValue,
-    });
+    })
   }
 });
 </script>

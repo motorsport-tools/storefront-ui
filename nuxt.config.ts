@@ -153,6 +153,7 @@ export default defineNuxtConfig({
   },
   experimental: {
     crossOriginPrefetch: true,
+    asyncContext: false,
   },
   site: {
     url: "https://vsfsdk.labs.odoogap.com/",
@@ -168,11 +169,6 @@ export default defineNuxtConfig({
   device: {
     refreshOnResize: true,
   },
-
-  experimental: {
-    asyncContext: false,
-  },
-
   devServer: {
     https: {
       key: process.env.NUXT_SERVER_KEY,

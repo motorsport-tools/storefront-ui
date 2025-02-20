@@ -16,5 +16,4 @@
   </NuxtLazyHydrate>
 
   <WishlistSidebar />
-  <LiveChat />
 </template>

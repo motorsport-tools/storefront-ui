@@ -4,6 +4,7 @@ import type {
   CreateUpdatePartnerResponse,
   LoadUserQueryResponse,
   LoginUserResponse,
+  LoginResponse,
   MutationChangePasswordArgs,
   MutationCreateUpdatePartnerArgs,
   MutationLoginArgs,
@@ -96,15 +97,16 @@ export const useAuth = () => {
     loading.value = true;
     const { data, error } = await $sdk().odoo.mutation<
       MutationLoginArgs,
-      LoginUserResponse
+      LoginResponse
     >({ mutationName: MutationName.LoginMutation }, { ...params });
+
     if (error.value) {
       toast.error(error.value?.data?.message);
       return;
     }
-
-    userCookie.value = data.value.login.partner;
-    user.value = data.value.login.partner;
+    
+    userCookie.value = data.value.login.user?.partner;
+    user.value = data.value.login.user?.partner;
     router.push("/my-account/personal-data");
   };
 

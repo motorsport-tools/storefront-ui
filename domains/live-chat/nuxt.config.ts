@@ -4,11 +4,11 @@ export default defineNuxtConfig({
         head: {
             script: [
                 {
-                    src: "https://odoo.motorsport-tools.co.uk/im_livechat/loader/1",
+                    src: process.env.NUXT_PUBLIC_ODOO_BASE_URL+"im_livechat/loader/"+process.env.NUXT_PUBLIC_LIVECHAT_CHANNEL_ID,
                     async: true,
                 },
                 {
-                    src: "https://odoo.motorsport-tools.co.uk/im_livechat/assets_embed.js",
+                    src: process.env.NUXT_PUBLIC_ODOO_BASE_URL+"im_livechat/assets_embed.js",
                     async: true,
                 },
             ],

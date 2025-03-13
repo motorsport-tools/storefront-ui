@@ -1,10 +1,14 @@
 import { useToast } from "vue-toastification";
 import type {
   ShippingMethod,
+  EasyShipRates,
   DeliveryMethodListResponse,
   MutationSetShippingMethodArgs,
   DeliveryMethodResponse,
+  EasyShipRatesResponse,
+  EasyShipRatesArgs,
 } from "~/graphql";
+import { useI18n } from '#imports'
 import { MutationName } from "~/server/mutations";
 import { QueryName } from "~/server/queries";
 
@@ -14,11 +18,16 @@ export const useDeliveryMethod = () => {
   const { t } = useI18n();
   const { cart } = useCart();
   const loading = ref(false);
+  const ratesLoading = ref(false)
   const toast = useToast();
   const deliveryMethods = useState<ShippingMethod[]>(
     "delivery-method",
     () => []
   );
+  const rates = useState<EasyShipRates[]>(
+    "rates",
+    () => []
+  )
 
   // Current date and time logic
   const currentDate = new Date();
@@ -26,7 +35,9 @@ export const useDeliveryMethod = () => {
   const currentDay = currentDate.getDay();
 
   const getEstimatedDelivery = (method: ShippingMethod) => {
-    const shippingCountry = cart.value?.order?.partnerShipping?.country?.name || "";
+
+    const shippingCountry = cart.value?.order?.partnerShipping?.country?.id || 231;
+
     if (method.name.toLowerCase().includes("click & collect")) {
       // Click & Collect logic
       if (currentDay >= 1 && currentDay <= 5) {
@@ -41,11 +52,11 @@ export const useDeliveryMethod = () => {
       }
       return t("shippingMethod.deliveryTime.hour");
     } else if (method.name.toLowerCase().includes("pallet")) {
-      return shippingCountry === "United Kingdom"
+      return shippingCountry === 231 // 231 = UK
       ? t("shippingMethod.deliveryTime.palletUk")
       : t("shippingMethod.deliveryTime.palletWorld");
     } else if (method.name.toLowerCase().includes("delivery")) {
-      return shippingCountry === "United Kingdom"
+      return shippingCountry === 231 // 231 = UK
       ? t("shippingMethod.deliveryTime.standard")
       : t("shippingMethod.deliveryTime.international");
     }
@@ -93,10 +104,40 @@ export const useDeliveryMethod = () => {
     // deliveryMethods.value = [method];
   };
 
+  const loadRates = async( params: EasyShipRatesArgs ) => {
+    ratesLoading.value = true;
+    try {
+      const { data } = await useAsyncData("rates", async () => {
+        const { data } = await $sdk().odoo.queryNoCache<
+          EasyShipRatesArgs,
+          EasyShipRatesResponse
+        >({
+          queryName: QueryName.GetEasyShipRatesQuery,
+        }, params);
+        return data.value;
+      });
+
+      if (data.value) {
+        rates.value = data.value?.rates ? data.value?.rates : {} 
+      }
+    } finally {
+      ratesLoading.value = false;
+    }
+
+  }
+
+  const setRate = async( courierId ) => {
+
+  }
+
   return {
     loadDeliveryMethods,
     setDeliveryMethod,
     deliveryMethods,
+    loadRates,
+    setRate,
     loading,
+    ratesLoading,
+    rates
   };
 };

@@ -8,55 +8,60 @@ import {
   SfListItem,
   useDisclosure,
   useTrapFocus,
-} from "@storefront-ui/vue";
-import { onClickOutside } from "@vueuse/core";
-import type { Category } from "~/graphql";
+} from '@storefront-ui/vue'
+import { onClickOutside } from '@vueuse/core'
+import type { Category } from '~/graphql'
 
-const { isOpen, toggle, close } = useDisclosure();
-const { searchModalToggle } = useSearch();
+const { isOpen, toggle, close } = useDisclosure()
+const { searchModalToggle } = useSearch()
 
-const NuxtLink = resolveComponent("NuxtLink");
+const NuxtLink = resolveComponent('NuxtLink')
 
-const menuRef = ref();
-const drawerRef = ref();
-const searchRef = ref();
-const showSearchClerkRef = ref();
+const menuRef = ref()
+const drawerRef = ref()
+const searchRef = ref()
+const showSearchClerkRef = ref()
 
 useTrapFocus(drawerRef, {
   activeState: isOpen,
   arrowKeysUpDown: true,
   initialFocus: "container",
-});
+})
 
 onClickOutside(menuRef, () => {
-  close();
-});
+  close()
+})
 
 onClickOutside(searchRef, () => {
   showSearchClerkRef.value = false;
-});
+})
 
-const filteredCategories = inject<Category[]>("filteredTopCategories");
+const categoriesForMegaMenu = inject<Category[]>('categoriesForMegaMenu')
 
-const bannerDetails = {
-  image: "/images/watch.png",
-  title: "New in designer watches",
-};
 </script>
 
 <template>
   <header
     ref="menuRef"
     :class="[
-      'text-white h-14 md:h-20 flex z-50 md:sticky md:top-0 md:shadow-md flex-wrap md:flex-nowrap w-full py-2 md:py-5 border-0 bg-primary-700 border-neutral-200 md:z-10',
+      'text-white h-14 md:h-20 flex z-50 md:sticky md:top-0 md:shadow-md flex-wrap md:flex-nowrap w-full border-0 bg-neutral-800 border-neutral-200 md:z-10',
     ]"
   >
     <div
-      class="flex items-center justify-between lg:justify-start h-full w-full narrow-container"
+      class="flex items-center justify-between h-full w-full narrow-container"
+      :class="{'justify-start' : $viewport.isGreaterOrEquals('desktop')}"
     >
-      <NuxtLink to="/" aria-label="Sf Homepage" class="h-6 md:h-7 -mt-1.5">
-        <VsfLogo />
-      </NuxtLink>
+      <div 
+        class="flex items-center justify-center bg-primary-700 h-14 md:h-20 py-2.5 pr-5 pl-8 skew-x-[-20deg] translate-x-[-40px] border-neutral-300 border-r-[2px] ring-neutral-600 logo-wrapper"
+      >
+        <NuxtLink 
+          to="/"
+          aria-label="Sf Homepage"
+          class="skew-x-[20deg]"
+        >
+          <VsfLogo />
+        </NuxtLink>
+      </div>
       <nav>
         <ul>
           <li role="none">
@@ -98,16 +103,16 @@ const bannerDetails = {
                     </SfButton>
                   </div>
                   <div
-                    v-for="{ name, childs } in filteredCategories"
+                    v-for="{ name, childs, slug } in categoriesForMegaMenu"
                     :key="name"
                     class="[&:nth-child(2)]:pt-0 pt-6 md:pt-0 text-black"
                   >
-                    <h2
+                    <NuxtLink :to="slug"
                       role="presentation"
                       class="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 lg:py-1.5"
                     >
                       {{ name }}
-                    </h2>
+                    </NuxtLink>
                     <hr class="mb-3.5" />
                     <ul>
                       <li
@@ -127,20 +132,7 @@ const bannerDetails = {
                       </li>
                     </ul>
                   </div>
-                  <div
-                    class="flex flex-col items-center justify-center bg-neutral-100 lg:rounded-md border-neutral-300 overflow-hidden grow"
-                  >
-                    <NuxtImg
-                      :src="bannerDetails.image"
-                      :alt="bannerDetails.title"
-                      class="object-contain"
-                    />
-                    <p
-                      class="mb-4 mt-4 px-4 text-center text-black typography-text-base font-medium"
-                    >
-                      {{ bannerDetails.title }}
-                    </p>
-                  </div>
+                  
                 </div>
               </SfDrawer>
             </transition>

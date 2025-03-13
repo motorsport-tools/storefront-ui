@@ -17,6 +17,7 @@ import LoadUserQuery from './LoadUserQuery';
 import StockLotsQuery from './StockLotsQuery';
 import WishlistLoadQuery from './WishlistLoadQuery';
 import GetWebsiteHomepageQuery from './GetWebsiteHomepageQuery';
+import GetEasyShipRatesQuery from './GetEasyShipRatesQuery';
 import type { DocumentNode } from 'graphql/language';
 
 enum QueryName {
@@ -39,7 +40,8 @@ enum QueryName {
   GetOrdersQuery = 'GetOrdersQuery',
   GetOrderQuery = 'GetOrderQuery',
   GetWebsiteHomepageQuery = 'GetWebsiteHomepageQuery',
-  GetInvoiceQuery = 'GetInvoiceQuery'
+  GetInvoiceQuery = 'GetInvoiceQuery',
+  GetEasyShipRatesQuery = 'GetEasyShipRatesQuery'
 }
 
 const Queries: Record<QueryName, DocumentNode> = {
@@ -62,6 +64,7 @@ const Queries: Record<QueryName, DocumentNode> = {
   GetInvoiceQuery,
   GetStatesQuery,
   GetWebsiteHomepageQuery,
+  GetEasyShipRatesQuery,
 };
 
 const QueriesToByPassCache: string[] = [

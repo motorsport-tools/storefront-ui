@@ -113,7 +113,7 @@
     "promoOrGiftcard": "Promo code or gift card"
   },
   "checkoutMethod": {
-    "heading": "Payment method",
+    "heading": "Payment method"
   },
   "shippingMethod": {
     "heading": "Shipping details",
@@ -129,6 +129,12 @@
       "palletUk": "1 week",
       "palletWorld": "2-3 weeks"
     },
+    "rates": {
+      "none": "Sorry, no delivery rates could be found for your order.",
+      "caption": "Select a delivery carrier",
+      "service": "Service",
+      "price": "Price"
+    }
   },
   "validation": {
     "heading": "To complete order:",

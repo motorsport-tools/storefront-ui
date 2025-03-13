@@ -28,7 +28,7 @@ if (!cart?.value?.order) {
         {{ $t('back') }}
       </SfButton>
       <SfButton
-        to="/category/15"
+        to="/search"
         class="hidden md:flex"
         variant="tertiary"
         :tag="NuxtLink"

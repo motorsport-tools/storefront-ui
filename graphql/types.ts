@@ -8,6 +8,7 @@ import type {
   WishlistData,
   Country,
   ShippingMethod,
+  EasyShipRates,
   AdyenTransactionResult,
   AdyenProviderInfoResult,
   AdyenPaymentMethodsResult,
@@ -26,6 +27,7 @@ import type {
   AddressEnum,
   State,
   User,
+  WishlistItem,
 } from "./gql/graphql";
 import type { H3Error } from "h3";
 import type { AsyncData } from "#app";
@@ -54,6 +56,7 @@ export type ProductTemplateListResponse = AsyncData<
       maxPrice?: number;
       minPrice?: number;
       totalCount: number;
+      filterCounts: any[];
       products: Product[];
     };
   },
@@ -148,6 +151,17 @@ export type RegisterUserResponse = AsyncData<
     name: string;
     email: string;
     partner: Partner;
+  },
+  H3Error
+>;
+
+export type LoginResponse = AsyncData<
+  {
+    login: {
+      cart: Cart;
+      user: User;
+      wishlistItems: WishlistData;
+    };
   },
   H3Error
 >;
@@ -271,6 +285,12 @@ export type DeliveryMethodListResponse = AsyncData<
     deliveryMethods: ShippingMethod[];
   },
   H3Error
+>;
+
+export type EasyShipRatesResponse = AsyncData<{
+  rates: EasyShipRates[];
+},
+H3Error
 >;
 
 export type DeliveryMethodResponse = AsyncData<

@@ -1,22 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-
-  app: {
-    head: {
-      viewport: "minimum-scale=1, initial-scale=1, width=device-width",
-      title: "Motorsport-Tools.com - The Mk1 and Mk2 Ford Escort Rally Specialists",
-      htmlAttrs: {
-        lang: "en",
-      },
-      meta: [{ name: "robots", content: "index, follow" }],
-    },
-  },
-
-  robots: {
-    allow: "/category/*",
-  },
-
   extends: [
     "./domains/auth",
     "./domains/recent-view-products",
@@ -42,7 +26,6 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@nuxt/scripts",
     "@nuxtjs/device",
-    "@nuxtjs/i18n",
     "@nuxtjs/google-fonts",
     "nuxt-lazy-hydrate",
     "nuxt-lodash",
@@ -50,7 +33,28 @@ export default defineNuxtConfig({
     "nuxt-delay-hydration",
     "nuxt-typed-router",
     "nuxt-clarity-analytics",
+    '@nuxtjs/robots',
+    '@nuxt/eslint',
+    'nuxt-viewport',
+    '@nuxtjs/sitemap',
   ],
+  app: {
+    head: {
+      viewport:
+        "width=device-width, initial-scale=1, maximum-scale=5, user-scalable=no",
+      title: 'Motorsport-Tools.com - The Mk1 and Mk2 Ford Escort Rally Specialists',
+      htmlAttrs: {
+        lang: 'en',
+      },
+      meta: [{ name: 'robots', content: 'noindex, nofollow' }],
+    },
+  },
+  site: {
+    url: 'https://vsfsdk.labs.odoogap.com/',
+    name: 'ERPGAP VSF',
+    description: 'Welcome to an awesome ecommerce site!',
+    defaultLocale: 'en',
+  },
 
   runtimeConfig: {
     shouldByPassCacheQueryNames: [
@@ -155,11 +159,17 @@ export default defineNuxtConfig({
     crossOriginPrefetch: true,
     asyncContext: false,
   },
-  site: {
-    url: "https://vsfsdk.labs.odoogap.com/",
-    name: "ERPGAP VSF",
-    description: "Welcome to an awesome ecommerce site!",
-    defaultLocale: "en",
+
+  sitemap: {
+    sources: ['/api/sitemap/urls/products', '/api/sitemap/urls/categories'],
+    runtimeCacheStorage: {
+      driver: process.env.NUXT_STORAGE_DRIVER,
+    }
+  },
+
+  robots: {
+    allow: ['/category/*', '/product/*'],
+    disallow: ['/cart','/checkout/*','/my-account/*','/forgot-password', '/search?'],
   },
 
   tailwindcss: {
@@ -169,6 +179,21 @@ export default defineNuxtConfig({
   device: {
     refreshOnResize: true,
   },
+
+  viewport: {
+    breakpoints: {
+      desktop: 1280,
+      desktopMedium: 1440,
+      desktopWide: 1600,
+
+      mobile: 320,
+      mobileMedium: 375,
+      mobileWide: 425,
+
+      tablet: 768,
+    },
+  },
+
   devServer: {
     https: {
       key: process.env.NUXT_SERVER_KEY,

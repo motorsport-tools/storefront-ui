@@ -3,7 +3,7 @@ import { useCountryList } from "~/domains/core/composable/useCountryList";
 import { AddressEnum, type Partner } from "~/graphql";
 import { SfLoaderCircular } from "@storefront-ui/vue";
 
-const { cart, totalItemsInCart } = useCart();
+const { cart, totalItemsInCart, cartIsEmpty } = useCart();
 const { loadCountries } = useCountryList();
 const { loadUser } = useAuth();
 const router = useRouter();
@@ -26,9 +26,13 @@ function handleSelectedProviderUpdate(newProvider: Number) {
 
 </script>
 <template>
-  <div class="md:px-0 mb-20">
-    <CheckoutHeader />
-    <div v-if="cart?.order?.id">
+  <NuxtLayout
+    name="checkout"
+    :back-to-cart="false"
+    :back-label="$t('backToCart')"
+    :heading="$t('checkout')"
+  >
+    <div v-if="!cartIsEmpty">
       <div class="lg:grid lg:grid-cols-12 md:gap-x-6">
         <div class="col-span-7 mb-10 md:mb-0">
           <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
@@ -82,5 +86,5 @@ function handleSelectedProviderUpdate(newProvider: Number) {
       <SfLoaderCircular size="xl" class="mt-[160px] mb-[10px]" />
       <p>Loading checkout details...</p>
     </div>
-  </div>
+  </NuxtLayout>
 </template>

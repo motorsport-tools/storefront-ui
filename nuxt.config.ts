@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     "./domains/core",
     "./domains/my-account",
     "./domains/product",
-    "./domains/payment_rvvup",
+    //"./domains/payment_rvvup",
     //"./domains/search-algolia",
     "./domains/search-default",
     "./domains/wishlist",
@@ -27,7 +27,6 @@ export default defineNuxtConfig({
     "@nuxt/scripts",
     "@nuxtjs/device",
     "@nuxtjs/google-fonts",
-    "nuxt-lazy-hydrate",
     "nuxt-lodash",
     "nuxt-icon",
     "nuxt-delay-hydration",
@@ -50,7 +49,6 @@ export default defineNuxtConfig({
     },
   },
   site: {
-    url: 'https://vsfsdk.labs.odoogap.com/',
     name: 'ERPGAP VSF',
     description: 'Welcome to an awesome ecommerce site!',
     defaultLocale: 'en',
@@ -74,11 +72,14 @@ export default defineNuxtConfig({
 
   googleFonts: {
     families: {
-      "Red Hat Display": [400, 500, 700],
+      "Poppins": [400, 500, 700],
+      "Metrophobic": [ 400, 500, 700],
     },
+    display: 'swap',
   },
 
   i18n: {
+    legacy: false,
     locales: [
       {
         code: "en",
@@ -87,7 +88,6 @@ export default defineNuxtConfig({
     ],
     strategy: "no_prefix",
     lazy: true,
-    langDir: "lang",
     defaultLocale: "en",
   },
 
@@ -182,15 +182,13 @@ export default defineNuxtConfig({
 
   viewport: {
     breakpoints: {
-      desktop: 1280,
-      desktopMedium: 1440,
-      desktopWide: 1600,
-
-      mobile: 320,
-      mobileMedium: 375,
-      mobileWide: 425,
-
-      tablet: 768,
+      "2xl": 1536,
+      xxl: 1440,
+      xl: 1280,
+      lg: 1024,
+      md: 768,
+      sm: 640,
+      xs: 376,
     },
   },
 

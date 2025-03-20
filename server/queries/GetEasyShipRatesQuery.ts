@@ -8,8 +8,9 @@ export default gql`
             deliveryDays
             currencyId
             totalCharge
-            carrierId
+            serviceId
             courierId
+            courierLogoUrl
         }
     }
 `;

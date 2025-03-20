@@ -44,7 +44,14 @@ const handleSelectShippingMethod = async (shippingMethodId: number) => {
   
 };
 
-const getShippingIcon = (methodName: string) => {
+const handleSelectRate = async (serviceId: string) => {
+  ratesModel.value = String(serviceId);
+
+  await setRate({serviceId})
+
+}
+
+const getShippingIcon = (methodName: String) => {
   if (methodName.toLowerCase().includes("click & collect")) {
     return SfIconWarehouse;
   }
@@ -104,6 +111,7 @@ const getShippingIcon = (methodName: string) => {
       </div>
       <div class="my-4">
         <div v-if="showRates && ratesLoading" class="w-full text-center">
+          <p class="mb-2">Please wait... gathering shipment information</p>
           <SfLoaderCircular size="base" />
         </div>
         <div v-else-if="showRates && !ratesLoading && rates.length > 0">
@@ -114,18 +122,34 @@ const getShippingIcon = (methodName: string) => {
             <thead class="border-b-2 border-neutral-200">
               <tr>
                 <th class="py-4 px-4 font-medium"></th>
+                <th></th>
                 <th class="py-4 px-4 font-medium">{{ $t("shippingMethod.rates.service") }}</th>
                 <th class="py-4 px-4 font-medium text-right">{{ $t("shippingMethod.rates.price") }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="rate in rates" :key="rate.courierId" class="border-b border-neutral-200 last:border-transparent">
+              <tr 
+                v-for="rate in rates" 
+                :key="rate.serviceId" 
+                class="border-b border-neutral-200 last:border-transparent cursor-pointer hover:bg-neutral-100"
+                :class="{ 'bg-neutral-200': ratesModel === String(rate.serviceId) }"
+                @click="handleSelectRate(rate.serviceId)"
+              >
                 <td class="py-4 px-4">
                   <SfRadio 
                     v-model="ratesModel" 
-                    :value="String(rate.courierId)" 
-                    @click="setRate(rate.courierId)"
+                    :value="String(rate.serviceId)" 
+                    @click.stop
                     class="items-center"
+                  />
+                </td>
+                <td class="py-4 px-4">
+                  <NuxtImg
+                    :src="rate.courierLogoUrl"
+                    :alt="rate.courierName"
+                    width="90"
+                    height="40"
+                    class="max-w-none rounded-sm"
                   />
                 </td>
                 <td class="py-4 px-4 lg:whitespace-nowrap">

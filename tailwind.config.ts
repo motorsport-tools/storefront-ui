@@ -7,9 +7,37 @@ export default <Config>{
   content: ['./**/*.vue', 'node_modules/@storefront-ui/vue/**/*.{js,mjs}'],
   plugins: [sfTypography],
   css: ['~/assets/css/tailwind.css'],
-
+  corePlugins: {
+    fontBody: false,
+  },
   theme: {
     extend: {
+      fontFamily: {
+        sans: "Metrophobic, Helvetica Neue, Arial, Lucida Grande, sans-serif",
+        body: "Metrophobic, Helvetica Neue, Arial, Lucida Grande, sans-serif",
+        headings: "Poppins, sans-serif",
+        heading: "Poppins, sans-serif",
+      },
+      sfTypography: ({ theme }) => ({
+        'headline-1': {
+          textTransform: 'uppercase',
+        },
+        'headline-2': {
+          textTransform: 'uppercase',
+        },
+        'headline-3': {
+          textTransform: 'uppercase',
+        },
+        'headline-4': {
+          textTransform: 'uppercase',
+        },
+        'headline-5': {
+          textTransform: 'uppercase',
+        },
+        'headline-6': {
+          textTransform: 'uppercase',
+        },
+      }),
       screens: {
         xxl: '1440px',
         xs: '376px',

@@ -82,13 +82,21 @@
   "lastPageAriaLabel": "Last page",
   "currentPage": "Page {page} of {totalPages}",
   "checkout": "Checkout",
-  "backToCart": "Back to My Cart",
+  "backToCart": "Back to Cart",
   "back": "Back",
   "placeOrder": "Place order and pay",
   "termsInfo": "By placing my order, you agree to our {terms} and our {privacyPolicy}",
   "termsAndConditions": "Terms and Conditions",
   "privacyPolicy": "Privacy Policy",
   "tomorrow": "Tomorrow",
+  "coupon": {
+    "title": "Have a discount code?",
+    "remove": "Remove",
+    "invalid": "Code is invalid",
+    "apply": "Apply",
+    "enterCode": "Enter code",
+    "name": "Code"
+  },
   "contactInfo": {
     "heading": "Contact Information",
     "description": "Add your email and phone number to communicate with the store.",

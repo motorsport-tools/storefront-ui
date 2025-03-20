@@ -18,7 +18,10 @@ const {
   categories,
   loadProductTemplateList,
   productTemplateList,
+  stockCount
 } = useProductTemplateList(route.fullPath, route.fullPath);
+
+provide("stockCount", stockCount);
 
 const { getFacetsFromURL } = useUiHelpers();
 const { getRegularPrice, getSpecialPrice } = useProductAttributes();
@@ -60,6 +63,10 @@ onMounted(() => {
 });
 </script>
 <template>
+  <main 
+      class="w-full narrow-container bg-white mb-20"
+      data-testid="search-layout"
+  >
   <div class="pb-20">
     <UiBreadcrumb :breadcrumbs="breadcrumbs" class="self-start mt-5 mb-5" />
     <h1 class="font-bold typography-headline-3 md:typography-headline-2 mb-10">
@@ -152,4 +159,5 @@ onMounted(() => {
       </div>
     </div>
   </div>
+  </main>
 </template>

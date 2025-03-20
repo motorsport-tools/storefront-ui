@@ -60,12 +60,12 @@ onClickOutside(menuRef, () => {
         class="flex items-center jfustify-between lg:justify-start h-full w-full"
       >
         <div 
-          class="flex items-center justify-center bg-primary-700 h-[60px] py-2.5 pr-5 pl-8 skew-x-[-20deg] translate-x-[-20px] border-neutral-300 border-r-[2px] ring-neutral-600 logo-wrapper"
+          class="flex items-center justify-center bg-primary-700 h-[60px] py-2.5 pr-5 pl-8 skew-x-[-20deg] translate-x-[-20px] border-neutral-300 border-r-[2px] ring-neutral-600 logo-wrapper anti-aliasing"
         >
           <NuxtLink 
             to="/"
             aria-label="Sf Homepage"
-            class="skew-x-[20deg]"
+            class="skew-x-[20deg] anti-aliasing"
           >
             <VsfLogo />
           </NuxtLink>

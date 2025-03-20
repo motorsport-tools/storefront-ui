@@ -7,6 +7,8 @@ import type {
   DeliveryMethodResponse,
   EasyShipRatesResponse,
   EasyShipRatesArgs,
+  MutationEasyShipRatesArgs,
+  CartUpdateItemResponse,
 } from "~/graphql";
 import { useI18n } from '#imports'
 import { MutationName } from "~/server/mutations";
@@ -126,8 +128,20 @@ export const useDeliveryMethod = () => {
 
   }
 
-  const setRate = async( courierId ) => {
+  const setRate = async( params: MutationEasyShipRatesArgs ) => {
+    console.log('Set Rate Fired :', params)
+    loading.value = true;
 
+    const { data, error } = await $sdk().odoo.mutation<
+      MutationEasyShipRatesArgs,
+      CartUpdateItemResponse
+    >({ mutationName: MutationName.CartSetEasyship }, params);
+
+    if (error.value) {
+      return toast.error(error.value.data.message);
+    }
+    toast.success("Shipping Method updated successfully");
+    loading.value = false;
   }
 
   return {

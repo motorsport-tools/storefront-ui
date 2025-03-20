@@ -102,6 +102,10 @@ export const useCart = () => {
     return cart.value?.order?.orderLines?.reduce((total, line) => total + line.quantity, 0) || 0;
   });
 
+  const cartIsEmpty = computed(() => !cart.value.order?.websiteOrderLine?.length);
+
+  const cartHasDiscount = computed(() => cart.value.order?.coupons?.length);
+
   return {
     loading,
     loadCart,
@@ -110,5 +114,7 @@ export const useCart = () => {
     removeItemFromCart,
     cart,
     totalItemsInCart,
+    cartIsEmpty,
+    cartHasDiscount,
   };
 };

@@ -6,6 +6,21 @@ html {
   scroll-behavior: smooth;
 }
 
+@layer base {
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headings;
+    text-transform: uppercase;
+  }
+  .anti-aliasing {
+    outline: 1px solid transparent;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: transform;
+    -webkit-perspective: 1000;
+  }
+}
+
 @layer components {
   .narrow-container {
     @apply px-4 md:px-6 xl:px-8 xxl:px-0 max-w-[1336px] mx-auto;

@@ -1,33 +1,58 @@
 <script setup lang="ts">
-import { SfButton, SfInput } from '@storefront-ui/vue';
+import { SfAccordionItem, SfIconChevronLeft, SfIconClose, SfButton, SfInput, SfLoaderCircular, useDisclosure } from '@storefront-ui/vue';
+const { loadCart, cartHasDiscount } = useCart() 
 const { applyDiscount, loading } = useDiscount();
 
+const { isOpen: isCouponOpen, toggle: toggleCoupon } = useDisclosure()
 const promo = ref('');
 
 const handleApplyPromo = async () => {
   await applyDiscount(promo.value);
 };
+
+onMounted( async () => {
+  await loadCart(false)
+  isCouponOpen.value = cartHasDiscount.value || false
+})
+
+
 </script>
 
 <template>
-  <div class="w-full py-4 flex items-center gap-4">
-    <div class="w-full">
-      <SfInput
-        v-model="promo"
-        size="lg"
-        :placeholder="$t('checkoutPayment.promoOrGiftcard')"
-      />
-    </div>
-
-    <SfButton
-      @click="handleApplyPromo"
-      :disabled="!promo || loading"
-      size="lg"
-      variant="secondary"
+  <div class="border-b border-neutral-200">
+    <SfAccordionItem
+      v-if="!cartHasDiscount"
+      v-model="isCouponOpen"
     >
-      {{ $t('apply') }}
-    </SfButton>
+      <template #summary>
+        <div :class="['flex justify-between font-medium p-3 my-4', { 'bg-gray-100 rounded-md': isCouponOpen }]">
+          <p class="pl-3">{{ $t('coupon.title') }}</p>
+          <SfIconChevronLeft
+            :class="['text-neutral-500', { 'rotate-90': isCouponOpen, '-rotate-90': !isCouponOpen }]"
+          />
+        </div>
+      </template>
+      <div class="flex mb-4">
+        <div class="flex-grow mr-2" data-testid="couponCode">
+          <SfInput
+            v-model="promo"
+            size="lg"
+            :placeholder="$t('coupon.enterCode')"
+            :aria-label="$t('coupon.name')"
+            type="text"
+            required
+          />
+        </div>
+        <SfButton
+          @click="handleApplyPromo"
+          :disabled="!promo || loading"
+          size="lg"
+          variant="secondary"
+        >
+          {{ $t('coupon.apply') }}
+        </SfButton>
+      </div>
+    </SfAccordionItem>
+
   </div>
 </template>
-
-<style scoped></style>

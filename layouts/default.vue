@@ -2,18 +2,13 @@
 
 <template>
   <TheHeader />
-
-  <main class="w-full narrow-container bg-white">
-    <slot></slot>
-  </main>
-
+  <div>
+  <slot></slot>
+  </div>
   <LazyNewsletter />
-  <NuxtLazyHydrate when-visible>
-    <LazyBottomNavbar />
-  </NuxtLazyHydrate>
-  <NuxtLazyHydrate when-visible>
-    <LazyTheFooter />
-  </NuxtLazyHydrate>
+
+  <LazyBottomNavbar hydrate-on-visible />
+  <LazyTheFooter hydrate-on-visible />
 
   <WishlistSidebar />
 </template>

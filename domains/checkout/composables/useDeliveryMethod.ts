@@ -55,15 +55,15 @@ export const useDeliveryMethod = () => {
       return t("shippingMethod.deliveryTime.hour");
     } else if (method.name.toLowerCase().includes("pallet")) {
       return shippingCountry === 231 // 231 = UK
-      ? t("shippingMethod.deliveryTime.palletUk")
-      : t("shippingMethod.deliveryTime.palletWorld");
+        ? t("shippingMethod.deliveryTime.palletUk")
+        : t("shippingMethod.deliveryTime.palletWorld");
     } else if (method.name.toLowerCase().includes("delivery")) {
       return shippingCountry === 231 // 231 = UK
-      ? t("shippingMethod.deliveryTime.standard")
-      : t("shippingMethod.deliveryTime.international");
+        ? t("shippingMethod.deliveryTime.standard")
+        : t("shippingMethod.deliveryTime.international");
     }
     // Placeholder: Other methods need separate logic
-    return t("shippingMethod.deliveryTime.standard"); 
+    return t("shippingMethod.deliveryTime.standard");
   };
 
   const loadDeliveryMethods = async () => {
@@ -90,7 +90,7 @@ export const useDeliveryMethod = () => {
     }
   };
 
-  const setDeliveryMethod = async (shippingMethodId: number) => { 
+  const setDeliveryMethod = async (shippingMethodId: number) => {
     loading.value = true;
 
     const { data, error } = await $sdk().odoo.mutation<
@@ -101,12 +101,12 @@ export const useDeliveryMethod = () => {
     if (error.value) {
       return toast.error(error.value.data.message);
     }
-    toast.success("Shipping Method updated successfully");
+    //toast.success("Shipping Method updated successfully");
     loading.value = false;
     // deliveryMethods.value = [method];
   };
 
-  const loadRates = async( params: EasyShipRatesArgs ) => {
+  const loadRates = async (params: EasyShipRatesArgs) => {
     ratesLoading.value = true;
     try {
       const { data } = await useAsyncData("rates", async () => {
@@ -120,7 +120,7 @@ export const useDeliveryMethod = () => {
       });
 
       if (data.value) {
-        rates.value = data.value?.rates ? data.value?.rates : {} 
+        rates.value = data.value?.rates ? data.value?.rates : {}
       }
     } finally {
       ratesLoading.value = false;
@@ -128,15 +128,13 @@ export const useDeliveryMethod = () => {
 
   }
 
-  const setRate = async( params: MutationEasyShipRatesArgs ) => {
-    console.log('Set Rate Fired :', params)
+  const setRate = async (params: MutationEasyShipRatesArgs) => {
     loading.value = true;
 
     const { data, error } = await $sdk().odoo.mutation<
       MutationEasyShipRatesArgs,
       CartUpdateItemResponse
     >({ mutationName: MutationName.CartSetEasyship }, params);
-
     if (error.value) {
       return toast.error(error.value.data.message);
     }

@@ -48,7 +48,7 @@ const handleSelectRate = async (serviceId: string) => {
   ratesModel.value = String(serviceId);
 
   await setRate({serviceId})
-
+  await loadCart(true)
 }
 
 const getShippingIcon = (methodName: String) => {
@@ -139,7 +139,6 @@ const getShippingIcon = (methodName: String) => {
                   <SfRadio 
                     v-model="ratesModel" 
                     :value="String(rate.serviceId)" 
-                    @click.stop
                     class="items-center"
                   />
                 </td>

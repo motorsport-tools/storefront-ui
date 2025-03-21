@@ -1,7 +1,7 @@
 import { AddressType, type Cart } from "~/graphql"
 import { MutationName } from "~/server/mutations"
 import { QueryName } from "~/server/queries"
-import {updateCart, reduceCart} from "../utils/cartHelpers.js"
+import { updateCart, reduceCart } from "../utils/cartHelpers.js"
 
 /**
  * This plugin is responsible for managing the cart cache.
@@ -17,6 +17,7 @@ export default defineNitroPlugin((nitro) => {
         cartUpdateItem(event, body),
         updateAddress(event, body),
         updateShipping(event, body),
+        setEasyshipRate(event, body),
         addAddress(event, body),
         createUpdatePartner(event, body),
         applyCoupon(event, body),
@@ -32,7 +33,7 @@ async function cartAddItem(event: any, body: any) {
   const requestBody = await readBody(event);
 
   if (requestBody[0]?.mutationName === MutationName.CartAddItem) {
-    await updateCart(event,body.cartAddMultipleItems)
+    await updateCart(event, body.cartAddMultipleItems)
   }
 }
 
@@ -40,7 +41,7 @@ async function applyCoupon(event: any, body: any) {
   const requestBody = await readBody(event);
 
   if (requestBody[0]?.mutationName === MutationName.ApplyCouponMutation) {
-    await updateCart(event,body.applyCoupon)
+    await updateCart(event, body.applyCoupon)
   }
 }
 
@@ -48,21 +49,21 @@ async function applyGiftCard(event: any, body: any) {
   const requestBody = await readBody(event);
 
   if (requestBody[0]?.mutationName === MutationName.ApplyGiftCardMutation) {
-    await updateCart(event,body.applyGiftCard)
+    await updateCart(event, body.applyGiftCard)
   }
 }
 
 async function cartRemoveItem(event: any, body: any) {
   const requestBody = await readBody(event);
   if (requestBody[0]?.mutationName === MutationName.CartRemoveItem) {
-    await updateCart(event,body.cartRemoveMultipleItems)
+    await updateCart(event, body.cartRemoveMultipleItems)
   }
 }
 
 async function cartUpdateItem(event: any, body: any) {
   const requestBody = await readBody(event);
   if (requestBody[0]?.mutationName === MutationName.CartUpdateQuantity) {
-    await updateCart(event,body.cartUpdateMultipleItems)
+    await updateCart(event, body.cartUpdateMultipleItems)
   }
 }
 
@@ -81,7 +82,7 @@ async function addAddress(event: any, body: any) {
     } else {
       currentCart.cart.order.partnerInvoice = body.addAddress;
     }
-    
+
     const reducedCart = reduceCart(currentCart as Cart)
     await useStorage().setItem(keyName, reducedCart);
   }
@@ -103,7 +104,7 @@ async function updateAddress(event: any, body: any) {
     } else {
       currentCart.cart.order.partnerInvoice = body.updateAddress;
     }
-    
+
     const reducedCart = reduceCart(currentCart as Cart)
     await useStorage().setItem(keyName, reducedCart);
   }
@@ -119,16 +120,41 @@ async function updateShipping(event: any, body: any) {
     const currentCart =
       (await useStorage().getItem<{ cart: Cart }>(keyName)) || ({} as any);
     let cart = {}
-      cart = {
-        cart: {
-          ...currentCart.cart, 
-          order: {
-            ...currentCart.cart.order,
-            ...body.setShippingMethod.order,
-          },
+    cart = {
+      cart: {
+        ...currentCart.cart,
+        order: {
+          ...currentCart.cart.order,
+          ...body.setShippingMethod.order,
         },
-      };
-      await useStorage().setItem(keyName, cart);
+      },
+    };
+    const reducedCart = reduceCart(currentCart as Cart)
+    await useStorage().setItem(keyName, reducedCart);
+  }
+}
+
+async function setEasyshipRate(event: any, body: any) {
+  const requestBody = await readBody(event);
+  if (requestBody[0]?.mutationName === MutationName.CartSetEasyship) {
+    const session = await useSession(event, {
+      password: "b013b03ac2231e0b448e9a22ba488dcf",
+    });
+    const keyName = `cache:cart:${session?.id}`;
+    const currentCart =
+      (await useStorage().getItem<{ cart: Cart }>(keyName)) || ({} as any);
+    let cart = {}
+    cart = {
+      cart: {
+        ...currentCart.cart,
+        order: {
+          ...currentCart.cart.order,
+          ...body.setRate.order,
+        },
+      },
+    };
+    const reducedCart = reduceCart(currentCart as Cart)
+    await useStorage().setItem(keyName, reducedCart);
   }
 }
 
@@ -143,7 +169,7 @@ async function createUpdatePartner(event: any, body: any) {
     const currentCart =
       (await useStorage().getItem<{ cart: Cart }>(keyName)) || ({} as any);
     currentCart.cart.order.partner = body.createUpdatePartner;
-    
+
     const reducedCart = reduceCart(currentCart as Cart)
     await useStorage().setItem(keyName, reducedCart);
   }

@@ -7,6 +7,8 @@ const { changeForgottenPassword } = useAuth();
 const route = useRoute();
 const toast = useToast();
 
+defineEmits(['on-cancel'])
+
 const firstNewPasswordVisible = ref(false);
 const secondNewPasswordVisible = ref(false);
 

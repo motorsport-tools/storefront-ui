@@ -24,11 +24,9 @@ const loading = ref(false);
 const showPaymentModal = ref(false);
 const giftCards = ref(cart.value?.order?.giftCards);
 
-const hasFullPaymentWithGiftCard = computed(() => {
-  if (giftCards.value && giftCards.value?.length > 0) {
-    return cart.value?.order?.amountTotal === 0;
-  }
-});
+const hasFullPaymentWithGiftCard = computed(() =>
+  giftCards.value?.length > 0 && cart.value?.order?.amountTotal === 0,
+)
 
 
 onMounted(async () => {

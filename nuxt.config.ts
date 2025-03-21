@@ -73,7 +73,7 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       "Poppins": [400, 500, 700],
-      "Metrophobic": [ 400, 500, 700],
+      "Metrophobic": [400, 500, 700],
     },
     display: 'swap',
   },
@@ -83,12 +83,16 @@ export default defineNuxtConfig({
     locales: [
       {
         code: "en",
+        name: "English",
         file: "en.json",
+        language: "en-UK",
+        country: "United Kingdom",
       },
     ],
     strategy: "no_prefix",
     lazy: true,
     defaultLocale: "en",
+    vueI18n: "~/i18n.config.ts",
   },
 
   delayHydration: {
@@ -169,7 +173,7 @@ export default defineNuxtConfig({
 
   robots: {
     allow: ['/category/*', '/product/*'],
-    disallow: ['/cart','/checkout/*','/my-account/*','/forgot-password', '/search?'],
+    disallow: ['/cart', '/checkout/*', '/my-account/*', '/forgot-password', '/search?'],
   },
 
   tailwindcss: {

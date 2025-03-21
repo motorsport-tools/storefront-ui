@@ -6,7 +6,7 @@ defineProps({
   product: {
     type: Object as PropType<Product>,
     required: true,
-    default: () => {},
+    default: () => { },
   },
 });
 </script>
@@ -39,7 +39,10 @@ defineProps({
         <ul
           class="font-normal leading-5 typography-text-xs sm:typography-text-sm text-neutral-700"
         >
-          <li v-for="attribute in product?.variantAttributeValues">
+          <li
+            v-for="attribute in product?.variantAttributeValues"
+            :key="attribute?.id"
+          >
             <span class="mr-1">{{ attribute?.attribute?.name }}:</span>
             <span class="font-medium">{{ attribute?.name }}</span>
           </li>

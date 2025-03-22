@@ -4,6 +4,10 @@ import { useCountryList } from "~/domains/core/composable/useCountryList";
 const { loadCountries, countries } = useCountryList();
 await loadCountries();
 
+const props = defineProps({
+  
+})
+
 const model = defineModel({ default: 0 });
 </script>
 <template>

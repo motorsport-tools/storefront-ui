@@ -11,11 +11,11 @@ export default defineNuxtConfig({
     "./domains/core",
     "./domains/my-account",
     "./domains/product",
-    "./domains/payment_rvvup",
     //"./domains/search-algolia",
     "./domains/search-default",
     "./domains/wishlist",
-    "./domains/live-chat",
+    //"./domains/live-chat",
+    "./domains/delivery",
   ],
 
   modules: [

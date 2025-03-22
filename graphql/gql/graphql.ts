@@ -364,12 +364,13 @@ export type DeleteAddressInput = {
 
 export type EasyshipRate = {
   __typename?: 'EasyshipRate';
-  carrierId: Maybe<Scalars['Int']['output']>;
   courierId: Maybe<Scalars['String']['output']>;
+  courierLogoUrl: Maybe<Scalars['String']['output']>;
   courierName: Maybe<Scalars['String']['output']>;
   currencyId: Maybe<Scalars['Int']['output']>;
   deliveryDays: Maybe<Scalars['String']['output']>;
   id: Maybe<Scalars['Int']['output']>;
+  serviceId: Maybe<Scalars['String']['output']>;
   shipmentCharge: Maybe<Scalars['Float']['output']>;
   totalCharge: Maybe<Scalars['Float']['output']>;
 };
@@ -615,6 +616,8 @@ export type Mutation = {
   rvvupTransaction: Maybe<RvvupTransactionResult>;
   /** Select a billing or shipping address to be used on the shopping cart. */
   selectAddress: Maybe<Partner>;
+  /** Set a easyship delivery rate on to an Order */
+  setRate: Maybe<CustomCartData>;
   /** Set Shipping Method on Cart */
   setShippingMethod: Maybe<CustomCartData>;
   /** Get Stripe Inline Form Values */
@@ -792,6 +795,11 @@ export type MutationRvvupTransactionArgs = {
 export type MutationSelectAddressArgs = {
   address: InputMaybe<SelectAddressInput>;
   type: AddressEnum;
+};
+
+
+export type MutationSetRateArgs = {
+  serviceId: Scalars['String']['input'];
 };
 
 

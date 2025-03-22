@@ -57,7 +57,7 @@ onClickOutside(menuRef, () => {
       class="text-white h-15 md:h-15 flex z-50 md:sticky md:top-0 md:shadow-md flex-wrap md:flex-nowrap w-full border-0 bg-neutral-800 border-neutral-200 md:z-10"
     >
       <div
-        class="flex items-center jfustify-between lg:justify-start h-full w-full"
+        class="flex items-stretch jfustify-between lg:justify-start h-full w-full"
       >
         <div 
           class="flex items-center justify-center bg-primary-700 h-[60px] py-2.5 pr-5 pl-8 skew-x-[-20deg] translate-x-[-20px] border-neutral-300 border-r-[2px] ring-neutral-600 logo-wrapper"
@@ -70,6 +70,7 @@ onClickOutside(menuRef, () => {
             <VsfLogo />
           </NuxtLink>
         </div>
+        <DeliveryLocation/>
         <SfButton
           class="hidden lg:flex text-white font-body bg-transparent hover:bg-primary-800 hover:text-white active:bg-primary-900 active:text-white ml-6"
           type="button"

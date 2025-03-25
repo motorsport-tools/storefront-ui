@@ -9,6 +9,8 @@ import type {
   EasyShipRatesArgs,
   MutationEasyShipRatesArgs,
   CartUpdateItemResponse,
+  setShippingMethodResponse,
+  SetRateCartResponse
 } from "~/graphql";
 import { useI18n } from '#imports'
 import { MutationName } from "~/server/mutations";
@@ -95,7 +97,7 @@ export const useDeliveryMethod = () => {
 
     const { data, error } = await $sdk().odoo.mutation<
       MutationSetShippingMethodArgs,
-      DeliveryMethodResponse
+      setShippingMethodResponse
     >({ mutationName: MutationName.ShippingMethod }, { shippingMethodId });
 
     if (error.value) {
@@ -103,6 +105,7 @@ export const useDeliveryMethod = () => {
     }
     //toast.success("Shipping Method updated successfully");
     loading.value = false;
+    cart.value = data.value.setShippingMethod
     // deliveryMethods.value = [method];
   };
 
@@ -133,12 +136,13 @@ export const useDeliveryMethod = () => {
 
     const { data, error } = await $sdk().odoo.mutation<
       MutationEasyShipRatesArgs,
-      CartUpdateItemResponse
+      SetRateCartResponse
     >({ mutationName: MutationName.CartSetEasyship }, params);
     if (error.value) {
       return toast.error(error.value.data.message);
     }
     toast.success("Shipping Method updated successfully");
+    cart.value = data.value.setRate
     loading.value = false;
   }
 

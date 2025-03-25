@@ -111,6 +111,21 @@ export type CartAddItemResponse = AsyncData<
   },
   H3Error
 >;
+
+export type setShippingMethodResponse = AsyncData<
+  {
+    setShippingMethod: Cart
+  },
+  H3Error
+>;
+
+export type SetRateCartResponse = AsyncData<
+  {
+    setRate: Cart
+  },
+  H3Error
+>;
+
 export type ApplyDiscountsResponse = AsyncData<
   {
     order: Order;
@@ -290,7 +305,7 @@ export type DeliveryMethodListResponse = AsyncData<
 export type EasyShipRatesResponse = AsyncData<{
   rates: EasyShipRates[];
 },
-H3Error
+  H3Error
 >;
 
 export type DeliveryMethodResponse = AsyncData<

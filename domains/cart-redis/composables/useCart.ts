@@ -17,7 +17,9 @@ export const useCart = () => {
   const { $sdk } = useNuxtApp();
   const toast = useToast();
   const cart = useState<Cart>("cart", () => ({}) as Cart);
-  const loading = ref(false);
+  const loading = useState<Object>('cartLoading', () => ({
+    loading: false,
+  }))
 
   const loadCart = async (skipCache: boolean) => {
     loading.value = true;

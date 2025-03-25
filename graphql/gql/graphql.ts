@@ -355,6 +355,11 @@ export type CustomOrderLine = {
   coupon: Maybe<CustomCoupon>;
   giftCard: Maybe<GiftCard>;
   id: Scalars['Int']['output'];
+  isClickAndCollect: Maybe<Scalars['Boolean']['output']>;
+  isConfigurableProduct: Maybe<Scalars['Boolean']['output']>;
+  isDelivery: Maybe<Scalars['Boolean']['output']>;
+  isRewardLine: Maybe<Scalars['Boolean']['output']>;
+  isService: Maybe<Scalars['Boolean']['output']>;
   name: Maybe<Scalars['String']['output']>;
   priceSubtotal: Maybe<Scalars['Float']['output']>;
   priceTax: Maybe<Scalars['Float']['output']>;

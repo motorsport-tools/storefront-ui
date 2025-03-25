@@ -31,7 +31,7 @@ const handleSelectShippingMethod = async (shippingMethodId: number) => {
   radioModel.value = String(shippingMethodId);
 
   await setDeliveryMethod(shippingMethodId);
-  await loadCart(true)
+  
 
   deliveryMethods.value.forEach((val, i) => {
     if (val.id === shippingMethodId) {
@@ -48,7 +48,7 @@ const handleSelectRate = async (serviceId: string) => {
   ratesModel.value = String(serviceId);
 
   await setRate({serviceId})
-  await loadCart(true)
+
 }
 
 const getShippingIcon = (methodName: String) => {

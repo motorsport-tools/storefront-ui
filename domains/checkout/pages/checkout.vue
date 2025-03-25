@@ -3,22 +3,23 @@ import { useCountryList } from "~/domains/core/composable/useCountryList";
 import { AddressEnum, type Partner } from "~/graphql";
 import { SfLoaderCircular } from "@storefront-ui/vue";
 
-const { cart, totalItemsInCart, cartIsEmpty } = useCart();
+const { cart, totalItemsInCart, cartIsEmpty, loading: cartLoading } = useCart();
 const { loadCountries } = useCountryList();
 const { loadUser } = useAuth();
+const { loading: deliveryLoading } = useDeliveryMethod()
 const router = useRouter();
 
 const selectedProvider = ref<PaymentMethod | null>(null);
-const loading = ref(true);
 
 onMounted(async () => {
   await Promise.all([loadUser(true), loadCountries()]);
-  loading.value = false;
 
   if (totalItemsInCart?.value === 0) {
     router.push("/cart");
   }
 })
+
+const isLoading = computed(() => cartLoading.value || deliveryLoading.value);
 
 function handleSelectedProviderUpdate(newProvider: Number) {
   selectedProvider.value = newProvider;
@@ -75,9 +76,12 @@ function handleSelectedProviderUpdate(newProvider: Number) {
           <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0 mb-10" />
         </div>
         <div class="col-span-5 md:sticky md:top-20 h-fit">
-          <CheckoutSummary 
-            :selected-method="selectedProvider"
-          />
+          <SfLoaderCircular v-if="isLoading" class="absolute top-[130px] right-0 left-0 m-auto z-[999] opacity-100!" size="2xl" />
+          <div :class="{ 'pointer-events-none opacity-50': isLoading }">
+            <CheckoutSummary 
+              :selected-method="selectedProvider"
+            />
+          </div>
         </div>
       </div>
     </div>

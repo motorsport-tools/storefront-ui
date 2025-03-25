@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import { SfLoaderCircular } from '@storefront-ui/vue';
-const { cart, loading: cartLoading, totalItemsInCart, cartHasDiscount  } = useCart();
-const { loading: deliveryLoading } = useDeliveryMethod();
-
-const isLoading = computed(() => cartLoading.value || deliveryLoading.value);
-
-console.log(cart.value.order?.websiteOrderLine?.length)
+const { cart, totalItemsInCart, cartHasDiscount  } = useCart();
 </script>
 
 <template>
@@ -26,10 +21,7 @@ console.log(cart.value.order?.websiteOrderLine?.length)
         }}
       </p>
     </div>
-    <div v-if="isLoading" class="flex justify-center py-4">
-      <SfLoaderCircular size="lg" />
-    </div>
-    <div v-else>
+    <div>
       <div class="px-4 pb-4 mt-3 md:px-6 md:pb-6 md:mt-0">
         <div class="flex justify-between typography-text-base mb-2">
           <div class="flex flex-col grow pr-2 gap-2">

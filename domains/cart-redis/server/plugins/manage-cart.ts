@@ -113,48 +113,14 @@ async function updateAddress(event: any, body: any) {
 async function updateShipping(event: any, body: any) {
   const requestBody = await readBody(event);
   if (requestBody[0]?.mutationName === MutationName.ShippingMethod) {
-    const session = await useSession(event, {
-      password: "b013b03ac2231e0b448e9a22ba488dcf",
-    });
-    const keyName = `cache:cart:${session?.id}`;
-    const currentCart =
-      (await useStorage().getItem<{ cart: Cart }>(keyName)) || ({} as any);
-    let cart = {}
-    cart = {
-      cart: {
-        ...currentCart.cart,
-        order: {
-          ...currentCart.cart.order,
-          ...body.setShippingMethod.order,
-        },
-      },
-    };
-    const reducedCart = reduceCart(currentCart as Cart)
-    await useStorage().setItem(keyName, reducedCart);
+    await updateCart(event, body.setShippingMethod)
   }
 }
 
 async function setEasyshipRate(event: any, body: any) {
   const requestBody = await readBody(event);
   if (requestBody[0]?.mutationName === MutationName.CartSetEasyship) {
-    const session = await useSession(event, {
-      password: "b013b03ac2231e0b448e9a22ba488dcf",
-    });
-    const keyName = `cache:cart:${session?.id}`;
-    const currentCart =
-      (await useStorage().getItem<{ cart: Cart }>(keyName)) || ({} as any);
-    let cart = {}
-    cart = {
-      cart: {
-        ...currentCart.cart,
-        order: {
-          ...currentCart.cart.order,
-          ...body.setRate.order,
-        },
-      },
-    };
-    const reducedCart = reduceCart(currentCart as Cart)
-    await useStorage().setItem(keyName, reducedCart);
+    await updateCart(event, body.setRate)
   }
 }
 

@@ -5,12 +5,13 @@ import Discount from '~/domains/core/components/ui/Discount.vue';
 const NuxtLink = resolveComponent('NuxtLink');
 const { cart, loadCart, cartIsEmpty, loading } = useCart();
 const { isAuthenticated } = useAuth()
+const { loading: deliveryLoading } = useDeliveryMethod()
 const localePath = useLocalePath();
 const goToCheckout = () => (isAuthenticated.value ? localePath('/checkout') : localePath('/checkout/guest'));
 
-if (!cart?.value?.order) {
-  await loadCart(false);
-}
+const isLoading = computed(() => loading.value || deliveryLoading.value);
+
+
 </script>
 
 <template>
@@ -33,19 +34,21 @@ if (!cart?.value?.order) {
       <Discount v-if="$viewport.isLessThan('lg')" class="mb-2" />
     </div>
 
-    <div class="relative col-span-5 md:sticky md:top-10 h-fit" :class="{ 'pointer-events-none opacity-50': loading }">
-      <SfLoaderCircular v-if="loading" class="absolute top-[130px] right-0 left-0 m-auto z-[999]" size="2xl" />
-      <UiOrderSummary :cart="cart">
-        <Discount v-if="$viewport.isGreaterOrEquals('lg')" class="mb-5" />
-        <SfButton 
-          size="lg"
-          class="w-full mb-4 md:mb-0"
-          :tag="NuxtLink"
-          :to="goToCheckout()"
-        >
-          {{ $t('goToCheckout') }}
-        </SfButton>
-      </UiOrderSummary>
+    <div class="relative col-span-5 md:sticky md:top-10 h-fit">
+      <SfLoaderCircular v-if="isLoading" class="absolute top-[130px] right-0 left-0 m-auto z-[999] opacity-100!" size="2xl" />
+      <div :class="{ 'pointer-events-none opacity-50': isLoading }">
+        <UiOrderSummary :cart="cart">
+          <Discount v-if="$viewport.isGreaterOrEquals('lg')" class="mb-5" />
+          <SfButton 
+            size="lg"
+            class="w-full mb-4 md:mb-0"
+            :tag="NuxtLink"
+            :to="goToCheckout()"
+          >
+            {{ $t('goToCheckout') }}
+          </SfButton>
+        </UiOrderSummary>
+      </div>
     </div>
   </div>
   <div v-else class="flex items-center justify-center flex-col pt-24 pb-32" data-testid="cart-page-content">

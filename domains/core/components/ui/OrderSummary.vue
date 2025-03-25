@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { SfLoaderCircular } from '@storefront-ui/vue';
-const { cart, loading: cartLoading } = useCart();
+const { cart, loading: cartLoading, totalItemsInCart, cartHasDiscount  } = useCart();
 const { loading: deliveryLoading } = useDeliveryMethod();
 
 const isLoading = computed(() => cartLoading.value || deliveryLoading.value);
+
+console.log(cart.value.order?.websiteOrderLine?.length)
 </script>
 
 <template>
@@ -20,7 +22,7 @@ const isLoading = computed(() => cartLoading.value || deliveryLoading.value);
       </p>
       <p class="typography-text-base font-medium" data-testid="total-in-cart">
         {{
-          $t("itemsInCart", { count: cart?.order?.websiteOrderLine?.length })
+          $t("itemsInCart", { count: totalItemsInCart })
         }}
       </p>
     </div>
@@ -46,24 +48,30 @@ const isLoading = computed(() => cartLoading.value || deliveryLoading.value);
           </div>
         </div>
         <div
-          v-if="cart.order?.coupons"
-          class="flex justify-between typography-text-base mb-2"
+          v-if="cartHasDiscount"
+          class="flex justify-between typography-text-base mb-2 pb-2 border-b border-neutral-200"
         >
           <p class="flex grow pr-2">
-            {{ $t("discounts", { count: cart.order.coupons.length }) }}
+            {{ $t("discounts", { count: cartHasDiscount }) }}
           </p>
-          <p class="flex text-right">
-            {{ $currency(Number(cart.order?.amountDiscounts)) }}
-          </p>
+          
         </div>
         <div 
-            v-if="cart.order?.coupons"
-            v-for="coupon in cart.order.coupons"
-            :key="coupon.id"
+            v-if="cartHasDiscount"
+            v-for="discount in cart.order?.orderLines?.filter(l => l.isRewardLine)"
+            :key="discount.id"
             class="flex justify-between mb-2"
           >
-            <p class="flex grow text-sm text-gray-500 ml-2">
-              {{ coupon.code }}
+            <div class="flex grow pr-2">
+              <p class="text-sm text-gray-500 ml-2">
+                {{ discount.coupon?.name }}
+              </p>
+              <p v-if="discount.coupon?.programType && discount.coupon?.programType != 'promotion'" class="flex grow text-sm text-gray-500 ml-2">
+                {{ discount.coupon?.code }}
+              </p>
+            </div>
+            <p class="flex text-right text-sm text-gray-500">
+              {{  $currency(Number(discount.priceSubtotal)) }}
             </p>
           </div>
         <div

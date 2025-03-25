@@ -25,6 +25,12 @@ export const reduceCart = (cartData: Cart) => ({
             priceTotal: line?.priceTotal,
             priceSubtotal: line?.priceSubtotal,
             quantity: line?.quantity,
+            coupon: line?.coupon,
+            isDelivery: line?.isDelivery,
+            isClickAndCollect: line?.isClickAndCollect,
+            isRewardLine: line?.isRewardLine,
+            isConfigurableProduct: line?.isConfigurableProduct,
+            isService: line?.isService,
             product: {
                 id: line?.product?.id,
                 image: line?.product?.image,

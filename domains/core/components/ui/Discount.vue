@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { SfAccordionItem, SfIconChevronLeft, SfIconClose, SfButton, SfInput, SfLoaderCircular, useDisclosure } from '@storefront-ui/vue';
-const { loadCart, cartHasDiscount } = useCart() 
 const { applyDiscount, loading } = useDiscount();
 
 const { isOpen: isCouponOpen, toggle: toggleCoupon } = useDisclosure()
@@ -10,18 +9,11 @@ const handleApplyPromo = async () => {
   await applyDiscount(promo.value);
 };
 
-onMounted( async () => {
-  await loadCart(false)
-  isCouponOpen.value = cartHasDiscount.value || false
-})
-
-
 </script>
 
 <template>
   <div class="border-b border-neutral-200">
     <SfAccordionItem
-      v-if="!cartHasDiscount"
       v-model="isCouponOpen"
     >
       <template #summary>

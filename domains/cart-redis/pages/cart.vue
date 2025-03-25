@@ -27,7 +27,7 @@ if (!cart?.value?.order) {
   >
 
     <div class="col-span-7 mb-10 lg:mb-0">
-      <div v-for="(orderLine, index) in cart.order?.orderLines" :key="orderLine?.id">
+      <div v-for="(orderLine, index) in cart.order?.orderLines?.filter(line => line.isRewardLine === false && line.isDelivery === false)" :key="orderLine?.id">
         <CartCollectedProductCard :order-line="orderLine" :class="{ 'border-t': index === 0 }" />
       </div>
       <Discount v-if="$viewport.isLessThan('lg')" class="mb-2" />

@@ -98,13 +98,13 @@ export const useCart = () => {
     toast.success("Product removed successfully");
   };
 
-  const totalItemsInCart = computed(() => {
-    return cart.value?.order?.orderLines?.reduce((total, line) => total + line.quantity, 0) || 0;
-  });
+  const totalItemsInCart = computed(() =>
+    cart.value?.order?.orderLines?.filter((l) => !l.coupon).reduce((total, line) => total + line.quantity, 0) || 0
+  );
 
-  const cartIsEmpty = computed(() => !cart.value.order?.websiteOrderLine?.length);
+  const cartIsEmpty = computed(() => !cart.value.order?.orderLines?.length);
 
-  const cartHasDiscount = computed(() => cart.value.order?.coupons?.length);
+  const cartHasDiscount = computed(() => cart.value.order?.coupons?.length || false);
 
   return {
     loading,

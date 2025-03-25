@@ -285,6 +285,14 @@ export type CustomCartData = CustomCart & {
   order: Maybe<CustomOrder>;
 };
 
+export type CustomCoupon = {
+  __typename?: 'CustomCoupon';
+  code: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  name: Maybe<Scalars['String']['output']>;
+  programType: Maybe<Scalars['String']['output']>;
+};
+
 export type CustomInvoice = {
   __typename?: 'CustomInvoice';
   amountResidual: Maybe<Scalars['Float']['output']>;
@@ -317,7 +325,7 @@ export type CustomOrder = {
   amountUntaxed: Maybe<Scalars['Float']['output']>;
   cartQuantity: Maybe<Scalars['Int']['output']>;
   clientOrderRef: Maybe<Scalars['String']['output']>;
-  coupons: Maybe<Array<Coupon>>;
+  coupons: Maybe<Array<CustomCoupon>>;
   currency: Maybe<Currency>;
   currencyRate: Maybe<Scalars['String']['output']>;
   dateOrder: Maybe<Scalars['String']['output']>;
@@ -329,17 +337,32 @@ export type CustomOrder = {
   lastTransaction: Maybe<PaymentTransaction>;
   locked: Maybe<Scalars['Boolean']['output']>;
   name: Maybe<Scalars['String']['output']>;
-  orderLines: Maybe<Array<OrderLine>>;
+  orderLines: Maybe<Array<CustomOrderLine>>;
   orderUrl: Maybe<Scalars['String']['output']>;
   partner: Maybe<Partner>;
   partnerInvoice: Maybe<Partner>;
   partnerShipping: Maybe<Partner>;
-  reportOrderLine: Maybe<Array<OrderLine>>;
+  reportOrderLine: Maybe<Array<CustomOrderLine>>;
   shippingMethod: Maybe<ShippingMethod>;
   stage: Maybe<OrderStage>;
   taxTotals: Maybe<Scalars['GenericScalar']['output']>;
   transactions: Maybe<Array<PaymentTransaction>>;
-  websiteOrderLine: Maybe<Array<OrderLine>>;
+  websiteOrderLine: Maybe<Array<CustomOrderLine>>;
+};
+
+export type CustomOrderLine = {
+  __typename?: 'CustomOrderLine';
+  coupon: Maybe<CustomCoupon>;
+  giftCard: Maybe<GiftCard>;
+  id: Scalars['Int']['output'];
+  name: Maybe<Scalars['String']['output']>;
+  priceSubtotal: Maybe<Scalars['Float']['output']>;
+  priceTax: Maybe<Scalars['Float']['output']>;
+  priceTotal: Maybe<Scalars['Float']['output']>;
+  priceUnit: Maybe<Scalars['Float']['output']>;
+  product: Maybe<Product>;
+  quantity: Maybe<Scalars['Float']['output']>;
+  shopWarning: Maybe<Scalars['String']['output']>;
 };
 
 export type CustomOrderList = CustomOrders & {
@@ -1184,7 +1207,7 @@ export type Query = {
   blogPost: BlogPost;
   blogPosts: Maybe<BlogPosts>;
   blogTags: Maybe<BlogTags>;
-  cart: Maybe<Cart>;
+  cart: Maybe<CustomCart>;
   categories: Maybe<Categories>;
   category: Maybe<Category>;
   countries: Maybe<Countries>;

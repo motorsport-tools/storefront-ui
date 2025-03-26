@@ -344,6 +344,7 @@ export type CustomOrder = {
   partnerShipping: Maybe<Partner>;
   reportOrderLine: Maybe<Array<CustomOrderLine>>;
   shippingMethod: Maybe<ShippingMethod>;
+  shippingRate: Maybe<EasyshipRate>;
   stage: Maybe<OrderStage>;
   taxTotals: Maybe<Scalars['GenericScalar']['output']>;
   transactions: Maybe<Array<PaymentTransaction>>;

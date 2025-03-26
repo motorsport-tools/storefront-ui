@@ -14,6 +14,9 @@ export const reduceCart = (cartData: Cart) => ({
             name: cartData?.order?.shippingMethod?.name,
             price: cartData?.order?.shippingMethod?.price
         },
+        shippingRate: {
+            serviceId: cartData?.order?.shippingRate?.serviceId
+        },
         coupons: cartData?.order?.coupons,
         giftCards: cartData?.order?.giftCards,
         websiteOrderLine: cartData?.order?.websiteOrderLine?.map((line: OrderLine) => ({

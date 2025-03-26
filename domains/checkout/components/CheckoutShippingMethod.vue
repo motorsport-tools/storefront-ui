@@ -23,6 +23,7 @@ onMounted(async () => {
     if(showRates.value) {
       await loadRates({ carrierId: radioModel.value, orderId: cart.value?.order?.id })
     }
+    ratesModel.value = cart.value?.order?.shippingRate?.serviceId || ''
   }
 });
 

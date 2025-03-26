@@ -151,6 +151,9 @@ shippingMethod{
   name
   price
 }
+shippingRate {
+  serviceId
+}
 partner {
   id
   email

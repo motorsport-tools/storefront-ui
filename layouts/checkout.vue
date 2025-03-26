@@ -16,7 +16,7 @@ const { cart, loading } = useCart();
 
 <template>
     <main 
-        class="w-full narrow-container bg-white mb-20"
+        class="w-full narrow-container mb-20"
         data-testid="checkout-layout"
     >
         <div class="flex justify-between mt-8 mb-10 md:px-0" hydrate-on-visible>

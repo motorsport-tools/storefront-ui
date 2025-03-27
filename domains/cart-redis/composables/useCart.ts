@@ -101,10 +101,10 @@ export const useCart = () => {
   };
 
   const totalItemsInCart = computed(() =>
-    cart.value?.order?.orderLines?.filter((l) => !l.coupon && !l.isDelivery).reduce((total, line) => total + line.quantity, 0) || 0
+    cart.value?.order?.orderLines?.filter((l) => !l.coupon && !l.isDelivery && !l.isRewardLine).reduce((total, line) => total + line.quantity, 0) || 0
   );
 
-  const cartIsEmpty = computed(() => !cart.value.order?.orderLines?.length);
+  const cartIsEmpty = computed(() => !cart.value.order?.orderLines?.filter((l) => !l.coupon && !l.isDelivery && !l.isRewardLine).length);
 
   const cartHasDiscount = computed(() => cart.value.order?.coupons?.length || false);
 

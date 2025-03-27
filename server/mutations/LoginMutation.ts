@@ -1,4 +1,6 @@
 import { gql } from "@apollo/client/core";
+import { internalOrderFragment } from "../fragments/orderFragment";
+
 export default gql`
   mutation ($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -23,7 +25,7 @@ export default gql`
         }
       }
       cart {
-        id
+        ${internalOrderFragment}
       }
       wishlistItems {
         id

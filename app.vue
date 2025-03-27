@@ -1,8 +1,20 @@
 <script setup>
 const nuxtApp = useNuxtApp();
+const { isAuthenticated, loadUser } = useAuth()
+const { loadCart } = useCart();
+
+
 
 nuxtApp.hook("page:finish", () => {
   window.scrollTo(0, 0);
+});
+
+onMounted(async () => {
+    console.log('Is Authenticated? ', isAuthenticated.value)
+    if ( isAuthenticated.value ) {  
+      await loadUser(true)
+    }
+    await loadCart(true);  
 });
 </script>
 <template>

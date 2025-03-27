@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { UiFormRangeSlider } from "#components";
 import {
   SfAccordionItem,
   SfButton,

@@ -34,7 +34,7 @@ const {
   loadCategory,
   category,
   loading: categoryLoading,
-} = useCategory(String(cleanFullPath.value))
+} = useCategory(String(slug.value))
 
 const { getRegularPrice, getSpecialPrice } = useProductAttributes()
 const { getFacetsFromURL } = useUiHelpers()
@@ -68,10 +68,10 @@ const pagination = computed(() => ({
 
 const params = route.params as { id?: string | number, slug?: string }
 
-if (params.id) {
+if (params.slug) {
   await loadCategory({
-    id: Number(params.id),
-    slug: String(cleanFullPath.value),
+    id: null,
+    slug: String(slug.value),
   })
 }
 
@@ -81,10 +81,20 @@ if (category.value) {
 
 setMaxVisiblePages(isWideScreen.value)
 
-const breadcrumbs = [
-  { name: 'Home', link: '/' },
-  { name: category._value.name, link: `Category/${route.params.id}` },
-]
+const breadcrumbs = computed(() => {
+  const trail = [];
+
+  trail.push({ name: 'Home', link: '/' })
+
+  if (category.value.parent) {
+    trail.push({ name: category.value.parent.name, link: `/category${category.value.parent.slug}` });
+  }
+
+  trail.push({ name: category.value.name, link: `/category${category.value.slug}` });
+
+  return trail;
+})
+
 </script>
 
 <template>

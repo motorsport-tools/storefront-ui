@@ -41,8 +41,6 @@ export const useProductTemplateList = (
     force: boolean = false
   ) => {
 
-    console.log('Params: ', params)
-
     if (productTemplateList.value.length > 0 && !force) return;
 
     loading.value = true;

@@ -40,6 +40,10 @@ export default <Config>{
       }),
       screens: {
         xxl: '1440px',
+        xl: '1280px',
+        lg: '1024px',
+        md: '768px',
+        sm: '640px',
         xs: '376px',
       },
       zIndex: {

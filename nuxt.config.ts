@@ -15,7 +15,8 @@ export default defineNuxtConfig({
     //"./domains/search-algolia",
     "./domains/search-default",
     "./domains/wishlist",
-    "./domains/live-chat",
+    "./domains/directus",
+    //"./domains/live-chat",
   ],
 
   modules: [

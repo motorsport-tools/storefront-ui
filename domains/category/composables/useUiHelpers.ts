@@ -8,14 +8,15 @@ export const useUiHelpers = () => {
 
   const queryParamsNotFilters = ["page", "sort", "itemsPerPage"];
   const localePrefixes = ["/en", "/de", "/ru"];
+
   const pathToSlug = (): string => {
     for (const localePrefix of localePrefixes) {
       if (path.startsWith(localePrefix)) {
         return path.replace(localePrefix, "");
       }
     }
-    const cleanPath = path?.replace(/\/$/, '')
-    return cleanPath;
+    const slug = Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug
+    return `/` + slug
   };
 
   const cleanFullSearchIndex = getUniqueUrlFromRouteFilteringByAttributes(

@@ -21,7 +21,7 @@ const transformCategory = (category: Category): Node => ({
     key: category.id.toString(),
     value: {
         label: category.name,
-        link: category.slug
+        link: '/category' + category.slug
     },
     isLeaf: !category.childs ? false : true,
     children: (category.childs && Array.isArray(category.childs))

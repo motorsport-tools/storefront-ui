@@ -18,6 +18,7 @@ const { searchModalToggle } = useSearch()
 const NuxtLink = resolveComponent('NuxtLink')
 
 const menuRef = ref()
+const categoryMenuRef = ref(null)
 const drawerRef = ref()
 const searchRef = ref()
 const showSearchClerkRef = ref()
@@ -36,7 +37,11 @@ onClickOutside(searchRef, () => {
   showSearchClerkRef.value = false
 })
 
-const categoriesForMegaMenu = inject<Category[]>('categoriesForMegaMenu')
+const megaMenuClick = (menuType: string[]) => {
+  if(categoryMenuRef.value) {
+    categoryMenuRef.value.openMenu(menuType)
+  }
+}
 
 </script>
 
@@ -62,61 +67,7 @@ const categoriesForMegaMenu = inject<Category[]>('categoriesForMegaMenu')
           <VsfLogo />
         </NuxtLink>
       </div>
-      <nav>
-        <ul>
-          <li role="none">
-            <transition
-              enter-active-class="transform transition duration-500 ease-in-out"
-              leave-active-class="transform transition duration-500 ease-in-out"
-              enter-from-class="-translate-x-full md:translate-x-0 md:opacity-0"
-              enter-to-class="translate-x-0 md:translate-x-0 md:opacity-100"
-              leave-from-class="translate-x-0 md:opacity-100"
-              leave-to-class="-translate-x-full md:translate-x-0 md:opacity-0"
-            >
-              <SfDrawer
-                ref="drawerRef"
-                v-model="isOpen"
-                disable-click-away
-                placement="top"
-                class="bg-white max-h-screen overflow-y-auto!absolute top-[56px] md:!top-[5rem] max-w-full p-6 top-index"
-              >
-                <div>
-                  <div
-                    v-for="{ name, childs, slug } in categoriesForMegaMenu"
-                    :key="name"
-                    class="py-2 text-black"
-                  >
-                    <NuxtLink :to="slug"
-                      role="presentation"
-                      class="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-2 pl-0"
-                    >
-                      {{ name }}
-                    </NuxtLink>
-                    <hr class="mb-3.5">
-                    <ul>
-                      <li
-                        v-for="{ name, slug, childs: subcategory } in childs"
-                        :key="name"
-                      >
-                        <SfListItem
-                          v-if="subcategory !== null"
-                          tag="a"
-                          :href="slug"
-                          size="sm"
-                          role="none"
-                          class="typography-text-base lg:typography-text-sm py-2"
-                        >
-                          {{ name }}
-                        </SfListItem>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </SfDrawer>
-            </transition>
-          </li>
-        </ul>
-      </nav>
+      
 
       <div class="flex justify-end">
         <SfButton
@@ -134,12 +85,13 @@ const categoriesForMegaMenu = inject<Category[]>('categoriesForMegaMenu')
           :aria-expanded="isOpen"
           variant="tertiary"
           square
-          @click="toggle()"
+          @click="megaMenuClick([])"
         >
           <SfIconMenu class="text-white" />
         </SfButton>
       </div>
     </div>
+    <HeaderCategoryMenu :referenceRef="menuRef" ref="categoryMenuRef"/>
     <MobileSearchList search-text="123" />
   </header>
 </template>

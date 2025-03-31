@@ -132,6 +132,10 @@ await loadProductVariant(params.value)
 </script>
 
 <template>
+  <main 
+        class="w-full narrow-container mb-20"
+        data-testid="checkout-layout"
+  >
   <NuxtErrorBoundary>
     <div v-if="productTemplate?.id && !loadingProductTemplate">
       <UiBreadcrumb :breadcrumbs="breadcrumbs" class="self-start mt-5 mb-10 cursor-pointer" />
@@ -354,4 +358,5 @@ await loadProductVariant(params.value)
       </div>
     </template>
   </NuxtErrorBoundary>
+  </main>
 </template>

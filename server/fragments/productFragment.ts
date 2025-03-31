@@ -28,6 +28,14 @@ export default `
   sku
   jsonLd
   isInWishlist
+  ribbon {
+    id
+    html
+    textColor
+    htmlClass
+    bgColor
+    displayName
+  }
   categories {
     id
     name

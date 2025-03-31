@@ -7,7 +7,7 @@ const { cart, loadCart, cartIsEmpty, loading } = useCart();
 const { isAuthenticated } = useAuth()
 const { loading: deliveryLoading } = useDeliveryMethod()
 const localePath = useLocalePath();
-const goToCheckout = () => (isAuthenticated.value ? localePath('/checkout') : localePath('/checkout/guest'));
+const goToCheckout = () => (isAuthenticated.value ? localePath('/checkout') : localePath('/guest/login'));
 
 const isLoading = computed(() => loading.value || deliveryLoading.value);
 

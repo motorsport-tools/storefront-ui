@@ -1,3 +1,5 @@
+import type { NuxtRoute } from "@typed-router/__router";
+import type { RoutesNamesList } from "@typed-router/__routes";
 import { useToast } from "vue-toastification";
 import type {
   ChangePasswordResponse,
@@ -95,7 +97,7 @@ export const useAuth = () => {
     router.push("/my-account/personal-data");
   };
 
-  const login = async (params: MutationLoginArgs) => {
+  const login = async (params: MutationLoginArgs, redirectTo: any | false = false) => {
     loading.value = true;
     const { data, error } = await $sdk().odoo.mutation<
       MutationLoginArgs,
@@ -110,7 +112,10 @@ export const useAuth = () => {
     userCookie.value = data.value.login.user?.partner;
     user.value = data.value.login.user?.partner as Partner
     cart.value.order = data.value.cart || {} as Cart
-    router.push("/my-account/personal-data");
+    if (!redirectTo) {
+      redirectTo = "/my-account/personal-data"
+    }
+    router.push(redirectTo);
   };
 
   const resetPassword = async (params: MutationResetPasswordArgs) => {

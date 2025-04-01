@@ -7,7 +7,7 @@ import {
   useDisclosure,
 } from "@storefront-ui/vue";
 import type { MutationCreateUpdatePartnerArgs, Partner } from "~/graphql";
-const { updatePartner } = useAuth();
+const { updatePartner, isAuthenticated } = useAuth();
 
 const props = defineProps({
   heading: {
@@ -38,19 +38,22 @@ watch(
   { immediate: true }
 );
 
-const subscribeNewsletter = ref(true);
+const subscribeNewsletter = ref(false);
 
 const handleUpdatePartnerData = async () => {
-  const data: MutationCreateUpdatePartnerArgs = {
-    email: String(email.value),
-    name: String(name.value),
-    subscribeNewsletter: subscribeNewsletter.value,
-  };
-  await updatePartner(data);
+  if(name.value && email.value) {
+    const data: MutationCreateUpdatePartnerArgs = {
+      email: String(email.value),
+      name: String(name.value),
+      subscribeNewsletter: subscribeNewsletter.value,
+    };
+    
+    await updatePartner(data);
 
-  commitEmail();
-  commitName();
-  close();
+    commitEmail();
+    commitName();
+    close();
+  }
 };
 const handleOpenModal = () => {
   commitEmail();
@@ -62,25 +65,71 @@ const handleCancel = () => {
   undoName();
   close();
 };
+
 </script>
 
 <template>
-  <div data-testid="checkout-address" class="md:px-4 py-6">
+  <div data-testid="checkout-contact-info" class="md:px-4 py-6">
     <div class="flex justify-between items-center">
       <h2 class="text-neutral-900 text-lg font-bold mb-4">
         {{ props.heading }}
       </h2>
-      <SfButton size="sm" variant="tertiary" @click="handleOpenModal">
+      <SfButton
+        v-if="isAuthenticated && partnerData?.name && partnerData?.email"
+        size="sm"
+        variant="tertiary"
+        @click="handleOpenModal"
+      >
         {{ partnerData.id ? $t("contactInfo.edit") : $t("contactInfo.add") }}
       </SfButton>
     </div>
     <div
-      v-if="partnerData?.name && partnerData?.email"
+      v-if="isAuthenticated && partnerData?.name && partnerData?.email"
       class="mt-2 md:w-[520px]"
     >
       <p>{{ name }}</p>
       <p>{{ email }}</p>
     </div>
+    <div v-if="!isAuthenticated" class="mt-2 md:w-[520px]">
+
+      <form
+        data-testid="contact-information-form"
+        @submit.prevent="handleUpdatePartnerData"
+      >
+
+        <label>
+          <UiFormLabel>{{ $t("contactInfo.name") }}</UiFormLabel>
+          <SfInput
+            v-model="name"
+            name="name"
+            type="text"
+            :placeholder="$t('contactInfo.name')"
+            required
+            @blur="handleUpdatePartnerData"
+          />
+        </label>
+        <div class="mt-4" />
+        <label>
+          <UiFormLabel>{{ $t("contactInfo.email") }}</UiFormLabel>
+          <SfInput
+            v-model="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            :autofocus="!email"
+            :placeholder="$t('contactInfo.email')"
+            required
+            @blur="handleUpdatePartnerData"
+          />
+        </label>
+        <div class="mt-4">
+          <label>
+            <UiFormLabel>{{ $t("contactInfo.subescribe") }}</UiFormLabel>
+            <SfSwitch v-model="subscribeNewsletter" @change="handleUpdatePartnerData" />
+          </label>
+        </div>
+      </form>
+    </dYiv>
     <transition
       enter-active-class="transition duration-200 ease-out"
       leave-active-class="transition duration-200 ease-out"
@@ -103,7 +152,10 @@ const handleCancel = () => {
             class="absolute right-2 top-2"
             @click="handleCancel"
           >
-            <icon name="ion:close" size="20px" />
+            <icon
+              name="ion:close"
+              size="20px"
+            />
           </SfButton>
           <h3
             id="contact-modal-title"
@@ -152,7 +204,10 @@ const handleCancel = () => {
             >
               {{ $t("contactInfo.cancel") }}
             </SfButton>
-            <SfButton type="submit" class="min-w-[120px] mb-4 md:mb-0">
+            <SfButton
+              type="submit"
+              class="min-w-[120px] mb-4 md:mb-0"
+            >
               {{ $t("contactInfo.save") }}
             </SfButton>
           </div>

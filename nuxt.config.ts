@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     "./domains/search-default",
     "./domains/wishlist",
     "./domains/live-chat",
+    "./domains/guest",
   ],
 
   modules: [

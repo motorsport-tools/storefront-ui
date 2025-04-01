@@ -436,5 +436,12 @@
       "help": "8 or more characters with a mix of letters, numbers and symbols.",
       "description": "Create the new password you want to use to log in to your account."
     }
+  },
+  "guest": {
+    "guestCheckout": "Guest Checkout",
+    "continueAsGuest": "Continue as guest",
+    "loginHeading": "Login to checkout faster",
+    "noAccount": "Don't have an account yet?",
+    "createAfterOrder": "You can create an account after your order is complete."
   }
 }

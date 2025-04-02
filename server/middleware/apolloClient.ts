@@ -11,13 +11,12 @@ export default defineEventHandler((event) => {
     queries: { ...Queries, ...Mutations },
     headers: {
       "REAL-IP": getRequestIP(event) || "",
-      "resquest-host": getRequestHost(event),
+      "request-host": getRequestHost(event),
     },
   };
   if (parseCookies(event).session_id) {
-    (config.headers as Record<string, string>).Cookie = `session_id=${
-      parseCookies(event).session_id
-    }`;
+    (config.headers as Record<string, string>).Cookie = `session_id=${parseCookies(event).session_id
+      }`;
   }
 
   event.context.apolloClient = createApiClient(config);

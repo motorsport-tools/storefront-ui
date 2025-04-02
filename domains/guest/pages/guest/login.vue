@@ -41,7 +41,7 @@ const NuxtLink = resolveComponent('NuxtLink');
 
                 <UiDividerText :text="$t('or')" />
                 <h2 class="font-bold text-lg">{{ $t('guest.loginHeading') }}</h2>
-                <LoginForm/>
+                <LoginForm redirect-to="/checkout"/>
 
                 <UiAlert
                     class="mt-6 w-full p-4 md:p-6 !justify-start typography-text-base flex-col"

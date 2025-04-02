@@ -12,10 +12,16 @@ const email = ref("");
 const password = ref("");
 const rememberMe = ref<boolean>();
 
+const props = defineProps({
+    redirectTo: String
+})
+
 const handleLogin = async () => {
-  await login({ email: email.value, password: password.value }, "/checkout");
+
+    await login({ email: email.value, password: password.value }, props.redirectTo? props.redirectTo : false );
 };
 
+const NuxtLink = resolveComponent("NuxtLink");
 </script>
 
 <template>

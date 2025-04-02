@@ -129,7 +129,7 @@ const handleCancel = () => {
           </label>
         </div>
       </form>
-    </dYiv>
+    </div>
     <transition
       enter-active-class="transition duration-200 ease-out"
       leave-active-class="transition duration-200 ease-out"

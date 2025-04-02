@@ -316,6 +316,7 @@ export type CustomInvoice = {
 
 export type CustomLoginOutput = {
   __typename?: 'CustomLoginOutput';
+  accessToken: Maybe<Scalars['String']['output']>;
   cart: Maybe<CustomOrder>;
   user: Maybe<User>;
   wishlistItems: Maybe<Array<Maybe<WishlistItem>>>;

@@ -80,6 +80,9 @@ export default defineNuxtConfig({
   },
 
   i18n: {
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
     legacy: false,
     locales: [
       {

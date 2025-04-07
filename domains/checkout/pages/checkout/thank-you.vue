@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import type { CustomCartData } from '~/graphql';
 import { SfButton } from '@storefront-ui/vue';
 const { loadCart } = useCart();
 const { getPaymentConfirmation } = usePayment();
 
+const orderData = ref<any>({})
+
 onMounted(async () => {
-  const data = await getPaymentConfirmation();
+  orderData.value = await getPaymentConfirmation();
   await loadCart(true);
 });
 
@@ -16,12 +19,12 @@ onMounted(async () => {
     >
       <Icon
         name="i-material-symbols-check-circle"
-        class="size-20 text-primary-700"
+        class="size-20 text-green-700"
       />
-      <h1 class="text-3xl font-bold">Thank you for your purchase!</h1>
-      <p>Your order will be shipped soon.</p>
+      <h1 class="text-3xl font-bold">{{ $t('thankYou.thankYou',{ orderNumber: orderData.order?.name}) }}</h1>
+      <p>{{ $t('thankYou.text') }}</p>
       <SfButton @click="navigateTo('/')" size="lg" variant="secondary">
-        Continue shopping
+        {{ $t('continueShopping') }}
       </SfButton>
     </div>
 </template>

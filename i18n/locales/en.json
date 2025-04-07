@@ -443,5 +443,9 @@
     "loginHeading": "Login to checkout faster",
     "noAccount": "Don't have an account yet?",
     "createAfterOrder": "You can create an account after your order is complete."
+  },
+  "thankYou": {
+    "thankYou": "Thank you - your order #{orderNumber} has been received",
+    "text": "We will begin processing your order, you will receive email confirmation shortly"
   }
 }

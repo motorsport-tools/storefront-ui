@@ -314,13 +314,6 @@ export type CustomInvoice = {
   transactions: Maybe<Array<PaymentTransaction>>;
 };
 
-export type CustomLoginOutput = {
-  __typename?: 'CustomLoginOutput';
-  cart: Maybe<CustomOrder>;
-  user: Maybe<User>;
-  wishlistItems: Maybe<Array<Maybe<WishlistItem>>>;
-};
-
 export type CustomOrder = {
   __typename?: 'CustomOrder';
   amountDelivery: Maybe<Scalars['Float']['output']>;
@@ -517,6 +510,13 @@ export type Lead = {
   subject: Maybe<Scalars['String']['output']>;
 };
 
+export type LoginOutput = {
+  __typename?: 'LoginOutput';
+  cart: Maybe<Order>;
+  user: Maybe<User>;
+  wishlistItems: Maybe<Array<Maybe<WishlistItem>>>;
+};
+
 export type MailingContact = {
   __typename?: 'MailingContact';
   companyName: Maybe<Scalars['String']['output']>;
@@ -621,8 +621,8 @@ export type Mutation = {
   createUpdatePartner: Maybe<Partner>;
   /** Delete a billing or shipping address. */
   deleteAddress: Maybe<DeleteAddress>;
-  /** MST Login user */
-  login: Maybe<CustomLoginOutput>;
+  /** Authenticate user with email and password and retrieves token. */
+  login: Maybe<LoginOutput>;
   /** MST Logout user */
   logout: Maybe<Scalars['Boolean']['output']>;
   /** Pay the order only with gift card. */

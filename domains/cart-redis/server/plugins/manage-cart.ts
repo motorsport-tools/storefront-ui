@@ -127,11 +127,12 @@ async function setEasyshipRate(event: any, body: any) {
 async function createUpdatePartner(event: any, body: any) {
   const requestBody = await readBody(event);
   if (requestBody[0]?.mutationName === MutationName.CreateUpdatePartner) {
+    const userCookie = getCookie(event, 'odoo-user')
     const session = await useSession(event, {
       password: "b013b03ac2231e0b448e9a22ba488dcf",
     });
 
-    const keyName = `cache:cart:${session?.id}`;
+    const keyName = userCookie ? `cache:cart:id:${userCookie}` : `cache:cart:session:${session?.id}`
     const currentCart =
       (await useStorage().getItem<{ cart: Cart }>(keyName)) || ({} as any);
     currentCart.cart.order.partner = body.createUpdatePartner;
@@ -152,11 +153,12 @@ async function clearCartAfterCreditCardPaymentConfirmation(
     body.paymentConfirmation.order?.lastTransaction?.state === "Confirmed";
 
   if (requestBody[0]?.queryName === QueryName.GetPaymentConfirmation) {
+    const userCookie = getCookie(event, 'odoo-user')
     const session = await useSession(event, {
       password: "b013b03ac2231e0b448e9a22ba488dcf",
     });
 
-    const keyName = `cache:cart:${session?.id}`;
+    const keyName = userCookie ? `cache:cart:id:${userCookie}` : `cache:cart:session:${session?.id}`
     if (paymentSuccess) {
       await useStorage().removeItem(keyName);
     }
@@ -174,11 +176,12 @@ async function clearCartAfterGiftCardPaymentConfirmation(
   if (
     requestBody[0]?.mutationName === MutationName.MakeGiftCardPaymentMutation
   ) {
+    const userCookie = getCookie(event, 'odoo-user')
     const session = await useSession(event, {
       password: "b013b03ac2231e0b448e9a22ba488dcf",
     });
 
-    const keyName = `cache:cart:${session?.id}`;
+    const keyName = userCookie ? `cache:cart:id:${userCookie}` : `cache:cart:session:${session?.id}`
     if (paymentSuccess) {
       await useStorage().removeItem(keyName);
     }

@@ -37,6 +37,7 @@
     "@pinia/nuxt": "^0.5.1",
     "@storefront-ui/typography": "^2.6.1",
     "@storefront-ui/vue": "^2.6.3",
+    "@stripe/stripe-js": "^7.0.0",
     "@vue-storefront/sdk": "^2.0.0",
     "@vueuse/nuxt": "^10.9.0",
     "currency.js": "^2.0.4",

@@ -12,6 +12,16 @@ const backHref = backUrl === localePath(router.currentRoute.value.path) ? locale
 const goToPreviousRoute = () => (backToCart ? navigateTo(localePath('/cart')) : navigateTo(localePath(backHref)));
 
 const { cart, loading } = useCart();
+
+useHead({
+    script: [
+        {
+            src: 'https://js.stripe.com/v3/',
+            type: 'text/javascript',
+            async: true,
+        },
+    ]
+})
 </script>
 
 <template>

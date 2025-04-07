@@ -5,9 +5,11 @@ const getPaymentProviderComponentName = (providerCode: string) => {
     case "paypal":
       return "ProviderPayPal";
     case "klarna":
-      return "ProviderKarna";
+      return "ProviderKlarna";
     case "rvvup":
       return "ProviderRvvup"
+    case "stripe":
+      return "ProviderStripe"
     default:
       return "UnknownPaymentProvider";
   }

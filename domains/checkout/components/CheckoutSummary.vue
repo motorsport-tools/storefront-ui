@@ -59,7 +59,7 @@ const handleGiftCardPayment = async () => {
       v-else
       size="lg"
       class="w-full mb-4 md:mb-0"
-      :disabled="!props.selectedProvider || !isPaymentWithCardReady || loading"
+      :disabled="!props.selectedMethod || !isPaymentWithCardReady || loading"
       @click="providerPaymentHandler"
     >
       {{ $t("placeOrder") }}

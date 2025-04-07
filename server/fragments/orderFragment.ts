@@ -82,11 +82,11 @@ orderLines {
   id
   name
   priceSubtotal
-  isDelivery,
-  isClickAndCollect,
-  isRewardLine,
-  isConfigurableProduct,
-  isService,
+  isClickAndCollect
+  isDelivery
+  isRewardLine
+  isConfigurableProduct
+  isService
   coupon {
     id
     code

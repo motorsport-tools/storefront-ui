@@ -20,6 +20,7 @@ import type {
   RvvupPaymentDetailsResult,
   RvvupPaymentsResult,
   PaymentProvider,
+  StripeProviderInfoResult,
   Orders,
   Order,
   Invoice,
@@ -28,6 +29,8 @@ import type {
   State,
   User,
   WishlistItem,
+  StripeGetInlineFormValuesResult,
+  StripeTransactionResult,
 } from "./gql/graphql";
 import type { H3Error } from "h3";
 import type { AsyncData } from "#app";
@@ -434,3 +437,26 @@ export type RvvupPaymentsResponse = AsyncData<
   },
   H3Error
 >;
+
+/* Stripe */
+
+export type StripeProviderInfoResponse = AsyncData<
+  {
+    stripeProviderInfo: StripeProviderInfoResult
+  },
+  H3Error
+>
+
+export type StripeGetInlineFormValueResponse = AsyncData<
+  {
+    stripeGetInlineFormValues: StripeGetInlineFormValuesResult
+  },
+  H3Error
+>
+
+export type StripeTransactionResponse = AsyncData<
+  {
+    stripeTransaction: StripeTransactionResult
+  },
+  H3Error
+>

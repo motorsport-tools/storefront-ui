@@ -28,7 +28,6 @@ onMounted(async () => {
 });
 
 const handleSelectShippingMethod = async (shippingMethodId: number) => {
-  console.log('Cart:', cart)
   radioModel.value = String(shippingMethodId);
 
   await setDeliveryMethod(shippingMethodId);

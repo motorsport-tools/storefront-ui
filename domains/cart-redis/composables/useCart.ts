@@ -12,11 +12,14 @@ import type {
 import { MutationName } from "~/server/mutations";
 import { QueryName } from "~/server/queries";
 import { useToast } from "vue-toastification";
+import { CartToast } from "#components";
+
 
 export const useCart = () => {
   const { $sdk } = useNuxtApp();
   const toast = useToast();
   const cart = useState<Cart>("cart", () => ({}) as Cart);
+  const { t } = useI18n();
   const loading = useState<Object>('cartLoading', () => ({
     loading: false,
   }))
@@ -56,7 +59,12 @@ export const useCart = () => {
 
     cart.value = data.value.cartAddMultipleItems;
 
-    toast.success("Product has been added to cart");
+    toast.success({
+      component: CartToast,
+      props: {
+        message: t('cartAddProduct')
+      }
+    });
   };
 
   const updateItemQuantity = async (id: number, quantity: number) => {
@@ -77,7 +85,13 @@ export const useCart = () => {
     }
 
     cart.value = data.value.cartUpdateMultipleItems;
-    toast.success("Product updated successfully");
+
+    toast.success({
+      component: CartToast,
+      props: {
+        message: t('cartUpdateProduct')
+      }
+    });
   };
 
   const removeItemFromCart = async (lineId: number) => {
@@ -97,7 +111,12 @@ export const useCart = () => {
     }
 
     cart.value = data.value.cartRemoveMultipleItems;
-    toast.success("Product removed successfully");
+    toast.success({
+      component: CartToast,
+      props: {
+        message: t('cartRemoveProduct')
+      }
+    });
   };
 
   const totalItemsInCart = computed(() =>

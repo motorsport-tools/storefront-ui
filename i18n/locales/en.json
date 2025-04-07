@@ -161,7 +161,11 @@
   "vsfHomepage": "VSF Homepage",
   "home": "Home",
   "products": "Products",
-  "cart": "Cart",
+  "cart": "View Cart",
+  "cartLinkTitle": "View your cart",
+  "cartAddProduct": "Product added to cart",
+  "cartRemoveProduct": "Product removed successfully",
+  "cartUpdateProduct": "Product updated successfully",
   "wishlist": {
     "wishlist": "Wishlist",
     "emptyWishlist": "Your wishlist is empty",

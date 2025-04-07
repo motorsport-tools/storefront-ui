@@ -21,10 +21,12 @@ export const usePayment = () => {
     loading.value = false;
   };
 
-  const getPaymentConfirmation = async () => {
+  const getPaymentConfirmation = async (accessToken: string) => {
     loading.value = true;
-    const { data } = await $sdk().odoo.query<any, any>({
+    const { data } = await $sdk().odoo.queryNoCache<any, any>({
       queryName: QueryName.GetPaymentConfirmation,
+    }, {
+      accessToken: accessToken
     });
 
     if (data.value) {

@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import type { CustomCartData } from '~/graphql';
 import { SfButton } from '@storefront-ui/vue';
+import { useRoute } from 'vue-router'
+
 const { loadCart } = useCart();
 const { getPaymentConfirmation } = usePayment();
 
-const orderData = ref<any>({})
+const route = useRoute()
+console.log(route)
+const token = route.query?.token || ''
+
+const { data: orderData, error } = await useAsyncData('orderData', () => getPaymentConfirmation(token));
 
 onMounted(async () => {
-  orderData.value = await getPaymentConfirmation();
   await loadCart(true);
 });
 

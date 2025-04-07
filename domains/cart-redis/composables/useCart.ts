@@ -17,9 +17,9 @@ import { CartToast } from "#components";
 
 export const useCart = () => {
   const { $sdk } = useNuxtApp();
+  const { $i18n } = useNuxtApp()
   const toast = useToast();
   const cart = useState<Cart>("cart", () => ({}) as Cart);
-  const { t } = useI18n();
   const loading = useState<Object>('cartLoading', () => ({
     loading: false,
   }))
@@ -62,7 +62,7 @@ export const useCart = () => {
     toast.success({
       component: CartToast,
       props: {
-        message: t('cartAddProduct')
+        message: $i18n.t('cartAddProduct')
       }
     });
   };
@@ -89,7 +89,7 @@ export const useCart = () => {
     toast.success({
       component: CartToast,
       props: {
-        message: t('cartUpdateProduct')
+        message: $i18n.t('cartUpdateProduct')
       }
     });
   };
@@ -114,7 +114,7 @@ export const useCart = () => {
     toast.success({
       component: CartToast,
       props: {
-        message: t('cartRemoveProduct')
+        message: $i18n.t('cartRemoveProduct')
       }
     });
   };

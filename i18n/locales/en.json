@@ -323,6 +323,7 @@
         "shippingDetails": "Shipping Details"
       },
       "personalData": {
+        "menuDescription": "View and manage your personal details",
         "yourName": "Your name",
         "firstName": "First name",
         "lastName": "Last name",
@@ -338,6 +339,7 @@
         "passwordHelp": "Use 8 or more characters with a mix of letters, numbers and symbols."
       },
       "billingDetails": {
+        "menuDescription": "View and manager your billing details",
         "billingAddress": "Billing address",
         "edit": "Edit",
         "delete": "Delete",
@@ -346,6 +348,7 @@
         "sameAddress": "My billing address is the same of shipping"
       },
       "shippingDetails": {
+        "menuDescription": "View and manage your shipping details",
         "edit": "Edit",
         "delete": "Delete",
         "current": "Current",
@@ -354,6 +357,7 @@
       "addNewAddress": "Add new address"
     },
     "myOrders": {
+      "menuDescription": "View and manage your orders",
       "heading": "Orders",
       "orderId": "ID",
       "orderDate": "Order date",

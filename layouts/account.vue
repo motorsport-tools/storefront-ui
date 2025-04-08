@@ -118,36 +118,37 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const { logout } = useAuth();
+
 const sections = [
   {
-    title: t("account.accountSettings.heading"),
-    icon: SfIconPerson,
-    subsections: [
-      {
-        label: t("account.accountSettings.section.personalData"),
-        link: "/my-account/personal-data",
-      },
-      {
-        label: t("account.accountSettings.section.billingDetails"),
-        link: "/my-account/billing-details",
-      },
-      {
-        label: t("account.accountSettings.section.shippingDetails"),
-        link: "/my-account/shipping-details",
-      },
-    ],
+      title: t("account.accountSettings.heading"),
+      icon: SfIconPerson,
+      subsections: [
+          {
+              label: t("account.accountSettings.section.personalData"),
+              link: "/my-account/personal-data",
+          },
+          {
+              label: t("account.accountSettings.section.billingDetails"),
+              link: "/my-account/billing-details",
+          },
+          {
+              label: t("account.accountSettings.section.shippingDetails"),
+              link: "/my-account/shipping-details",
+          },
+      ],
   },
   {
-    title: t("account.myOrders.heading"),
-    icon: SfIconShoppingCart,
-    subsections: [
-      {
-        label: t("account.myOrders.section.myOrders"),
-        link: "/my-account/my-orders",
-      },
-    ],
+      title: t("account.myOrders.heading"),
+      icon: SfIconShoppingCart,
+      subsections: [
+          {
+              label: t("account.myOrders.section.myOrders"),
+              link: "/my-account/my-orders",
+          },
+      ],
   },
-];
+]
 
 const currentPath = computed(() => router.currentRoute.value.path);
 const path = "/my-account";

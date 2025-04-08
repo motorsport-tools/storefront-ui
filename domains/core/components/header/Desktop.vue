@@ -132,9 +132,10 @@ onClickOutside(formSearchTemplateRef, () => {
           class="hidden lg:flex flex-nowrap justify-end items-center md:ml-10 gap-x-1"
           aria-label="SF Navigation"
         >
-          <HeaderButtonWishlist />
-          <HeaderButtonCart />
           <HeaderButtonLogin />
+          <HeaderButtonCart />
+          <HeaderButtonWishlist />
+          
         </nav>
       </div>
       <HeaderCategoryMenu :referenceRef="menuRef"/>

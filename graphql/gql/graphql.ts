@@ -177,11 +177,6 @@ export type BlogTags = {
   totalCount: Scalars['Int']['output'];
 };
 
-export type Cart = {
-  frequentlyBoughtTogether: Maybe<Array<Maybe<Product>>>;
-  order: Maybe<Order>;
-};
-
 export type CartLineInput = {
   id: Scalars['Int']['input'];
   quantity: Scalars['Int']['input'];
@@ -1228,7 +1223,7 @@ export type Query = {
   order: CustomOrder;
   orders: Maybe<CustomOrders>;
   partner: Partner;
-  paymentConfirmation: Maybe<Cart>;
+  paymentConfirmation: Maybe<CustomCart>;
   paymentProvider: PaymentProvider;
   paymentProviders: Maybe<Array<PaymentProvider>>;
   paymentTransaction: PaymentTransaction;
@@ -1344,6 +1339,11 @@ export type QueryOrdersArgs = {
   filter?: InputMaybe<OrderFilterInput>;
   pageSize?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<OrderSortInput>;
+};
+
+
+export type QueryPaymentConfirmationArgs = {
+  accessToken: InputMaybe<Scalars['String']['input']>;
 };
 
 

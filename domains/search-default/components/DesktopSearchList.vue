@@ -18,7 +18,7 @@ const makeSearchBold = (text: string) => {
 };
 </script>
 <template>
-  <ul
+  <ul v-if="hits?.length > 0"
     tabindex="-1"
     role="listbox"
     class="absolute top-12 bg-white shadow-md rounded-md w-full overflow-hidden"
@@ -37,4 +37,5 @@ const makeSearchBold = (text: string) => {
       </span>
     </li>
   </ul>
+  <LazySearchNoResult v-else :search-text="searchText" />
 </template>

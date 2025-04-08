@@ -41,10 +41,15 @@ useTrapFocus(drawerRef, {
   initialFocus: 'container',
 });
 
+/*
 onClickOutside(menuRef, () => {
   close()
 })
+*/
 
+onClickOutside(formSearchTemplateRef, () => {
+  showResultSearch.value = false
+})
 </script>
 
 <template>
@@ -71,109 +76,23 @@ onClickOutside(menuRef, () => {
             <VsfLogo />
           </NuxtLink>
         </div>
-        <SfButton
-          class="hidden lg:flex text-white font-body bg-transparent hover:bg-primary-800 hover:text-white active:bg-primary-900 active:text-white ml-6"
-          type="button"
-          :aria-haspopup="true"
-          :aria-expanded="isOpen"
-          variant="tertiary"
-          square
-          @click="toggle()"
-        >
-          <template #suffix>
-            <Icon name="ion:chevron-down-sharp" />
-          </template>
-          <span class="hidden md:inline-flex whitespace-nowrap px-2">Browse products</span>
-        </SfButton>
-        <nav>
-          <ul>
-            <li role="none">
-              <transition
-                enter-active-class="transform transition duration-300 ease-in-out"
-                leave-active-class="transform transition duration-100 ease-in-out"
-                enter-from-class="-translate-x-full md:translate-x-0 md:opacity-0"
-                enter-to-class="translate-x-0 md:translate-x-0 md:opacity-100"
-                leave-from-class="translate-x-0 md:opacity-100"
-                leave-to-class="-translate-x-full md:translate-x-0 md:opacity-0"
-              >
-                <SfDrawer
-                  ref="drawerRef"
-                  v-model="isOpen"
-                  disable-click-away
-                  placement="top"
-                  class="bg-white p-0 max-h-screen overflow-y-auto lg:!absolute lg:!top-[5rem] max-w-full lg:p-6 top-index"
-                >
-                  <div
-                    class="grid grid-cols-1 lg:gap-x-6 lg:grid-cols-4 lg:narrow-container lg:relative"
-                  >
-                    <div
-                      v-for="{ name, childs, id, slug } in categoriesForMegaMenu"
-                      :key="id"
-                      class="[&:nth-child(2)]:pt-0 pt-6 md:pt-0 text-black"
-                    >
-                      <h2 @click="goTo(slug)"
-                        role="presentation"
-                        class="typography-text-base font-medium text-neutral-900 whitespace-nowrap p-4 lg:py-1.5 cursor-pointer"
-                      >
-                        {{ name }}
-                      </h2>
-                      <hr class="mb-3.5" />
-                      <ul>
-                        <li 
-                          v-for="child in childs" 
-                          :key="child.id"
-                        >
-                          <SfListItem
-                            v-if="child.childs !== null"
-                            tag="span"
-                            :to="child.slug"
-                            size="sm"
-                            role="none"
-                            class="typography-text-base lg:typography-text-sm py-4 lg:py-1.5"
-                            @click="goTo(child.slug)"
-                          >
-                            {{ child.name }}
-                          </SfListItem>
-                        </li>
-                      </ul>
-                    </div>
-                    
-                  </div>
-                  <SfButton
-                    square
-                    size="sm"
-                    variant="tertiary"
-                    aria-label="Close navigation menu"
-                    class="absolute right-5 top-5 hover:bg-white active:bg-white"
-                    @click="close()"
-                  >
-                    <Icon
-                      name="ion:close"
-                      class="text-neutral-500"
-                      size="20px"
-                    />
-                  </SfButton>
-                </SfDrawer>
-              </transition>
-            </li>
-          </ul>
-        </nav>
+        
         <form
-          ref="formSearchTemplateRef"
-          role="search"
-          class="hidden lg:flex flex-[100%] mt-2 md:mt-0 md:ml-10 pb-2 md:pb-0 relative w-full"
-          @submit.prevent
-        >
-          <SfInput
-            v-model="searchInputValue"
-            type="text"
-            class="[&::-webkit-search-cancel-button]:appearance-none"
-            placeholder="Search"
-            wrapper-class="flex-1 h-10 pr-0"
-            size="base"
-            @input="search()"
-            @keydown.enter.prevent="enterPress(searchHits[highlightedIndex])"
-          >
+           ref="formSearchTemplateRef"
+           role="search"
+           class="hidden lg:flex flex-[100%] mt-2 md:mt-0 md:ml-10 pb-2 md:pb-0 relative w-full"
+           @submit.prevent
+         >
+           <SfInput
+             v-model="searchInputValue"
+             type="text"
+             class="[&::-webkit-search-cancel-button]:appearance-none"
+             placeholder="Search"
+             wrapper-class="flex-1 h-10 pr-0"
+             size="base"
+             @input="search()"
+             @keydown.enter.prevent="enterPress"
+           >
             <template #suffix>
               <span class="flex items-center">
                 <SfButton
@@ -182,6 +101,7 @@ onClickOutside(menuRef, () => {
                   aria-label="search"
                   type="submit"
                   class="rounded-l-none hover:bg-transparent active:bg-transparent"
+                  @click="enterPress"
                 >
                   <Icon 
                     name="ion:search"

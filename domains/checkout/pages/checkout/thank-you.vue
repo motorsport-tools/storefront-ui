@@ -7,7 +7,6 @@ const { loadCart } = useCart();
 const { getPaymentConfirmation } = usePayment();
 
 const route = useRoute()
-console.log(route)
 const token = route.query?.token || ''
 
 const { data: orderData, error } = await useAsyncData('orderData', () => getPaymentConfirmation(token));

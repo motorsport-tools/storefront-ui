@@ -1,19 +1,15 @@
 <script lang="ts" setup>
 import {
   SfButton,
-  SfDrawer,
-  SfIconClose,
   SfIconMenu,
-  SfIconSearch,
-  SfListItem,
   useDisclosure,
   useTrapFocus,
 } from '@storefront-ui/vue'
 import { onClickOutside } from '@vueuse/core'
+import { HeaderButtonSearch } from '#components'
 import type { Category } from '~/graphql'
 
 const { isOpen, toggle, close } = useDisclosure()
-const { searchModalToggle } = useSearch()
 
 const NuxtLink = resolveComponent('NuxtLink')
 
@@ -70,14 +66,7 @@ const megaMenuClick = (menuType: string[]) => {
       
 
       <div class="flex justify-end">
-        <SfButton
-          variant="tertiary"
-          class="relative text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 rounded-md"
-          square
-          @click="searchModalToggle"
-        >
-          <SfIconSearch />
-        </SfButton>
+        <HeaderButtonSearch />
         <SfButton
           class="block text-white font-body bg-transparent hover:bg-primary-800 hover:text-white active:bg-primary-900 active:text-white self-end"
           type="button"
@@ -92,6 +81,5 @@ const megaMenuClick = (menuType: string[]) => {
       </div>
     </div>
     <HeaderCategoryMenu :referenceRef="menuRef" ref="categoryMenuRef"/>
-    <MobileSearchList search-text="123" />
   </header>
 </template>

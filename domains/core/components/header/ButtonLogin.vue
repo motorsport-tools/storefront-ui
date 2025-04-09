@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { SfButton, SfDropdown, SfListItem, useDisclosure } from "@storefront-ui/vue";
+import { SfButton, SfDropdown, SfListItem, SfLoaderCircular, useDisclosure } from "@storefront-ui/vue";
 
 const NuxtLink = resolveComponent("NuxtLink");
 
@@ -47,49 +47,55 @@ onMounted( () => {
       </SfButton>
     </template>
     <div class="p-2 rounded bg-white top-[-20px] shadow-md">
-      <div v-if="!isAuthenticated"
-        class="flex flex-col text-black"
-      >
-        <SfButton
-          :tag="NuxtLink"
-          :to="loginLink"
-          size="sm"
+      <div v-if="!loading">
+        <div v-if="!isAuthenticated"
+          class="flex flex-col text-black"
         >
-          Sign in
-        </SfButton>
-        <p class="text-xs py-2">New customer? <NuxtLink to="/signup" class="underline text-blue">Create an account</NuxtLink></p>
-      </div>
-      <div class="flex flex-col text-black max-w-sm gap-4">
-        <SfListItem size="sm" to="/my-account/my-orders" :tag="NuxtLink">
-          <div class="break-words font-bold font-heading uppercase">{{ $t('account.myOrders.myOrders') }}</div>
-          <span class="text-xs text-neutral-500 break-words truncate">
-            {{ $t('account.myOrders.menuDescription') }}  
-          </span>
-        </SfListItem>
-        <SfListItem size="sm" to="/my-account/personal-data" :tag="NuxtLink">
-          <div class="break-words font-bold font-heading uppercase">{{ $t('account.accountSettings.section.personalData') }}</div>
-          <span class="text-xs text-neutral-500 break-words truncate">
-            {{ $t('account.accountSettings.personalData.menuDescription') }}  
-          </span>
-        </SfListItem>
-        <SfListItem size="sm" to="/my-account/billing-details" :tag="NuxtLink">
-          <div class="break-words font-bold font-heading uppercase">{{ $t('account.accountSettings.section.billingDetails') }}</div>
-          <span class="text-xs text-neutral-500 break-words truncate">
-            {{ $t('account.accountSettings.billingDetails.menuDescription') }}  
-          </span>
-        </SfListItem>
-        
-        <SfListItem size="sm" to="/my-account/shipping-details" :tag="NuxtLink">
-          <div class="break-words font-bold font-heading uppercase">{{ $t('account.accountSettings.section.shippingDetails') }}</div>
-          <span class="text-xs text-neutral-500 break-words truncate">
-            {{ $t('account.accountSettings.shippingDetails.menuDescription') }}  
-          </span>
-        </SfListItem>
+          <SfButton
+            :tag="NuxtLink"
+            :to="loginLink"
+            size="sm"
+            class="py-2"
+          >
+            Sign in
+          </SfButton>
+          <p class="text-xs text-center py-2">New customer? <NuxtLink to="/signup" class="underline text-blue-600 ">Create an account</NuxtLink></p>
+        </div>
+        <div class="flex flex-col text-black max-w-sm gap-4">
+          <SfListItem size="sm" to="/my-account/my-orders" :tag="NuxtLink">
+            <div class="break-words font-bold font-heading uppercase">{{ $t('account.myOrders.myOrders') }}</div>
+            <span class="text-xs text-neutral-500 break-words truncate">
+              {{ $t('account.myOrders.menuDescription') }}  
+            </span>
+          </SfListItem>
+          <SfListItem size="sm" to="/my-account/personal-data" :tag="NuxtLink">
+            <div class="break-words font-bold font-heading uppercase">{{ $t('account.accountSettings.section.personalData') }}</div>
+            <span class="text-xs text-neutral-500 break-words truncate">
+              {{ $t('account.accountSettings.personalData.menuDescription') }}  
+            </span>
+          </SfListItem>
+          <SfListItem size="sm" to="/my-account/billing-details" :tag="NuxtLink">
+            <div class="break-words font-bold font-heading uppercase">{{ $t('account.accountSettings.section.billingDetails') }}</div>
+            <span class="text-xs text-neutral-500 break-words truncate">
+              {{ $t('account.accountSettings.billingDetails.menuDescription') }}  
+            </span>
+          </SfListItem>
+          
+          <SfListItem size="sm" to="/my-account/shipping-details" :tag="NuxtLink">
+            <div class="break-words font-bold font-heading uppercase">{{ $t('account.accountSettings.section.shippingDetails') }}</div>
+            <span class="text-xs text-neutral-500 break-words truncate">
+              {{ $t('account.accountSettings.shippingDetails.menuDescription') }}  
+            </span>
+          </SfListItem>
 
-        <SfListItem v-if="isAuthenticated" size="sm" to="/" @click="logout()" :tag="NuxtLink">
-          <div class="break-words font-bold font-heading uppercase">{{ $t('account.logout') }}</div>
-        </SfListItem>
-        
+          <SfListItem v-if="isAuthenticated" size="sm" to="/" @click="logout()" :tag="NuxtLink">
+            <div class="break-words font-bold font-heading uppercase">{{ $t('account.logout') }}</div>
+          </SfListItem>
+          
+        </div>
+      </div>
+      <div v-else class="flex flex-col align-center justify-center">
+        <SfLoaderCircular size="xl"/>
       </div>
     </div>
   </SfDropdown>

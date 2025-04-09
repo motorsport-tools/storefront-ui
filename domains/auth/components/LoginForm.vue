@@ -30,7 +30,6 @@ if(!props.redirectTo && queryRedirect) {
 }
 
 const handleLogin = async () => {
-
     await login({ email: email.value, password: password.value }, redirectUrl );
 };
 

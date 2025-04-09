@@ -14,6 +14,7 @@ definePageMeta({
 
 
 const NuxtLink = resolveComponent("NuxtLink");
+
 </script>
 
 <template>

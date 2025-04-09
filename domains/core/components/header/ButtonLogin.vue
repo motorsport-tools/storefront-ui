@@ -86,7 +86,7 @@ onMounted( () => {
           </span>
         </SfListItem>
 
-        <SfListItem size="sm" to="/" @click="logout()" :tag="NuxtLink">
+        <SfListItem v-if="isAuthenticated" size="sm" to="/" @click="logout()" :tag="NuxtLink">
           <div class="break-words font-bold font-heading uppercase">{{ $t('account.logout') }}</div>
         </SfListItem>
         

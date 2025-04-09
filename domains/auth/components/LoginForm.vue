@@ -16,9 +16,22 @@ const props = defineProps({
     redirectTo: String
 })
 
+const route = useRoute()
+const queryRedirect = route.query?.redirect || false
+
+let redirectUrl: String | Boolean  = false
+
+if(props.redirectTo) {
+    redirectUrl = props.redirectTo
+}
+
+if(!props.redirectTo && queryRedirect) {
+    redirectUrl = queryRedirect
+}
+
 const handleLogin = async () => {
 
-    await login({ email: email.value, password: password.value }, props.redirectTo? props.redirectTo : false );
+    await login({ email: email.value, password: password.value }, redirectUrl );
 };
 
 const NuxtLink = resolveComponent("NuxtLink");

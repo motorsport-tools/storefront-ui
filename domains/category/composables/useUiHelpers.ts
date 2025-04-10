@@ -8,14 +8,21 @@ export const useUiHelpers = () => {
 
   const queryParamsNotFilters = ["page", "sort", "itemsPerPage"];
   const localePrefixes = ["/en", "/de", "/ru"];
+
   const pathToSlug = (): string => {
     for (const localePrefix of localePrefixes) {
       if (path.startsWith(localePrefix)) {
         return path.replace(localePrefix, "");
       }
     }
-    return path;
+    const slug = Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug
+    return `/` + slug
   };
+
+  const cleanFullSearchIndex = getUniqueUrlFromRouteFilteringByAttributes(
+    route.path,
+    route
+  );
 
   const getFacetsFromURL = (
     query: any,
@@ -26,7 +33,7 @@ export const useUiHelpers = () => {
 
     if (newQuery) {
       Object.keys(newQuery).forEach((filterKey) => {
-        if (![...queryParamsNotFilters, "price"].includes(filterKey)) {
+        if (![...queryParamsNotFilters, "Price"].includes(filterKey)) {
           if (query[filterKey].includes(",")) {
             query[filterKey]?.split(",").forEach((item) => {
               filters.push(item);
@@ -40,7 +47,7 @@ export const useUiHelpers = () => {
     }
 
     const price = query?.price?.split("-");
-
+    const availability = query?.Availability ? true : false
     const pageSize = query.itemsPerPage ? parseInt(query.itemsPerPage) : 12;
     const sort = query?.sort?.split(",") || [];
     const page = query?.page || 1;
@@ -50,6 +57,7 @@ export const useUiHelpers = () => {
       maxPrice: Number(price?.[1]) || null,
       attribValues: filters,
       categorySlug: path === "/" || path === "/search" ? null : pathToSlug(),
+      inStock: availability,
       ids: ids,
     } as ProductFilterInput;
 
@@ -68,7 +76,7 @@ export const useUiHelpers = () => {
 
       const valueList = query[label].split(",");
       valueList.forEach((value: string) => {
-        if (label === "price") {
+        if (label === "Price") {
           const item = {
             filterName: label,
             label: `${value.slice(0, 2)}`,
@@ -88,10 +96,29 @@ export const useUiHelpers = () => {
     return formattedFilters;
   };
 
+  const selectedFilters = useState<any[]>(
+    `category-selected-filters${cleanFullSearchIndex}`,
+    () => facetsFromUrlToFilter() || []
+  );
+
+
+  const isFilterSelected = (option: any) => {
+    return selectedFilters.value.some(
+      (filter: { id: any }) => String(filter.id) === String(option.id),
+    )
+  }
+
+  const isStockSelected = () => {
+    return selectedFilters.value.some(
+      (filter: { filterName: string; id: string }) =>
+        filter.filterName === "Availability" && filter.id === "true"
+    );
+  }
+
   const changeFilters = (filters: any[], sort: string) => {
     const formattedFilters: any = {};
     filters.forEach((element) => {
-      if (element.filterName === "price") {
+      if (element.filterName === "Price") {
         element.label = element.id;
       }
 
@@ -124,5 +151,8 @@ export const useUiHelpers = () => {
     getFacetsFromURL,
     changeFilters,
     facetsFromUrlToFilter,
+    isFilterSelected,
+    isStockSelected,
+    selectedFilters
   };
 };

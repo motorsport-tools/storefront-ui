@@ -8,6 +8,7 @@ import type {
   WishlistData,
   Country,
   ShippingMethod,
+  EasyShipRates,
   AdyenTransactionResult,
   AdyenProviderInfoResult,
   AdyenPaymentMethodsResult,
@@ -19,6 +20,7 @@ import type {
   RvvupPaymentDetailsResult,
   RvvupPaymentsResult,
   PaymentProvider,
+  StripeProviderInfoResult,
   Orders,
   Order,
   Invoice,
@@ -26,6 +28,9 @@ import type {
   AddressEnum,
   State,
   User,
+  WishlistItem,
+  StripeGetInlineFormValuesResult,
+  StripeTransactionResult,
 } from "./gql/graphql";
 import type { H3Error } from "h3";
 import type { AsyncData } from "#app";
@@ -54,6 +59,7 @@ export type ProductTemplateListResponse = AsyncData<
       maxPrice?: number;
       minPrice?: number;
       totalCount: number;
+      filterCounts: any[];
       products: Product[];
     };
   },
@@ -108,6 +114,21 @@ export type CartAddItemResponse = AsyncData<
   },
   H3Error
 >;
+
+export type setShippingMethodResponse = AsyncData<
+  {
+    setShippingMethod: Cart
+  },
+  H3Error
+>;
+
+export type SetRateCartResponse = AsyncData<
+  {
+    setRate: Cart
+  },
+  H3Error
+>;
+
 export type ApplyDiscountsResponse = AsyncData<
   {
     order: Order;
@@ -148,6 +169,17 @@ export type RegisterUserResponse = AsyncData<
     name: string;
     email: string;
     partner: Partner;
+  },
+  H3Error
+>;
+
+export type LoginResponse = AsyncData<
+  {
+    login: {
+      cart: Cart;
+      user: User;
+      wishlistItems: WishlistData;
+    };
   },
   H3Error
 >;
@@ -270,6 +302,12 @@ export type DeliveryMethodListResponse = AsyncData<
   {
     deliveryMethods: ShippingMethod[];
   },
+  H3Error
+>;
+
+export type EasyShipRatesResponse = AsyncData<{
+  rates: EasyShipRates[];
+},
   H3Error
 >;
 
@@ -399,3 +437,26 @@ export type RvvupPaymentsResponse = AsyncData<
   },
   H3Error
 >;
+
+/* Stripe */
+
+export type StripeProviderInfoResponse = AsyncData<
+  {
+    stripeProviderInfo: StripeProviderInfoResult
+  },
+  H3Error
+>
+
+export type StripeGetInlineFormValueResponse = AsyncData<
+  {
+    stripeGetInlineFormValues: StripeGetInlineFormValuesResult
+  },
+  H3Error
+>
+
+export type StripeTransactionResponse = AsyncData<
+  {
+    stripeTransaction: StripeTransactionResult
+  },
+  H3Error
+>

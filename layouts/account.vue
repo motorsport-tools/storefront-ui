@@ -59,7 +59,7 @@
                   'first-of-type:py-4 md:first-of-type:px-4 md:first-of-type:py-2 px-0 md:px-4 rounded-md active:bg-primary-100 !text-neutral-900',
                   {
                     'font-medium bg-primary-100':
-                      router.currentRoute.value.path === link,
+                    router.currentRoute.value.path.startsWith(link),
                   },
                 ]"
               >
@@ -79,7 +79,7 @@
               class="py-4 md:py-2 mt-4 rounded-md active:bg-primary-100 !text-neutral-900"
               @click="handleLogout"
             >
-              <template #prefix><SfIconBase /></template>
+              <template #prefix><SfIconLogout /></template>
               {{ $t("account.logout") }}
             </SfListItem>
           </ul>
@@ -98,13 +98,13 @@
   <Newsletter />
   <TheFooter />
   <WishlistSidebar />
-  <LiveChat />
   <BottomNavbar />
 </template>
 
 <script setup>
 import {
   SfIconBase,
+  SfIconLogout,
   SfIconPerson,
   SfIconShoppingCart,
   SfListItem,
@@ -118,36 +118,37 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const { logout } = useAuth();
+
 const sections = [
   {
-    title: t("account.accountSettings.heading"),
-    icon: SfIconPerson,
-    subsections: [
-      {
-        label: t("account.accountSettings.section.personalData"),
-        link: "/my-account/personal-data",
-      },
-      {
-        label: t("account.accountSettings.section.billingDetails"),
-        link: "/my-account/billing-details",
-      },
-      {
-        label: t("account.accountSettings.section.shippingDetails"),
-        link: "/my-account/shipping-details",
-      },
-    ],
+      title: t("account.accountSettings.heading"),
+      icon: SfIconPerson,
+      subsections: [
+          {
+              label: t("account.accountSettings.section.personalData"),
+              link: "/my-account/personal-data",
+          },
+          {
+              label: t("account.accountSettings.section.billingDetails"),
+              link: "/my-account/billing-details",
+          },
+          {
+              label: t("account.accountSettings.section.shippingDetails"),
+              link: "/my-account/shipping-details",
+          },
+      ],
   },
   {
-    title: t("account.myOrders.heading"),
-    icon: SfIconShoppingCart,
-    subsections: [
-      {
-        label: t("account.myOrders.section.myOrders"),
-        link: "/my-account/my-orders",
-      },
-    ],
+      title: t("account.myOrders.heading"),
+      icon: SfIconShoppingCart,
+      subsections: [
+          {
+              label: t("account.myOrders.section.myOrders"),
+              link: "/my-account/my-orders",
+          },
+      ],
   },
-];
+]
 
 const currentPath = computed(() => router.currentRoute.value.path);
 const path = "/my-account";

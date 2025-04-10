@@ -2,10 +2,6 @@
 defineProps<{
   heading: string;
 }>();
-
-const { loadUser } = useAuth();
-
-await loadUser(true);
 </script>
 
 <template>

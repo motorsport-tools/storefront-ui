@@ -12,7 +12,7 @@ import {
 const { toggleWishlistSideBar } = useWishlistUiState();
 const { loadWishlist, wishlistTotalItems } = useWishlist();
 
-const { cart, loadCart, totalItemsInCart } = useCart();
+const { totalItemsInCart } = useCart();
 
 
 const NuxtLink = resolveComponent("NuxtLink");
@@ -27,10 +27,6 @@ const handleWishlistSideBar = async () => {
   toggleWishlistSideBar();
   await loadWishlist();
 };
-
-onMounted(async () => {
-  await loadCart(true);
-});
 </script>
 
 <template>

@@ -4,12 +4,13 @@ const config: CodegenConfig = {
   overwrite: true,
   schema: [
     {
-      'https://vsfdemo17.labs.odoogap.com/graphql/vsf': {},
+      'https://odoo.motorsport-tools.co.uk/graphql/vsf': {},
     },
   ],
   config: {
     preResolveTypes: true,
     avoidOptionals: true,
+    useTypeImports: true,
   },
   ignoreNoDocuments: true,
   generates: {
@@ -19,6 +20,7 @@ const config: CodegenConfig = {
       config: {
         preResolveTypes: true,
         avoidOptionals: true,
+        useTypeImports: true,
       },
     },
   },

@@ -1,9 +1,12 @@
+import type { NuxtRoute } from "@typed-router/__router";
+import type { RoutesNamesList } from "@typed-router/__routes";
 import { useToast } from "vue-toastification";
 import type {
   ChangePasswordResponse,
   CreateUpdatePartnerResponse,
   LoadUserQueryResponse,
   LoginUserResponse,
+  LoginResponse,
   MutationChangePasswordArgs,
   MutationCreateUpdatePartnerArgs,
   MutationLoginArgs,
@@ -15,25 +18,26 @@ import type {
   RegisterUserResponse,
   ResetPasswordResponse,
   UpdatePasswordResponse,
+  Cart,
 } from "~/graphql";
 import { MutationName } from "~/server/mutations";
 import { QueryName } from "~/server/queries";
 
 export const useAuth = () => {
-  const { $sdk } = useNuxtApp();
-  const router = useRouter();
-  const userCookie = useCookie<any | null>("odoo-user", { maxAge: 3600 * 30, sameSite: "Lax" });
+  const { $sdk } = useNuxtApp()
+  const router = useRouter()
+  const { cart } = useCart()
+  const userCookie = useCookie<any | null>("odoo-user", { maxAge: 3600 * 30, sameSite: "lax" })
   const user = useState<Partner>("user", () => ({}) as Partner);
 
-  const toast = useToast();
+  const toast = useToast()
 
-  const loading = ref(false);
+  const loading = ref(false)
   const resetEmail = useCookie<string>("reset-email");
 
   const loadUser = async (withoutCache: boolean = false) => {
-    loading.value = true;
-
-    const query = withoutCache ? $sdk().odoo.queryNoCache : $sdk().odoo.query;
+    loading.value = true
+    const query = withoutCache ? $sdk().odoo.queryNoCache : $sdk().odoo.query
 
     const { data } = await query<null, LoadUserQueryResponse>({
       queryName: QueryName.LoadUserQuery,
@@ -64,6 +68,7 @@ export const useAuth = () => {
   const logout = async () => {
     userCookie.value = null;
     user.value = {} as Partner;
+    cart.value = {} as Cart
     await $sdk().odoo.mutation<null, null>({
       mutationName: MutationName.LogoutMutation,
     });
@@ -92,20 +97,25 @@ export const useAuth = () => {
     router.push("/my-account/personal-data");
   };
 
-  const login = async (params: MutationLoginArgs) => {
+  const login = async (params: MutationLoginArgs, redirectTo: any | false = false) => {
     loading.value = true;
     const { data, error } = await $sdk().odoo.mutation<
       MutationLoginArgs,
-      LoginUserResponse
+      LoginResponse
     >({ mutationName: MutationName.LoginMutation }, { ...params });
+
     if (error.value) {
       toast.error(error.value?.data?.message);
       return;
     }
 
-    userCookie.value = data.value.login.partner;
-    user.value = data.value.login.partner;
-    router.push("/my-account/personal-data");
+    userCookie.value = data.value.login.user?.partner;
+    user.value = data.value.login.user?.partner as Partner
+    cart.value.order = data.value.cart || {} as Cart
+    if (!redirectTo) {
+      redirectTo = "/my-account/personal-data"
+    }
+    router.push(redirectTo);
   };
 
   const resetPassword = async (params: MutationResetPasswordArgs) => {
@@ -162,7 +172,7 @@ export const useAuth = () => {
   };
 
   const isAuthenticated = computed(() => {
-    return user?.value?.id || Boolean(userCookie.value);
+    return Boolean(userCookie.value)
   });
 
   return {

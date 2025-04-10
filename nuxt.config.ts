@@ -1,22 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-
-  app: {
-    head: {
-      viewport: "minimum-scale=1, initial-scale=1, width=device-width",
-      title: "Motorsport-Tools.com - The Mk1 and Mk2 Ford Escort Rally Specialists",
-      htmlAttrs: {
-        lang: "en",
-      },
-      meta: [{ name: "robots", content: "noindex, nofollow" }],
-    },
-  },
-
-  robots: {
-    allow: "/category/*",
-  },
-
   extends: [
     "./domains/auth",
     "./domains/recent-view-products",
@@ -27,11 +11,12 @@ export default defineNuxtConfig({
     "./domains/core",
     "./domains/my-account",
     "./domains/product",
-    "./domains/payment_rvvup",
+    //"./domains/payment_rvvup",
     //"./domains/search-algolia",
     "./domains/search-default",
     "./domains/wishlist",
     "./domains/live-chat",
+    "./domains/guest",
   ],
 
   modules: [
@@ -42,15 +27,33 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@nuxt/scripts",
     "@nuxtjs/device",
-    "@nuxtjs/i18n",
     "@nuxtjs/google-fonts",
-    "nuxt-lazy-hydrate",
     "nuxt-lodash",
     "nuxt-icon",
     "nuxt-delay-hydration",
     "nuxt-typed-router",
     "nuxt-clarity-analytics",
+    '@nuxtjs/robots',
+    '@nuxt/eslint',
+    'nuxt-viewport',
+    '@nuxtjs/sitemap',
   ],
+  app: {
+    head: {
+      viewport:
+        "width=device-width, initial-scale=1, maximum-scale=5, user-scalable=no",
+      title: 'Motorsport-Tools.com - The Mk1 and Mk2 Ford Escort Rally Specialists',
+      htmlAttrs: {
+        lang: 'en',
+      },
+      meta: [{ name: 'robots', content: 'noindex, nofollow' }],
+    },
+  },
+  site: {
+    name: 'ERPGAP VSF',
+    description: 'Welcome to an awesome ecommerce site!',
+    defaultLocale: 'en',
+  },
 
   runtimeConfig: {
     shouldByPassCacheQueryNames: [
@@ -70,21 +73,30 @@ export default defineNuxtConfig({
 
   googleFonts: {
     families: {
-      "Red Hat Display": [400, 500, 700],
+      "Poppins": [400, 500, 700],
+      "Metrophobic": [400, 500, 700],
     },
+    display: 'swap',
   },
 
   i18n: {
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
+    legacy: false,
     locales: [
       {
         code: "en",
+        name: "English",
         file: "en.json",
+        language: "en-UK",
+        country: "United Kingdom",
       },
     ],
     strategy: "no_prefix",
     lazy: true,
-    langDir: "lang",
     defaultLocale: "en",
+    vueI18n: "~/i18n.config.ts",
   },
 
   delayHydration: {
@@ -153,12 +165,19 @@ export default defineNuxtConfig({
   },
   experimental: {
     crossOriginPrefetch: true,
+    asyncContext: false,
   },
-  site: {
-    url: "https://vsfsdk.labs.odoogap.com/",
-    name: "ERPGAP VSF",
-    description: "Welcome to an awesome ecommerce site!",
-    defaultLocale: "en",
+
+  sitemap: {
+    sources: ['/api/sitemap/urls/products', '/api/sitemap/urls/categories'],
+    runtimeCacheStorage: {
+      driver: process.env.NUXT_STORAGE_DRIVER,
+    }
+  },
+
+  robots: {
+    allow: ['/category/*', '/product/*'],
+    disallow: ['/cart', '/checkout/*', '/my-account/*', '/forgot-password', '/search?'],
   },
 
   tailwindcss: {
@@ -169,8 +188,16 @@ export default defineNuxtConfig({
     refreshOnResize: true,
   },
 
-  experimental: {
-    asyncContext: false,
+  viewport: {
+    breakpoints: {
+      "2xl": 1536,
+      xxl: 1440,
+      xl: 1280,
+      lg: 1024,
+      md: 768,
+      sm: 640,
+      xs: 376,
+    },
   },
 
   devServer: {

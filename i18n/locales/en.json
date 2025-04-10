@@ -37,7 +37,8 @@
   "itemsSubtotal": "Items subtotal",
   "originalPrice": "Original price",
   "savings": "Savings",
-  "estimatedTax": "Estimated Sales Tax",
+  "beforeTax": "Total before VAT",
+  "estimatedTax": "Estimated VAT",
   "apply": "Apply",
   "total": "Total",
   "goToCheckout": "Go to checkout",
@@ -76,19 +77,30 @@
   "returnPreviousPage": "Return to previous page",
   "emptyStateAltText": "Image for no products found",
   "resultsFor": "Results for \"{phrase}\"",
+  "noResultsFor": "No results found for",
+  "tryAnotherSearch": "Try another search.",
+  "seeAllProducts": "See all products",
   "prevAriaLabel": "Go to previous page",
   "nextAriaLabel": "Go to next page",
   "secondPageAriaLabel": "Second page",
   "lastPageAriaLabel": "Last page",
   "currentPage": "Page {page} of {totalPages}",
   "checkout": "Checkout",
-  "backToCart": "Back to My Cart",
+  "backToCart": "Back to Cart",
   "back": "Back",
   "placeOrder": "Place order and pay",
   "termsInfo": "By placing my order, you agree to our {terms} and our {privacyPolicy}",
   "termsAndConditions": "Terms and Conditions",
   "privacyPolicy": "Privacy Policy",
   "tomorrow": "Tomorrow",
+  "coupon": {
+    "title": "Have a discount code?",
+    "remove": "Remove",
+    "invalid": "Code is invalid",
+    "apply": "Apply",
+    "enterCode": "Enter code",
+    "name": "Code"
+  },
   "contactInfo": {
     "heading": "Contact Information",
     "description": "Add your email and phone number to communicate with the store.",
@@ -113,7 +125,7 @@
     "promoOrGiftcard": "Promo code or gift card"
   },
   "checkoutMethod": {
-    "heading": "Payment method",
+    "heading": "Payment method"
   },
   "shippingMethod": {
     "heading": "Shipping details",
@@ -146,7 +158,11 @@
   "vsfHomepage": "VSF Homepage",
   "home": "Home",
   "products": "Products",
-  "cart": "Cart",
+  "cart": "View Cart",
+  "cartLinkTitle": "View your cart",
+  "cartAddProduct": "Product added to cart",
+  "cartRemoveProduct": "Product removed successfully",
+  "cartUpdateProduct": "Product updated successfully",
   "wishlist": {
     "wishlist": "Wishlist",
     "emptyWishlist": "Your wishlist is empty",
@@ -301,6 +317,7 @@
         "shippingDetails": "Shipping Details"
       },
       "personalData": {
+        "menuDescription": "View and manage your personal details",
         "yourName": "Your name",
         "firstName": "First name",
         "lastName": "Last name",
@@ -316,6 +333,7 @@
         "passwordHelp": "Use 8 or more characters with a mix of letters, numbers and symbols."
       },
       "billingDetails": {
+        "menuDescription": "View and manager your billing details",
         "billingAddress": "Billing address",
         "edit": "Edit",
         "delete": "Delete",
@@ -324,6 +342,7 @@
         "sameAddress": "My billing address is the same of shipping"
       },
       "shippingDetails": {
+        "menuDescription": "View and manage your shipping details",
         "edit": "Edit",
         "delete": "Delete",
         "current": "Current",
@@ -332,6 +351,7 @@
       "addNewAddress": "Add new address"
     },
     "myOrders": {
+      "menuDescription": "View and manage your orders",
       "heading": "Orders",
       "orderId": "ID",
       "orderDate": "Order date",
@@ -421,5 +441,16 @@
       "help": "8 or more characters with a mix of letters, numbers and symbols.",
       "description": "Create the new password you want to use to log in to your account."
     }
+  },
+  "guest": {
+    "guestCheckout": "Guest Checkout",
+    "continueAsGuest": "Continue as guest",
+    "loginHeading": "Login to checkout faster",
+    "noAccount": "Don't have an account yet?",
+    "createAfterOrder": "You can create an account after your order is complete."
+  },
+  "thankYou": {
+    "thankYou": "Thank you - your order #{orderNumber} has been received",
+    "text": "We will begin processing your order, you will receive email confirmation shortly"
   }
 }

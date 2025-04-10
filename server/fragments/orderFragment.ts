@@ -9,6 +9,8 @@ amountGiftCards
 coupons {
   id
   code
+  name
+  programType
 }
 giftCards {
   id
@@ -26,7 +28,9 @@ websiteOrderLine {
   priceSubtotal
   coupon {
     id
-  code
+    code
+    name
+    programType
   }
   giftCard {
     id
@@ -78,6 +82,17 @@ orderLines {
   id
   name
   priceSubtotal
+  isClickAndCollect
+  isDelivery
+  isRewardLine
+  isConfigurableProduct
+  isService
+  coupon {
+    id
+    code
+    name
+    programType
+  }
   product {
     id
     name
@@ -135,6 +150,9 @@ shippingMethod{
   id
   name
   price
+}
+shippingRate {
+  serviceId
 }
 partner {
   id

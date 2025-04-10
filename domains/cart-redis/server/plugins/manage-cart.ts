@@ -1,6 +1,7 @@
-import { AddressType, type Cart } from "~/graphql";
-import { MutationName } from "~/server/mutations";
-import { QueryName } from "~/server/queries";
+import { AddressType, type Cart } from "~/graphql"
+import { MutationName } from "~/server/mutations"
+import { QueryName } from "~/server/queries"
+import { updateCart, reduceCart } from "../utils/cartHelpers.js"
 
 /**
  * This plugin is responsible for managing the cart cache.
@@ -16,6 +17,7 @@ export default defineNitroPlugin((nitro) => {
         cartUpdateItem(event, body),
         updateAddress(event, body),
         updateShipping(event, body),
+        setEasyshipRate(event, body),
         addAddress(event, body),
         createUpdatePartner(event, body),
         applyCoupon(event, body),
@@ -26,21 +28,12 @@ export default defineNitroPlugin((nitro) => {
     }
   });
 });
+
 async function cartAddItem(event: any, body: any) {
   const requestBody = await readBody(event);
 
   if (requestBody[0]?.mutationName === MutationName.CartAddItem) {
-    const session = await useSession(event, {
-      password: "b013b03ac2231e0b448e9a22ba488dcf",
-    });
-
-    const keyName = `cache:cart:${session?.id}`;
-    const currentCart = (await useStorage().getItem<{ cart: Cart }>(
-      keyName
-    )) || { cart: {} };
-
-    const cart = Object.assign({}, currentCart.cart, body.cartAddMultipleItems);
-    useStorage().setItem(keyName, { cart });
+    await updateCart(event, body.cartAddMultipleItems)
   }
 }
 
@@ -48,17 +41,7 @@ async function applyCoupon(event: any, body: any) {
   const requestBody = await readBody(event);
 
   if (requestBody[0]?.mutationName === MutationName.ApplyCouponMutation) {
-    const session = await useSession(event, {
-      password: "b013b03ac2231e0b448e9a22ba488dcf",
-    });
-
-    const keyName = `cache:cart:${session?.id}`;
-    const currentCart = (await useStorage().getItem<{ cart: Cart }>(
-      keyName
-    )) || { cart: {} };
-
-    const cart = Object.assign({}, currentCart.cart, body.applyCoupon);
-    useStorage().setItem(keyName, { cart });
+    await updateCart(event, body.applyCoupon)
   }
 }
 
@@ -66,59 +49,21 @@ async function applyGiftCard(event: any, body: any) {
   const requestBody = await readBody(event);
 
   if (requestBody[0]?.mutationName === MutationName.ApplyGiftCardMutation) {
-    const session = await useSession(event, {
-      password: "b013b03ac2231e0b448e9a22ba488dcf",
-    });
-
-    const keyName = `cache:cart:${session?.id}`;
-    const currentCart = (await useStorage().getItem<{ cart: Cart }>(
-      keyName
-    )) || { cart: {} };
-
-    const cart = Object.assign({}, currentCart.cart, body.applyGiftCard);
-    useStorage().setItem(keyName, { cart });
+    await updateCart(event, body.applyGiftCard)
   }
 }
 
 async function cartRemoveItem(event: any, body: any) {
   const requestBody = await readBody(event);
   if (requestBody[0]?.mutationName === MutationName.CartRemoveItem) {
-    const session = await useSession(event, {
-      password: "b013b03ac2231e0b448e9a22ba488dcf",
-    });
-
-    const keyName = `cache:cart:${session?.id}`;
-    const currentCart = (await useStorage().getItem<{ cart: Cart }>(
-      keyName
-    )) || { cart: {} };
-
-    const cart = Object.assign(
-      {},
-      currentCart.cart,
-      body.cartRemoveMultipleItems
-    );
-    await useStorage().setItem(keyName, { cart });
+    await updateCart(event, body.cartRemoveMultipleItems)
   }
 }
 
 async function cartUpdateItem(event: any, body: any) {
   const requestBody = await readBody(event);
   if (requestBody[0]?.mutationName === MutationName.CartUpdateQuantity) {
-    const session = await useSession(event, {
-      password: "b013b03ac2231e0b448e9a22ba488dcf",
-    });
-
-    const keyName = `cache:cart:${session?.id}`;
-    const currentCart = (await useStorage().getItem<{ cart: Cart }>(
-      keyName
-    )) || { cart: {} };
-
-    const cart = Object.assign(
-      {},
-      currentCart.cart,
-      body.cartUpdateMultipleItems
-    );
-    await useStorage().setItem(keyName, { cart });
+    await updateCart(event, body.cartUpdateMultipleItems)
   }
 }
 
@@ -137,7 +82,9 @@ async function addAddress(event: any, body: any) {
     } else {
       currentCart.cart.order.partnerInvoice = body.addAddress;
     }
-    await useStorage().setItem(keyName, currentCart);
+
+    const reducedCart = reduceCart(currentCart as Cart)
+    await useStorage().setItem(keyName, reducedCart);
   }
 }
 
@@ -158,45 +105,40 @@ async function updateAddress(event: any, body: any) {
       currentCart.cart.order.partnerInvoice = body.updateAddress;
     }
 
-    await useStorage().setItem(keyName, currentCart);
+    const reducedCart = reduceCart(currentCart as Cart)
+    await useStorage().setItem(keyName, reducedCart);
   }
 }
 
 async function updateShipping(event: any, body: any) {
   const requestBody = await readBody(event);
   if (requestBody[0]?.mutationName === MutationName.ShippingMethod) {
-    const session = await useSession(event, {
-      password: "b013b03ac2231e0b448e9a22ba488dcf",
-    });
-    const keyName = `cache:cart:${session?.id}`;
-    const currentCart =
-      (await useStorage().getItem<{ cart: Cart }>(keyName)) || ({} as any);
-    let cart = {}
-      cart = {
-        cart: {
-          ...currentCart.cart, 
-          order: {
-            ...currentCart.cart.order,
-            ...body.setShippingMethod.order,
-          },
-        },
-      };
-      await useStorage().setItem(keyName, cart);
+    await updateCart(event, body.setShippingMethod)
+  }
+}
+
+async function setEasyshipRate(event: any, body: any) {
+  const requestBody = await readBody(event);
+  if (requestBody[0]?.mutationName === MutationName.CartSetEasyship) {
+    await updateCart(event, body.setRate)
   }
 }
 
 async function createUpdatePartner(event: any, body: any) {
   const requestBody = await readBody(event);
   if (requestBody[0]?.mutationName === MutationName.CreateUpdatePartner) {
+    const userCookie = getCookie(event, 'odoo-user')
     const session = await useSession(event, {
       password: "b013b03ac2231e0b448e9a22ba488dcf",
     });
 
-    const keyName = `cache:cart:${session?.id}`;
+    const keyName = userCookie ? `cache:cart:id:${userCookie}` : `cache:cart:session:${session?.id}`
     const currentCart =
       (await useStorage().getItem<{ cart: Cart }>(keyName)) || ({} as any);
     currentCart.cart.order.partner = body.createUpdatePartner;
-    await useStorage().setItem(keyName, currentCart);
+
+    const reducedCart = reduceCart(currentCart as Cart)
+    await useStorage().setItem(keyName, reducedCart);
   }
 }
 
@@ -211,11 +153,12 @@ async function clearCartAfterCreditCardPaymentConfirmation(
     body.paymentConfirmation.order?.lastTransaction?.state === "Confirmed";
 
   if (requestBody[0]?.queryName === QueryName.GetPaymentConfirmation) {
+    const userCookie = getCookie(event, 'odoo-user')
     const session = await useSession(event, {
       password: "b013b03ac2231e0b448e9a22ba488dcf",
     });
 
-    const keyName = `cache:cart:${session?.id}`;
+    const keyName = userCookie ? `cache:cart:id:${userCookie}` : `cache:cart:session:${session?.id}`
     if (paymentSuccess) {
       await useStorage().removeItem(keyName);
     }
@@ -233,11 +176,12 @@ async function clearCartAfterGiftCardPaymentConfirmation(
   if (
     requestBody[0]?.mutationName === MutationName.MakeGiftCardPaymentMutation
   ) {
+    const userCookie = getCookie(event, 'odoo-user')
     const session = await useSession(event, {
       password: "b013b03ac2231e0b448e9a22ba488dcf",
     });
 
-    const keyName = `cache:cart:${session?.id}`;
+    const keyName = userCookie ? `cache:cart:id:${userCookie}` : `cache:cart:session:${session?.id}`
     if (paymentSuccess) {
       await useStorage().removeItem(keyName);
     }

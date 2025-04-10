@@ -32,6 +32,10 @@ import DeleteAddress from "./DeleteAddress";
 import type { DocumentNode } from "@apollo/client";
 import NewsletterSubscribeMutation from "./NewsletterSubscribeMutation";
 import ShippingMethod from "./ShippingMethod";
+import CartSetEasyship from "./CartSetEasyship";
+import StripeProviderInfo from "./StripeProviderInfo";
+import StripeInlineFormValues from "./StripeInlineFormValues"
+import StripeTransaction from "./StripeTransaction";
 
 enum MutationName {
   LoginMutation = "LoginMutation",
@@ -67,6 +71,10 @@ enum MutationName {
   ApplyCouponMutation = "ApplyCouponMutation",
   MakeGiftCardPaymentMutation = "MakeGiftCardPaymentMutation",
   ShippingMethod = "ShippingMethod",
+  CartSetEasyship = "CartSetEasyship",
+  StripeProviderInfo = "StripeProviderInfo",
+  StripeInlineFormValues = "StripeInlineFormValues",
+  StripeTransaction = "StripeTransaction"
 }
 
 const Mutations: Record<MutationName, DocumentNode> = {
@@ -103,6 +111,10 @@ const Mutations: Record<MutationName, DocumentNode> = {
   ApplyCouponMutation,
   MakeGiftCardPaymentMutation,
   ShippingMethod,
+  CartSetEasyship,
+  StripeProviderInfo,
+  StripeInlineFormValues,
+  StripeTransaction
 };
 
 export { Mutations, MutationName };

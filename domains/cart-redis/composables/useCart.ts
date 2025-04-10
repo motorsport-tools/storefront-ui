@@ -12,12 +12,17 @@ import type {
 import { MutationName } from "~/server/mutations";
 import { QueryName } from "~/server/queries";
 import { useToast } from "vue-toastification";
+import { CartToast } from "#components";
+
 
 export const useCart = () => {
   const { $sdk } = useNuxtApp();
+  const { $i18n } = useNuxtApp()
   const toast = useToast();
   const cart = useState<Cart>("cart", () => ({}) as Cart);
-  const loading = ref(false);
+  const loading = useState<Object>('cartLoading', () => ({
+    loading: false,
+  }))
 
   const loadCart = async (skipCache: boolean) => {
     loading.value = true;
@@ -54,7 +59,12 @@ export const useCart = () => {
 
     cart.value = data.value.cartAddMultipleItems;
 
-    toast.success("Product has been added to cart");
+    toast.success({
+      component: CartToast,
+      props: {
+        message: $i18n.t('cartAddProduct')
+      }
+    });
   };
 
   const updateItemQuantity = async (id: number, quantity: number) => {
@@ -75,7 +85,13 @@ export const useCart = () => {
     }
 
     cart.value = data.value.cartUpdateMultipleItems;
-    toast.success("Product updated successfully");
+
+    toast.success({
+      component: CartToast,
+      props: {
+        message: $i18n.t('cartUpdateProduct')
+      }
+    });
   };
 
   const removeItemFromCart = async (lineId: number) => {
@@ -95,12 +111,21 @@ export const useCart = () => {
     }
 
     cart.value = data.value.cartRemoveMultipleItems;
-    toast.success("Product removed successfully");
+    toast.success({
+      component: CartToast,
+      props: {
+        message: $i18n.t('cartRemoveProduct')
+      }
+    });
   };
 
-  const totalItemsInCart = computed(() => {
-    return cart.value?.order?.orderLines?.reduce((total, line) => total + line.quantity, 0) || 0;
-  });
+  const totalItemsInCart = computed(() =>
+    cart.value?.order?.orderLines?.filter((l) => !l.coupon && !l.isDelivery && !l.isRewardLine).reduce((total, line) => total + line.quantity, 0) || 0
+  );
+
+  const cartIsEmpty = computed(() => !cart.value.order?.orderLines?.filter((l) => !l.coupon && !l.isDelivery && !l.isRewardLine).length);
+
+  const cartHasDiscount = computed(() => cart.value.order?.coupons?.length || false);
 
   return {
     loading,
@@ -110,5 +135,7 @@ export const useCart = () => {
     removeItemFromCart,
     cart,
     totalItemsInCart,
+    cartIsEmpty,
+    cartHasDiscount,
   };
 };

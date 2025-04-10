@@ -18,6 +18,7 @@ export const useProductTemplateList = (
     () => false
   );
   const totalItems = useState<number>(`total-items${fullSearchIndex}`, () => 0);
+  const filterCounts = useState<{ type: string, id: number, total: number }[]>(`filter-counts${fullSearchIndex}`, () => ([]))
   const productTemplateList = useState<Product[]>(
     `products-category${fullSearchIndex}`,
     () => []
@@ -30,11 +31,16 @@ export const useProductTemplateList = (
     `categories-from-product-${categorySlugIndex}`,
     () => []
   );
+  const stockCount = useState<Number>(
+    `stockCount${categorySlugIndex}${fullSearchIndex}`,
+    () => 0
+  );
 
   const loadProductTemplateList = async (
     params: QueryProductsArgs,
     force: boolean = false
   ) => {
+
     if (productTemplateList.value.length > 0 && !force) return;
 
     loading.value = true;
@@ -45,14 +51,15 @@ export const useProductTemplateList = (
     loading.value = false;
 
     productTemplateList.value = data.value?.products?.products || [];
+
+    const categ = useUniqBy(
+      productTemplateList.value?.flatMap((p) => p.categories || []).filter((c) => c),
+      "id"
+    )
     attributes.value = data.value?.products?.attributeValues || [];
     totalItems.value = data.value?.products?.totalCount || 0;
-    categories.value = useUniqBy(
-      data.value?.products?.products
-        ?.map((product) => product?.categories || [])
-        .flat(),
-      "id"
-    );
+    filterCounts.value = data.value?.products?.filterCounts || []
+    categories.value = [...categ]
   };
 
   const organizedAttributes = computed(() => {
@@ -88,8 +95,17 @@ export const useProductTemplateList = (
           label: item.name,
           metadata: item.search,
           htmlColor: item.htmlColor,
+          total: filterCounts.value?.find((filter) => filter.id === item.id)?.total || 0
         });
     });
+
+    const inStockFilterCount = filterCounts.value?.find(
+      (filter) => filter.type === "in_stock"
+    );
+    if (inStockFilterCount) {
+      stockCount.value = inStockFilterCount.total;
+    }
+
 
     return data;
   });
@@ -101,5 +117,6 @@ export const useProductTemplateList = (
     organizedAttributes,
     totalItems,
     categories,
+    stockCount
   };
 };

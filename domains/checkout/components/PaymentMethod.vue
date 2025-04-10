@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { PaymentMethod } from "~/graphql";
+import type { PaymentMethod } from '~/graphql';
 
 type CheckoutPaymentEmits = (
   event: "update:activePayment",
@@ -44,9 +44,9 @@ const props = defineProps({
     default: () => null, 
   },
   paymentMethods: {
-    type: Array as () => PaymentMethod | null,
+    type: Array as PropType<PaymentMethod[]>,
     required: true,
-    default: () => null,
+    default: () => [],
   },
 });
 const emit = defineEmits<CheckoutPaymentEmits>();

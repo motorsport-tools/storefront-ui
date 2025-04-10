@@ -30,7 +30,7 @@ const props = defineProps({
   },
   savedAddress: {
     type: Object as PropType<Partner>,
-    default: () => {},
+    default: () => { },
   },
 });
 
@@ -236,8 +236,12 @@ const handleCloseModal = () => {
               <option key="placeholder" :value="null">
                 {{ $t("form.selectPlaceholder") }}
               </option>
-              <option v-for="state in states" :key="state.id" :value="state.id">
-                {{ state.name }}
+              <option 
+                v-for="stateOption in states"
+                :key="stateOption.id"
+                :value="stateOption.id"
+              >
+                {{ stateOption.name }}
               </option>
             </SfSelect>
           </label>
@@ -253,11 +257,11 @@ const handleCloseModal = () => {
                 {{ $t("form.selectPlaceholder") }}
               </option>
               <option
-                v-for="country in countries.countries"
-                :key="country?.id"
-                :value="country?.id"
+                v-for="countryOption in countries.countries"
+                :key="countryOption?.id"
+                :value="countryOption?.id"
               >
-                {{ country?.name }}
+                {{ countryOption?.name }}
               </option>
             </SfSelect>
           </label>

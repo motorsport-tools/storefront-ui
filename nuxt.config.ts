@@ -68,6 +68,8 @@ export default defineNuxtConfig({
       currencySeparator: "",
       currencyDecimal: "",
       currencyPrecision: "",
+      posthogPublicKey: process.env.NUXT_POSTHOG_KEY,
+      posthogHost: 'https://api.motorsport-tools.co.uk',
     },
   },
 

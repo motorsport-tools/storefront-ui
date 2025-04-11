@@ -54,7 +54,8 @@
     "typescript": "^5.8.2",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2",
-    "vue-toastification": "next"
+    "vue-toastification": "next",
+    "posthog-js": "1.235.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",

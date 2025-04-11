@@ -11,6 +11,14 @@ await getWebsiteHomepage()
 useHead(generateSeo<SeoEntity>(websiteHomepage.value, 'Home'))
 </script>
 
+<script setup lang="ts">
+  const { $posthog } = useNuxtApp();
+  if ($posthog) {
+    const posthog = $posthog()
+    posthog?.capture('<event_name>')
+  }
+</script>
+
 <template>
   <main 
     class="w-full narrow-container bg-white mb-20"

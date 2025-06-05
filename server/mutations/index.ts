@@ -36,6 +36,7 @@ import CartSetEasyship from "./CartSetEasyship";
 import StripeProviderInfo from "./StripeProviderInfo";
 import StripeInlineFormValues from "./StripeInlineFormValues"
 import StripeTransaction from "./StripeTransaction";
+import UpdateCartAddress from "./UpdateCartAddress";
 
 enum MutationName {
   LoginMutation = "LoginMutation",
@@ -74,7 +75,8 @@ enum MutationName {
   CartSetEasyship = "CartSetEasyship",
   StripeProviderInfo = "StripeProviderInfo",
   StripeInlineFormValues = "StripeInlineFormValues",
-  StripeTransaction = "StripeTransaction"
+  StripeTransaction = "StripeTransaction",
+  UpdateCartAddress = "UpdateCartAddress",
 }
 
 const Mutations: Record<MutationName, DocumentNode> = {
@@ -114,7 +116,8 @@ const Mutations: Record<MutationName, DocumentNode> = {
   CartSetEasyship,
   StripeProviderInfo,
   StripeInlineFormValues,
-  StripeTransaction
+  StripeTransaction,
+  UpdateCartAddress
 };
 
 export { Mutations, MutationName };

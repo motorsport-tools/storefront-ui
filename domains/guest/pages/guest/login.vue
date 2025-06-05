@@ -10,6 +10,7 @@ const showMethods = true
 
 const NuxtLink = resolveComponent('NuxtLink');
 
+const { cart } = useCart()
 </script>
 
 <template>
@@ -33,10 +34,7 @@ const NuxtLink = resolveComponent('NuxtLink');
                 <template v-if="showMethods">
                     <UiDividerText :text="$t('or')" />
                     
-                        <h3 class="text-center">Google Pay</h3>
-                        <h3 class="text-center">Apple Pay</h3>
-                        <h3 class="text-center">PayPal</h3>
-                        <p class="text-center">And anything else... Todo change!</p>
+                    <ProviderStripeExpressCheckout :method="{ code: 'card', providerId: 14 }" :cart="cart"/>
                 </template>
 
                 <UiDividerText :text="$t('or')" />

@@ -124,7 +124,9 @@ export const useDeliveryMethod = () => {
 
       if (data.value) {
         rates.value = data.value?.rates ? data.value?.rates : {}
+        return true
       }
+      return false
     } finally {
       ratesLoading.value = false;
     }

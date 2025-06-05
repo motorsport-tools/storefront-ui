@@ -5,9 +5,12 @@ import type {
   CartRemoveItemResponse,
   CartResponse,
   CartUpdateItemResponse,
+  UpdateCartAddressResponse,
   MutationCartAddMultipleItemsArgs,
   MutationCartRemoveMultipleItemsArgs,
   MutationCartUpdateMultipleItemsArgs,
+  MutationUpdateCartAddressArgs,
+  AddressInput
 } from "~/graphql";
 import { MutationName } from "~/server/mutations";
 import { QueryName } from "~/server/queries";
@@ -25,10 +28,12 @@ export const useCart = () => {
   }))
 
   const loadCart = async (skipCache: boolean) => {
-    loading.value = true;
-    if (skipCache) {
-      const data = await $fetch<{ cart: Cart }>(`/api/odoo/cart-load`);
-      cart.value = data?.cart || ({} as Cart);
+    loading.value = true
+    if (skipCache) {      
+      const { data } = await $sdk().odoo.query<null, CartResponse>({
+        queryName: QueryName.LoadCartQuery,
+      })
+      cart.value = data.value.cart || ({} as Cart)
       loading.value = false;
       return
     }
@@ -116,12 +121,37 @@ export const useCart = () => {
       props: {
         message: $i18n.t('cartRemoveProduct')
       }
-    });
-  };
+    })
+  }
+
+  const updateCartAddress = async (type: 'delivery' | 'billing', address: AddressInput, sameAddress: boolean = false) => {
+
+    const params: MutationUpdateCartAddressArgs = {
+      addressType: type,
+      address: address,
+      useSameAddress: sameAddress
+    }
+
+    loading.value = true;
+    const { data, error } = await $sdk().odoo.mutation<
+      MutationUpdateCartAddressArgs,
+      UpdateCartAddressResponse
+    >({ mutationName: MutationName.UpdateCartAddress }, params);
+    loading.value = false;
+
+    if (data.value.updateCartAddress.success) {
+      cart.value = data.value.updateCartAddress.cart
+      return true
+    }
+
+    if (error.value) {
+      return toast.error(data.value.updateCartAddress.error || 'Failed to update address');
+    }
+  }
 
   const totalItemsInCart = computed(() =>
     cart.value?.order?.orderLines?.filter((l) => !l.coupon && !l.isDelivery && !l.isRewardLine).reduce((total, line) => total + line.quantity, 0) || 0
-  );
+  )
 
   const cartIsEmpty = computed(() => !cart.value.order?.orderLines?.filter((l) => !l.coupon && !l.isDelivery && !l.isRewardLine).length);
 
@@ -137,5 +167,6 @@ export const useCart = () => {
     totalItemsInCart,
     cartIsEmpty,
     cartHasDiscount,
+    updateCartAddress,
   };
 };

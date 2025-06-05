@@ -11,6 +11,8 @@ export interface SeoEntity {
 }
 
 const validateSEO = (entity: SeoEntity, fullPath: string, entityType: string) => {
+    if (!entity) return
+
     const warnings = [];
 
     if (!entity?.metaTitle) {
@@ -87,7 +89,7 @@ const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
         script: [
             entity?.jsonLd && {
                 type: "application/ld+json",
-                children: JSON.stringify(entity.jsonLd),
+                children: JSON.parse(JSON.stringify(entity.jsonLd)),
             },
         ].filter(Boolean),
         link: [

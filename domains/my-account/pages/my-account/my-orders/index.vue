@@ -68,7 +68,10 @@ const NuxtLink = resolveComponent("NuxtLink");
   <h2 class="hidden md:block typography-headline-4 font-bold mx-4 capitalize">
     {{ $t("account.myOrders.heading") }}
   </h2>
-  <div v-if="orders?.orders" class="col-span-3">
+  <div v-if="loading" class="w-full text-center">
+    <SfLoaderCircular size="xl" class="mt-[160px]" />
+  </div>
+  <div v-else-if="orders?.orders.length > 0" class="col-span-3">
     <div class="flex justify-between items-center mx-4">
       <div class="bg-gray-100 text-sm ml-auto px-4 py-2 rounded-md">
         <span class="font-medium">{{ (currentPage - 1) * perPage + 1 }}</span> -
@@ -137,11 +140,7 @@ const NuxtLink = resolveComponent("NuxtLink");
       :maxVisiblePages="5"
     />
   </div>
-  
-  <div v-else class="w-full text-center">
-    <SfLoaderCircular size="xl" class="mt-[160px]" />
-  </div>
-  <div v-if="orders?.orders?.length === 0" class="col-span-3 text-center mt-8">
+  <div v-else-if="orders?.orders?.length === 0" class="col-span-3 text-center mt-8">
     <NuxtImg
       src="/images/empty-cart.svg"
       :alt="$t('account.myOrders.noOrdersAltText')"

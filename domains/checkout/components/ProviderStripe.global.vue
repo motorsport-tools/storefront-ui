@@ -28,7 +28,7 @@ interface StripeDropinType {
 const stripeRef = ref<any>(null)
 const stripeDropin = ref<StripeDropinType | null>(null)
 const dropinDivElement = ref(null)
-const loading = ref(false);
+const loading = ref(false)
 const stripeElement = ref<any>([])
 
 
@@ -39,11 +39,11 @@ const {
     getStripeInlineFormValues,
     openStripeTransaction,
 } = useStripeDirectPayment(
-        props.method.providerId, 
-        props.cart?.order?.id, 
-        props.cart?.order?.partner?.id,  
-        props.method.code
-    )
+    props.method.providerId, 
+    props.cart?.order?.id, 
+    props.cart?.order?.partner?.id,  
+    props.method.code
+)
 
 const emit = defineEmits([
     'isPaymentReady',

@@ -46,7 +46,7 @@ const { addProductToRecentViews } = useRecentViewProducts();
 const { wishlistAddItem, isInWishlist, wishlistRemoveItem } = useWishlist();
 const { cart, cartAdd } = useCart();
 
-useHead(generateSeo<SeoEntity>(productVariant.value, "Product"));
+useHead(generateSeo<SeoEntity>(productVariant.value, 'Product'))
 
 const params = computed(() => ({
   combinationId: Object.values(route.query)?.map((value) =>

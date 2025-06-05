@@ -19,7 +19,11 @@ onMounted( () => {
 </script>
 
 <template>
-  <SfDropdown v-model="isOpen">
+  <div
+    v-if="isOpen"
+    class="fixed !w-screen !h-screen inset-0 bg-neutral-500 bg-opacity-50 transition-opacity duration-1000 top-index"
+  />
+  <SfDropdown v-model="isOpen" class="z-50">
     <template #trigger>
       <SfButton
         class="text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 rounded-md"

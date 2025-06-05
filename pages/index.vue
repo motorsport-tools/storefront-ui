@@ -9,14 +9,12 @@ const { list } = useRecentViewProducts()
 await getWebsiteHomepage()
 
 useHead(generateSeo<SeoEntity>(websiteHomepage.value, 'Home'))
-</script>
 
-<script setup lang="ts">
-  const { $posthog } = useNuxtApp();
-  if ($posthog) {
-    const posthog = $posthog()
-    posthog?.capture('<event_name>')
-  }
+const { $posthog } = useNuxtApp();
+if ($posthog) {
+  const posthog = $posthog()
+  posthog?.capture('<event_name>')
+}
 </script>
 
 <template>

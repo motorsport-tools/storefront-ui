@@ -61,6 +61,10 @@ export const useAuth = () => {
     if (userCookie.value?.id) {
       userCookie.value = data.value?.createUpdatePartner?.id;
     }
+    //If update partner, update data on cart also
+    if (cart.value.order.partner) {
+      cart.value.order.partner = data.value?.createUpdatePartner
+    }
 
     toast.success("Partner updated successfully");
   };

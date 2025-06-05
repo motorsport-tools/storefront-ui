@@ -17,7 +17,7 @@ onMounted(async () => {
     deliveryMethods.value.forEach((val, i) => {
       if (val.id === cart.value?.order?.shippingMethod?.id) {
         radioModel.value = String(val.id);
-        showRates.value = val.name == 'Delivery' ? true : false;
+        showRates.value = val.name?.toLowerCase().includes("delivery") ? true : false;
       }
     })
     if(showRates.value) {
@@ -35,7 +35,7 @@ const handleSelectShippingMethod = async (shippingMethodId: number) => {
 
   deliveryMethods.value.forEach((val, i) => {
     if (val.id === shippingMethodId) {
-      showRates.value = val.name == 'Delivery' ? true : false;
+      showRates.value = val.name?.toLowerCase().includes("delivery") ? true : false;
     }
   })
   if(showRates.value) {

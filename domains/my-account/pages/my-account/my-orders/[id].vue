@@ -35,7 +35,8 @@ const NuxtLink = resolveComponent("NuxtLink");
         variant="tertiary"
         :tag="NuxtLink"
         :to="{
-            name: 'my-account-my-orders', 
+            name: 'my-account-my-orders',
+            query: { page: 1 }
         }"
         class="col-start-3 col-span-1 justify-self-end"
     >

@@ -42,6 +42,18 @@ export type AddressFilterInput = {
   addressType: InputMaybe<Array<InputMaybe<AddressEnum>>>;
 };
 
+export type AddressInput = {
+  city: InputMaybe<Scalars['String']['input']>;
+  countryId: InputMaybe<Scalars['Int']['input']>;
+  email: InputMaybe<Scalars['String']['input']>;
+  name: InputMaybe<Scalars['String']['input']>;
+  phone: InputMaybe<Scalars['String']['input']>;
+  stateId: InputMaybe<Scalars['Int']['input']>;
+  street: InputMaybe<Scalars['String']['input']>;
+  street2: InputMaybe<Scalars['String']['input']>;
+  zip: InputMaybe<Scalars['String']['input']>;
+};
+
 /** An enumeration. */
 export enum AddressType {
   Contact = 'Contact',
@@ -384,6 +396,13 @@ export type CustomOrders = {
   totalCount: Scalars['Int']['output'];
 };
 
+export type CustomUpdateCartAddress = {
+  __typename?: 'CustomUpdateCartAddress';
+  cart: Maybe<CustomCartData>;
+  error: Maybe<Scalars['String']['output']>;
+  success: Maybe<Scalars['Boolean']['output']>;
+};
+
 export type DeleteAddress = {
   __typename?: 'DeleteAddress';
   result: Maybe<Scalars['Boolean']['output']>;
@@ -401,6 +420,8 @@ export type EasyshipRate = {
   currencyId: Maybe<Scalars['Int']['output']>;
   deliveryDays: Maybe<Scalars['String']['output']>;
   id: Maybe<Scalars['Int']['output']>;
+  maxDeliveryTime: Maybe<Scalars['Int']['output']>;
+  minDeliveryTime: Maybe<Scalars['Int']['output']>;
   serviceId: Maybe<Scalars['String']['output']>;
   shipmentCharge: Maybe<Scalars['Float']['output']>;
   totalCharge: Maybe<Scalars['Float']['output']>;
@@ -654,6 +675,8 @@ export type Mutation = {
   totpVerification: Maybe<TwoFactorOutput>;
   /** Update a billing or shipping address and set it on the shopping cart. */
   updateAddress: Maybe<Partner>;
+  /** Update cart order address */
+  updateCartAddress: Maybe<CustomUpdateCartAddress>;
   /** Update MyAccount */
   updateMyAccount: Maybe<Partner>;
   /** Update user password. */
@@ -844,6 +867,7 @@ export type MutationStripeProviderInfoArgs = {
 
 
 export type MutationStripeTransactionArgs = {
+  isExpress?: InputMaybe<Scalars['Boolean']['input']>;
   providerId: Scalars['Int']['input'];
   tokenizationRequested?: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -858,6 +882,13 @@ export type MutationTotpVerificationArgs = {
 
 export type MutationUpdateAddressArgs = {
   address: UpdateAddressInput;
+};
+
+
+export type MutationUpdateCartAddressArgs = {
+  address: AddressInput;
+  addressType: Scalars['String']['input'];
+  useSameAddress: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 

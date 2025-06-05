@@ -6,6 +6,8 @@ export default gql`
             courierName
             shipmentCharge
             deliveryDays
+            maxDeliveryTime
+            minDeliveryTime
             currencyId
             totalCharge
             serviceId

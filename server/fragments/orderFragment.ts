@@ -158,6 +158,13 @@ partner {
   id
   email
   name
+  phone
+  country {
+    id
+    name
+    code
+  }
+  vat
   isPublic
 }
 locked

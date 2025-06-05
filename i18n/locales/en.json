@@ -5,24 +5,30 @@
     "addButton": "Add billing address"
   },
   "shipping": {
-    "heading": "Shipping Address",
-    "description": "Add a shipping address to view shipping details.",
-    "addButton": "Add shipping address"
+    "heading": "Delivery Address",
+    "description": "Add a delivery address to view delivery details.",
+    "addButton": "Add delivery address"
   },
   "form": {
+    "searchAddress": "Search For Your Address",
+    "startTypingAddress": "Start typing your address",
+    "billingSameAsDelivery": "Billing address is the same as delivery",
+    "addressManual": "Enter address manually",
     "firstNameLabel": "First Name",
     "NameLabel": "Name",
     "lastNameLabel": "Last Name",
     "phoneLabel": "Phone",
     "countryLabel": "Country",
+    "autocomplete": "Start entering your address",
     "streetNameLabel": "Street",
+    "streetNameLabel2": "Street Line 2",
     "streetNameHelp": "Street address",
     "streetNumberLabel": "Apt#, Suite, etc",
     "streetNumberHelp": "Optional",
     "cityLabel": "City",
     "stateLabel": "State",
     "postalCodeLabel": "Postcode",
-    "useAsShippingLabel": "Use as shipping address",
+    "useAsShippingLabel": "Use as delivery address",
     "selectPlaceholder": "-- Select --",
     "emailLabel": "Email",
     "passwordLabel": "Password",
@@ -30,6 +36,9 @@
     "termsAndConditionsLabel": "I declare that I have read and accept the {terms}",
     "subscriptionLabel": "I wish to receive occasional emails about special offers, new products and exclusive promotions. I can cancel my subscription at any time. (Optional)",
     "asterixHint": "* marked consents are required"
+  },
+  "formValidation": {
+    "errorMessage": "Please review the form and fix any errors before continuing"
   },
   "myCart": "My Cart",
   "orderSummary": "Order Summary",
@@ -41,6 +50,7 @@
   "estimatedTax": "Estimated VAT",
   "apply": "Apply",
   "total": "Total",
+  "or": "or",
   "goToCheckout": "Go to checkout",
   "savingsTag": "You are saving {amount} on your order today!",
   "promoCodePlaceholder": "Enter promo code",
@@ -128,8 +138,8 @@
     "heading": "Payment method"
   },
   "shippingMethod": {
-    "heading": "Shipping details",
-    "description": "No methods available until a shipping address is provided.",
+    "heading": "Delivery details",
+    "description": "No methods available until a delivery address is provided.",
     "subHeading": "Would you like your order delivered or when your order is ready and you've been notified, you can come to our shop to collect.",
     "deliveryTime": {
       "estimate": "Est:",
@@ -151,9 +161,9 @@
   "validation": {
     "heading": "To complete order:",
     "missingBillingAddress": "add billing address",
-    "missingShippingAddress": "add shipping address",
+    "missingShippingAddress": "add delivery address",
     "missingEmail": "add customer email",
-    "missingShippingDetails": "add shipping details",
+    "missingShippingDetails": "add delivery details",
     "missingPaymentMethod": "choose payment method"
   },
   "size": "Size",
@@ -273,7 +283,7 @@
   "successInfoHeader": "Thank you!",
   "successInfoMessage": "Your order was completed successfully.",
   "etaDelivery": "Estimated delivery time",
-  "shippingAddress": "Shipping address",
+  "shippingAddress": "Delivery address",
   "somethingWentWrongImageAlt": "something went wrong image",
   "orderSuccessfulImageAlt": "order successful image",
   "backToCheckout": "Back to Checkout",
@@ -287,7 +297,7 @@
   "recommendedProducts": "Recommended with this product",
   "outOfStock": "Out of stock",
   "additionalInfo": {
-    "shipping": "Free shipping, arrives by {date}. Want it faster? {addAddress} to see options",
+    "shipping": "Free delivery, arrives by {date}. Want it faster? {addAddress} to see options",
     "addAddress": "Add an address",
     "pickup": "Pickup not available at Super center. {checkAvailability}",
     "checkAvailability": "Check availability nearby",
@@ -320,7 +330,7 @@
       "section": {
         "personalData": "Personal Data",
         "billingDetails": "Billing Details",
-        "shippingDetails": "Shipping Details"
+        "shippingDetails": "Delivery Details"
       },
       "personalData": {
         "menuDescription": "View and manage your personal details",
@@ -344,15 +354,15 @@
         "edit": "Edit",
         "delete": "Delete",
         "current": "Current",
-        "shippingAddress": "Shipping address",
-        "sameAddress": "My billing address is the same of shipping"
+        "shippingAddress": "Delivery address",
+        "sameAddress": "Use delivery address as billing address"
       },
       "shippingDetails": {
-        "menuDescription": "View and manage your shipping details",
+        "menuDescription": "View and manage your delivery details",
         "edit": "Edit",
         "delete": "Delete",
         "current": "Current",
-        "shippingAddress": "Shipping address"
+        "shippingAddress": "Delivery address"
       },
       "addNewAddress": "Add new address"
     },
@@ -391,7 +401,7 @@
         "total": "Total",
         "billingAddress": "Billing address",
         "paymentMethod": "Payment method",
-        "shippingAddress": "Shipping address"
+        "shippingAddress": "Delivery address"
       },
       "lastInvoices": {
         "heading": "Last Invoices",

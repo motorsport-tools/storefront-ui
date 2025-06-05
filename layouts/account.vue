@@ -144,7 +144,7 @@ const sections = [
       subsections: [
           {
               label: t("account.myOrders.section.myOrders"),
-              link: "/my-account/my-orders",
+              link: "/my-account/my-orders?page=1",
           },
       ],
   },

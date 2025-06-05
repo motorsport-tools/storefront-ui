@@ -23,7 +23,7 @@ export const useStripeDirectPayment = (providerId: number, cartId: number, partn
         () => ({}) as PaymentTransaction
     );
 
-    const openStripeTransaction = async (tokenizationRequested: boolean) => {
+    const openStripeTransaction = async (tokenizationRequested: boolean, isExpress: boolean) => {
         const { data } = await $sdk().odoo.mutation<
             MutationStripeTransactionArgs,
             StripeTransactionResponse
@@ -31,7 +31,7 @@ export const useStripeDirectPayment = (providerId: number, cartId: number, partn
             {
                 mutationName: MutationName.StripeTransaction,
             },
-            { providerId, tokenizationRequested }
+            { providerId, tokenizationRequested, isExpress }
         );
 
         transaction.value = data.value?.stripeTransaction?.transaction || {};

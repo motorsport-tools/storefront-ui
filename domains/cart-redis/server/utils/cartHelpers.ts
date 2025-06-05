@@ -58,6 +58,7 @@ export const reduceCart = (cartData: Cart) => ({
             id: cartData?.order?.partner?.id,
             name: cartData?.order?.partner?.name,
             email: cartData?.order?.partner?.email,
+            phone: cartData?.order?.partner?.phone,
             isPublic: cartData?.order?.partner?.isPublic,
         },
         partnerShipping: {

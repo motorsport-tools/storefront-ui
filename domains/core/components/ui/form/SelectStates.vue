@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useStateList } from "~/domains/core/composable/useStateList";
-import CustomSfSelect from "./CustomSfSelect.vue";
 
 const props = defineProps({
   countryId: {
@@ -26,7 +25,7 @@ watch(
 <template>
   <label class="md:col-span-3">
     <UiFormLabel>{{ $t("form.stateLabel") }}</UiFormLabel>
-    <CustomSfSelect
+    <UiFormCustomSfSelect
       v-model="model"
       name="state"
       autocomplete="state-name"
@@ -38,6 +37,6 @@ watch(
       <option v-for="state in states" :value="state?.id">
         {{ state.name }}
       </option>
-    </CustomSfSelect>
+    </UiFormCustomSfSelect>
   </label>
 </template>

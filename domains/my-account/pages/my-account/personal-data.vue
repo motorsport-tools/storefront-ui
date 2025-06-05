@@ -44,7 +44,8 @@ const saveNewPassword = async (passwords: any) => {
     await updatePassword({
       currentPassword: passwords.oldPassword,
       newPassword: passwords.firstNewPassword,
-    });
+    })
+    closeModal()
   }
 };
 </script>

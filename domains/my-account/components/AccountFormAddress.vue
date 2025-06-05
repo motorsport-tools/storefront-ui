@@ -126,6 +126,7 @@ const handleSubmit = async () => {
 
     <UiFormSelectCountries v-model="addressFormFieldsInput.countryId" />
     <UiFormSelectStates
+      v-if="addressFormFieldsInput?.countryId != 0"
       v-model="addressFormFieldsInput.stateId"
       :key="addressFormFieldsInput?.countryId"
       :country-id="addressFormFieldsInput?.countryId"

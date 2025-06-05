@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import CustomSfSelect from "./CustomSfSelect.vue";
 import { useCountryList } from "~/domains/core/composable/useCountryList";
 const { loadCountries, countries } = useCountryList();
 await loadCountries();
@@ -9,7 +8,7 @@ const model = defineModel({ default: 0 });
 <template>
   <label class="md:col-span-3">
     <UiFormLabel>{{ $t("form.countryLabel") }}</UiFormLabel>
-    <CustomSfSelect
+    <UiFormCustomSfSelect
       v-model="model"
       name="country"
       autocomplete="country-name"
@@ -25,6 +24,6 @@ const model = defineModel({ default: 0 });
       >
         {{ country?.name }}
       </option>
-    </CustomSfSelect>
+    </UiFormCustomSfSelect>
   </label>
 </template>

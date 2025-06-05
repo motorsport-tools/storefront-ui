@@ -28,7 +28,6 @@ const {
 
 const router = useRouter()
 const NuxtLink = resolveComponent("NuxtLink")
-const categoriesForMegaMenu = inject<Category[]>('categoriesForMegaMenu')
 
 const goTo = (slug: string) => {
   close()

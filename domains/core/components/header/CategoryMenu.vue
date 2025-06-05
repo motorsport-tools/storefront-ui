@@ -134,7 +134,8 @@ const focusTrigger = (index: number) => {
                             <SfLink
                                 class="typography-text-base font-bold text-white whitespace-nowrap px-4 py-1.5 border-b border-b-neutral-200 border-b-solid cursor-pointer"
                                 :to="node.value.link"
-                                :tag="NuxtLink"                               size="sm"
+                                :tag="NuxtLink"
+                                size="sm"
                             >
                                 {{ node.value.label }}
                             </SfLink>

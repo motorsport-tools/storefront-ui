@@ -231,6 +231,35 @@ export type CategorySortInput = {
   id: InputMaybe<SortEnum>;
 };
 
+export type CheckoutRedirectOutput = {
+  __typename?: 'CheckoutRedirectOutput';
+  accessToken: Maybe<Scalars['String']['output']>;
+}
+
+export type Company = {
+  __typename?: 'Company';
+  city: Maybe<Scalars['String']['output']>;
+  country: Maybe<Country>;
+  email: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  image: Maybe<Scalars['String']['output']>;
+  imageFilename: Maybe<Scalars['String']['output']>;
+  mobile: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars['String']['output']>;
+  phone: Maybe<Scalars['String']['output']>;
+  socialFacebook: Maybe<Scalars['String']['output']>;
+  socialGithub: Maybe<Scalars['String']['output']>;
+  socialInstagram: Maybe<Scalars['String']['output']>;
+  socialLinkedin: Maybe<Scalars['String']['output']>;
+  socialTwitter: Maybe<Scalars['String']['output']>;
+  socialYoutube: Maybe<Scalars['String']['output']>;
+  state: Maybe<State>;
+  street: Maybe<Scalars['String']['output']>;
+  street2: Maybe<Scalars['String']['output']>;
+  vat: Maybe<Scalars['String']['output']>;
+  zip: Maybe<Scalars['String']['output']>;
+};
+
 export type ContactUsParams = {
   company: InputMaybe<Scalars['String']['input']>;
   email: Scalars['String']['input'];
@@ -631,6 +660,8 @@ export type Mutation = {
   cartUpdateMultipleItems: Maybe<CustomCartData>;
   /** Set new user's password with the token from the change password url received in the email. */
   changePassword: Maybe<User>;
+  /** Returns access token to redirect user to Odoo checkout */
+  checkoutRedirect: Maybe<CheckoutRedirectOutput>;
   /** Creates a new lead with the contact information. */
   contactUs: Maybe<Lead>;
   /** Create or update a partner for guest checkout */
@@ -758,6 +789,9 @@ export type MutationChangePasswordArgs = {
   token: Scalars['String']['input'];
 };
 
+export type MutationCheckoutRedirectArgs = {
+  sessionId: Scalars['String']['input'];
+};
 
 export type MutationContactUsArgs = {
   contactus: InputMaybe<ContactUsParams>;
@@ -993,6 +1027,11 @@ export enum OrderStage {
   SalesOrder = 'SalesOrder'
 }
 
+export enum PageTypeEnum {
+  Products = 'Products',
+  Static = 'Static'
+}
+
 export type Partner = {
   __typename?: 'Partner';
   addressType: Maybe<AddressType>;
@@ -1088,6 +1127,7 @@ export type Product = {
   __typename?: 'Product';
   accessoryProducts: Maybe<Array<Product>>;
   allowOutOfStock: Maybe<Scalars['Boolean']['output']>;
+  alokaiPages: Maybe<Array<WebsitePage>>;
   alternativeProducts: Maybe<Array<Product>>;
   /** Specific to Product Template */
   attributeValues: Maybe<Array<AttributeValue>>;
@@ -1266,6 +1306,8 @@ export type Query = {
   websiteHomepage: Maybe<Homepage>;
   websiteMegaMenu: Maybe<Array<WebsiteMenu>>;
   websiteMenu: Maybe<Array<WebsiteMenu>>;
+  websitePage: Maybe<WebsitePage>;
+  websitePages: Maybe<WebsitePages>;
   wishlistItems: Maybe<WishlistData>;
 };
 
@@ -1431,6 +1473,20 @@ export type QueryWebsiteMenuArgs = {
   noParent: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+export type QueryWebsitePageArgs = {
+  id: InputMaybe<Scalars['Int']['input']>;
+  pageSlug?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryWebsitePagesArgs = {
+  currentPage?: InputMaybe<Scalars['Int']['input']>;
+  filter?: InputMaybe<WebsitePageFilterInput>;
+  pageSize?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  sort?: InputMaybe<WebsitePageSortInput>;
+};
+
 export type Ribbon = {
   __typename?: 'Ribbon';
   bgColor: Maybe<Scalars['String']['output']>;
@@ -1576,6 +1632,40 @@ export type WebsiteMenuImage = {
   tag: Maybe<Scalars['String']['output']>;
   textColor: Maybe<Scalars['String']['output']>;
   title: Maybe<Scalars['String']['output']>;
+};
+
+export type WebsitePage = {
+  __typename?: 'WebsitePage';
+  content: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars['Int']['output']>;
+  isPublished: Maybe<Scalars['Boolean']['output']>;
+  name: Maybe<Scalars['String']['output']>;
+  pageType: Maybe<PageType>;
+  products: Maybe<Array<Product>>;
+  publishingDate: Maybe<Scalars['String']['output']>;
+  website: Maybe<Website>;
+  websiteUrl: Maybe<Scalars['String']['output']>;
+};
+
+export type WebsitePageFilterInput = {
+  id: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  pageSlug: InputMaybe<Scalars['String']['input']>;
+  pageType: InputMaybe<Array<InputMaybe<PageTypeEnum>>>;
+};
+
+export type WebsitePageList = WebsitePages & {
+  __typename?: 'WebsitePageList';
+  totalCount: Scalars['Int']['output'];
+  websitePages: Maybe<Array<Maybe<WebsitePage>>>;
+};
+
+export type WebsitePageSortInput = {
+  id: InputMaybe<SortEnum>;
+};
+
+export type WebsitePages = {
+  totalCount: Scalars['Int']['output'];
+  websitePages: Maybe<Array<Maybe<WebsitePage>>>;
 };
 
 export type WishlistData = WishlistItems & {

@@ -1,6 +1,5 @@
-import { gql } from '@apollo/client/core';
 import { partnerFragment } from '../fragments';
-export default gql`
+export default `
 mutation($currentPassword: String!, $newPassword: String!){
     updatePassword(currentPassword: $currentPassword, newPassword: $newPassword) {
       id

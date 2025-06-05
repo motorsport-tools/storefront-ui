@@ -1,7 +1,5 @@
 import { orderFragment } from '../fragments';
-import { gql } from '@apollo/client/core';
-
-export default gql`
+export default `
   query {
     cart {
       ${orderFragment}

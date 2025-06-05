@@ -1,6 +1,4 @@
-import { gql } from "@apollo/client/core";
-
-export default gql`
+export default `
     query($orderId: ID!, $carrierId: ID!) {
         rates(orderId: $orderId, carrierId: $carrierId) {
             courierName

@@ -18,7 +18,6 @@ import StockLotsQuery from './StockLotsQuery';
 import WishlistLoadQuery from './WishlistLoadQuery';
 import GetWebsiteHomepageQuery from './GetWebsiteHomepageQuery';
 import GetEasyShipRatesQuery from './GetEasyShipRatesQuery';
-import type { DocumentNode } from 'graphql/language';
 
 enum QueryName {
   GetProductVariantQuery = 'GetProductVariantQuery',
@@ -44,7 +43,7 @@ enum QueryName {
   GetEasyShipRatesQuery = 'GetEasyShipRatesQuery'
 }
 
-const Queries: Record<QueryName, DocumentNode> = {
+const Queries: Record<QueryName, string> = {
   GetProductVariantQuery,
   LoadUserQuery,
   StockLotsQuery,

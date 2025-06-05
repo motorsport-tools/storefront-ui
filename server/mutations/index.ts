@@ -29,7 +29,6 @@ import WishlistAddItem from "./WishlistAddItem";
 import WishlistRemoveItem from "./WishlistRemoveItem";
 import SelectCurrentAddress from "./SelectCurrentAddress";
 import DeleteAddress from "./DeleteAddress";
-import type { DocumentNode } from "@apollo/client";
 import NewsletterSubscribeMutation from "./NewsletterSubscribeMutation";
 import ShippingMethod from "./ShippingMethod";
 import CartSetEasyship from "./CartSetEasyship";
@@ -79,7 +78,7 @@ enum MutationName {
   UpdateCartAddress = "UpdateCartAddress",
 }
 
-const Mutations: Record<MutationName, DocumentNode> = {
+const Mutations: Record<MutationName, string> = {
   LoginMutation,
   LogoutMutation,
   CreateNewAccountMutation,

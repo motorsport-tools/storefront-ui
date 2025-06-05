@@ -1,7 +1,5 @@
 import productFragment from '../fragments/productFragment';
-import { gql } from '@apollo/client/core';
-
-export default gql`
+export default `
   query(
     $id: Int = null
     $slug: String = null

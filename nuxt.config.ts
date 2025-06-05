@@ -114,14 +114,7 @@ export default defineNuxtConfig({
 
   build: {
     transpile: [
-      "tslib",
-      "@apollo/client",
-      "@apollo/client/core",
-      "@vue/apollo-composable",
-      "@vue/apollo-option",
-      "ts-invariant",
       "vue-toastification",
-      "@erpgap/odoo-sdk-api-client",
     ],
   },
 

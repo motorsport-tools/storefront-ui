@@ -1,7 +1,5 @@
-import { gql } from '@apollo/client/core';
 import addressFragment from '../fragments/addressFragment';
-
-export default gql`
+export default `
 query(
   $filter: AddressFilterInput
 ) {

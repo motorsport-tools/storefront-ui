@@ -51,11 +51,15 @@ watch(isTabletScreen, (value) => {
 })
 
 watch(
-  () => route,
-  async () => {
-    await loadProductTemplateList(getFacetsFromURL(route.query))
+  () => route.query,
+  async (newValue, oldValue) => {
+    delete newValue['list-view']
+    delete oldValue['list-view']
+
+    if (!isEqual(oldValue, newValue)) {
+      await loadProductTemplateList(getFacetsFromURL(route.query))
+    }
   },
-  { deep: true, immediate: true },
 )
 
 const pagination = computed(() => ({
@@ -95,6 +99,7 @@ const breadcrumbs = computed(() => {
   return trail;
 })
 
+await loadProductTemplateList(getFacetsFromURL(route.query))
 </script>
 
 <template>
@@ -107,10 +112,10 @@ const breadcrumbs = computed(() => {
       <div class="grid grid-cols-12 lg:gap-x-6">
         <div class="col-span-12 lg:col-span-4 xl:col-span-3">
           <LazyCategoryFilterSidebar v-if="$viewport.isGreaterOrEquals('lg')" :attributes="organizedAttributes"
-            :categories="categories" />
+            :categories="[]" />
           <LazyCategoryMobileSidebar v-if="$viewport.isLessThan('lg')" :is-open="isOpen" @close="close">
             <template #default>
-              <CategoryFilterSidebar class="block lg:hidden" :attributes="organizedAttributes" :categories="categories"
+              <CategoryFilterSidebar class="block lg:hidden" :attributes="organizedAttributes" :categories="[]"
                 @close="close" />
             </template>
           </LazyCategoryMobileSidebar>

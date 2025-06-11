@@ -35,18 +35,8 @@ if ($posthog) {
   >
     <MainBanner />
     <LazyDisplay hydrate-on-visible />
-    <section
-      v-if="list?.length > 0"
-      class="pb-16"
-    >
-      <ClientOnly>
-        <LazyProductSlider
-          key="recent-views"
-          heading="Your recent views"
-          :product-template-list="productTemplateList"
-          key-for-composable="recent-views"
-        />
-      </ClientOnly>
-    </section>
+    <ClientOnly>
+      <LazyRecentViewSlider heading="Your recent views" />
+    </ClientOnly>
   </main>
 </template>

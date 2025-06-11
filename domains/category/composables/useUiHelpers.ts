@@ -48,7 +48,7 @@ export const useUiHelpers = () => {
 
     const price = query?.price?.split("-");
     const availability = query?.Availability ? true : false
-    const pageSize = query.itemsPerPage ? parseInt(query.itemsPerPage) : 12;
+    const pageSize = query.itemsPerPage ? parseInt(query.itemsPerPage) : 20;
     const sort = query?.sort?.split(",") || [];
     const page = query?.page || 1;
 

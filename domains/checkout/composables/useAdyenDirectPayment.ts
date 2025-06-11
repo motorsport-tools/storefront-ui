@@ -36,7 +36,7 @@ const useAdyenDirectPayment = (providerId: number, cartId?: number) => {
   );
 
   const openAdyenTransaction = async () => {
-    const { data } = await $sdk().odoo.mutation<
+    const data: AdyenTransactionResponse | any = await $sdk().odoo.mutation<
       MutationAdyenTransactionArgs,
       AdyenTransactionResponse
     >(
@@ -46,11 +46,11 @@ const useAdyenDirectPayment = (providerId: number, cartId?: number) => {
       { providerId }
     );
 
-    transaction.value = data.value?.adyenTransaction?.transaction || {};
+    transaction.value = data?.adyenTransaction?.transaction || {}
   };
 
   const getAdyenAcquirerInfo = async () => {
-    const { data } = await $sdk().odoo.mutation<
+    const data: AdyenProviderInfoResponse | any = await $sdk().odoo.mutation<
       MutationAdyenProviderInfoArgs,
       AdyenProviderInfoResponse
     >(
@@ -60,39 +60,34 @@ const useAdyenDirectPayment = (providerId: number, cartId?: number) => {
       { providerId }
     );
 
-    acquirerInfo.value =
-      data?.value?.adyenProviderInfo?.adyenProviderInfo || {};
+    acquirerInfo.value = data?.adyenProviderInfo?.adyenProviderInfo || {}
   };
 
   const getAdyenPaymentMethods = async () => {
-    const { data } = await useAsyncData("payment-methods", async () => {
-      const { data } = await $sdk().odoo.mutation<
+    const { data } = await useAsyncData<AdyenPaymentMethodsResponse | any>('payment-methods', async () =>
+      await $sdk().odoo.mutation<
         MutationAdyenPaymentMethodsArgs,
         AdyenPaymentMethodsResponse
-      >({ mutationName: MutationName.AdyenPaymentMethods }, { providerId });
-
-      return data.value;
-    });
+      >({ mutationName: MutationName.AdyenPaymentMethods }, { providerId }))
 
     paymentMethods.value =
-      data?.value?.adyenPaymentMethods?.adyenPaymentMethods || [];
+      data?.value?.adyenPaymentMethods?.adyenPaymentMethods || []
   };
 
   const getAdyenPaymentDetails = async (
     params: MutationAdyenPaymentDetailsArgs
   ) => {
-    const { data } = await $sdk().odoo.mutation<
+    const data: AdyenPaymentDetailsResponse | any = await $sdk().odoo.mutation<
       MutationAdyenPaymentDetailsArgs,
       AdyenPaymentDetailsResponse
-    >({ mutationName: MutationName.AdyenPaymentDetails }, { ...params });
+    >({ mutationName: MutationName.AdyenPaymentDetails }, { ...params })
 
-    paymentDetails.value =
-      data?.value?.adyenPaymentDetails?.adyenPaymentDetails || {};
-  };
+    paymentDetails.value = data?.adyenPaymentDetails?.adyenPaymentDetails || {}
+      
 
   const adyenMakeDirectPayment = async (params: MutationAdyenPaymentsArgs) => {
-    const { data } = await useAsyncData("make-direct-payment", async () => {
-      const { data } = await $sdk().odoo.mutation<
+    const { data } = await useAsyncData<AdyenPaymentsResponse | any>('make-direct-payment', async () =>
+      await $sdk().odoo.mutation<
         MutationAdyenPaymentsArgs,
         AdyenPaymentsResponse
       >(
@@ -100,12 +95,10 @@ const useAdyenDirectPayment = (providerId: number, cartId?: number) => {
           mutationName: MutationName.AdyenPayments,
         },
         { ...params }
-      );
+      ),
+    )
 
-      return data.value;
-    });
-
-    return data?.value?.adyenPayments?.adyenPayments || {};
+    return data?.value?.adyenPayments?.adyenPayments || {}
   };
 
   const setTransaction = (transactionParam: PaymentTransaction) =>

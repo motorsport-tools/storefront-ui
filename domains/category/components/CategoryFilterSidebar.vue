@@ -195,7 +195,7 @@ watch(priceModel, (newValue) => {
       <li v-for="(facet, index) in facets" :key="index">
         <SfAccordionItem v-model="opened[facet.label]">
           <template #summary>
-            <div class="flex justify-between items-center p-2 mb-2">
+            <div class="flex justify-between items-center px-2">
               <p class="p-2 font-medium typography-headline-5">
                 {{ facet?.label }}
               </p>

@@ -71,43 +71,40 @@ export const useDeliveryMethod = () => {
   const loadDeliveryMethods = async () => {
     loading.value = true;
     try {
-      const { data } = await useAsyncData("shipping-methods", async () => {
-        const { data } = await $sdk().odoo.queryNoCache<
+      const { data } = await useAsyncData("shipping-methods", async () => 
+        await $sdk().odoo.queryNoCache<
           any,
           DeliveryMethodListResponse
         >({
           queryName: QueryName.GetDeliveryMethodsQuery,
-        });
-        return data.value;
-      });
-
-      if (data.value) {
-        deliveryMethods.value = data.value.deliveryMethods.map(method => ({
-          ...method,
-          estimatedDelivery: getEstimatedDelivery(method)
-        })) || [];
-      }
+        })
+      )
+      deliveryMethods.value = data.value.deliveryMethods.map(method => ({
+        ...method,
+        estimatedDelivery: getEstimatedDelivery(method)
+      })) || []
+    } catch (error: any) {
+      toast.error(error?.data?.message)
     } finally {
       loading.value = false;
     }
   };
 
   const setDeliveryMethod = async (shippingMethodId: number) => {
-    loading.value = true;
+    try {
+      loading.value = true
+      const data = await $sdk().odoo.mutation<
+        MutationSetShippingMethodArgs,
+        DeliveryMethodResponse
+      >({ mutationName: MutationName.ShippingMethod }, { shippingMethodId })
 
-    const { data, error } = await $sdk().odoo.mutation<
-      MutationSetShippingMethodArgs,
-      setShippingMethodResponse
-    >({ mutationName: MutationName.ShippingMethod }, { shippingMethodId });
-
-    if (error.value) {
-      return toast.error(error.value.data.message);
+      cart.value = data?.setShippingMethod
+    } catch (error: any) {
+      toast.error(error?.data?.message)
+    } finally {
+      loading.value = false
     }
-    //toast.success("Shipping Method updated successfully");
-    loading.value = false;
-    cart.value = data.value.setShippingMethod
-    // deliveryMethods.value = [method];
-  };
+  }
 
   const loadRates = async (params: EasyShipRatesArgs) => {
     ratesLoading.value = true;

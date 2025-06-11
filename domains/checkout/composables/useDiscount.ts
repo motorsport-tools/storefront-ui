@@ -8,21 +8,19 @@ import type {
 import { MutationName } from "~/server/mutations";
 
 export const useDiscount = () => {
-  const { $sdk } = useNuxtApp();
-  const toast = useToast();
-  const router = useRouter();
-  const { loadCart } = useCart();
+  const { $sdk } = useNuxtApp()
+  const toast = useToast()
 
   const loading = ref(false);
 
-  const applyGiftCard = async (promo: MutationApplyGiftCardArgs) => {
+  const applyGiftCard: ApplyDiscountsResponse | any = async (promo: MutationApplyGiftCardArgs) => {
     return $sdk().odoo.mutation<
       MutationApplyGiftCardArgs,
       ApplyDiscountsResponse
     >({ mutationName: MutationName.ApplyGiftCardMutation }, promo);
   };
 
-  const applyCoupon = async (promo: MutationApplyCouponArgs) => {
+  const applyCoupon: ApplyDiscountsResponse | any = async (promo: MutationApplyCouponArgs) => {
     return $sdk().odoo.mutation<
       MutationApplyCouponArgs,
       ApplyDiscountsResponse
@@ -30,45 +28,38 @@ export const useDiscount = () => {
   };
 
   const applyDiscount = async (promoCode: string) => {
-    loading.value = true;
+    try {
+      loading.value = true;
 
-    let response = await applyGiftCard({ promo: promoCode });
-    if (response.error.value) {
-      response = await applyCoupon({ promo: promoCode });
+      let response = await applyGiftCard({ promo: promoCode })
+      if (!response?.applyGiftCard) {
+        response = await applyCoupon({ promo: promoCode })
+      }
+
+      toast.success("Promotion has been applied!")
+    } finally {
+      loading.value = false
     }
-
-    loading.value = false;
-
-    if (response.error.value) {
-      return toast.error(response.error.value.data.message);
-    }
-
-    await loadCart(false);
-    toast.success("Promotion has been applied!");
-  };
+  }
 
   const makeGiftCardPayment = async () => {
-    loading.value = true;
+    try {
+      const data: MakeGiftCardPaymentResponse | any = await $sdk().odoo.mutation<
+        null,
+        MakeGiftCardPaymentResponse
+      >({ mutationName: MutationName.MakeGiftCardPaymentMutation })
 
-    const { data, error } = await $sdk().odoo.mutation<
-      null,
-      MakeGiftCardPaymentResponse
-    >({ mutationName: MutationName.MakeGiftCardPaymentMutation });
+      if (!data?.makeGiftCardPayment?.done) {
+        return navigateTo('/checkout/payment-fail')
+      }
 
-    loading.value = false;
-
-    if (error.value) {
-      toast.error(error.value.data.message);
-      return;
+      return navigateTo('/checkout/thank-you')
+    } catch (error: any) {
+      toast.error(error?.data?.message)
+    } finally {
+      loading.value = false
     }
-
-    if (!data.value.makeGiftCardPayment.done) {
-      router.push("/payment-fail");
-      return;
-    }
-
-    router.push("/thank-you");
-  };
+  }
 
   return {
     loading,

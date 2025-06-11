@@ -24,9 +24,8 @@ const {
   loading,
   productTemplateList,
   totalItems,
-  categories,
   stockCount
-} = useProductTemplateList(slug.value, String(cleanFullPath.value))
+} = useProductTemplateList(String(cleanFullPath.value))
 
 provide("stockCount", stockCount);
 
@@ -64,10 +63,10 @@ watch(
 
 const pagination = computed(() => ({
   currentPage: route?.query?.page ? Number(route.query.page) : 1,
-  totalPages: Math.ceil(totalItems.value / 12) || 1,
+  totalPages: Math.ceil(totalItems.value / 20) || 1,
   totalItems: totalItems.value,
-  itemsPerPage: 12,
-  pageOptions: [5, 12, 15, 20],
+  itemsPerPage: 20,
+  pageOptions: [5, 10, 15, 20],
 }))
 
 const params = route.params as { id?: string | number, slug?: string }
@@ -80,6 +79,7 @@ if (params.slug) {
 }
 
 if (category.value) {
+  console.log('Category:', category.value)
   useHead(generateSeo<SeoEntity>(category.value, 'Category'))
 }
 

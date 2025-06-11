@@ -3,19 +3,19 @@ import { useCountryList } from "~/domains/core/composable/useCountryList";
 import { AddressEnum, type Partner } from "~/graphql";
 import { SfLoaderCircular } from "@storefront-ui/vue";
 
-const { cart, totalItemsInCart, cartIsEmpty, loading: cartLoading } = useCart();
-const { loadCountries } = useCountryList();
-const { loadUser } = useAuth();
+const { cart, totalItemsInCart, cartIsEmpty, loading: cartLoading, loadCart } = useCart()
+const { loadCountries } = useCountryList()
+const { loadUser } = useAuth()
 const { loading: deliveryLoading } = useDeliveryMethod()
-const router = useRouter();
+const router = useRouter()
 
 const selectedProvider = ref<PaymentMethod | null>(null);
 
 onMounted(async () => {
-  await Promise.all([loadUser(true), loadCountries()]);
+  await Promise.all([loadUser(true), loadCart(), loadCountries()]);
 
   if (totalItemsInCart?.value === 0) {
-    router.push("/cart");
+    await navigateTo("/cart")
   }
 })
 

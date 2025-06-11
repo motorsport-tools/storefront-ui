@@ -3,16 +3,16 @@ import type { CustomCartData } from '~/graphql';
 import { SfButton } from '@storefront-ui/vue';
 import { useRoute } from 'vue-router'
 
-const { loadCart } = useCart();
+const { loadCart } = useCart()
 const { getPaymentConfirmation } = usePayment();
 
 const route = useRoute()
 const token = route.query?.token || ''
 
-const { data: orderData, error } = await useAsyncData('orderData', () => getPaymentConfirmation(token));
+const { data: orderData, error } = await useAsyncData('orderData', () => getPaymentConfirmation(token))
 
 onMounted(async () => {
-  await loadCart(true);
+  await loadCart()
 });
 
 </script>

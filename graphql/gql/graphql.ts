@@ -231,6 +231,11 @@ export type CategorySortInput = {
   id: InputMaybe<SortEnum>;
 };
 
+export type CheckoutRedirectOutput = {
+  __typename?: 'CheckoutRedirectOutput';
+  accessToken: Maybe<Scalars['String']['output']>;
+};
+
 export type ContactUsParams = {
   company: InputMaybe<Scalars['String']['input']>;
   email: Scalars['String']['input'];
@@ -343,6 +348,7 @@ export type CustomOrder = {
   currency: Maybe<Currency>;
   currencyRate: Maybe<Scalars['String']['output']>;
   dateOrder: Maybe<Scalars['String']['output']>;
+  deliveryStatus: Maybe<DeliveryStatus>;
   giftCards: Maybe<Array<GiftCard>>;
   id: Scalars['Int']['output'];
   invoiceCount: Maybe<Scalars['Int']['output']>;
@@ -411,6 +417,14 @@ export type DeleteAddress = {
 export type DeleteAddressInput = {
   id: Scalars['Int']['input'];
 };
+
+/** An enumeration. */
+export enum DeliveryStatus {
+  FullyDelivered = 'FullyDelivered',
+  NotDelivered = 'NotDelivered',
+  PartiallyDelivered = 'PartiallyDelivered',
+  Started = 'Started'
+}
 
 export type EasyshipRate = {
   __typename?: 'EasyshipRate';
@@ -631,6 +645,8 @@ export type Mutation = {
   cartUpdateMultipleItems: Maybe<CustomCartData>;
   /** Set new user's password with the token from the change password url received in the email. */
   changePassword: Maybe<User>;
+  /** Returns access token to redirect user to Odoo checkout */
+  checkoutRedirect: Maybe<CheckoutRedirectOutput>;
   /** Creates a new lead with the contact information. */
   contactUs: Maybe<Lead>;
   /** Create or update a partner for guest checkout */
@@ -756,6 +772,11 @@ export type MutationCartUpdateMultipleItemsArgs = {
 export type MutationChangePasswordArgs = {
   newPassword: Scalars['String']['input'];
   token: Scalars['String']['input'];
+};
+
+
+export type MutationCheckoutRedirectArgs = {
+  sessionId: Scalars['String']['input'];
 };
 
 
@@ -938,6 +959,7 @@ export type Order = {
   currency: Maybe<Currency>;
   currencyRate: Maybe<Scalars['String']['output']>;
   dateOrder: Maybe<Scalars['String']['output']>;
+  deliveryStatus: Maybe<DeliveryStatus>;
   giftCards: Maybe<Array<GiftCard>>;
   id: Scalars['Int']['output'];
   invoiceCount: Maybe<Scalars['Int']['output']>;

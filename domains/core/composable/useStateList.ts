@@ -1,3 +1,4 @@
+import { useToast } from 'vue-toastification'
 import { QueryName } from "~/server/queries";
 
 import {
@@ -15,13 +16,19 @@ export const useStateList = (countryId: number) => {
     if (states.value.length > 0) {
       return;
     }
-    const { data } = await $sdk().odoo.query<
-      CountryFilterInput,
-      StatesResponse
-    >({ queryName: QueryName.GetStates }, param.value);
 
-    states.value = data.value.country.states || [];
-  };
+    try {
+      const { data } = await useAsyncData(
+        async () => await $sdk().odoo.query<
+          CountryFilterInput,
+          StatesResponse
+        >({ queryName: QueryName.GetStates }, param.value),
+      )
+      states.value = data.value?.country.states || []
+    } catch (error: any) {
+      return useToast().error(error.value.data.message)
+    } 
+  }
 
   return {
     loadStates,

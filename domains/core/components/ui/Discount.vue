@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { SfAccordionItem, SfIconChevronLeft, SfIconClose, SfButton, SfInput, SfLoaderCircular, useDisclosure } from '@storefront-ui/vue';
 const { applyDiscount, loading } = useDiscount();
+const { loadCart } = useCart()
 
 const { isOpen: isCouponOpen, toggle: toggleCoupon } = useDisclosure()
-const promo = ref('');
+const promo = ref<string>('')
 
 const handleApplyPromo = async () => {
-  await applyDiscount(promo.value);
+  await Promise.all([
+    applyDiscount(promo.value),
+    loadCart(),
+  ])
 };
 
 </script>

@@ -3,7 +3,7 @@ import { SfButton, SfIconArrowBack } from "@storefront-ui/vue";
 
 const { cart, loadCart, totalItemsInCart } = useCart();
 
-await loadCart(false);
+await loadCart();
 </script>
 
 <template>

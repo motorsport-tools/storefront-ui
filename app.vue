@@ -14,7 +14,7 @@ onMounted(async () => {
     if ( isAuthenticated.value ) {  
       await loadUser(true)
     }
-    await loadCart(true);  
+    await loadCart();  
 });
 </script>
 <template>

@@ -32,7 +32,7 @@ const {
 
 //const selectedProvider = ref<PaymentProvider | null>(null);
 const selectedMethod = ref<PaymentMethod | null>(null);
-const showPaymentModal = ref(false);
+const showPaymentModal = ref<boolean>(false);
 
 await loadPaymentMethods();
 
@@ -51,11 +51,15 @@ const allPaymentMethods = computed(() => {
     )
     .sort((a, b) => (a.sequence || 0) - (b.sequence || 0)); 
 });
-
+watch(() => paymentProviders.value, () => {
 if (allPaymentMethods.value.length > 0) {
   showPaymentModal.value = true;
   //selectedMethod.value = allPaymentMethods.value[0];
 }
+}, {
+  deep: true,
+  immediate: true,
+})
 
 // Handle selecting a payment method
 function selectPaymentMethod(method: PaymentMethod) {

@@ -1,5 +1,6 @@
 import type {
   Product,
+  ProductVariant,
   ProductVariantResponse,
   QueryProductVariantArgs,
 } from "~/graphql";
@@ -17,24 +18,36 @@ export const useProductVariant = (slugWithCombinationIds: string) => {
   const loadProductVariant = async (params: QueryProductVariantArgs) => {
     if (productVariant.value?.id) return;
 
-    loadingProductVariant.value = true;
-    const { data, error } = await $sdk().odoo.query<
-      QueryProductVariantArgs,
-      ProductVariantResponse
-    >({ queryName: QueryName.GetProductVariantQuery }, params);
-    loadingProductVariant.value = false;
+    const { data, status } = await useAsyncData(() =>
+      $sdk().odoo.query<QueryProductVariantArgs, ProductVariantResponse>(
+        { queryName: QueryName.GetProductVariantQuery }, params),
+    )
 
-    if (error.value) {
+    productVariant.value = (data?.value?.productVariant?.product) || {} as Product
+
+    if (!productVariant.value?.id) {
       showError({
-        ...error.value,
         status: 404,
         message: "Product not found",
-      });
-      return;
+      })
     }
 
-    productVariant.value = data?.value?.productVariant.product as Product;
-  };
+    watch(status, () => {
+      if (status.value === 'error' && !data?.value) {
+        showError({
+          status: 404,
+          message: 'Product not found',
+        })
+      }
+      if (status.value === 'pending') {
+        loadingProductVariant.value = true
+      }
+      if (status.value === 'success') {
+        loadingProductVariant.value = false
+      }
+    })
+
+  }
 
   const categoriesForBreadcrumb = computed(() => {
     return (
@@ -78,7 +91,7 @@ export const useProductVariant = (slugWithCombinationIds: string) => {
 
   return {
     loadingProductVariant,
-    productVariant,
+    productVariant: computed(() => productVariant.value),
     getImages,
     breadcrumbs,
     getRegularPrice,

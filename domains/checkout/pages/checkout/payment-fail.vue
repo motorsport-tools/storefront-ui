@@ -2,7 +2,7 @@
 import { SfButton } from '@storefront-ui/vue';
 const { loadCart } = useCart();
 
-await loadCart(false);
+await loadCart();
 </script>
 
 <template>

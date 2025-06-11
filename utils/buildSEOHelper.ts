@@ -45,6 +45,8 @@ const validateSEO = (entity: SeoEntity, fullPath: string, entityType: string) =>
 };
 
 const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
+    if (!entity) return
+
     const { href } = useRequestURL()
 
     validateSEO(entity, href, entityType);
@@ -89,7 +91,8 @@ const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
         script: [
             entity?.jsonLd && {
                 type: "application/ld+json",
-                children: JSON.parse(JSON.stringify(entity.jsonLd)),
+                //children: JSON.parse(JSON.stringify(entity.jsonLd)),
+                children: JSON.stringify(entity.jsonLd),
             },
         ].filter(Boolean),
         link: [

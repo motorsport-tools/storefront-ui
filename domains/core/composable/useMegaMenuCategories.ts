@@ -15,32 +15,29 @@ export const useMegaMenuCategories = () => {
   const loadCategoriesForMegaMenu = async (params: QueryCategoriesArgs) => {
     loading.value = true;
     try {
-      const { data } = await useAsyncData(
-        'categories-megamenu',
-        async () => {
-          const { data, error } = await $sdk().odoo.query<
+      const { data } = await useAsyncData('categories-megamenu', async () => {
+          const { categories } = await $sdk().odoo.query<
             QueryCategoriesArgs,
             CategoryListResponse
           >({ queryName: QueryName.GetCategoriesQuery }, params);
-
-          return transformMenuData(data.value.categories?.categories || [])
+          const menu = transformMenuData(categories?.categories || [])
+          return menu
         }
       );
 
       if (data?.value) {
-        categoriesForMegaMenu.value = data.value
+        categoriesForMegaMenu.value = data.value 
       }
     } finally {
-      loading.value = false;
+      loading.value = false
     }
-  };
+  }
 
 
 
   return {
     loading,
-    categoriesForMegaMenu,
-
+    categoriesForMegaMenu, 
     loadCategoriesForMegaMenu
   };
 };

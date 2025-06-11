@@ -96,9 +96,9 @@
     </div>
   </main>
   <Newsletter />
-  <TheFooter />
-  <WishlistSidebar />
-  <BottomNavbar />
+  <LazyTheFooter />
+  <LazyWishlistSidebar />
+  <LazyBottomNavbar />
 </template>
 
 <script setup>

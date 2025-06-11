@@ -12,12 +12,15 @@ export const useWebsiteHomePage = () => {
   const getWebsiteHomepage = async () => {
     loading.value = true;
     try {
-      const { data } = await $sdk().odoo.query<any, WebsiteHomepageResponse>({
-        queryName: QueryName.GetWebsiteHomepageQuery,
-      });
+      const { data } = await useAsyncData<any, WebsiteHomepageResponse>(() =>
+        $sdk().odoo.query({ queryName: QueryName.GetWebsiteHomepageQuery },
+          {},
+          { headers: useRequestHeaders() },
+        ),
+      )
 
       if (data.value) {
-        websiteHomepage.value = data.value.websiteHomepage as Homepage;
+        websiteHomepage.value = data.value?.websiteHomepage as Homepage;
       }
     } finally {
       loading.value = false;

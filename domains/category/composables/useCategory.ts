@@ -22,43 +22,37 @@ export const useCategory = (categorySlug?: string) => {
     try {
       const { data } = await useAsyncData(
         `category-list-${categorySlug}`,
-        async () => {
-          const { data } = await $sdk().odoo.query<
-            QueryCategoryArgs,
-            CategoryResponse
-          >({ queryName: QueryName.GetCategoryQuery }, params);
-          return data.value;
-        }
-      );
+        () => $sdk().odoo.query<QueryCategoryArgs, CategoryResponse>(
+          { queryName: QueryName.GetCategoryQuery },
+          params,
+        ),
+      )
 
-      if (data?.value?.category) {
-        category.value = data.value.category;
+      if (data.value?.category) {
+        category.value = data.value.category
       }
+
     } finally {
       loading.value = false;
     }
-  };
+  }
 
   const loadCategoryList = async (params: QueryCategoriesArgs) => {
     loading.value = true;
     try {
       const { data } = await useAsyncData(
         `category-list-${categorySlug}`,
-        async () => {
-          const { data, error } = await $sdk().odoo.query<
-            QueryCategoriesArgs,
-            CategoryListResponse
-          >({ queryName: QueryName.GetCategoriesQuery }, params);
+        () => $sdk().odoo.query<QueryCategoriesArgs, CategoryListResponse>(
+          { queryName: QueryName.GetCategoriesQuery },
+          params,
+        ),
+      )
 
-          return data.value;
-        }
-      );
-
-      if (data?.value?.categories) {
-        categories.value = data.value.categories?.categories;
+      if (data.value?.categories) {
+        categories.value = data.value.categories?.categories
       }
     } finally {
-      loading.value = false;
+      loading.value = false
     }
   };
 
@@ -79,7 +73,7 @@ export const useCategory = (categorySlug?: string) => {
 
   const GetCategoryQueryTree = (searchData: { data: { category: any } }) => {
     if (!searchData) {
-      return { items: [], label: "", isCurrent: false };
+      return { items: [], label: "", isCurrent: false }
     }
 
     const category: any = searchData;

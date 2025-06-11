@@ -9,7 +9,7 @@ const { deliveryMethods, loadDeliveryMethods, setDeliveryMethod, loadRates, setR
 
 const radioModel = ref("");
 const ratesModel = ref("")
-const showRates = ref(false)
+const showRates = ref<boolean>(false)
 
 onMounted(async () => {
   await loadDeliveryMethods();

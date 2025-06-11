@@ -15,11 +15,10 @@ const {
   loading,
   totalItems,
   organizedAttributes,
-  categories,
   loadProductTemplateList,
   productTemplateList,
   stockCount
-} = useProductTemplateList(route.fullPath, route.fullPath);
+} = useProductTemplateList(route.fullPath);
 
 provide("stockCount", stockCount);
 
@@ -77,14 +76,14 @@ onMounted(() => {
         <CategoryFilterSidebar
           class="hidden lg:block"
           :attributes="organizedAttributes"
-          :categories="categories"
+          :categories="[]"
         />
         <LazyCategoryMobileSidebar :is-open="isOpen" @close="close">
           <template #default>
             <CategoryFilterSidebar
               class="block lg:hidden"
               :attributes="organizedAttributes"
-              :categories="categories"
+              :categories="[]"
               @close="close"
             />
           </template>

@@ -14,14 +14,12 @@ const { loadWishlist, wishlistTotalItems } = useWishlist();
 
 const { totalItemsInCart } = useCart();
 
-
 const NuxtLink = resolveComponent("NuxtLink");
 
 const isActive = ref(false);
 const setIsActive = (param: boolean) => {
   isActive.value = param;
 };
-
 
 const handleWishlistSideBar = async () => {
   toggleWishlistSideBar();

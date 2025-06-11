@@ -1,7 +1,6 @@
 import type {
   Cart,
   CartAddItemResponse,
-  CartLineInput,
   CartRemoveItemResponse,
   CartResponse,
   CartUpdateItemResponse,
@@ -27,101 +26,100 @@ export const useCart = () => {
     loading: false,
   }))
 
-  const loadCart = async (skipCache: boolean) => {
-    loading.value = true
-    if (skipCache) {      
-      const { data } = await $sdk().odoo.query<null, CartResponse>({
-        queryName: QueryName.LoadCartQuery,
-      })
-      cart.value = data.value.cart || ({} as Cart)
-      loading.value = false;
-      return
+  const loadCart = async () => {
+    try {
+      loading.value = true
+
+      const data  = await useFetch<{ cart: Cart }>(`/api/odoo/cart-load`)
+
+      loading.value = false
+
+      cart.value = data?.cart || ({} as Cart)
+    } catch (error: any) {
+      return toast.error(error?.data?.message)
+    } finally {
+      loading.value = false
     }
-
-
-    const { data } = await useFetch<{ cart: Cart }>(`/api/odoo/cart-load`);
-    loading.value = false;
-
-    cart.value = data?.value?.cart || ({} as Cart);
-  };
+  }
 
   const cartAdd = async (id: number, quantity: number) => {
-    loading.value = true;
-
     const params: MutationCartAddMultipleItemsArgs = {
       products: [{ id, quantity }],
-    };
-
-    const { data, error } = await $sdk().odoo.mutation<
-      MutationCartAddMultipleItemsArgs,
-      CartAddItemResponse
-    >({ mutationName: MutationName.CartAddItem }, params);
-    loading.value = false;
-
-    if (error.value) {
-      return toast.error(error.value.data.message);
     }
+    
+    try {
+      loading.value = true
 
-    cart.value = data.value.cartAddMultipleItems;
+      const data = await $sdk().odoo.mutation<MutationCartAddMultipleItemsArgs, CartAddItemResponse>(
+        { mutationName: MutationName.CartAddItem }, params,
+      )
 
-    toast.success({
-      component: CartToast,
-      props: {
-        message: $i18n.t('cartAddProduct')
-      }
-    });
-  };
+      cart.value = data.cartAddMultipleItems || ({} as Cart )
+
+      toast.success({
+        component: CartToast,
+        props: {
+          message: $i18n.t('cartAddProduct')
+        }
+      })
+    } catch (error:any) {
+      return toast.error(error?.data?.message)
+    } finally {
+      loading.value = false
+    }
+  }
 
   const updateItemQuantity = async (id: number, quantity: number) => {
-    loading.value = true;
 
     const params: MutationCartUpdateMultipleItemsArgs = {
       lines: [{ id, quantity }],
     };
 
-    const { data, error } = await $sdk().odoo.mutation<
-      MutationCartUpdateMultipleItemsArgs,
-      CartUpdateItemResponse
-    >({ mutationName: MutationName.CartUpdateQuantity }, params);
-    loading.value = false;
+    try {
+      loading.value = true;
 
-    if (error.value) {
-      return toast.error(error.value.data.message);
+      const data = await $sdk().odoo.mutation<MutationCartUpdateMultipleItemsArgs, CartUpdateItemResponse>(
+        { mutationName: MutationName.CartUpdateQuantity }, params,
+      )
+
+      cart.value = data.cartUpdateMultipleItems || ({} as Cart )
+
+      toast.success({
+        component: CartToast,
+        props: {
+          message: $i18n.t('cartUpdateProduct')
+        }
+      })
+    } catch( error: any ){ 
+      return toast.error(error?.data?.message)
+    } finally {
+      loading.value = false
     }
-
-    cart.value = data.value.cartUpdateMultipleItems;
-
-    toast.success({
-      component: CartToast,
-      props: {
-        message: $i18n.t('cartUpdateProduct')
-      }
-    });
-  };
+  }
 
   const removeItemFromCart = async (lineId: number) => {
     const params: MutationCartRemoveMultipleItemsArgs = {
       lineIds: [lineId],
-    };
-
-    loading.value = true;
-    const { data, error } = await $sdk().odoo.mutation<
-      MutationCartRemoveMultipleItemsArgs,
-      CartRemoveItemResponse
-    >({ mutationName: MutationName.CartRemoveItem }, params);
-    loading.value = false;
-
-    if (error.value) {
-      return toast.error(error.value.data.message);
     }
 
-    cart.value = data.value.cartRemoveMultipleItems;
-    toast.success({
-      component: CartToast,
-      props: {
-        message: $i18n.t('cartRemoveProduct')
-      }
-    })
+    try {
+      loading.value = true
+      
+      const data = await $sdk().odoo.mutation<MutationCartRemoveMultipleItemsArgs, CartRemoveItemResponse>(
+        { mutationName: MutationName.CartRemoveItem }, params,
+      )
+      cart.value = data.cartRemoveMultipleItems || ({} as Cart )
+      toast.success({
+        component: CartToast,
+        props: {
+          message: $i18n.t('cartRemoveProduct')
+        }
+      })
+    } catch (error: any) {
+      return toast.error(error?.data?.message)
+    } finally {
+      loading.value = false
+    }
   }
 
   const updateCartAddress = async (type: 'delivery' | 'billing', address: AddressInput, sameAddress: boolean = false) => {
@@ -140,7 +138,7 @@ export const useCart = () => {
     loading.value = false;
 
     if (data.value.updateCartAddress.success) {
-      cart.value = data.value.updateCartAddress.cart
+      cart.value = data.value?.updateCartAddress?.cart || ({} as Cart )
       return true
     }
 

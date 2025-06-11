@@ -21,6 +21,7 @@ await loadProductTemplateList({ pageSize: numOfProducts });
   <p class="my-4 typography-text-lg">
     {{ text }}
   </p>
+  <div>
   <SfScrollable
     v-if="productTemplateList.length > 0"
     buttons-placement="floating"
@@ -43,4 +44,5 @@ await loadProductTemplateList({ pageSize: numOfProducts });
       :first-variant="productTemplate.firstVariant as Product"
     />
   </SfScrollable>
+  </div>
 </template>

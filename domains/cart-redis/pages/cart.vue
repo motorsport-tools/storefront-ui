@@ -61,5 +61,12 @@ const isLoading = computed(() => loading.value || deliveryLoading.value);
     />
     <h2 class="mt-8">{{ $t('emptyCart') }}</h2>
   </div>
+  <section
+    class="lg:mx-4 mt-6"
+  >
+    <LazyRecentViewSlider
+      text="Your recent views"
+    />
+  </section>
   </NuxtLayout>
 </template>

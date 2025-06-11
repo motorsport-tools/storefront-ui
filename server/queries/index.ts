@@ -27,7 +27,7 @@ enum QueryName {
   GetCategoryQuery = 'GetCategoryQuery',
   GetProductTemplateListQuery = 'GetProductTemplateListQuery',
   GetProductTemplateQuery = 'GetProductTemplateQuery',
-  GetWishlist = 'GetWishlist',
+  //GetWishlist = 'GetWishlist',
   LoadCartQuery = 'LoadCartQuery',
   GetAddressesQuery = 'GetAddressesQuery',
   WishlistLoadQuery = 'WishlistLoadQuery',

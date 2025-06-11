@@ -51,7 +51,8 @@ export default defineNuxtConfig({
     },
   },
   site: {
-    name: 'ERPGAP VSF',
+    url: process.env.NUXT_PUBLIC_MIDDLEWARE_URL,
+    name: 'Motorspor-Tools',
     description: 'Welcome to an awesome ecommerce site!',
     defaultLocale: 'en',
   },

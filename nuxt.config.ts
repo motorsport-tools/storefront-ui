@@ -168,7 +168,7 @@ export default defineNuxtConfig({
   sitemap: {
     sources: ['/api/sitemap/urls/products', '/api/sitemap/urls/categories'],
     runtimeCacheStorage: {
-      driver: process.env.NUXT_STORAGE_DRIVER,
+      driver: process.env.NUXT_STORAGE_DRIVER || '',
     }
   },
 

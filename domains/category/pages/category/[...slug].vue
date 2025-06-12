@@ -79,7 +79,6 @@ if (params.slug) {
 }
 
 if (category.value) {
-  console.log('Category:', category.value)
   useHead(generateSeo<SeoEntity>(category.value, 'Category'))
 }
 

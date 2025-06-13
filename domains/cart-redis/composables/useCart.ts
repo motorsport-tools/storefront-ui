@@ -9,19 +9,20 @@ import type {
   MutationCartRemoveMultipleItemsArgs,
   MutationCartUpdateMultipleItemsArgs,
   MutationUpdateCartAddressArgs,
-  AddressInput
-} from "~/graphql";
-import { MutationName } from "~/server/mutations";
-import { QueryName } from "~/server/queries";
-import { useToast } from "vue-toastification";
-import { CartToast } from "#components";
+  AddressInput,
+  Product
+} from "~/graphql"
+import { MutationName } from "~/server/mutations"
+import { useToast } from "vue-toastification"
+import { CartToast } from "#components"
 
 
 export const useCart = () => {
-  const { $sdk } = useNuxtApp();
+  const { $sdk } = useNuxtApp()
   const { $i18n } = useNuxtApp()
-  const toast = useToast();
-  const cart = useState<Cart>("cart", () => ({}) as Cart);
+  const toast = useToast()
+  const cart = useState<Cart>("cart", () => ({}) as Cart)
+  const frequentlyTogetherProducts = useState<Product[]>('frequently-together-products', () => [])
   const loading = useState<Object>('cartLoading', () => ({
     loading: false,
   }))
@@ -35,6 +36,7 @@ export const useCart = () => {
       loading.value = false
 
       cart.value = data?.cart || ({} as Cart)
+      frequentlyTogetherProducts.value = (data?.cart?.frequentlyBoughtTogether || []).filter((p): p is Product => p !== null)
     } catch (error: any) {
       return toast.error(error?.data?.message)
     } finally {
@@ -161,6 +163,7 @@ export const useCart = () => {
     cartAdd,
     updateItemQuantity,
     removeItemFromCart,
+    frequentlyTogetherProducts,
     cart,
     totalItemsInCart,
     cartIsEmpty,

@@ -51,7 +51,7 @@ export default defineNuxtConfig({
     },
   },
   site: {
-    url: process.env.NUXT_PUBLIC_MIDDLEWARE_URL,
+    url: '',
     name: 'Motorspor-Tools',
     description: 'Welcome to an awesome ecommerce site!',
     defaultLocale: 'en',
@@ -139,8 +139,6 @@ export default defineNuxtConfig({
 
   routeRules: {
     "/": { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
-    "/category/*": { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
-    "/product/*": { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
   },
 
   nitro: {
@@ -151,12 +149,22 @@ export default defineNuxtConfig({
         url: process.env.NUXT_STORAGE_URL,
         password: process.env.NUXT_STORAGE_PASSWORD,
       },
+      slug: {
+        driver: process.env.NUXT_STORAGE_DRIVER,
+        url: process.env.NUXT_STORAGE_URL,
+        ttl: process.env?.NUXT_SWR_CACHE_TIME || 3600,
+      },
     },
     devStorage: {
       cache: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
         password: process.env.NUXT_STORAGE_PASSWORD,
+      },
+      slug: {
+        driver: process.env.NUXT_STORAGE_DRIVER,
+        url: process.env.NUXT_STORAGE_URL,
+        ttl: process.env?.NUXT_SWR_CACHE_TIME || 3600,
       },
     },
   },

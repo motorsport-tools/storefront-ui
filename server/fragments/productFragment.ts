@@ -1,7 +1,12 @@
-import alternativeProductsFragment from "./alternativeProductsFragment"
-import frequentlyTogetherProductsFragment from "./frequentlyTogetherProductsFragment"
+import alternativeProductsFragment from './alternativeProductsFragment'
+import frequentlyTogetherProductsFragment from './frequentlyTogetherProductsFragment'
 export default `
   id
+  metaDescription
+  metaImage
+  metaKeyword
+  metaTitle
+  jsonLd
   firstVariant{
     id
     combinationInfoVariant
@@ -27,10 +32,15 @@ export default `
   description
   image
   imageFilename
+  mediaGallery{
+    id
+    name
+    image
+    imageFilename
+  }
   combinationInfo
   slug
   sku
-  jsonLd
   isInWishlist
   ribbon {
     id

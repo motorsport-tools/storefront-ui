@@ -45,6 +45,22 @@ export type CategoryListResponse =
     }
   }
 
+export type BreadcrumbItem = 
+  {
+    name: string
+    link: string
+  }
+
+export type ImageGalleryItem = 
+  {
+    id: number
+    url: string
+    link: string
+    alt: string
+    width?: number | string
+    height?: number | string
+  }
+
 export type CategoryResponse = AsyncData<
   {
     category: Category;

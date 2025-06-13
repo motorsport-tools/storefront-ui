@@ -29,6 +29,9 @@ const {
   loadProductTemplate,
   productTemplate,
   loadingProductTemplate,
+  getAllColors,
+  getAllMaterials,
+  getAllSizes,
 } = useProductTemplate(cleanPath.value)
 const {
   loadProductVariant,
@@ -51,7 +54,7 @@ const params = computed(() => ({
   ),
   productTemplateId: productTemplate?.value?.id,
 }))
-/*
+
 const selectedSize = computed(() =>
   route.query.Size ? Number(route.query.Size) : getAllSizes?.value?.[0]?.value,
 )
@@ -67,13 +70,13 @@ const selectedMaterial = computed(() =>
     ? Number(route.query.Material)
     : getAllMaterials?.value?.[0]?.value,
 )
-*/
+
 const productDetailsOpen = ref(true)
 const quantitySelectorValue = ref(1)
 
 const updateFilter = async (filter: LocationQueryRaw | undefined) => {
   const query: LocationQueryRaw = {}
-    /*
+    
     if (selectedMaterial.value && selectedMaterial.value !== 0) {
         query.Material = selectedMaterial.value
     }
@@ -85,7 +88,7 @@ const updateFilter = async (filter: LocationQueryRaw | undefined) => {
     if (selectedSize.value && selectedSize.value !== 0) {
         query.Size = selectedSize.value
     }
-    */
+    
   if (filter) {
     Object.entries(filter).forEach(([key, value]) => {
       query[encodeURIComponent(key)] = value
@@ -366,7 +369,7 @@ if (productTemplate.value?.id) {
                     class="lg:px-4"
                     data-testid="product-properties"
                 >
-                    <!--
+                    
                     <fieldset
                     v-if="getAllSizes && getAllSizes?.length"
                     class="pb-4 flex"
@@ -468,7 +471,7 @@ if (productTemplate.value?.id) {
                         </SfChip>
                     </span>
                     </fieldset>
-                    -->
+                    
                 </div>
                 <UiDivider class="my-4 md:mt-6" />
                 <div data-testid="product-accordion">

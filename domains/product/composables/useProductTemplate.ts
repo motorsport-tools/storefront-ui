@@ -129,6 +129,33 @@ export const useProductTemplate = (slug: string) => {
     return getRegularPrice(productTemplate.value?.firstVariant)
   })
 
+  const getAllSizes = computed(() => {
+    return productTemplate?.value?.attributeValues
+      ?.filter((item: AttributeValue) => item?.attribute?.name === 'Size')
+      ?.map((item: AttributeValue) => ({
+        value: item.id,
+        label: item.name,
+      }))
+  })
+
+  const getAllColors = computed(() => {
+    return productTemplate?.value?.attributeValues
+      ?.filter((item: AttributeValue) => item?.attribute?.name === 'Color')
+      ?.map((item: AttributeValue) => ({
+        value: item.id,
+        label: item.name,
+      }))
+  })
+
+  const getAllMaterials = computed(() => {
+    return productTemplate?.value?.attributeValues
+      ?.filter((item: AttributeValue) => item?.attribute?.name === 'Material')
+      ?.map((item: AttributeValue) => ({
+        value: item.id,
+        label: item.name,
+      }))
+  })
+
   return {
     loadProductTemplate,
     breadcrumbs,
@@ -136,5 +163,8 @@ export const useProductTemplate = (slug: string) => {
     productTemplate,
     regularPrice,
     specialPrice,
+    getAllSizes,
+    getAllColors,
+    getAllMaterials,
   }
 }

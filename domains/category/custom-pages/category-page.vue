@@ -86,12 +86,12 @@ await loadProductTemplateList(getFacetsFromURL(route.query))
             <div class="grid grid-cols-12 lg:gap-x-6">
             <div class="col-span-12 lg:col-span-4 xl:col-span-3">
                 <LazyCategoryFilterSidebar
-                v-if="$viewport.isGreaterOrEquals('desktopSmall')"
+                v-if="$viewport.isGreaterOrEquals('lg')"
                 :attributes="organizedAttributes"
                 :categories="[]"
                 />
                 <LazyCategoryMobileSidebar
-                v-if="$viewport.isLessThan('desktopSmall')"
+                v-if="$viewport.isLessThan('lg')"
                 :is-open="isOpen"
                 @close="close"
                 >

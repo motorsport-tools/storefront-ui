@@ -18,8 +18,16 @@ export const useProductTemplateList = (customIndex: string = '') => {
 
   const { loadCategory, category: loadedCategory } = useCategory(categorySlugIndex)
 
+  const loadCurrentCategory = async () => {
+    if (categorySlugIndex) {
+      await loadCategory({ slug: categorySlugIndex })
+    }
+  }
+
+  loadCurrentCategory()
+
   const breadcrumbs = computed(() => {
-    const breadcrumbList: BreadcrumbItem[] = [{ name: 'Inicio', link: '/' }]
+    const breadcrumbList: BreadcrumbItem[] = [{ name: 'Home', link: '/' }]
     const categoryChain: { name: string, slug: string }[] = []
 
     let current = loadedCategory.value
@@ -38,8 +46,6 @@ export const useProductTemplateList = (customIndex: string = '') => {
         link: `/${item.slug}`,
       })
     }
-
-    loadCurrentCategory()
 
     return breadcrumbList
   })
@@ -146,12 +152,6 @@ export const useProductTemplateList = (customIndex: string = '') => {
         a.label.localeCompare(b.label),
       )
     })
-  }
-
-  const loadCurrentCategory = async () => {
-    if (categorySlugIndex) {
-      await loadCategory({ slug: categorySlugIndex })
-    }
   }
 
   return {

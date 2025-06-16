@@ -77,7 +77,6 @@ await loadProductTemplateList(getFacetsFromURL(route.query))
         class="w-full narrow-container mb-20"
         data-testid="category-layout"
     >
-        <h1>Category-Page</h1>
         <div class="pb-20">
             <UiBreadcrumb
             :breadcrumbs="breadcrumbs"

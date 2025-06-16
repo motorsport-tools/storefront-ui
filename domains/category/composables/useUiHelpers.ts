@@ -12,12 +12,12 @@ export const useUiHelpers = () => {
   const pathToSlug = (): string => {
     for (const localePrefix of localePrefixes) {
       if (path.startsWith(localePrefix)) {
-        return path.replace(localePrefix, "");
+        return path.replace(localePrefix, '')
       }
     }
-    const slug = Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug
-    return `/` + slug
-  };
+    const cleanPath = path?.replace(/\/$/, '')
+    return cleanPath
+  }
 
   const cleanFullSearchIndex = getUniqueUrlFromRouteFilteringByAttributes(
     route.path,

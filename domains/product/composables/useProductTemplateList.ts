@@ -19,7 +19,7 @@ export const useProductTemplateList = (customIndex: string = '') => {
   const { loadCategory, category: loadedCategory } = useCategory(categorySlugIndex)
 
   const loadCurrentCategory = async () => {
-    if (categorySlugIndex) {
+    if (categorySlugIndex && categorySlugIndex !== '/') {
       await loadCategory({ slug: categorySlugIndex })
     }
   }

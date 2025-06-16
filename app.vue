@@ -16,6 +16,8 @@ onMounted(async () => {
     }
     await loadCart();  
 });
+
+console.log('Env:', process.env)
 </script>
 <template>
   <div class="h-screen justify-center align-middle">

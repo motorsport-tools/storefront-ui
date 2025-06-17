@@ -12,16 +12,10 @@ export default defineNitroPlugin((nitroApp) => {
     })
 
     nitroApp.hooks.hook('render:response', (response, { event }) => {
-        if (response.statusCode >= 500) {
-          console.error('Rendered 500 Error');
-          console.error('Path:', event.path);
-          console.error('Response:', response);
-
-          const errorPayload = (event as any).error;
-          if (errorPayload) {
-            console.error('Error payload:', errorPayload);
-          }
-        }
-      });
-  })
+        const errorPayload = (event as any).error;
+        if (errorPayload) {
+        console.error('Error payload:', errorPayload);
+        } 
+    })
+})
 

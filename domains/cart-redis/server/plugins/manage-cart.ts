@@ -149,8 +149,8 @@ async function clearCartAfterCreditCardPaymentConfirmation(
   const requestBody = await readBody(event);
 
   const paymentSuccess =
-    body?.paymentConfirmation.order?.lastTransaction?.state === "Authorized" ||
-    body.paymentConfirmation.order?.lastTransaction?.state === "Confirmed";
+    body?.paymentConfirmation?.order?.lastTransaction?.state === "Authorized" ||
+    body.paymentConfirmation?.order?.lastTransaction?.state === "Confirmed";
 
   if (requestBody[0]?.queryName === QueryName.GetPaymentConfirmation) {
     const userCookie = getCookie(event, 'odoo-user')

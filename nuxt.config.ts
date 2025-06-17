@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  ssr: true,
   extends: [
     './domains/auth',
     './domains/recent-view-products',
@@ -108,6 +109,7 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    logLevel: 'debug',
     optimizeDeps: {
       include: ["lodash-es"],
     },

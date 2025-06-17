@@ -137,7 +137,9 @@ onClickOutside(formSearchTemplateRef, () => {
           
         </nav>
       </div>
+      <!--
       <HeaderCategoryMenu :referenceRef="menuRef"/>
+      -->
     </header>
   </div>
 </template>

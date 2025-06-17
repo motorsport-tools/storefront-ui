@@ -18,7 +18,7 @@ const error = useError();
       <p class="mt-8 font-medium">Page Not Found</p>
       <div class="my-10">
         <SfButton
-          to="/category/53"
+          to="/search"
           class="hidden md:flex"
           variant="secondary"
           :tag="NuxtLink"
@@ -39,9 +39,16 @@ const error = useError();
         height="300"
       />
       <p class="mt-8 text-center font-medium">Some problem happened</p>
+      <pre class="mt-6 p-4 bg-red-100 text-sm rounded text-red-800 overflow-x-auto">
+        Error Message: {{ error?.message }}
+        Status Code: {{ error?.statusCode }}
+        Error Name: {{ error?.name }}
+        Cause: {{ error?.cause }}
+        Stack: {{ error?.stack }}
+      </pre>
       <div class="my-10">
         <SfButton
-          to="/category/53"
+          to="/search"
           class="hidden md:flex"
           variant="secondary"
           :tag="NuxtLink"

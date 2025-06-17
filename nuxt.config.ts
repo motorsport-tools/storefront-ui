@@ -1,10 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  ssr: true,
-  alias: {
-    '@storefront-ui/vue/dist/components/SfButton': '/components/wrappers/SfSafeButton.vue',
-  },
   extends: [
     './domains/auth',
     './domains/recent-view-products',
@@ -146,6 +142,7 @@ export default defineNuxtConfig({
 
   nitro: {
     // compressPublicAssets: true,
+    logLevel: 'debug',
     storage: {
       cache: {
         driver: process.env.NUXT_STORAGE_DRIVER,

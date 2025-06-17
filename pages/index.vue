@@ -20,12 +20,6 @@ await loadProductTemplateList(params, true)
 
 await getWebsiteHomepage()
 useHead(generateSeo<SeoEntity>(websiteHomepage.value, 'Home'))
-
-const { $posthog } = useNuxtApp();
-if ($posthog) {
-  const posthog = $posthog()
-  posthog?.capture('<event_name>')
-}
 </script>
 
 <template>

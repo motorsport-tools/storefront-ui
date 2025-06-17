@@ -2,6 +2,9 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
+  alias: {
+    '@storefront-ui/vue/dist/components/SfButton': '/components/wrappers/SfSafeButton.vue',
+  },
   extends: [
     './domains/auth',
     './domains/recent-view-products',
@@ -71,8 +74,6 @@ export default defineNuxtConfig({
       currencySeparator: "",
       currencyDecimal: "",
       currencyPrecision: "",
-      posthogPublicKey: process.env.NUXT_POSTHOG_KEY,
-      posthogHost: 'https://api.motorsport-tools.co.uk',
     },
   },
 

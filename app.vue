@@ -14,10 +14,8 @@ onMounted(async () => {
     if ( isAuthenticated.value ) {  
       await loadUser(true)
     }
-    await loadCart();  
-});
-
-console.log('Env:', process.env)
+    await loadCart()
+})
 </script>
 <template>
   <div class="h-screen justify-center align-middle">

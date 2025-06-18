@@ -9,7 +9,13 @@ import { SfButton } from '@storefront-ui/vue'
     <SiteHeader />
     <div>
       <SfButton>
-          Test is it the component? 
+            <template #prefix>
+              Prefix >
+            </template>
+            Test is it the component? 
+            <template #suffix>
+              < Suffix
+            </template>
       </SfButton>
     <slot></slot>
     </div>

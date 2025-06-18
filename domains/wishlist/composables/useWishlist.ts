@@ -92,6 +92,8 @@ export const useWishlist = () => {
   });
 
   const isInWishlist = (productId: number) => {
+    if(!wishlist.value || !productId) return false
+
     return (
       wishlist.value?.wishlistItems?.some(
         (item) => item?.product?.id === productId

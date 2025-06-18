@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   extends: [
+    './domains/header',
     './domains/auth',
     './domains/recent-view-products',
     './domains/cart-redis',

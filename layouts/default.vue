@@ -4,6 +4,7 @@
   <!--
   <TheHeader />
   -->
+  <SiteHeader />
   <div>
   <slot></slot>
   </div>

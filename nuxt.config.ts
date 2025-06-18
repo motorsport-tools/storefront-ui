@@ -107,6 +107,7 @@ export default defineNuxtConfig({
 
   vite: {
     logLevel: 'debug',
+    sourcemap: true,
     optimizeDeps: {
       include: ["lodash-es"],
     },
@@ -143,6 +144,7 @@ export default defineNuxtConfig({
   nitro: {
     // compressPublicAssets: true,
     logLevel: 'debug',
+    sourceMap: true,
     storage: {
       cache: {
         driver: process.env.NUXT_STORAGE_DRIVER,

@@ -7,10 +7,10 @@
   <div>
   <slot></slot>
   </div>
-  <LazyNewsletter />
   <!--
+  <LazyNewsletter />
   <LazyBottomNavbar hydrate-on-visible />
   <LazyTheFooter hydrate-on-visible />
-  -->
   <WishlistSidebar />
+  -->
 </template>

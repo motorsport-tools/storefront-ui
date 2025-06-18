@@ -1,7 +1,8 @@
 <script setup>
 const nuxtApp = useNuxtApp();
 const { isAuthenticated, loadUser } = useAuth()
-const { loadCart } = useCart();
+const { loadCart } = useCart()
+const { loadWishlist } = useWishlist()
 
 
 
@@ -13,9 +14,9 @@ onMounted(async () => {
     console.log('Is Authenticated? ', isAuthenticated.value)
     if ( isAuthenticated.value ) {  
       await loadUser(true)
-      await loadWishlist()
     }
     await loadCart()
+    await loadWishlist()
 })
 </script>
 <template>

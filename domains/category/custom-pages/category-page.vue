@@ -121,10 +121,11 @@ await loadProductTemplateList(getFacetsFromURL(route.query))
                     </SfButton>
                 </div>
                 <section
-                    v-if="productTemplateList.length > 0"
-                    class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
+                  v-if="productTemplateList.length > 0"
+                  class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
                 >
-                    <LazyUiProductCard
+                  <ClientOnly>
+                  <LazyUiProductCard
                     v-for="productTemplate in productTemplateList"
                     :key="productTemplate.id"
                     :name="productTemplate?.name || ''"
@@ -149,7 +150,8 @@ await loadProductTemplateList(getFacetsFromURL(route.query))
                     :rating-count="123"
                     :rating="Number(4)"
                     :first-variant="productTemplate.firstVariant as Product"
-                    />
+                  />
+                  </ClientOnly>
                 </section>
                 <CategoryEmptyState
                     v-else

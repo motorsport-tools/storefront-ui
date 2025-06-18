@@ -19,7 +19,7 @@ export const useProductTemplateList = (customIndex: string = '') => {
   const { loadCategory, category: loadedCategory } = useCategory(categorySlugIndex)
 
   const isCategoryRoute = (route: any) => {
-    return route.matched.some(record => record.components.default.__file.includes('category-page.vue'))
+    return route.matched.some(record => record?.components?.default?.__file?.includes('category-page.vue'))
   }
 
   const loadCurrentCategory = async () => {

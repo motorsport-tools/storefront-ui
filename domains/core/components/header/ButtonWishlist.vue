@@ -5,13 +5,9 @@ const { toggleWishlistSideBar } = useWishlistUiState();
 const { loadWishlist, wishlistTotalItems } = useWishlist();
 
 const handleOpenWishListSidebar = async () => {
-  toggleWishlistSideBar();
-  await loadWishlist();
-};
-
-onMounted(async () => {
-  await loadWishlist();
-});
+  toggleWishlistSideBar()
+  await loadWishlist()
+}
 </script>
 <template>
   <ClientOnly>

@@ -22,8 +22,8 @@ const setIsActive = (param: boolean) => {
 };
 
 const handleWishlistSideBar = async () => {
-  toggleWishlistSideBar();
-  await loadWishlist();
+  toggleWishlistSideBar()
+  await loadWishlist()
 };
 </script>
 

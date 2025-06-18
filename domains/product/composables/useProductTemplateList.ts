@@ -18,9 +18,15 @@ export const useProductTemplateList = (customIndex: string = '') => {
 
   const { loadCategory, category: loadedCategory } = useCategory(categorySlugIndex)
 
+  const isCategoryRoute = (route: any) => {
+    return route.matched.some(record => record.components.default.__file.includes('category-page.vue'))
+  }
+
   const loadCurrentCategory = async () => {
-    if (categorySlugIndex && categorySlugIndex !== '/') {
-      await loadCategory({ slug: categorySlugIndex })
+    if (isCategoryRoute(route)) {
+       if (categorySlugIndex && categorySlugIndex !== '/') {
+         await loadCategory({ slug: categorySlugIndex });
+       }
     }
   }
 
@@ -29,22 +35,23 @@ export const useProductTemplateList = (customIndex: string = '') => {
   const breadcrumbs = computed(() => {
     const breadcrumbList: BreadcrumbItem[] = [{ name: 'Home', link: '/' }]
     const categoryChain: { name: string, slug: string }[] = []
+    if (loadedCategory.value) {
+      let current = loadedCategory.value
 
-    let current = loadedCategory.value
+      while (current) {
+        categoryChain.unshift({
+          name: current.name,
+          slug: current.slug?.replace(/^\/?/, '') || '',
+        })
+        current = current.parent
+      }
 
-    while (current) {
-      categoryChain.unshift({
-        name: current.name,
-        slug: current.slug?.replace(/^\/?/, '') || '',
-      })
-      current = current.parent
-    }
-
-    for (const item of categoryChain) {
-      breadcrumbList.push({
-        name: item.name,
-        link: `/${item.slug}`,
-      })
+      for (const item of categoryChain) {
+        breadcrumbList.push({
+          name: item.name,
+          link: `/${item.slug}`,
+        })
+      }
     }
 
     return breadcrumbList

@@ -124,7 +124,6 @@ await loadProductTemplateList(getFacetsFromURL(route.query))
                   v-if="productTemplateList.length > 0"
                   class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
                 >
-                  <ClientOnly>
                   <LazyUiProductCard
                     v-for="productTemplate in productTemplateList"
                     :key="productTemplate.id"
@@ -151,7 +150,6 @@ await loadProductTemplateList(getFacetsFromURL(route.query))
                     :rating="Number(4)"
                     :first-variant="productTemplate.firstVariant as Product"
                   />
-                  </ClientOnly>
                 </section>
                 <CategoryEmptyState
                     v-else

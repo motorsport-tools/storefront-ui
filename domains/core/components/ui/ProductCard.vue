@@ -74,7 +74,7 @@ const handleWishlistRemoveItem = async (firstVariant: Product) => {
   <div
     class="relative border border-neutral-200 rounded-md hover:shadow-lg min-h-[330px] flex flex-col justify-around"
   >
-    <p>Product cart</p>
+    <p>Product card</p>
     <!--
     <div class="relative">
       <NuxtLink :to="slug">

@@ -17,7 +17,6 @@ export default defineNuxtConfig({
     './domains/live-chat',
     './domains/guest',
   ],
-
   modules: [
     "@pinia/nuxt",
     "@nuxtjs/tailwindcss",
@@ -104,8 +103,6 @@ export default defineNuxtConfig({
   },
 
   vite: {
-    logLevel: 'debug',
-    sourcemap: true,
     optimizeDeps: {
       include: ["lodash-es"],
     },
@@ -113,6 +110,7 @@ export default defineNuxtConfig({
 
   build: {
     transpile: [
+      "tslib",
       "vue-toastification",
     ],
   },

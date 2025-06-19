@@ -6,10 +6,14 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   // Get the slug from the current route
   const router = useRouter()
-  const slug = to.path.replace(/^\//, '')
+  const slug = to.path
 
   try {
-        const { data: routeData } = await useFetch(`/api/route-resolver/${slug}`)
+        const { data: routeData } = await useFetch(`/api/route-resolver`, {
+            params: {
+                slug,
+            },
+        })
 
         if (!routeData?.value?.data) {
             console.warn('[dynamic-routes] Route does not exist or invalid:', slug)
@@ -17,8 +21,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
         }
 
         const routeComponents = {
-            category: () => import('~/domains/category/custom-pages/category-page.vue'),
-            product: () => import('~/domains/product/custom-pages/product-page.vue'),
+            category: () => import('~/layers/category/custom-pages/category-page.vue'),
+            product: () => import('~/layers/product/custom-pages/product-page.vue'),
         }
 
 
@@ -32,7 +36,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
         router.addRoute({
             path: to.path,
-            name: slug.replace('/', ''),
+            name: slug.replace(/^\//, '').replace(/\//g, '-'),
             component: component,
         })
     

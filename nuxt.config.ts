@@ -1,22 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  extends: [
-    './domains/header',
-    './domains/auth',
-    './domains/recent-view-products',
-    './domains/cart-redis',
-    './domains/category',
-    './domains/checkout',
-    './domains/core',
-    './domains/my-account',
-    './domains/product',
-    './domains/orders',
-    './domains/search-default',
-    './domains/wishlist',
-    './domains/live-chat',
-    './domains/guest',
-  ],
   modules: [
     "@pinia/nuxt",
     "@nuxtjs/tailwindcss",
@@ -138,7 +122,7 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    // compressPublicAssets: true,
+    compressPublicAssets: true,
     logLevel: 'debug',
     sourceMap: true,
     storage: {
@@ -168,7 +152,7 @@ export default defineNuxtConfig({
   },
   experimental: {
     crossOriginPrefetch: true,
-    asyncContext: false,
+    asyncContext: true,
   },
 
   sitemap: {

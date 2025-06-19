@@ -27,7 +27,7 @@ onMounted(async () => {
     />
 
     <NuxtLayout>
-      <NuxtPage :page-key="(route) => route.fullPath" />
+      <NuxtPage :page-key="(route) => route.path" />
     </NuxtLayout>
   </div>
 </template>

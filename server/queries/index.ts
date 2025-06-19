@@ -18,6 +18,7 @@ import StockLotsQuery from './StockLotsQuery';
 import WishlistLoadQuery from './WishlistLoadQuery';
 import GetWebsiteHomepageQuery from './GetWebsiteHomepageQuery';
 import GetEasyShipRatesQuery from './GetEasyShipRatesQuery';
+import GetProductTemplateListQueryForRecentViews from './GetProductTemplateListQueryForRecentViews'
 
 enum QueryName {
   GetProductVariantQuery = 'GetProductVariantQuery',
@@ -38,6 +39,7 @@ enum QueryName {
   GetPaymentConfirmation = 'GetPaymentConfirmation',
   GetOrdersQuery = 'GetOrdersQuery',
   GetOrderQuery = 'GetOrderQuery',
+  GetProductTemplateListQueryForRecentViews = 'GetProductTemplateListQueryForRecentViews',
   GetWebsiteHomepageQuery = 'GetWebsiteHomepageQuery',
   GetInvoiceQuery = 'GetInvoiceQuery',
   GetEasyShipRatesQuery = 'GetEasyShipRatesQuery'
@@ -58,6 +60,7 @@ const Queries: Record<QueryName, string> = {
   GetDeliveryMethodsQuery,
   GetPaymentMethodsQuery,
   GetPaymentConfirmation,
+  GetProductTemplateListQueryForRecentViews,
   GetOrdersQuery,
   GetOrderQuery,
   GetInvoiceQuery,

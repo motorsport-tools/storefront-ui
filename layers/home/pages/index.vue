@@ -27,13 +27,12 @@ useHead(generateSeo<SeoEntity>(websiteHomepage.value, 'Home'))
     class="w-full narrow-container bg-white mb-20"
     data-testid="checkout-layout"
   >
-    <!--
+    
     <MainBanner />
     <LazyDisplay hydrate-on-visible />
     <ClientOnly>
       <LazyProductRecentViewSlider heading="Your recent views" />
     </ClientOnly>
-    -->
-    <p>Content</p>
+    
   </main>
 </template>

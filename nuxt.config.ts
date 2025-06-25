@@ -56,8 +56,7 @@ export default defineNuxtConfig({
 
   googleFonts: {
     families: {
-      "Poppins": [400, 500, 700],
-      "Metrophobic": [400, 500, 700],
+      "Figtree": [300, 400, 500, 600, 700, 800],
     },
     display: 'swap',
   },

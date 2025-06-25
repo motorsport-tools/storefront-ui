@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
             const modelToRouteType: Record<string, string> = {
                 'product.template': 'product',
                 'product.public.category': 'category',
-                'vsf.website.page': 'websitePage',
+                'alokai.website.page': 'websitePage',
             }
 
             return {

@@ -13,10 +13,10 @@ export default <Config>{
   theme: {
     extend: {
       fontFamily: {
-        sans: "Metrophobic, Helvetica Neue, Arial, Lucida Grande, sans-serif",
-        body: "Metrophobic, Helvetica Neue, Arial, Lucida Grande, sans-serif",
-        headings: "Poppins, sans-serif",
-        heading: "Poppins, sans-serif",
+        sans: "Figtree, Helvetica Neue, Arial, Lucida Grande, sans-serif",
+        body: "Figtree, Helvetica Neue, Arial, Lucida Grande, sans-serif",
+        headings: "Figtree, sans-serif",
+        heading: "Figtree, sans-serif",
       },
       sfTypography: ({ theme }) => ({
         'headline-1': {

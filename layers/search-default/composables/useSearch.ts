@@ -23,12 +23,11 @@ export const useSearch = (formSearchTemplateRef?: any) => {
     productTemplateList,
     totalItems,
     organizedAttributes,
-    categories,
+    loading
   } = useProductTemplateList(route.fullPath, route.fullPath)
   const searchInputValue = useState('odoo-search-input', () => '')
   const highlightedIndex = ref(-1)
   const showResultSearch = ref(false)
-  const loading = ref(false)
 
   watch(
     () => route.query,
@@ -105,7 +104,6 @@ export const useSearch = (formSearchTemplateRef?: any) => {
     searchModalToggle,
 
     // odoo search
-    loading,
     searchInputValue,
     highlightNext,
     highlightPrevious,
@@ -116,7 +114,6 @@ export const useSearch = (formSearchTemplateRef?: any) => {
     searchHits,
     totalItems,
     organizedAttributes,
-    categories,
     productTemplateList,
     enterPress,
   }

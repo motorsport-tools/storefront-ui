@@ -9,7 +9,6 @@ const cleanFullPath = computed(() => route?.fullPath?.replace(/\/$/, ''))
 
 const { isOpen, open, close } = useDisclosure()
 const {
-  breadcrumbs,
   loadProductTemplateList,
   organizedAttributes,
   loading,
@@ -20,7 +19,7 @@ const {
 
 provide('stockCount', stockCount)
 
-const { loadCategory, category, loading: categoryLoading } = useCategory(String(cleanFullPath.value))
+const { loadCategory, category } = useCategory(String(cleanFullPath.value))
 const { getRegularPrice, getSpecialPrice } = useProductAttributes()
 const { getFacetsFromURL } = useUiHelpers()
 
@@ -56,12 +55,10 @@ const pagination = computed(() => ({
 
 const params = route.params as { id?: string | number, slug?: string }
 
-if (params.id) {
-  await loadCategory({
-    id: Number(params.id),
-    slug: String(cleanFullPath.value),
-  })
-}
+await loadCategory({
+  id: Number(params.id),
+  slug: String(cleanFullPath.value),
+})
 
 if (category.value) {
   useHead(generateSeo<SeoEntity>(category.value, 'Category'))
@@ -79,7 +76,7 @@ await loadProductTemplateList(getFacetsFromURL(route.query))
     >
         <div class="pb-20">
             <UiBreadcrumb
-            :breadcrumbs="breadcrumbs"
+            :breadcrumbs="category.breadcrumbs"
             class="self-start mt-5 mb-5"
             />
             <div class="grid grid-cols-12 lg:gap-x-6">

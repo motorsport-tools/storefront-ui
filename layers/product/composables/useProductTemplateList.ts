@@ -1,4 +1,4 @@
-import type { AttributeFacet, AttributeValue, BreadcrumbItem, Product, ProductTemplateListResponse, QueryProductsArgs } from '~/graphql'
+import type { AttributeFacet, AttributeValue, Product, ProductTemplateListResponse, QueryProductsArgs } from '~/graphql'
 import { QueryName } from '~/server/queries'
 
 export const useProductTemplateList = (customIndex: string = '') => {
@@ -15,47 +15,6 @@ export const useProductTemplateList = (customIndex: string = '') => {
   const totalItems = useState<number>(`total-items${cleanFullSearchIndex}${customIndex}`, () => 0)
   const productTemplateList = useState<Product[]>(`product-template-list${cleanFullSearchIndex}${customIndex}`, () => [])
   const organizedAttributes = useState<AttributeFacet[]>(`attributes${categorySlugIndex}${customIndex}`, () => [])
-
-  const { loadCategory, category: loadedCategory } = useCategory(categorySlugIndex)
-
-  const isCategoryRoute = (route: any) => {
-    return route.matched.some(record => record?.components?.default?.__file?.includes('category-page.vue'))
-  }
-
-  const loadCurrentCategory = async () => {
-    if (isCategoryRoute(route)) {
-       if (categorySlugIndex && categorySlugIndex !== '/') {
-         await loadCategory({ slug: categorySlugIndex });
-       }
-    }
-  }
-
-  loadCurrentCategory()
-
-  const breadcrumbs = computed(() => {
-    const breadcrumbList: BreadcrumbItem[] = [{ name: 'Home', link: '/' }]
-    const categoryChain: { name: string, slug: string }[] = []
-    if (loadedCategory.value) {
-      let current = loadedCategory.value
-
-      while (current) {
-        categoryChain.unshift({
-          name: current.name,
-          slug: current.slug?.replace(/^\/?/, '') || '',
-        })
-        current = current.parent
-      }
-
-      for (const item of categoryChain) {
-        breadcrumbList.push({
-          name: item.name,
-          link: `/${item.slug}`,
-        })
-      }
-    }
-
-    return breadcrumbList
-  })
 
   const updateVariablesFromData = (data: ProductTemplateListResponse | null) => {
     productTemplateList.value = data?.products?.products || []
@@ -163,8 +122,6 @@ export const useProductTemplateList = (customIndex: string = '') => {
 
   return {
     loadProductTemplateList,
-
-    breadcrumbs,
     minPrice,
     maxPrice,
     loading,

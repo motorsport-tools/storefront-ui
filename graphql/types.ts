@@ -45,12 +45,6 @@ export type CategoryListResponse =
     }
   }
 
-export type BreadcrumbItem = 
-  {
-    name: string
-    link: string
-  }
-
 export type ImageGalleryItem = 
   {
     id: number
@@ -61,12 +55,9 @@ export type ImageGalleryItem =
     height?: number | string
   }
 
-export type CategoryResponse = AsyncData<
-  {
-    category: Category;
-  },
-  H3Error
->;
+export type CategoryResponse = {
+  category: Category
+}
 
 export type ProductTemplateListResponse = {
   products: {

@@ -2,6 +2,8 @@ import alternativeProductsFragment from './alternativeProductsFragment'
 import frequentlyTogetherProductsFragment from './frequentlyTogetherProductsFragment'
 export default `
   id
+  breadcrumb
+  jsonLdBreadcrumb
   metaDescription
   metaImage
   metaKeyword

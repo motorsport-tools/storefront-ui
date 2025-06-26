@@ -16,7 +16,19 @@ query (
     products {      
       firstVariant {
         id
-        combinationInfoVariant         
+        combinationInfoVariant
+        slug
+        variantAttributeValues {
+            id
+            name
+            displayType
+            htmlColor
+            search
+            attribute {
+                id
+                name
+            }
+        }
       }
       tags {        
         name

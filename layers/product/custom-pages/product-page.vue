@@ -38,7 +38,6 @@ const {
   loadingProductVariant,
   productVariant,
   getImages,
-  breadcrumbs,
   getRegularPrice,
   getSpecialPrice,
 } = useProductVariant(cleanFullPath.value)
@@ -114,11 +113,7 @@ const productsInCart = computed(() => {
 })
 
 const handleCartAdd = async () => {
-  let id = productVariant?.value.id
-  if (!productVariant.value.combinationInfoVariant) {
-    id = Number(productVariant?.value.firstVariant?.id)
-  }
-  await cartAdd(id, quantitySelectorValue.value)
+    await cartAdd(Number(productTemplate?.value.firstVariant?.id), quantitySelectorValue.value)
 }
 
 const handleWishlistAddItem = async (firstVariant: Product) => {
@@ -153,7 +148,7 @@ if (productTemplate.value?.id) {
         <NuxtErrorBoundary>
             <div v-if="productTemplate?.id && !loadingProductTemplate">
             <UiBreadcrumb
-                :breadcrumbs="breadcrumbs"
+                :breadcrumbs="productTemplate?.breadcrumbs"
                 class="self-start mt-5 mb-10"
             />
             <div
@@ -274,8 +269,8 @@ if (productTemplate.value?.id) {
                             "
                             @click="
                                 isInWishlist(productVariant?.id as number)
-                                ? handleWishlistRemoveItem(productVariant)
-                                : handleWishlistAddItem(productVariant)
+                                ? productTemplate.firstVariant && handleWishlistRemoveItem(productTemplate.firstVariant)
+                                : productTemplate.firstVariant && handleWishlistAddItem(productTemplate.firstVariant)
                             "
                         >
                         <SfIconFavoriteFilled
@@ -531,9 +526,11 @@ if (productTemplate.value?.id) {
             <section
                 class="lg:mx-4 mb-20"
             >
-                <LazyProductRecentViewSlider
-                    text="Your recent views"
-                />
+                <ClientOnly>
+                    <LazyProductRecentViewSlider
+                        text="Your recent views"
+                    />
+                </ClientOnly>
             </section>
             </div>
             <template #error="{ error }">

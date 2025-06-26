@@ -47,6 +47,7 @@ export default defineNuxtConfig({
     public: {
       odooBaseImageUrl: "",
       odooBaseUrl: "",
+      middlewareUrl: '',
       currencySymbol: "",
       currencySeparator: "",
       currencyDecimal: "",
@@ -114,10 +115,6 @@ export default defineNuxtConfig({
       sm: 640,
       xs: 376,
     },
-  },
-
-  routeRules: {
-    "/": { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
   },
 
   nitro: {

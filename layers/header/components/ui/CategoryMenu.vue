@@ -112,22 +112,16 @@ defineExpose({
                                 <SfListItem size="lg" tag="a" :href="node.value.link" class="first-of-type:mt-2">
                                     <div class="flex items-center">
                                         <p class="text-left">{{ node.value.label }}</p>
-                                        <SfCounter class="ml-2">
-                                            {{ node.value.counter }}
-                                        </SfCounter>
                                     </div>
                                 </SfListItem>
                             </li>
                             <li v-else>
-                                <SfListItem size="lg" tag="button" type="button" @click="goNext(node.key)">
+                                <SfListItem size="lg" tag="button" type="button" @click="goNext(node.key)" class="group">
                                 <div class="flex justify-between items-center">
                                     <div class="flex items-center">
                                         <p class="text-left">{{ node.value.label }}</p>
-                                        <SfCounter class="ml-2">
-                                            {{ node.value.counter }}
-                                        </SfCounter>
                                     </div>
-                                    <SfIconChevronRight class="text-neutral-500" />
+                                    <SfIconChevronRight class="text-neutral-500 group-hover:text-primary-700" />
                                 </div>
                                 </SfListItem>
                             </li>

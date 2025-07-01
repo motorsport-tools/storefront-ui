@@ -1,21 +1,10 @@
 <script setup lang="ts">
-import { Icon } from '#components'
 const NuxtLink = resolveComponent("NuxtLink")
-
-console.log('NuxtLink?',NuxtLink)
 </script>
 
 <template>
     <UiUserNavButton
-        title="'View Wishlist'"
-    >
-        <Icon
-            name="weui:search-filled"
-            size="26px"
-        />
-    </UiUserNavButton>
-    <UiUserNavButton
-        title="'View Wishlist'"
+        title="View Wishlist"
     >
         <Icon
             name="material-symbols:star"
@@ -24,7 +13,7 @@ console.log('NuxtLink?',NuxtLink)
     </UiUserNavButton>
 
     <UiUserNavButton
-        title="'View Shopping Basket'"
+        title="View Shopping Basket"
         to="cart"
         :tag="NuxtLink"
     >

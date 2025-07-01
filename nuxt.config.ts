@@ -119,7 +119,7 @@ export default defineNuxtConfig({
 
   nitro: {
     compressPublicAssets: true,
-    logLevel: 'debug',
+    //logLevel: 'debug',
     sourceMap: true,
     storage: {
       cache: {
@@ -161,7 +161,7 @@ export default defineNuxtConfig({
   },
 
   robots: {
-    allow: ['/category/*', '/product/*'],
+    allow: ['/*', '/product/*'],
     disallow: ['/cart', '/checkout/*', '/my-account/*', '/forgot-password', '/search?'],
   },
 

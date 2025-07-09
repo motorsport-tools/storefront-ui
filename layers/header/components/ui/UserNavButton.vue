@@ -22,7 +22,6 @@ const type = computed(
       ? 'button'
       : undefined),
 )
-console.log(tagWithDefaults.value)
 </script>
 
 <template>

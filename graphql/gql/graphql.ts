@@ -42,18 +42,6 @@ export type AddressFilterInput = {
   addressType: InputMaybe<Array<InputMaybe<AddressEnum>>>;
 };
 
-export type AddressInput = {
-  city: InputMaybe<Scalars['String']['input']>;
-  countryId: InputMaybe<Scalars['Int']['input']>;
-  email: InputMaybe<Scalars['String']['input']>;
-  name: InputMaybe<Scalars['String']['input']>;
-  phone: InputMaybe<Scalars['String']['input']>;
-  stateId: InputMaybe<Scalars['Int']['input']>;
-  street: InputMaybe<Scalars['String']['input']>;
-  street2: InputMaybe<Scalars['String']['input']>;
-  zip: InputMaybe<Scalars['String']['input']>;
-};
-
 /** An enumeration. */
 export enum AddressType {
   Contact = 'Contact',
@@ -62,31 +50,6 @@ export enum AddressType {
   OtherAddress = 'OtherAddress',
   PrivateAddress = 'PrivateAddress'
 }
-
-export type AdyenPaymentDetailsResult = {
-  __typename?: 'AdyenPaymentDetailsResult';
-  adyenPaymentDetails: Maybe<Scalars['GenericScalar']['output']>;
-};
-
-export type AdyenPaymentMethodsResult = {
-  __typename?: 'AdyenPaymentMethodsResult';
-  adyenPaymentMethods: Maybe<Scalars['GenericScalar']['output']>;
-};
-
-export type AdyenPaymentsResult = {
-  __typename?: 'AdyenPaymentsResult';
-  adyenPayments: Maybe<Scalars['GenericScalar']['output']>;
-};
-
-export type AdyenProviderInfoResult = {
-  __typename?: 'AdyenProviderInfoResult';
-  adyenProviderInfo: Maybe<Scalars['GenericScalar']['output']>;
-};
-
-export type AdyenTransactionResult = {
-  __typename?: 'AdyenTransactionResult';
-  transaction: Maybe<Scalars['GenericScalar']['output']>;
-};
 
 export type ApplyCouponList = ApplyCoupons & {
   __typename?: 'ApplyCouponList';
@@ -189,6 +152,17 @@ export type BlogTags = {
   totalCount: Scalars['Int']['output'];
 };
 
+export type Cart = {
+  frequentlyBoughtTogether: Maybe<Array<Maybe<Product>>>;
+  order: Maybe<Order>;
+};
+
+export type CartData = Cart & {
+  __typename?: 'CartData';
+  frequentlyBoughtTogether: Maybe<Array<Maybe<Product>>>;
+  order: Maybe<Order>;
+};
+
 export type CartLineInput = {
   id: Scalars['Int']['input'];
   quantity: Scalars['Int']['input'];
@@ -201,6 +175,7 @@ export type Categories = {
 
 export type Category = {
   __typename?: 'Category';
+  breadcrumb: Maybe<Scalars['GenericScalar']['output']>;
   childs: Maybe<Array<Category>>;
   id: Scalars['Int']['output'];
   image: Maybe<Scalars['String']['output']>;
@@ -234,6 +209,30 @@ export type CategorySortInput = {
 export type CheckoutRedirectOutput = {
   __typename?: 'CheckoutRedirectOutput';
   accessToken: Maybe<Scalars['String']['output']>;
+};
+
+export type Company = {
+  __typename?: 'Company';
+  city: Maybe<Scalars['String']['output']>;
+  country: Maybe<Country>;
+  email: Maybe<Scalars['String']['output']>;
+  id: Scalars['Int']['output'];
+  image: Maybe<Scalars['String']['output']>;
+  imageFilename: Maybe<Scalars['String']['output']>;
+  mobile: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars['String']['output']>;
+  phone: Maybe<Scalars['String']['output']>;
+  socialFacebook: Maybe<Scalars['String']['output']>;
+  socialGithub: Maybe<Scalars['String']['output']>;
+  socialInstagram: Maybe<Scalars['String']['output']>;
+  socialLinkedin: Maybe<Scalars['String']['output']>;
+  socialTwitter: Maybe<Scalars['String']['output']>;
+  socialYoutube: Maybe<Scalars['String']['output']>;
+  state: Maybe<State>;
+  street: Maybe<Scalars['String']['output']>;
+  street2: Maybe<Scalars['String']['output']>;
+  vat: Maybe<Scalars['String']['output']>;
+  zip: Maybe<Scalars['String']['output']>;
 };
 
 export type ContactUsParams = {
@@ -286,129 +285,6 @@ export type Currency = {
   symbol: Maybe<Scalars['String']['output']>;
 };
 
-export type CustomCart = {
-  frequentlyBoughtTogether: Maybe<Array<Maybe<Product>>>;
-  order: Maybe<CustomOrder>;
-};
-
-export type CustomCartData = CustomCart & {
-  __typename?: 'CustomCartData';
-  frequentlyBoughtTogether: Maybe<Array<Maybe<Product>>>;
-  order: Maybe<CustomOrder>;
-};
-
-export type CustomCoupon = {
-  __typename?: 'CustomCoupon';
-  code: Maybe<Scalars['String']['output']>;
-  id: Scalars['Int']['output'];
-  name: Maybe<Scalars['String']['output']>;
-  programType: Maybe<Scalars['String']['output']>;
-};
-
-export type CustomInvoice = {
-  __typename?: 'CustomInvoice';
-  amountResidual: Maybe<Scalars['Float']['output']>;
-  amountTax: Maybe<Scalars['Float']['output']>;
-  amountTotal: Maybe<Scalars['Float']['output']>;
-  amountUntaxed: Maybe<Scalars['Float']['output']>;
-  currency: Maybe<Currency>;
-  id: Scalars['Int']['output'];
-  invoiceDate: Maybe<Scalars['String']['output']>;
-  invoiceDateDue: Maybe<Scalars['String']['output']>;
-  invoiceLines: Maybe<Array<InvoiceLine>>;
-  invoiceUrl: Maybe<Scalars['String']['output']>;
-  name: Maybe<Scalars['String']['output']>;
-  partner: Maybe<Partner>;
-  partnerShipping: Maybe<Partner>;
-  paymentState: Maybe<Scalars['String']['output']>;
-  state: Maybe<InvoiceState>;
-  taxTotals: Maybe<Scalars['GenericScalar']['output']>;
-  transactions: Maybe<Array<PaymentTransaction>>;
-};
-
-export type CustomLoginOutput = {
-  __typename?: 'CustomLoginOutput';
-  cart: Maybe<CustomOrder>;
-  user: Maybe<User>;
-  wishlistItems: Maybe<Array<Maybe<WishlistItem>>>;
-};
-
-export type CustomOrder = {
-  __typename?: 'CustomOrder';
-  amountDelivery: Maybe<Scalars['Float']['output']>;
-  amountDiscounts: Maybe<Scalars['Float']['output']>;
-  amountGiftCards: Maybe<Scalars['Float']['output']>;
-  amountSubtotal: Maybe<Scalars['Float']['output']>;
-  amountTax: Maybe<Scalars['Float']['output']>;
-  amountTotal: Maybe<Scalars['Float']['output']>;
-  amountUntaxed: Maybe<Scalars['Float']['output']>;
-  cartQuantity: Maybe<Scalars['Int']['output']>;
-  clientOrderRef: Maybe<Scalars['String']['output']>;
-  coupons: Maybe<Array<CustomCoupon>>;
-  currency: Maybe<Currency>;
-  currencyRate: Maybe<Scalars['String']['output']>;
-  dateOrder: Maybe<Scalars['String']['output']>;
-  deliveryStatus: Maybe<DeliveryStatus>;
-  giftCards: Maybe<Array<GiftCard>>;
-  id: Scalars['Int']['output'];
-  invoiceCount: Maybe<Scalars['Int']['output']>;
-  invoiceIds: Maybe<Array<CustomInvoice>>;
-  invoiceStatus: Maybe<InvoiceStatus>;
-  lastTransaction: Maybe<PaymentTransaction>;
-  locked: Maybe<Scalars['Boolean']['output']>;
-  name: Maybe<Scalars['String']['output']>;
-  orderLines: Maybe<Array<CustomOrderLine>>;
-  orderUrl: Maybe<Scalars['String']['output']>;
-  partner: Maybe<Partner>;
-  partnerInvoice: Maybe<Partner>;
-  partnerShipping: Maybe<Partner>;
-  reportOrderLine: Maybe<Array<CustomOrderLine>>;
-  shippingMethod: Maybe<ShippingMethod>;
-  shippingRate: Maybe<EasyshipRate>;
-  stage: Maybe<OrderStage>;
-  taxTotals: Maybe<Scalars['GenericScalar']['output']>;
-  transactions: Maybe<Array<PaymentTransaction>>;
-  websiteOrderLine: Maybe<Array<CustomOrderLine>>;
-};
-
-export type CustomOrderLine = {
-  __typename?: 'CustomOrderLine';
-  coupon: Maybe<CustomCoupon>;
-  giftCard: Maybe<GiftCard>;
-  id: Scalars['Int']['output'];
-  isClickAndCollect: Maybe<Scalars['Boolean']['output']>;
-  isConfigurableProduct: Maybe<Scalars['Boolean']['output']>;
-  isDelivery: Maybe<Scalars['Boolean']['output']>;
-  isRewardLine: Maybe<Scalars['Boolean']['output']>;
-  isService: Maybe<Scalars['Boolean']['output']>;
-  name: Maybe<Scalars['String']['output']>;
-  priceSubtotal: Maybe<Scalars['Float']['output']>;
-  priceTax: Maybe<Scalars['Float']['output']>;
-  priceTotal: Maybe<Scalars['Float']['output']>;
-  priceUnit: Maybe<Scalars['Float']['output']>;
-  product: Maybe<Product>;
-  quantity: Maybe<Scalars['Float']['output']>;
-  shopWarning: Maybe<Scalars['String']['output']>;
-};
-
-export type CustomOrderList = CustomOrders & {
-  __typename?: 'CustomOrderList';
-  orders: Maybe<Array<Maybe<CustomOrder>>>;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type CustomOrders = {
-  orders: Maybe<Array<Maybe<CustomOrder>>>;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type CustomUpdateCartAddress = {
-  __typename?: 'CustomUpdateCartAddress';
-  cart: Maybe<CustomCartData>;
-  error: Maybe<Scalars['String']['output']>;
-  success: Maybe<Scalars['Boolean']['output']>;
-};
-
 export type DeleteAddress = {
   __typename?: 'DeleteAddress';
   result: Maybe<Scalars['Boolean']['output']>;
@@ -416,29 +292,6 @@ export type DeleteAddress = {
 
 export type DeleteAddressInput = {
   id: Scalars['Int']['input'];
-};
-
-/** An enumeration. */
-export enum DeliveryStatus {
-  FullyDelivered = 'FullyDelivered',
-  NotDelivered = 'NotDelivered',
-  PartiallyDelivered = 'PartiallyDelivered',
-  Started = 'Started'
-}
-
-export type EasyshipRate = {
-  __typename?: 'EasyshipRate';
-  courierId: Maybe<Scalars['String']['output']>;
-  courierLogoUrl: Maybe<Scalars['String']['output']>;
-  courierName: Maybe<Scalars['String']['output']>;
-  currencyId: Maybe<Scalars['Int']['output']>;
-  deliveryDays: Maybe<Scalars['String']['output']>;
-  id: Maybe<Scalars['Int']['output']>;
-  maxDeliveryTime: Maybe<Scalars['Int']['output']>;
-  minDeliveryTime: Maybe<Scalars['Int']['output']>;
-  serviceId: Maybe<Scalars['String']['output']>;
-  shipmentCharge: Maybe<Scalars['Float']['output']>;
-  totalCharge: Maybe<Scalars['Float']['output']>;
 };
 
 /** An enumeration. */
@@ -547,6 +400,13 @@ export type Lead = {
   subject: Maybe<Scalars['String']['output']>;
 };
 
+export type LoginOutput = {
+  __typename?: 'LoginOutput';
+  cart: Maybe<Order>;
+  user: Maybe<User>;
+  wishlistItems: Maybe<Array<Maybe<WishlistItem>>>;
+};
+
 export type MailingContact = {
   __typename?: 'MailingContact';
   companyName: Maybe<Scalars['String']['output']>;
@@ -621,28 +481,18 @@ export type Mutation = {
   __typename?: 'Mutation';
   /** Add new billing or shipping address and set it on the shopping cart. */
   addAddress: Maybe<Partner>;
-  /** Submit the Adyen Payment Details. */
-  adyenPaymentDetails: Maybe<AdyenPaymentDetailsResult>;
-  /** Get Adyen Payment Methods. */
-  adyenPaymentMethods: Maybe<AdyenPaymentMethodsResult>;
-  /** Make Adyen Payment request. */
-  adyenPayments: Maybe<AdyenPaymentsResult>;
-  /** Get Adyen Provider Info. */
-  adyenProviderInfo: Maybe<AdyenProviderInfoResult>;
-  /** Create Adyen Transaction */
-  adyenTransaction: Maybe<AdyenTransactionResult>;
   /** Apply Coupon */
   applyCoupon: Maybe<ApplyCouponList>;
   /** Apply Gift Card */
   applyGiftCard: Maybe<ApplyGiftCardList>;
   /** Add Multiple Items */
-  cartAddMultipleItems: Maybe<CustomCartData>;
+  cartAddMultipleItems: Maybe<CartData>;
   /** Cart Clear */
   cartClear: Maybe<Order>;
   /** Remove Multiple Items */
-  cartRemoveMultipleItems: Maybe<CustomCartData>;
+  cartRemoveMultipleItems: Maybe<CartData>;
   /** Update Multiple Items */
-  cartUpdateMultipleItems: Maybe<CustomCartData>;
+  cartUpdateMultipleItems: Maybe<CartData>;
   /** Set new user's password with the token from the change password url received in the email. */
   changePassword: Maybe<User>;
   /** Returns access token to redirect user to Odoo checkout */
@@ -653,9 +503,11 @@ export type Mutation = {
   createUpdatePartner: Maybe<Partner>;
   /** Delete a billing or shipping address. */
   deleteAddress: Maybe<DeleteAddress>;
-  /** MST Login user */
-  login: Maybe<CustomLoginOutput>;
-  /** MST Logout user */
+  /** Delete MyAccount */
+  deleteMyAccount: Maybe<Scalars['Boolean']['output']>;
+  /** Authenticate user with email and password and retrieves token. */
+  login: Maybe<LoginOutput>;
+  /** Logout user */
   logout: Maybe<Scalars['Boolean']['output']>;
   /** Pay the order only with gift card. */
   makeGiftCardPayment: Maybe<MakeGiftCardPayment>;
@@ -665,22 +517,10 @@ export type Mutation = {
   register: Maybe<User>;
   /** Send change password url to user's email. */
   resetPassword: Maybe<User>;
-  /** Submit the Rvvup Payment Details. */
-  rvvupPaymentDetails: Maybe<RvvupPaymentDetailsResult>;
-  /** Get Rvvup Payment Methods. */
-  rvvupPaymentMethods: Maybe<RvvupPaymentMethodsResult>;
-  /** Make Rvvup Payment request. */
-  rvvupPayments: Maybe<RvvupPaymentsResult>;
-  /** Get Rvvup Provider Info. */
-  rvvupProviderInfo: Maybe<RvvupProviderInfoResult>;
-  /** Create Rvvup Transaction */
-  rvvupTransaction: Maybe<RvvupTransactionResult>;
   /** Select a billing or shipping address to be used on the shopping cart. */
   selectAddress: Maybe<Partner>;
-  /** Set a easyship delivery rate on to an Order */
-  setRate: Maybe<CustomCartData>;
   /** Set Shipping Method on Cart */
-  setShippingMethod: Maybe<CustomCartData>;
+  setShippingMethod: Maybe<CartData>;
   /** Get Stripe Inline Form Values */
   stripeGetInlineFormValues: Maybe<StripeGetInlineFormValuesResult>;
   /** Get Stripe Provider Info. */
@@ -691,8 +531,6 @@ export type Mutation = {
   totpVerification: Maybe<TwoFactorOutput>;
   /** Update a billing or shipping address and set it on the shopping cart. */
   updateAddress: Maybe<Partner>;
-  /** Update cart order address */
-  updateCartAddress: Maybe<CustomUpdateCartAddress>;
   /** Update MyAccount */
   updateMyAccount: Maybe<Partner>;
   /** Update user password. */
@@ -709,38 +547,6 @@ export type Mutation = {
 export type MutationAddAddressArgs = {
   address: InputMaybe<AddAddressInput>;
   type: AddressEnum;
-};
-
-
-export type MutationAdyenPaymentDetailsArgs = {
-  paymentDetails: Scalars['GenericScalar']['input'];
-  providerId: Scalars['Int']['input'];
-  transactionReference: Scalars['String']['input'];
-};
-
-
-export type MutationAdyenPaymentMethodsArgs = {
-  providerId: Scalars['Int']['input'];
-};
-
-
-export type MutationAdyenPaymentsArgs = {
-  accessToken: Scalars['String']['input'];
-  browserInfo: Scalars['GenericScalar']['input'];
-  paymentMethod: Scalars['GenericScalar']['input'];
-  providerId: Scalars['Int']['input'];
-  transactionReference: Scalars['String']['input'];
-};
-
-
-export type MutationAdyenProviderInfoArgs = {
-  providerId: Scalars['Int']['input'];
-};
-
-
-export type MutationAdyenTransactionArgs = {
-  providerId: Scalars['Int']['input'];
-  tokenizationRequested?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -824,50 +630,9 @@ export type MutationResetPasswordArgs = {
 };
 
 
-export type MutationRvvupPaymentDetailsArgs = {
-  paymentDetails: Scalars['GenericScalar']['input'];
-  providerId: Scalars['Int']['input'];
-  transactionReference: Scalars['String']['input'];
-};
-
-
-export type MutationRvvupPaymentMethodsArgs = {
-  amount: InputMaybe<Scalars['Float']['input']>;
-  partnerId: InputMaybe<Scalars['Int']['input']>;
-  pmCode: InputMaybe<Scalars['String']['input']>;
-  providerId: Scalars['Int']['input'];
-};
-
-
-export type MutationRvvupPaymentsArgs = {
-  accessToken: Scalars['String']['input'];
-  browserInfo: Scalars['GenericScalar']['input'];
-  paymentMethod: Scalars['GenericScalar']['input'];
-  providerId: Scalars['Int']['input'];
-  transactionReference: Scalars['String']['input'];
-};
-
-
-export type MutationRvvupProviderInfoArgs = {
-  providerId: Scalars['Int']['input'];
-};
-
-
-export type MutationRvvupTransactionArgs = {
-  checkoutId: Scalars['String']['input'];
-  providerId: Scalars['Int']['input'];
-  tokenizationRequested?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-
 export type MutationSelectAddressArgs = {
   address: InputMaybe<SelectAddressInput>;
   type: AddressEnum;
-};
-
-
-export type MutationSetRateArgs = {
-  serviceId: Scalars['String']['input'];
 };
 
 
@@ -877,7 +642,6 @@ export type MutationSetShippingMethodArgs = {
 
 
 export type MutationStripeGetInlineFormValuesArgs = {
-  pmCode: InputMaybe<Scalars['String']['input']>;
   providerId: Scalars['Int']['input'];
 };
 
@@ -888,7 +652,6 @@ export type MutationStripeProviderInfoArgs = {
 
 
 export type MutationStripeTransactionArgs = {
-  isExpress?: InputMaybe<Scalars['Boolean']['input']>;
   providerId: Scalars['Int']['input'];
   tokenizationRequested?: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -906,15 +669,7 @@ export type MutationUpdateAddressArgs = {
 };
 
 
-export type MutationUpdateCartAddressArgs = {
-  address: AddressInput;
-  addressType: Scalars['String']['input'];
-  useSameAddress: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-
 export type MutationUpdateMyAccountArgs = {
-  currentPassword: InputMaybe<Scalars['String']['input']>;
   myaccount: InputMaybe<UpdateMyAccountParams>;
 };
 
@@ -959,7 +714,6 @@ export type Order = {
   currency: Maybe<Currency>;
   currencyRate: Maybe<Scalars['String']['output']>;
   dateOrder: Maybe<Scalars['String']['output']>;
-  deliveryStatus: Maybe<DeliveryStatus>;
   giftCards: Maybe<Array<GiftCard>>;
   id: Scalars['Int']['output'];
   invoiceCount: Maybe<Scalars['Int']['output']>;
@@ -999,6 +753,12 @@ export type OrderLine = {
   shopWarning: Maybe<Scalars['String']['output']>;
 };
 
+export type OrderList = Orders & {
+  __typename?: 'OrderList';
+  orders: Maybe<Array<Maybe<Order>>>;
+  totalCount: Scalars['Int']['output'];
+};
+
 export type OrderSortInput = {
   dateOrder: InputMaybe<SortEnum>;
   id: InputMaybe<SortEnum>;
@@ -1015,12 +775,24 @@ export enum OrderStage {
   SalesOrder = 'SalesOrder'
 }
 
+export type Orders = {
+  orders: Maybe<Array<Maybe<Order>>>;
+  totalCount: Scalars['Int']['output'];
+};
+
+export enum PageTypeEnum {
+  Products = 'PRODUCTS',
+  Static = 'STATIC'
+}
+
 export type Partner = {
   __typename?: 'Partner';
   addressType: Maybe<AddressType>;
   billingAddress: Maybe<Partner>;
   city: Maybe<Scalars['String']['output']>;
   company: Maybe<Partner>;
+  companyName: Maybe<Scalars['String']['output']>;
+  companyRegNo: Maybe<Scalars['String']['output']>;
   contacts: Maybe<Array<Partner>>;
   country: Maybe<Country>;
   currentPricelist: Maybe<Pricelist>;
@@ -1110,10 +882,12 @@ export type Product = {
   __typename?: 'Product';
   accessoryProducts: Maybe<Array<Product>>;
   allowOutOfStock: Maybe<Scalars['Boolean']['output']>;
+  alokaiPages: Maybe<Array<WebsitePage>>;
   alternativeProducts: Maybe<Array<Product>>;
   /** Specific to Product Template */
   attributeValues: Maybe<Array<AttributeValue>>;
   barcode: Maybe<Scalars['String']['output']>;
+  breadcrumb: Maybe<Scalars['GenericScalar']['output']>;
   categories: Maybe<Array<Category>>;
   /** Specific to Product Template */
   combinationInfo: Maybe<Scalars['GenericScalar']['output']>;
@@ -1133,6 +907,7 @@ export type Product = {
   /** Specific to Product Variant */
   isVariantPossible: Maybe<Scalars['Boolean']['output']>;
   jsonLd: Maybe<Scalars['GenericScalar']['output']>;
+  jsonLdBreadcrumb: Maybe<Scalars['GenericScalar']['output']>;
   mediaGallery: Maybe<Array<ProductImage>>;
   metaDescription: Maybe<Scalars['String']['output']>;
   metaImage: Maybe<Scalars['String']['output']>;
@@ -1202,6 +977,7 @@ export type ProductList = Products & {
   maxPrice: Maybe<Scalars['Float']['output']>;
   minPrice: Maybe<Scalars['Float']['output']>;
   products: Maybe<Array<Maybe<Product>>>;
+  searchUrl: Maybe<Scalars['String']['output']>;
   totalCount: Scalars['Int']['output'];
 };
 
@@ -1252,6 +1028,7 @@ export type Products = {
   maxPrice: Maybe<Scalars['Float']['output']>;
   minPrice: Maybe<Scalars['Float']['output']>;
   products: Maybe<Array<Maybe<Product>>>;
+  searchUrl: Maybe<Scalars['String']['output']>;
   totalCount: Scalars['Int']['output'];
 };
 
@@ -1262,32 +1039,33 @@ export type Query = {
   blogPost: BlogPost;
   blogPosts: Maybe<BlogPosts>;
   blogTags: Maybe<BlogTags>;
-  cart: Maybe<CustomCart>;
+  cart: Maybe<Cart>;
   categories: Maybe<Categories>;
   category: Maybe<Category>;
   countries: Maybe<Countries>;
   country: Country;
   deliveryMethods: Maybe<Array<ShippingMethod>>;
-  invoice: CustomInvoice;
+  invoice: Invoice;
   invoices: Maybe<Invoices>;
   mailingContacts: Maybe<MailingContacts>;
   mailingList: MailingList;
   mailingLists: Maybe<MailingLists>;
-  order: CustomOrder;
-  orders: Maybe<CustomOrders>;
+  order: Order;
+  orders: Maybe<Orders>;
   partner: Partner;
-  paymentConfirmation: Maybe<CustomCart>;
+  paymentConfirmation: Maybe<Cart>;
   paymentProvider: PaymentProvider;
   paymentProviders: Maybe<Array<PaymentProvider>>;
   paymentTransaction: PaymentTransaction;
   product: Maybe<Product>;
   productVariant: ProductVariant;
   products: Maybe<Products>;
-  rates: Maybe<Array<Maybe<EasyshipRate>>>;
   websiteFooter: Maybe<Array<WebsiteMenu>>;
   websiteHomepage: Maybe<Homepage>;
   websiteMegaMenu: Maybe<Array<WebsiteMenu>>;
   websiteMenu: Maybe<Array<WebsiteMenu>>;
+  websitePage: Maybe<WebsitePage>;
+  websitePages: Maybe<WebsitePages>;
   wishlistItems: Maybe<WishlistData>;
 };
 
@@ -1395,11 +1173,6 @@ export type QueryOrdersArgs = {
 };
 
 
-export type QueryPaymentConfirmationArgs = {
-  accessToken: InputMaybe<Scalars['String']['input']>;
-};
-
-
 export type QueryPaymentProviderArgs = {
   id: InputMaybe<Scalars['Int']['input']>;
 };
@@ -1433,12 +1206,6 @@ export type QueryProductsArgs = {
 };
 
 
-export type QueryRatesArgs = {
-  carrierId: Scalars['ID']['input'];
-  orderId: Scalars['ID']['input'];
-};
-
-
 export type QueryWebsiteFooterArgs = {
   noParent: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -1453,6 +1220,21 @@ export type QueryWebsiteMenuArgs = {
   noParent: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+
+export type QueryWebsitePageArgs = {
+  id: InputMaybe<Scalars['Int']['input']>;
+  pageSlug?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryWebsitePagesArgs = {
+  currentPage?: InputMaybe<Scalars['Int']['input']>;
+  filter?: InputMaybe<WebsitePageFilterInput>;
+  pageSize?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  sort?: InputMaybe<WebsitePageSortInput>;
+};
+
 export type Ribbon = {
   __typename?: 'Ribbon';
   bgColor: Maybe<Scalars['String']['output']>;
@@ -1461,31 +1243,6 @@ export type Ribbon = {
   htmlClass: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   textColor: Maybe<Scalars['String']['output']>;
-};
-
-export type RvvupPaymentDetailsResult = {
-  __typename?: 'RvvupPaymentDetailsResult';
-  rvvupPaymentDetails: Maybe<Scalars['GenericScalar']['output']>;
-};
-
-export type RvvupPaymentMethodsResult = {
-  __typename?: 'RvvupPaymentMethodsResult';
-  rvvupPaymentMethods: Maybe<Scalars['GenericScalar']['output']>;
-};
-
-export type RvvupPaymentsResult = {
-  __typename?: 'RvvupPaymentsResult';
-  rvvupPayments: Maybe<Scalars['GenericScalar']['output']>;
-};
-
-export type RvvupProviderInfoResult = {
-  __typename?: 'RvvupProviderInfoResult';
-  rvvupProviderInfo: Maybe<Scalars['GenericScalar']['output']>;
-};
-
-export type RvvupTransactionResult = {
-  __typename?: 'RvvupTransactionResult';
-  transaction: Maybe<Scalars['GenericScalar']['output']>;
 };
 
 export type SelectAddressInput = {
@@ -1573,6 +1330,14 @@ export enum VariantCreateMode {
   NeverOption = 'NeverOption'
 }
 
+export type Website = {
+  __typename?: 'Website';
+  company: Maybe<Company>;
+  id: Maybe<Scalars['Int']['output']>;
+  name: Maybe<Scalars['String']['output']>;
+  publicUser: Maybe<User>;
+};
+
 export type WebsiteMenu = {
   __typename?: 'WebsiteMenu';
   childs: Maybe<Array<WebsiteMenu>>;
@@ -1598,6 +1363,40 @@ export type WebsiteMenuImage = {
   tag: Maybe<Scalars['String']['output']>;
   textColor: Maybe<Scalars['String']['output']>;
   title: Maybe<Scalars['String']['output']>;
+};
+
+export type WebsitePage = {
+  __typename?: 'WebsitePage';
+  content: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars['Int']['output']>;
+  isPublished: Maybe<Scalars['Boolean']['output']>;
+  name: Maybe<Scalars['String']['output']>;
+  pageType: Maybe<PageTypeEnum>;
+  products: Maybe<Array<Product>>;
+  publishingDate: Maybe<Scalars['String']['output']>;
+  website: Maybe<Website>;
+  websiteUrl: Maybe<Scalars['String']['output']>;
+};
+
+export type WebsitePageFilterInput = {
+  id: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  pageSlug: InputMaybe<Scalars['String']['input']>;
+  pageType: InputMaybe<Array<InputMaybe<PageTypeEnum>>>;
+};
+
+export type WebsitePageList = WebsitePages & {
+  __typename?: 'WebsitePageList';
+  totalCount: Scalars['Int']['output'];
+  websitePages: Maybe<Array<Maybe<WebsitePage>>>;
+};
+
+export type WebsitePageSortInput = {
+  id: InputMaybe<SortEnum>;
+};
+
+export type WebsitePages = {
+  totalCount: Scalars['Int']['output'];
+  websitePages: Maybe<Array<Maybe<WebsitePage>>>;
 };
 
 export type WishlistData = WishlistItems & {

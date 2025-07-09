@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { CustomCartData } from '~/graphql';
 import { SfButton } from '@storefront-ui/vue';
 import { useRoute } from 'vue-router'
 

@@ -66,7 +66,7 @@ onMounted(() => {
       class="w-full narrow-container bg-white mb-20"
       data-testid="search-layout"
   >
-  <div class="pb-20">
+  <div class="pb-20" :key="route.fullPath">
     <UiBreadcrumb :breadcrumbs="breadcrumbs" class="self-start mt-5 mb-5" />
     <h1
       v-if="route.query.search"

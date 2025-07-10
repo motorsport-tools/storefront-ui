@@ -139,6 +139,11 @@ export default defineNuxtConfig({
         password: process.env.NUXT_STORAGE_PASSWORD,
         lazyConnect: true,
       },
+      stock: {
+        driver: process.env.NUXT_STORAGE_DRIVER,
+        url: process.env.NUXT_STORAGE_URL,
+        ttl: process.env?.NUXT_SWR_CACHE_TIME || 3600,
+      },
       slug: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
@@ -156,6 +161,11 @@ export default defineNuxtConfig({
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
         password: process.env.NUXT_STORAGE_PASSWORD,
+      },
+      stock: {
+        driver: process.env.NUXT_STORAGE_DRIVER,
+        url: process.env.NUXT_STORAGE_URL,
+        ttl: process.env?.NUXT_SWR_CACHE_TIME || 3600,
       },
       slug: {
         driver: process.env.NUXT_STORAGE_DRIVER,

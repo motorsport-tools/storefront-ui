@@ -9,16 +9,6 @@ import type {
   Country,
   ShippingMethod,
   EasyShipRates,
-  AdyenTransactionResult,
-  AdyenProviderInfoResult,
-  AdyenPaymentMethodsResult,
-  AdyenPaymentDetailsResult,
-  AdyenPaymentsResult,
-  RvvupTransactionResult,
-  RvvupProviderInfoResult,
-  RvvupPaymentMethodsResult,
-  RvvupPaymentDetailsResult,
-  RvvupPaymentsResult,
   PaymentProvider,
   StripeProviderInfoResult,
   Orders,
@@ -33,6 +23,7 @@ import type {
   StripeTransactionResult,
   ApplyCouponList,
   ApplyGiftCardList,
+  OrderLine,
 } from "./gql/graphql";
 import type { H3Error } from "h3";
 import type { AsyncData } from "#app";
@@ -75,7 +66,7 @@ export type ProductResponse = {
 
 export type ProductVariantResponse = {
   productVariant: {
-    product: Product
+    product: CustomProductWithStockFromRedis
   }
 }
 
@@ -349,41 +340,6 @@ export type PaymentMethodListResponse = AsyncData<
   H3Error
 >;
 
-export type AdyenTransactionResponse = AsyncData<
-  {
-    adyenTransaction: AdyenTransactionResult;
-  },
-  H3Error
->;
-
-export type AdyenProviderInfoResponse = AsyncData<
-  {
-    adyenProviderInfo: AdyenProviderInfoResult;
-  },
-  H3Error
->;
-
-export type AdyenPaymentMethodsResponse = AsyncData<
-  {
-    adyenPaymentMethods: AdyenPaymentMethodsResult;
-  },
-  H3Error
->;
-
-export type AdyenPaymentDetailsResponse = AsyncData<
-  {
-    adyenPaymentDetails: AdyenPaymentDetailsResult;
-  },
-  H3Error
->;
-
-export type AdyenPaymentsResponse = AsyncData<
-  {
-    adyenPayments: AdyenPaymentsResult;
-  },
-  H3Error
->;
-
 export type GetOrdersResponse = AsyncData<
   {
     orders: Orders;
@@ -434,42 +390,9 @@ export type CustomProductWithStockFromRedis = Product & {
   stock: number
 }
 
-/* Rvvup Payment */
-
-export type RvvupTransactionResponse = AsyncData<
-  {
-    rvvupTransaction: RvvupTransactionResult;
-  },
-  H3Error
->;
-
-export type RvvupProviderInfoResponse = AsyncData<
-  {
-    rvvupProviderInfo: RvvupProviderInfoResult;
-  },
-  H3Error
->;
-
-export type RvvupPaymentMethodsResponse = AsyncData<
-  {
-    rvvupPaymentMethods: RvvupPaymentMethodsResult;
-  },
-  H3Error
->;
-
-export type RvvupPaymentDetailsResponse = AsyncData<
-  {
-    rvvupPaymentDetails: RvvupPaymentDetailsResult;
-  },
-  H3Error
->;
-
-export type RvvupPaymentsResponse = AsyncData<
-  {
-    rvvupPayments: RvvupPaymentsResult;
-  },
-  H3Error
->;
+export type CustomOrderLineWithStockFromRedis = OrderLine & {
+  product: CustomProductWithStockFromRedis
+}
 
 /* Stripe */
 

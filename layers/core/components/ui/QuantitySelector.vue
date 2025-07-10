@@ -41,6 +41,7 @@ const handleUpdate = (event: Event) => {
         square
         class="rounded-r-none"
         aria-label="Decrease value"
+        :disabled="props.modelValue <= 1"
         data-testid="quantity-selector-decrease-button"
         @click="decrement"
       >
@@ -52,6 +53,7 @@ const handleUpdate = (event: Event) => {
         :value="props.modelValue"
         type="number"
         role="spinbutton"
+        :disabled="props.modelValue >= props.maxQty"
         data-testid="quantity-selector-input"
         aria-label="Quantity Selector"
         @input="handleUpdate"

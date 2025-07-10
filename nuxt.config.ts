@@ -99,6 +99,11 @@ export default defineNuxtConfig({
     ],
   },
 
+  routeRules: {
+    '/': { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
+    '/search': { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
+  },
+
   image: {
     providers: {
       odooProvider: {

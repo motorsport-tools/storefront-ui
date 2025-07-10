@@ -19,7 +19,7 @@ const {
 
 provide('stockCount', stockCount)
 
-const { loadCategory, category } = useCategory(String(cleanFullPath.value))
+const { loadCategory, category } = useCategory()
 const { getRegularPrice, getSpecialPrice } = useProductAttributes()
 const { getFacetsFromURL } = useUiHelpers()
 
@@ -53,16 +53,23 @@ const pagination = computed(() => ({
   pageOptions: [5, 10, 15, 20],
 }))
 
-const params = route.params as { id?: string | number, slug?: string }
-
-await loadCategory({
-  id: Number(params.id),
-  slug: String(cleanFullPath.value),
+const seoMeta = computed(() => {
+  return category.value
+    ? generateSeo<SeoEntity>(category.value, 'Category')
+    : {}
 })
 
-if (category.value) {
-  useHead(generateSeo<SeoEntity>(category.value, 'Category'))
-}
+useHead(seoMeta)
+
+watch(
+  () => route.path,
+  async (newSlug, oldSlug) => {
+    if (newSlug && newSlug !== oldSlug) {
+      await loadCategory({ slug: String(newSlug) })
+    }
+  },
+  { immediate: true },
+)
 
 setMaxVisiblePages(isWideScreen.value)
 
@@ -76,7 +83,7 @@ await loadProductTemplateList(getFacetsFromURL(route.query))
     >
         <div class="pb-20">
             <UiBreadcrumb
-            :breadcrumbs="category.breadcrumbs"
+            :breadcrumbs="category.breadcrumb"
             class="self-start mt-5 mb-5"
             />
             <div class="grid grid-cols-12 lg:gap-x-6">

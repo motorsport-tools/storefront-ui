@@ -79,16 +79,6 @@ const isLoading = computed(() => loading.value || deliveryLoading.value);
     :product-template-list="frequentlyTogetherProducts"
     />
   </section>
-  <section    
-    v-if="(cart.order?.websiteOrderLine?.length ?? 0) > 0"
-    class="lg:mx-4 mt-36"
-  >
-    <LazyProductSlider
-      heading="Frequently bought together"
-      text="You may also like"
-      :product-template-list="frequentlyTogetherProducts"
-    />
-  </section>
   <section
     class="lg:mx-4 mt-6"
   >

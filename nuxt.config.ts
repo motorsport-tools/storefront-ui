@@ -43,6 +43,8 @@ export default defineNuxtConfig({
       "LoadCartQuery",
       "WishlistLoadQuery",
       "GetAddressesQuery",
+      "GetOrdersQuery",
+      "LoadUserQuery",
     ],
     public: {
       odooBaseImageUrl: "",
@@ -102,6 +104,8 @@ export default defineNuxtConfig({
   routeRules: {
     '/': { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
     '/search': { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
+    '/cart': { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
+    '/my-account/**': { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
   },
 
   image: {
@@ -127,6 +131,11 @@ export default defineNuxtConfig({
     //logLevel: 'debug',
     sourceMap: true,
     storage: {
+      cart: {
+        driver: process.env.NUXT_STORAGE_DRIVER,
+        url: process.env.NUXT_STORAGE_URL,
+        ttl: process.env?.NUXT_SWR_CACHE_TIME || 3600,
+      },
       cache: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
@@ -141,6 +150,11 @@ export default defineNuxtConfig({
       },
     },
     devStorage: {
+      cart: {
+        driver: process.env.NUXT_STORAGE_DRIVER,
+        url: process.env.NUXT_STORAGE_URL,
+        ttl: process.env?.NUXT_SWR_CACHE_TIME || 3600,
+      },
       cache: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,

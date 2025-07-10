@@ -53,14 +53,6 @@ const pagination = computed(() => ({
   pageOptions: [5, 10, 15, 20],
 }))
 
-const seoMeta = computed(() => {
-  return category.value
-    ? generateSeo<SeoEntity>(category.value, 'Category')
-    : {}
-})
-
-useHead(seoMeta)
-
 watch(
   () => route.path,
   async (newSlug, oldSlug) => {
@@ -70,6 +62,8 @@ watch(
   },
   { immediate: true },
 )
+
+useHead(generateSeo<SeoEntity>(category.value, 'Category'))
 
 setMaxVisiblePages(isWideScreen.value)
 

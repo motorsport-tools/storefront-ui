@@ -20,6 +20,12 @@ export default defineNuxtConfig({
     'nuxt-viewport',
     '@nuxtjs/sitemap',
   ],
+  $production: {
+    routeRules: {
+      '/': { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
+    },
+
+  },
   app: {
     head: {
       viewport:
@@ -101,10 +107,6 @@ export default defineNuxtConfig({
     ],
   },
 
-  routeRules: {
-    '/': { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
-  },
-
   image: {
     providers: {
       odooProvider: {
@@ -132,22 +134,44 @@ export default defineNuxtConfig({
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
         ttl: process.env?.NUXT_SWR_CACHE_TIME || 0,
+        retry: {
+          retries: 3,
+          delay: 1000,
+        },
+        connectTimeout: 10000,
+        lazyConnect: true,
       },
       cache: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
         password: process.env.NUXT_STORAGE_PASSWORD,
+        retry: {
+          retries: 3,
+          delay: 1000,
+        },
+        connectTimeout: 10000,
         lazyConnect: true,
       },
       stock: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
         ttl: process.env?.NUXT_SWR_CACHE_TIME || 3600,
+        retry: {
+          retries: 3,
+          delay: 1000,
+        },
+        connectTimeout: 10000,
+        lazyConnect: true,
       },
       slug: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
         ttl: process.env?.NUXT_SWR_CACHE_TIME || 3600,
+        retry: {
+          retries: 3,
+          delay: 1000,
+        },
+        connectTimeout: 10000,
         lazyConnect: true,
       },
     },

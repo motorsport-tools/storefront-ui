@@ -52,9 +52,12 @@ ENV NUXT_PUBLIC_VSF_PORT=443
 ENV NUXT_SWR_CACHE_TIME=3600
 
 COPY . ./
-RUN yarn add -W nuxt \
-    && yarn \
-    && yarn build
+RUN yarn install --frozen-lockfile
+RUN yarn build
+
+#RUN yarn add -W nuxt \
+#    && yarn \
+#    && yarn build
 
 # Run
 FROM base

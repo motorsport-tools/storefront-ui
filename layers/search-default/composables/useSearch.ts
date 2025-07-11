@@ -24,7 +24,7 @@ export const useSearch = (formSearchTemplateRef?: any) => {
     totalItems,
     organizedAttributes,
     loading
-  } = useProductTemplateList(route.fullPath)
+  } = useProductTemplateList()
   const searchInputValue = useState(`odoo-search-input-${formSearchTemplateRef}`, () => '')
   const highlightedIndex = ref(-1)
   const showResultSearch = ref(false)

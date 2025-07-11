@@ -45,12 +45,12 @@ defineExpose({
 <template ref="headerRef">
     <nav class="hidden lg:block h-full">
         <ul 
-            class="h-full block flex align-center justify-center"
+            class="h-full block flex align-center justify-center items-stretch"
         >   
             <li
                 v-for="(menuNode, index) in content.children"
                 :key="menuNode?.key"
-                class="group h-full flex items-center justify-center px-3 py-2 text-white font-bold uppercase"
+                class="group flex-grow flex items-center justify-center px-3 py-2 text-white font-bold uppercase lg:text-sm xl:text-base"
             >
                 <span>{{ menuNode.value.label }}</span>
                 <SfIconChevronRight

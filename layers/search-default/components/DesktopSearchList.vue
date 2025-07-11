@@ -21,7 +21,7 @@ const makeSearchBold = (text: string) => {
   <ul v-if="hits?.length > 0"
     tabindex="-1"
     role="listbox"
-    class="absolute top-12 bg-white shadow-md rounded-md w-full overflow-hidden"
+    class="absolute top-12 bg-white shadow-md rounded-md w-full overflow-hidden z-10"
   >
     <li
       v-for="(product, index) in hits"

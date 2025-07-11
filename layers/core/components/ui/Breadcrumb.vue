@@ -45,7 +45,7 @@ const computedBreadcrumbs = computed(() => {
 </script>
 
 <template>
-  <nav data-testid="breadcrumbs" class="inline-flex items-center text-sm font-normal font-body">
+  <nav data-testid="breadcrumbs" class="inline-flex items-center text-sm font-normal font-body capitalize">
     <ol class="flex w-auto leading-none group md:flex-wrap pl-0">
       <li class="flex items-center sm:hidden text-neutral-500 z-1">
         <div ref="referenceRef" class="w-max z-100">

@@ -132,6 +132,7 @@ watch(
   () => params.value,
   async (newValue, oldValue) => {
     if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
+        console.log('Loading product:', newValue)
       await loadProductVariant(newValue)
       addProductToRecentViews(productTemplate.value?.id)
     }

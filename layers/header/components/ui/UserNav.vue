@@ -14,7 +14,7 @@ const NuxtLink = resolveComponent("NuxtLink")
 
     <UiUserNavButton
         title="View Shopping Basket"
-        to="cart"
+        to="/cart"
         :tag="NuxtLink"
     >
         <Icon 

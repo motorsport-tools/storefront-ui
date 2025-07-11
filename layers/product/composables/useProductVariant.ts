@@ -21,14 +21,14 @@ export const useProductVariant = (slugWithCombinationIds: string) => {
     )
     loadingProductVariant.value = false
 
-    if (!data?.value?.productVariant?.product?.id) {
+    if (!data?.value?.product?.id) {
       showError({
         status: 404,
         message: "Product not found",
       })
     }
 
-    productVariant.value = (data?.value?.productVariant?.product) || {} as CustomProductWithStockFromRedis
+    productVariant.value = (data?.value?.product) || {} as CustomProductWithStockFromRedis
 
   }
 

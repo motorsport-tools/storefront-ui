@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {
     SfButton,
-    SfProgressCircular,
+    SfLoaderCircular,
     SfInput,
     useDisclosure,
     useTrapFocus,
@@ -18,15 +18,20 @@ const {
   selectHit,
   enterPress,
   showResultSearch,
+  loading
 } = useSearch(formSearchTemplateRef)
 
 
 onClickOutside(formSearchTemplateRef, () => {
   showResultSearch.value = false
+  searchInputValue.value = ''
 })
 
 const handleKeydown = (e) => {
-  if (e.key === 'Escape') showResultSearch.value = false
+  if (e.key === 'Escape') {
+    showResultSearch.value = false
+    searchInputValue.value = ''
+  }
 }
 
 watch(showResultSearch, (val) => {
@@ -63,12 +68,13 @@ watch(showResultSearch, (val) => {
                         @click="enterPress"
                     >
                     <Icon
+                        v-if="!loading"
                         class="text-black"
                         name="weui:search-filled"
                         size="26px"
                         
                     />
-                    <SfProgressCircular size="base"/>
+                    <SfLoaderCircular v-else size="base"/>
                     </SfButton>
                 </span>
             </template>

@@ -13,7 +13,7 @@ export const useSearch = (formSearchTemplateRef?: any) => {
   
   // search modal
   const searchModalClose = () => searchModalToggle(false)
-  const searchModalOpen = useState('search-ref-${formSearchTemplateRef}', () => false)
+  const searchModalOpen = useState(`search-ref-${formSearchTemplateRef}`, () => false)
   const searchModalToggle = useToggle(searchModalOpen)
   const isSearchModalOpen = computed(() => searchModalOpen.value)
   const searchInputValue = useState(`odoo-search-input-${formSearchTemplateRef}`, () => '')
@@ -46,6 +46,7 @@ export const useSearch = (formSearchTemplateRef?: any) => {
     loading.value = true
 
     if (searchInputValue.value.length < 3) {
+      loading.value = false
       return
     }
 
@@ -118,5 +119,6 @@ export const useSearch = (formSearchTemplateRef?: any) => {
     organizedAttributes,
     productTemplateList,
     enterPress,
+    loading
   }
 }

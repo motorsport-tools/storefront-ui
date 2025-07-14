@@ -63,18 +63,19 @@ watch(showResultSearch, (val) => {
                         variant="tertiary"
                         square
                         aria-label="search"
+                        :disabled="loading"
                         type="submit"
                         class="rounded-l-none hover:bg-transparent active:bg-transparent"
                         @click="enterPress"
                     >
-                    <Icon
-                        v-if="!loading"
-                        class="text-black"
-                        name="weui:search-filled"
-                        size="26px"
-                        
-                    />
-                    <SfLoaderCircular v-else size="base"/>
+                        <Icon
+                            v-if="!loading"
+                            class="text-black"
+                            name="weui:search-filled"
+                            size="26px"
+                            
+                        />
+                        <SfLoaderCircular v-else size="base"/>
                     </SfButton>
                 </span>
             </template>

@@ -29,7 +29,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       viewport:
-        "width=device-width, initial-scale=1, maximum-scale=5, user-scalable=no",
+        "width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes",
       title: 'Motorsport-Tools.com - The Mk1 and Mk2 Ford Escort Rally Specialists',
       htmlAttrs: {
         lang: 'en',

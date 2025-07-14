@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useMegaMenuCategories } from '~/layers/core/composable/useMegaMenuCategories'
 import { SfIconMenu } from '@storefront-ui/vue'
-
+import Overlay from './ui/Overlay.vue'
 const { loadCategoriesForMegaMenu, categoriesForMegaMenu } = useMegaMenuCategories()
 
 provide(
@@ -24,15 +24,17 @@ const megaMenuClick = (menuType: string[]) => {
   }
 }
 
+const isOverlayVisible = ref(false)
 </script>
 
 <template>
+    <Overlay :isOpen="isOverlayVisible"/>
     <header
         ref="headerRef"
         class="relative"
     >
         <!-- Top Dark Bar -->
-        <div class="bg-[#222222] h-[36px] max-h-[36px] text-white hover:text-neutral-200 text-sm px-4 flex justify-between items-center">
+        <div class="bg-[#222222] h-[36px] max-h-[36px] text-white hover:text-neutral-200 text-sm px-4 flex justify-between items-center relative z-[20]">
             <div class="h-full flex items-center justify-center text-xs">
                 FAQ | Contact | Order Status
             </div>
@@ -72,7 +74,7 @@ const megaMenuClick = (menuType: string[]) => {
         </div>
 
         <div 
-            class="h-[48px] max-h-[48px] bg-white border-black-500/50 border-b flex flex-row justify-between items-center flex-nowrap px-2 lg:px-4"
+            class="h-[48px] max-h-[48px] bg-white border-black-500/50 border-b flex flex-row justify-between items-center flex-nowrap px-2 lg:px-4 relative z-[20]"
         >
             <button
                 class="lg:hidden h-full block flex justify-center items-center !text-black hover:bg-transparent cursor-pointer pr-2"
@@ -99,7 +101,7 @@ const megaMenuClick = (menuType: string[]) => {
                         size="26px"
                     />
                 </UiUserNavButton>
-                <UiSearchBar/>
+                <UiSearchBar @update-overlay="isOverlayVisible = $event"/>
             </div>
             <div
                 class="h-full flex items-center flex-nowrap"
@@ -108,7 +110,7 @@ const megaMenuClick = (menuType: string[]) => {
             </div>    
         </div>
 
-        <div class="bg-[#222222] text-white flex items-center justify-center flex-nowrap">
+        <div class="bg-[#222222] text-white flex items-center justify-center flex-nowrap relative">
             <UiCategoryMenu
                 :headerRef="headerRef" ref="categoryMenuRef"
             />

@@ -10,12 +10,14 @@ import type { Product } from '~/graphql'
 export const useSearch = (formSearchTemplateRef?: any) => {
   const route = useRoute()
   const router = useRouter()
-
+  
   // search modal
   const searchModalClose = () => searchModalToggle(false)
   const searchModalOpen = useState('search-ref-${formSearchTemplateRef}', () => false)
   const searchModalToggle = useToggle(searchModalOpen)
   const isSearchModalOpen = computed(() => searchModalOpen.value)
+  const searchInputValue = useState(`odoo-search-input-${formSearchTemplateRef}`, () => '')
+
 
   // odoo search
   const {
@@ -24,8 +26,8 @@ export const useSearch = (formSearchTemplateRef?: any) => {
     totalItems,
     organizedAttributes,
     loading
-  } = useProductTemplateList()
-  const searchInputValue = useState(`odoo-search-input-${formSearchTemplateRef}`, () => '')
+  } = useProductTemplateList(searchInputValue.value || '')
+  
   const highlightedIndex = ref(-1)
   const showResultSearch = ref(false)
 
@@ -52,6 +54,7 @@ export const useSearch = (formSearchTemplateRef?: any) => {
         search: searchInputValue.value,
         pageSize: 12,
       },
+      true
     )
 
     showResultSearch.value = true

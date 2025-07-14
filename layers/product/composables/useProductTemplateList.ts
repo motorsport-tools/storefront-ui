@@ -28,17 +28,39 @@ export const useProductTemplateList = (customIndex: string = '') => {
     )
   }
 
-  const loadProductTemplateList = async (params: QueryProductsArgs) => {
-    const { data, status } = await useAsyncData(
-      `${cleanFullSearchIndex.value}${customIndex}`,
-      () =>
-        $sdk().odoo.query<QueryProductsArgs, ProductTemplateListResponse>(
+  const loadProductTemplateList = async (params: QueryProductsArgs, autocomplete=false) => {
+    let data: Ref<ProductTemplateListResponse | null> = ref(null)
+    let status: Ref<'idle' | 'pending' | 'success' | 'error'> = ref('idle')
+
+    if (autocomplete) {
+      try {
+        status.value = 'pending'
+        const result = await $sdk().odoo.query<QueryProductsArgs, ProductTemplateListResponse>(
           { queryName: QueryName.GetProductTemplateListQuery },
           params,
           { headers: useRequestHeaders() },
-        ),
-      { lazy: import.meta.client },
-    )
+        )
+        data.value = result ?? null
+        status.value = 'success'
+      } catch (err) {
+        console.error('Autocomplete fetch error:', err)
+        data.value = null
+        status.value = 'error'
+      }
+    } else {
+      const asyncResult = await useAsyncData(
+        `${cleanFullSearchIndex.value}${customIndex}`,
+        () =>
+          $sdk().odoo.query<QueryProductsArgs, ProductTemplateListResponse>(
+            { queryName: QueryName.GetProductTemplateListQuery },
+            params,
+            { headers: useRequestHeaders() },
+          ),
+        { lazy: import.meta.client },
+      )
+      data = asyncResult.data
+      status = asyncResult.status
+    }
 
     updateVariablesFromData(data.value)
 

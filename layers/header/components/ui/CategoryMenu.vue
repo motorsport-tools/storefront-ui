@@ -61,7 +61,7 @@ defineExpose({
         </ul>
     </nav>
     
-    <Overlay :isOpen="isOpen"/>
+    <Overlay :isOpen="isOpen" class="lg:hidden"/>
     
     <transition
         enter-active-class="transition duration-500 ease-in-out delay-200"

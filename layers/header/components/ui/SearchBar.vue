@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import {
     SfButton,
+    SfProgressCircular,
     SfInput,
     useDisclosure,
     useTrapFocus,
 } from '@storefront-ui/vue'
 
+const emit = defineEmits(['update-overlay'])
 const formSearchTemplateRef = ref(null)
 
 const {
@@ -26,13 +28,17 @@ onClickOutside(formSearchTemplateRef, () => {
 const handleKeydown = (e) => {
   if (e.key === 'Escape') showResultSearch.value = false
 }
+
+watch(showResultSearch, (val) => {
+  emit('update-overlay', val)
+})
 </script>
 
 <template>
     <form
         ref="formSearchTemplateRef"
         role="search"
-        class="hidden md:flex flex-[100%] box-border mx-6 relative w-full max-w-lg"
+        class="hidden md:flex flex-[100%] box-border mx-6 relative w-full max-w-lg z-[10]"
         @submit.prevent
     >
         <UiFormCustomSfInput
@@ -60,7 +66,9 @@ const handleKeydown = (e) => {
                         class="text-black"
                         name="weui:search-filled"
                         size="26px"
+                        
                     />
+                    <SfProgressCircular size="base"/>
                     </SfButton>
                 </span>
             </template>

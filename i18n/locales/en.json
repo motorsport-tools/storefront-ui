@@ -1,4 +1,5 @@
 {
+  "searchPlaceholder": "Searh by product, sku or brand",
   "billing": {
     "heading": "Billing Address",
     "description": "Add a billing address. You will receive the invoice to the email address provided above.",

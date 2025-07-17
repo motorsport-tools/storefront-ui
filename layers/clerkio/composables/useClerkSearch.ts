@@ -23,7 +23,6 @@ export const useClerkSearch = (formSearchTemplateRef?: any, options = { limit: 6
     const config = useRuntimeConfig()
     const loading = ref(false)
     const searchInputValue = useState(`odoo-search-input-${formSearchTemplateRef}`, () => '')
-    const suggestions = ref<string[]>([])
     const results = useState<ClerkSearchResponse[]>(`clerk-results-${formSearchTemplateRef}`, () => [])
     const showInstantSearch = ref(false)
 
@@ -31,7 +30,7 @@ export const useClerkSearch = (formSearchTemplateRef?: any, options = { limit: 6
         if (!val || val.length < 3) {
             loading.value = false
             showInstantSearch.value = false
-            suggestions.value = []
+            results.value = []
             return
         }
     })
@@ -48,6 +47,7 @@ export const useClerkSearch = (formSearchTemplateRef?: any, options = { limit: 6
         if (searchInputValue.value.length < 3) {
             loading.value = false
             showInstantSearch.value = false
+            return
         }
 
         try {

@@ -59,6 +59,7 @@ export default defineNuxtConfig({
       currencySeparator: "",
       currencyDecimal: "",
       currencyPrecision: "",
+      clerkApiKey: "",
     },
   },
 
@@ -242,17 +243,6 @@ export default defineNuxtConfig({
       cert: process.env.NUXT_SERVER_CERT,
     },
   },
-
-  minify: true,
-  collapseBooleanAttributes: true,
-  decodeEntities: true,
-  minifyCSS: true,
-  minifyJS: true,
-  processConditionalComments: true,
-  removeEmptyAttributes: true,
-  removeRedundantAttributes: true,
-  trimCustomFragments: true,
-  useShortDoctype: true,
 
   compatibilityDate: "2025-01-29",
 });

@@ -20,7 +20,7 @@ const props = defineProps({
     }
 
     .backdrop-fade-leave-active {
-        transition-delay: 250ms;
+        transition-delay: 0ms;
     }
 
     .backdrop-fade-enter-from,

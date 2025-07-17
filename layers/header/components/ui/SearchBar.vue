@@ -6,10 +6,11 @@ import {
     useDisclosure,
     useTrapFocus,
 } from '@storefront-ui/vue'
+import SearchList from '~/layers/clerkio/components/SearchList.vue'
 
 const emit = defineEmits(['update-overlay'])
 const formSearchTemplateRef = ref(null)
-
+/*
 const {
   searchInputValue,
   highlightedIndex,
@@ -18,24 +19,34 @@ const {
   selectHit,
   enterPress,
   showResultSearch,
-  loading
 } = useSearch(formSearchTemplateRef)
+*/
 
+const { 
+    searchInputValue,
+    results,
+    loading,
+    showInstantSearch,
+    enterPress,
+    search,
+} = useClerkSearch(formSearchTemplateRef)
 
 onClickOutside(formSearchTemplateRef, () => {
-  showResultSearch.value = false
+  //showResultSearch.value = false
   searchInputValue.value = ''
+  showInstantSearch.value = false
 })
 
 const handleKeydown = (e) => {
   if (e.key === 'Escape') {
-    showResultSearch.value = false
+    //showResultSearch.value = false
     searchInputValue.value = ''
+    showInstantSearch.value = false
   }
 }
 
-watch(showResultSearch, (val) => {
-  emit('update-overlay', val)
+watch(showInstantSearch, (val) => {
+    emit('update-overlay', val)
 })
 </script>
 
@@ -47,6 +58,7 @@ watch(showResultSearch, (val) => {
         @submit.prevent
     >
         <UiFormCustomSfInput
+            id="header-search"
             v-model="searchInputValue"
             type="text"
             class="[&::-webkit-search-cancel-button]:appearance-none"
@@ -69,18 +81,16 @@ watch(showResultSearch, (val) => {
                         @click="enterPress"
                     >
                         <Icon
-                            v-if="!loading"
                             class="text-black"
                             name="weui:search-filled"
                             size="26px"
                             
                         />
-                        <SfLoaderCircular v-else size="base"/>
                     </SfButton>
                 </span>
             </template>
         </UiFormCustomSfInput>
-
+        <!--
         <transition
             enter-active-class="transform transition duration-500 ease-in-out"
             leave-active-class="transform transition duration-500 ease-in-out"
@@ -89,12 +99,23 @@ watch(showResultSearch, (val) => {
             leave-from-class="translate-x-0 md:opacity-100"
             leave-to-class="-translate-x-full md:translate-x-0 md:opacity-0"
         >
+        -->
+            <SearchList 
+                v-if="showInstantSearch"
+                :query="searchInputValue"
+                :results="results"
+            />
+            <!--            
             <DesktopSearchList
                 v-if="showResultSearch"
                 :hits="searchHits"
                 :search-text="searchInputValue"
                 @select="selectHit"
             />
+            -->
+        <!--
         </transition>
+        -->
+    
     </form>
 </template>

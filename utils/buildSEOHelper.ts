@@ -50,7 +50,7 @@ const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
     const { href } = useRequestURL()
 
     validateSEO(entity, href, entityType);
-
+    
     const defaultTitle =
         entity.metaTitle || entity.name || `${entityType} page`;
 
@@ -65,12 +65,12 @@ const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
             entity?.metaDescription && {
                 hid: "description",
                 name: "description",
-                content: entity.metaDescription,
+                content: entity.metaDescription || `Browsing ${entity.name} ${entityType}`,
             },
             entity?.metaDescription && {
                 hid: "og:description",
                 name: "og:description",
-                content: entity.metaDescription,
+                content: entity.metaDescription || `Browsing ${entity.name} ${entityType}`,
             },
             {
                 hid: "og:title",
@@ -85,7 +85,7 @@ const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
             entity?.metaDescription && {
                 hid: "twitter:description",
                 name: "twitter:description",
-                content: entity.metaDescription,
+                content: entity.metaDescription || `Browsing ${entity.name} ${entityType}`,
             },
         ].filter(Boolean) as Meta[],
         script: [

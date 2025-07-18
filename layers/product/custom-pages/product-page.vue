@@ -180,16 +180,21 @@ if (productTemplate.value?.id) {
             class="md:grid grid-areas-product-page grid-cols-product-page gap-x-6"
         >
             <section class="grid-in-left-top md:h-full xl:max-h-[700px]">
-            <LazyUiGallery
-                :main-image="mainImage || {} as ImageGalleryItem"
-                :thumbs="thumbs"
-            />
+                <LazyUiGallery
+                    :main-image="mainImage || {} as ImageGalleryItem"
+                    :thumbs="thumbs"
+                />
             </section>
             <section class="col-span-5 grid-in-right md:mb-0">
             <div
                 class="p-6 xl:p-6 md:border md:border-neutral-100 md:shadow-lg md:rounded-md md:sticky md:top-20"
                 data-testid="purchase-card"
             >
+                <span 
+                    class="clerk"
+                    data-api="log/product"
+                    :data-product="productVariant.id">
+                </span>
                 <div
                 class="inline-flex items-center justify-center font-medium rounded-none bg-secondary-800 text-sm p-1.5 gap-1 mb-4"
                 >

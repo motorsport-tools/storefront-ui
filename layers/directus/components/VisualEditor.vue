@@ -16,7 +16,7 @@ const { isVisualEditingEnabled, setAttr } = useVisualEditing()
         id="visual-editing-button"
         variant="primary"
         :data-directus="
-            setAttr({ collection: 'Pages', item: page.id, fields: ['blocks', 'meta_m2a_button'], mode: 'modal' })
+            setAttr({ collection: 'Pages', item: page.id, fields: ['sections'], mode: 'modal' })
         "
         >
 			<Icon name="lucide:pencil" />

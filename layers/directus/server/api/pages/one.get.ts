@@ -1,5 +1,5 @@
 import { withoutTrailingSlash, withLeadingSlash } from 'ufo';
-import {type RegularCollections } from '@directus/sdk'
+import { type RegularCollections } from '@directus/sdk'
 
 export default defineEventHandler(async (event) => {
 	const query = getQuery(event);

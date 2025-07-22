@@ -6,7 +6,7 @@ import {
 	staticToken,
 	withToken,
 	type QueryFilter,
-} from '@directus/sdk';
+} from '@directus/sdk'
 
 const {
 	public: { directusUrl },
@@ -20,5 +20,5 @@ export {
 	directusServer,
 	readItems,
 	withToken,
-};
-export type { QueryFilter };
+}
+export type { QueryFilter }

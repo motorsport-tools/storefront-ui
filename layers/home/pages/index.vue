@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { SfButton } from '@storefront-ui/vue'
 import { useWebsiteHomePage } from '~/layers/core/composable/useWebsiteHomePage'
 import generateSeo, { type SeoEntity } from '~/utils/buildSEOHelper'
 
 import { withLeadingSlash, withoutTrailingSlash } from 'ufo'
+import VisualEditor from '~/layers/directus/components/VisualEditor.vue'
 
 const { getWebsiteHomepage, websiteHomepage } = useWebsiteHomePage()
 
@@ -13,7 +15,7 @@ useHead(generateSeo<SeoEntity>(websiteHomepage.value, 'Home'))
 const route = useRoute()
 const { enabled, state } = useLivePreview()
 const pageUrl = useRequestURL()
-const { isVisualEditingEnabled, apply, setAttr } = useVisualEditing()
+const { isVisualEditingEnabled, apply } = useVisualEditing()
 
 const permalink = withoutTrailingSlash(withLeadingSlash(route.path))
 
@@ -59,23 +61,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-			v-if="isVisualEditingEnabled && page"
-			class="fixed z-50 w-full bottom-4 left-0 right-0 p-4 flex justify-center items-center gap-2"
-		>
-			<!-- If you're not using the visual editor it's safe to remove this element. Just a helper to let editors add edit / add new blocks to a page. -->
-			<Button
-				id="visual-editing-button"
-				variant="secondary"
-				:data-directus="
-					setAttr({ collection: 'pages', item: page.id, fields: ['blocks', 'meta_m2a_button'], mode: 'modal' })
-				"
-			>
-				<Icon name="lucide:pencil" />
-				Edit All Blocks
-			</Button>
-		</div>
-
   <main 
     class="w-full narrow-container bg-white mb-20"
     data-testid="checkout-layout"
@@ -88,4 +73,8 @@ onMounted(() => {
     </ClientOnly>
     
   </main>
+
+  <VisualEditor
+    :page="page"
+  />
 </template>

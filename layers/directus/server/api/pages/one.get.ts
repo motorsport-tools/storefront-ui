@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
 
 	const token = preview === 'true' && rawToken ? String(rawToken) : null;
 
-    const collection = 'pages' as RegularCollections<String> 
+    const collection = 'Pages' as RegularCollections<String> 
 
 	try {
 		const pageData = await directusServer.request(
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
 			),
 		)
         console.log(pageData)
-        
+
 		if (!pageData.length) {
 			throw createError({ statusCode: 404, statusMessage: 'Page not found' })
 		}

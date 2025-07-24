@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     '@nuxt/eslint',
     'nuxt-viewport',
-    '@nuxtjs/sitemap',
+    '@nuxtjs/sitemap'
   ],
   $production: {
     routeRules: {

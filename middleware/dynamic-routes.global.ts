@@ -23,6 +23,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
         const routeComponents = {
             category: () => import('~/layers/category/custom-pages/category-page.vue'),
             product: () => import('~/layers/product/custom-pages/product-page.vue'),
+            page: () => import('~/layers/directus/custom-pages/page-builder-page.vue')
         }
 
 

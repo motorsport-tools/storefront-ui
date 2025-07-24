@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+defineProps({
+  error: Object
+})
+
 const {
 	data: siteData,
 	error: siteError,
@@ -9,25 +13,28 @@ const {
 
 const { isVisualEditingEnabled, apply } = useVisualEditing()
 
-const navigation = useTemplateRef('navigationRef')
+const navigation = ref<HTMLElement>()
 const footer = useTemplateRef('footerRef')
 
-onMounted(() => {
-	if (!isVisualEditingEnabled.value) return;
-	apply({
-		elements: [navigation.value?.navigationRef as HTMLElement, footer.value?.footerRef as HTMLElement],
-		onSaved: () => {
-			refresh()
-		},
-	})
-})
+function onNavigationReady(el: HTMLElement) {
+  navigation.value = el
+  console.log('Navigation ref from child:', navigation.value)
+
+  // now safe to call your apply or refresh logic
+  apply({
+    elements: [navigation.value as HTMLElement, footer.value?.footerRef as HTMLElement],
+    onSaved: () => {
+      refresh()
+    },
+  })
+}
 </script>
 
 <template>
     <!--
     <TheHeader />
     -->
-    <SiteHeader />
+    <SiteHeader @navigationReady="onNavigationReady" />
     <div>
       <slot></slot>
     </div>

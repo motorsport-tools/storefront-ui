@@ -15,29 +15,54 @@ export default defineEventHandler(async (event) => {
     const collection = 'Pages' as RegularCollections<String> 
 
 	try {
-		const pageData = await directusServer.request(
+        console.log('API called at:', new Date().toISOString(), 'permalink:', permalink)
+        /*
+        const result = await $fetch('https://dir.motorsport-tools.co.uk/items/Pages', {
+            params: {
+              fields: 'title,id,permalink,sections,sections.item.*',
+              filter: {
+                permalink: { _eq: '/' },
+                status: { _eq: 'published' }
+              },
+              limit: 1
+            }
+          })
+
+          console.log('New Dir Test:', result)
+
+          return result[0]
+          */
+        const pageData = await directusServer.request(
 			withToken(
 				token as string,
 				readItems(collection, {
 					filter: { 
                         permalink: { _eq: permalink },
-                        //status: { _eq: 'published' } 
+                        status: { _eq: 'published' } 
                     },
 					limit: 1,
 					fields: [
 						'title',
-						'id',
+                        'id',
                         'permalink',
+                        'sections',
+                        'sections.item.*'
 					],
-                    /*
 					deep: {
-						blocks: { _sort: ['sort'], _filter: { hide_block: { _neq: true } } },
+						sections: { 
+                            item: {
+                                _sort: ['sort'], 
+                                _filter: { 
+                                    status: { _eq: 'published' } 
+                                },
+                            },
+                        },
 					},
-                    */
 				}),
 			),
 		)
-        console.log(pageData)
+        console.log('Directus Response: ', pageData)
+        
 
 		if (!pageData.length) {
 			throw createError({ statusCode: 404, statusMessage: 'Page not found' })

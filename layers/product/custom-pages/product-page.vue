@@ -566,17 +566,7 @@ if (productTemplate.value?.id) {
         </section>
         </div>
         <template #error="{ error }">
-        <div>
-            <NuxtImg
-            src="/images/something-went-wrong.svg"
-            :alt="$t('emptyStateAltText')"
-            width="300"
-            height="300"
-            />
-            <p class="mt-8 font-medium">
-            {{ $t("emptyStateText") }}
-            </p>
-        </div>
+            <ErrorDisplay :msg="$t('error.404')"/>
         </template>
     </NuxtErrorBoundary>
     </main>

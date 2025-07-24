@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { resolve } from 'pathe'
 export default defineNuxtConfig({
     runtimeConfig: {
 		public: {
@@ -17,5 +18,8 @@ export default defineNuxtConfig({
 				'frame-ancestors': ["'self'", process.env.DIRECTUS_URL || ''],
 			},
 		},
+	},
+	alias: {
+		'@directus-utils': resolve(__dirname, 'server/utils')
 	},
 });

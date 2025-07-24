@@ -7,6 +7,7 @@ const routesToSkipCache = [
   '/api/route-resolver',
   '/api/sitemap/urls/categories',
   '/api/sitemap/urls/products',
+  '/api/sitemap/urls/pages',
   '/web/health',
   '/__nuxt_error',
   '',

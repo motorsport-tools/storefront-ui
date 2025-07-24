@@ -2,6 +2,14 @@
 import { useMegaMenuCategories } from '~/layers/core/composable/useMegaMenuCategories'
 import { SfIconMenu } from '@storefront-ui/vue'
 import Overlay from './ui/Overlay.vue'
+
+const props = defineProps({
+  navigationRef: {
+    type: Object,
+    default: () => ref(),
+  },
+})
+
 const { loadCategoriesForMegaMenu, categoriesForMegaMenu } = useMegaMenuCategories()
 
 provide(
@@ -11,8 +19,9 @@ provide(
 
 await loadCategoriesForMegaMenu({ filter: { parent: true }, pageSize: 5 })
 
-const headerRef = ref()
-const categoryMenuRef = ref()
+const headerRef = ref(null)
+const headerNavRef = ref<HTMLElement>()
+const categoryMenuRef = ref(null)
 
 onClickOutside(headerRef, () => {
   close()
@@ -23,6 +32,16 @@ const megaMenuClick = (menuType: string[]) => {
     categoryMenuRef.value.openMenu(menuType)
   }
 }
+
+const emit = defineEmits(['navigationReady'])
+
+onMounted(() => {
+    if(headerNavRef.value) {
+        props.navigationRef.value = headerNavRef.value
+        console.log('Set ref')
+        emit('navigationReady', headerNavRef.value)
+    }
+})
 
 const isOverlayVisible = ref(false)
 </script>
@@ -36,7 +55,11 @@ const isOverlayVisible = ref(false)
         <!-- Top Dark Bar -->
         <div class="bg-[#222222] h-[36px] max-h-[36px] text-white hover:text-neutral-200 text-sm px-4 flex justify-between items-center relative z-[20]">
             <div class="h-full flex items-center justify-center text-xs">
+                <nav
+                    ref="headerNavRef"
+                >
                 FAQ | Contact | Order Status
+                </nav>
             </div>
             <div class="h-full flex items-center justify-center">
                 <NuxtLink

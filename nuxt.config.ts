@@ -124,7 +124,6 @@ export default defineNuxtConfig({
       xs: 376,
     },
   },
-
   nitro: {
     compressPublicAssets: {
       gzip: true, brotli: true

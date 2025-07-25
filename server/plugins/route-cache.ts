@@ -67,6 +67,8 @@ export default defineNitroPlugin((nitroApp) => {
           swr: true,
           staleMaxAge: Number(process.env?.NUXT_SWR_CACHE_TIME),
           shouldBypassCache: (event: H3Event) => {
+            const query = getQuery(event)
+            if (query.token && (query.preview || query['visual-editing'])) return true
             return false
           },
         },

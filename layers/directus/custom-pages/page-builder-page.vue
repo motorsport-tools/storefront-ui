@@ -5,13 +5,18 @@ import type { Page } from '../shared/types/schema'
 const route = useRoute()
 const { enabled, state } = useLivePreview()
 const permalink = withoutTrailingSlash(withLeadingSlash(route.path))
+const { isVisualEditingEnabled, apply, setAttr } = useVisualEditing()
+
+const token = enabled.value ? state.token : ''
+const preview = enabled.value ? true : false
+const cacheKey = `pages-directus-${permalink}`
 
 const {
 	data: page,
 	error,
 	refresh,
 } = await useFetch<Page>('/api/pages/one', {
-	key: `pages-${permalink}`,
+	key: cacheKey,
 	query: {
 		permalink,
 		preview: enabled.value ? true : undefined,
@@ -25,6 +30,33 @@ if (!page.value || error.value) {
 
 useHead({
 
+})
+
+function applyVisualEditing() {
+	apply({
+		onSaved: async () => {
+			await refresh();
+		},
+	});
+}
+
+function applyVisualEditingButton() {
+	apply({
+		elements: document.querySelector('#visual-editing-button') as HTMLElement,
+		customClass: 'visual-editing-button-class',
+		onSaved: async () => {
+			await refresh();
+			// This makes sure the visual editor elements are updated after the page is refreshed. In case you've added new blocks to the page.
+			await nextTick();
+			applyVisualEditing();
+		},
+	})
+}
+
+onMounted(() => {
+	if (!isVisualEditingEnabled.value) return;
+	applyVisualEditingButton();
+	applyVisualEditing();
 })
 
 console.log('Page', page.value)

@@ -18,9 +18,6 @@ const footer = useTemplateRef('footerRef')
 
 function onNavigationReady(el: HTMLElement) {
   navigation.value = el
-  console.log('Navigation ref from child:', navigation.value)
-
-  // now safe to call your apply or refresh logic
   apply({
     elements: [navigation.value as HTMLElement, footer.value?.footerRef as HTMLElement],
     onSaved: () => {

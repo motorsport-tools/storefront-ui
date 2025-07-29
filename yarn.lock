@@ -9173,13 +9173,6 @@ nullthrows@^1.1.1:
   resolved "https://registry.yarnpkg.com/nullthrows/-/nullthrows-1.1.1.tgz#7818258843856ae971eae4208ad7d7eb19a431b1"
   integrity sha512-2vPPEi+Z7WqML2jZYddDIfy5Dqb0r2fze2zTxNNknZaFpVHU3mFB3R+DWeJWGVx0ecvttSGlJTI+WG+8Z4cDWw==
 
-nuxt-clarity-analytics@^0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/nuxt-clarity-analytics/-/nuxt-clarity-analytics-0.0.9.tgz#3cd53a34bb0f59afa652442269ecf1779a684f92"
-  integrity sha512-H5w+B5XOm9hdoVn3CnDCKIcnZli48UwuD8fP1bOogse0NVxNDUKhW0pdqOMRkniL/oORiqIwMrEZh12YE+23KQ==
-  dependencies:
-    "@nuxt/kit" "^3.13.1"
-
 nuxt-csurf@^1.6.5:
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/nuxt-csurf/-/nuxt-csurf-1.6.5.tgz#c900f8817f565d91fe35c712dde7f2b0b46b8c20"

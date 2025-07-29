@@ -16,7 +16,8 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     '@nuxt/eslint',
     'nuxt-viewport',
-    '@nuxtjs/sitemap'
+    '@nuxtjs/sitemap',
+    '@nuxtjs/critters',
   ],
   $production: {
     routeRules: {
@@ -212,6 +213,12 @@ export default defineNuxtConfig({
       md: 768,
       sm: 640,
       xs: 376,
+    },
+  },
+  critters: {
+    config: {
+      preload: 'swap',
+      pruneSource: true,
     },
   },
 

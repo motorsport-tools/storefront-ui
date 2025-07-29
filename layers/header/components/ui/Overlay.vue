@@ -13,7 +13,7 @@ const props = defineProps({
     </transition>
 </template>
 
-<style>
+<style scoped>
     .backdrop-fade-enter-active,
     .backdrop-fade-leave-active {
         transition: backdrop-filter 0.5s ease, opacity 0.5s ease;

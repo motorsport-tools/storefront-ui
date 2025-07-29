@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { withLeadingSlash, withoutTrailingSlash } from 'ufo'
 import type { Page } from '../shared/types/schema'
+import VisualEditor from '~/layers/directus/components/VisualEditor.vue'
 
 const route = useRoute()
 const { enabled, state } = useLivePreview()
@@ -76,4 +77,9 @@ onMounted(() => {
             </pre>
         </NuxtErrorBoundary>
     </main>
+    <ClientOnly>
+        <VisualEditor
+            :page="page"
+        />
+    </ClientOnly>
 </template>

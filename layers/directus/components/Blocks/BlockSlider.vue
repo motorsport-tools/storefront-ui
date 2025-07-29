@@ -220,7 +220,7 @@ watch(sliderRef, (newVal) => {
     width: 20px;
 }
 .splide__pagination__page.is-active {
-    background: #fff;
+    background: hsla(0,0%,98%,.75);
     transform: scale(1.1);
     z-index: 1;
 }

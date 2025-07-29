@@ -26,14 +26,3 @@ const { isVisualEditingEnabled, setAttr } = useVisualEditing()
     </SfButton>
   </div>
 </template>
-
-<style>
-:global(.directus-visual-editing-overlay.visual-editing-button-class .directus-visual-editing-edit-button) {
-	position: absolute;
-	inset: 0;
-	width: 100%;
-	height: 100%;
-	transform: none;
-	background: transparent;
-}
-</style>

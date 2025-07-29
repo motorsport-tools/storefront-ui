@@ -57,11 +57,17 @@ const loaderSize = computed(() => {
   return 'lg'
 })
 
+const sliderKey = ref(0)
+
 onMounted(async () => {
     await nextTick()
     requestIdleCallback(() => {
         hydrated.value = true
     })
+})
+
+watch(() => props.blockData, () => {
+  sliderKey.value++
 })
 
 watch(sliderRef, (newVal) => {
@@ -77,7 +83,8 @@ watch(sliderRef, (newVal) => {
         </div>
         <Splide
             v-else
-            class="h-60 lg:h-[30rem] w-full"
+            :key="sliderKey"
+            class="h-60 lg:h-[30rem] w-full mb-[3px]"
             :has-track="false" 
             :options="slideOptions"
             :aria-label="blockData?.ariaLabel"

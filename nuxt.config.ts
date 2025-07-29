@@ -13,7 +13,6 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "nuxt-delay-hydration",
     "nuxt-typed-router",
-    "nuxt-clarity-analytics",
     '@nuxtjs/robots',
     '@nuxt/eslint',
     'nuxt-viewport',

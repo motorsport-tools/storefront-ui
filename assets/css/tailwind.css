@@ -8,6 +8,10 @@ html {
     -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  font-display: swap;
+}
+
 @layer base {
   
   h1, 

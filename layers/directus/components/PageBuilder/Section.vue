@@ -5,6 +5,8 @@ const props = defineProps({
 
 const { $viewport } = useNuxtApp()
 
+const { getBlockComponent } = useBlockRegistry()
+
 const backgroundImage = computed(() => {
   if ($viewport.isLessThan('lg') && props.sectionData?.backgroundSmall) {
     return props.sectionData?.backgroundSmall || ''
@@ -25,10 +27,15 @@ const styleObject = computed(() => ({
 </script>
 <template>
     <section 
-        class="py-5 flex"
-        :class="sectionData.full_width ? 'w-full' : 'narrow-container'"
+        class="flex"
+        :class="sectionData?.full_width ? 'w-full' : 'narrow-container'"
         :style="styleObject"
     >
-        {{ sectionData }}
+        <component
+            v-for="block in sectionData?.blocks"
+            :key="block.id"
+            :is="getBlockComponent(block.collection)"
+            :blockData="block.item"
+        />
     </section>
 </template>

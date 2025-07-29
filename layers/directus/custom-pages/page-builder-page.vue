@@ -46,7 +46,7 @@ function applyVisualEditingButton() {
 		customClass: 'visual-editing-button-class',
 		onSaved: async () => {
 			await refresh();
-			// This makes sure the visual editor elements are updated after the page is refreshed. In case you've added new blocks to the page.
+			
 			await nextTick();
 			applyVisualEditing();
 		},
@@ -59,7 +59,6 @@ onMounted(() => {
 	applyVisualEditing();
 })
 
-console.log('Page', page.value)
 </script>
 <template>
     <main 
@@ -68,18 +67,13 @@ console.log('Page', page.value)
     >
         <NuxtErrorBoundary> 
             <PageBuilderSection 
-                v-for="(section, index) in page.sections"
+                v-for="(section, index) in page?.sections"
                 :key="`section-${index}`"
-                :sectionData="section.item"
+                :sectionData="section?.item || {}"
             />
-                
-            <section 
-                class="w-full py-5"
-                style="background:pink;"
-            >
-                <h2>Full Width?</h2>
-                <p>This should be a fullwidth section</p>
-            </section>
+            <pre>
+                {{ page }}
+            </pre>
         </NuxtErrorBoundary>
     </main>
 </template>

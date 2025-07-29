@@ -36,7 +36,7 @@
     "@nuxtjs/sitemap": "^7.2.6",
     "@nuxtjs/tailwindcss": "^6.12.0",
     "@pinia/nuxt": "^0.5.1",
-    "@splidejs/vue-splide": "splidejs/vue-splide",
+    "@splidejs/vue-splide": "^0.6.12",
     "@storefront-ui/typography": "^2.6.1",
     "@storefront-ui/vue": "^2.6.3",
     "@stripe/stripe-js": "^7.0.0",

@@ -15,23 +15,6 @@ export default defineEventHandler(async (event) => {
     const collection = 'Pages' as RegularCollections<String> 
 
 	try {
-        console.log('API called at:', new Date().toISOString(), 'permalink:', permalink)
-        /*
-        const result = await $fetch('https://dir.motorsport-tools.co.uk/items/Pages', {
-            params: {
-              fields: 'title,id,permalink,sections,sections.item.*',
-              filter: {
-                permalink: { _eq: '/' },
-                status: { _eq: 'published' }
-              },
-              limit: 1
-            }
-          })
-
-          console.log('New Dir Test:', result)
-
-          return result[0]
-          */
         const pageData = await directusServer.request(
 			withToken(
 				token as string,
@@ -46,7 +29,9 @@ export default defineEventHandler(async (event) => {
                         'id',
                         'permalink',
                         'sections',
-                        'sections.item.*'
+                        'sections.item.*',
+                        'sections.item.blocks.*',
+                        'sections.item.blocks.item.*',
 					],
 					deep: {
 						sections: { 
@@ -54,6 +39,14 @@ export default defineEventHandler(async (event) => {
                                 _sort: ['sort'], 
                                 _filter: { 
                                     status: { _eq: 'published' } 
+                                },
+                                blocks: {
+                                    item: {
+                                        _filter: {
+                                            _sort: ['sort'],
+                                            status: { _eq: 'published' }
+                                        }
+                                    },
                                 },
                             },
                         },

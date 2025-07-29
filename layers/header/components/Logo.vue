@@ -10,5 +10,7 @@ defineProps<{
     fetchpriority="high"
     alt="Motorsport-Tools"
     preload
+    width="242"
+    height="47"
   />
 </template>

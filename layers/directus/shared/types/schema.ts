@@ -12,6 +12,50 @@ export interface ExtensionSeoMetadata {
     no_follow?: boolean;
 }
 
+export interface BlockSlider {
+	/** @primaryKey */
+	id: number;
+	status?: 'published' | 'draft' | 'archived';
+	user_created?: string | null;
+	date_created?: string | null;
+	user_updated?: string | null;
+	date_updated?: string | null;
+	/** @required */
+	title: string;
+	/** @description Loop - a regular carousel, Slide - with slide transition, Fade - fade transition @required */
+	type: 'loop' | 'slide' | 'fade';
+	/** @required */
+	lazyLoad: boolean;
+	ariaLabel?: string | null;
+	/** @required */
+	autoplay: boolean;
+	/** @required */
+	rewind: boolean;
+	/** @description Transition speed in milliseconds. If 0 will immediately jump to the next slide @required */
+	speed: number;
+	/** @description Rewind transition speed in milliseconds.  @required */
+	rewindSpeed: number;
+	/** @description Enables navigation with the mouse wheel @required */
+	wheel: boolean;
+	/** @description Enables keyboard navigation  @required */
+	keyboard: boolean;
+	/** @description Pause the slider if mouse hover @required */
+	pauseOnHover: boolean;
+	/** @description Pause the slider on slide focus @required */
+	pauseOnFocus: boolean;
+	/** @description Show a progress bar on the slider @required */
+	ShowProgress: boolean;
+	/** @description Progress bar on the top or bottom @required */
+	ProgressLocation: 'top' | 'bottom';
+	/** @description Which slide to start on - default 0 @required */
+	start: number;
+	/** @description How many slides to show per page @required */
+	perPage: number;
+	/** @description How many slides to move at once @required */
+	perMove: number;
+	ProgressColor?: string | null;
+}
+
 export interface Globals {
 	/** @primaryKey */
 	id: number;
@@ -25,12 +69,15 @@ export interface Page {
 	id: number;
 	status?: 'published' | 'draft' | 'archived';
 	sort?: number | null;
+	date_created?: string | null;
+	user_updated?: string | null;
+	date_updated?: string | null;
 	seo?: ExtensionSeoMetadata | null;
 	/** @description Unique URL - must start with can have multiple segments i.e. /about/company @required */
 	permalink: string;
 	/** @required */
 	title: string;
-	sections?: string;
+	sections?: PagesSection[] | string[];
 }
 
 export interface PageSection {
@@ -38,16 +85,40 @@ export interface PageSection {
 	id: number;
 	status?: 'published' | 'draft' | 'archived';
 	sort?: number | null;
+	user_created?: string | null;
+	date_created?: string | null;
+	user_updated?: string | null;
+	date_updated?: string | null;
 	/** @required */
 	title: string;
 	full_width?: boolean | null;
 	color?: string | null;
-	/** @required */
+	/** @description Horizontal alignment of content @required */
 	align_items: `flex-start` | 'center' | `flex-end`;
-	/** @required */
+	/** @description Vertical alignmnt of content @required */
 	justify_content: `flex-start` | 'center' | `flex-end` | `space-around` | `space-between` | `space-evenly` | 'stretch';
 	/** @required */
 	background_color: string;
+	/** @required */
+	background_size: 'cover' | 'contain';
+	blocks?: PageSectionsBlock[] | string[];
+}
+
+export interface PageSectionsBlock {
+	/** @primaryKey */
+	id: number;
+	page_sections_id?: PageSection | string | null;
+	item?: BlockSlider | string | null;
+	collection?: string | null;
+}
+
+export interface PagesSection {
+	/** @primaryKey */
+	id: number;
+	Pages_id?: Page | string | null;
+	item?: PageSection | string | null;
+	collection?: string | null;
+	sort?: number | null;
 }
 
 export interface DirectusCollection {
@@ -123,9 +194,12 @@ export interface DirectusTranslation {
 }
 
 export interface Schema {
+	block_slider: BlockSlider[];
 	globals: Globals;
 	Pages: Page[];
 	page_sections: PageSection[];
+	page_sections_blocks: PageSectionsBlock[];
+	Pages_sections: PagesSection[];
 	directus_collections: DirectusCollection[];
 	directus_fields: DirectusField[];
 	directus_relations: DirectusRelation[];
@@ -133,9 +207,12 @@ export interface Schema {
 }
 
 export enum CollectionNames {
+	block_slider = 'block_slider',
 	globals = 'globals',
 	Pages = 'Pages',
 	page_sections = 'page_sections',
+	page_sections_blocks = 'page_sections_blocks',
+	Pages_sections = 'Pages_sections',
 	directus_collections = 'directus_collections',
 	directus_fields = 'directus_fields',
 	directus_relations = 'directus_relations',

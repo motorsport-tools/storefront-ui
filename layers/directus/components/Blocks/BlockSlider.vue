@@ -2,26 +2,29 @@
 // @ts-ignore
 import { Splide, SplideSlide, SplideTrack, type Options } from '@splidejs/vue-splide'
 import { SfLoaderCircular } from '@storefront-ui/vue'
-
+import { type BlockSlider } from '../../shared/types/schema'
 //import '@splidejs/vue-splide/css'
 import '@splidejs/vue-splide/css/core'
 import { SfIconBase } from '@storefront-ui/vue'
 
-const props = defineProps({
-    blockData: Object
-})
+interface Props {
+    blockData: BlockSlider
+}
+
+const props = defineProps<Props>()
+
 const sliderRef = ref()
 const slideOptions: Options = computed(() => ({
     type: props.blockData?.type || 'loop',
-    rewind: props.blockData?.rewind || true,
-    lazyLoad: props.blockData?.lazyLoad || true,
-    autoplay: props.blockData?.autoplay || true,
+    rewind: props.blockData?.rewind,
+    lazyLoad: props.blockData?.lazyLoad,
+    autoplay: props.blockData?.autoplay,
     speed: props.blockData?.speed || 400,
     rewindSpeed: props.blockData?.rewindSpeed || 400,
-    wheel: props.blockData?.wheel || true,
-    keyboard: props.blockData?.keyboard || true,
-    pauseOnHover: props.blockData?.pauseOnHover || true,
-    pauseOnFocus: props.blockData?.pauseOnFocus || true,
+    wheel: props.blockData?.wheel,
+    keyboard: props.blockData?.keyboard,
+    pauseOnHover: props.blockData?.pauseOnHover,
+    pauseOnFocus: props.blockData?.pauseOnFocus,
     start: props.blockData?.start || 0,
     perPage: props.blockData?.perPage || 1,
     perMove: props.blockData?.perMove || 1,

@@ -6,10 +6,8 @@ import VisualEditor from '~/layers/directus/components/VisualEditor.vue'
 const route = useRoute()
 const { enabled, state } = useLivePreview()
 const permalink = withoutTrailingSlash(withLeadingSlash(route.path))
-const { isVisualEditingEnabled, apply, setAttr } = useVisualEditing()
+const { isVisualEditingEnabled, apply } = useVisualEditing()
 
-const token = enabled.value ? state.token : ''
-const preview = enabled.value ? true : false
 const cacheKey = `pages-directus-${permalink}`
 
 const {

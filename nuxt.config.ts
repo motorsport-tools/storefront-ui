@@ -218,7 +218,7 @@ export default defineNuxtConfig({
   critters: {
     config: {
       preload: 'swap',
-      pruneSource: true,
+      pruneSource: false,
     },
   },
 

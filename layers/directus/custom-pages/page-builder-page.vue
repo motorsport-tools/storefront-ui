@@ -82,6 +82,7 @@ onMounted(() => {
     </ClientOnly>
 </template>
 <style>
+/* beasties:exclude */
 .directus-visual-editing-overlay.visual-editing-button-class .directus-visual-editing-edit-button {
 	position: absolute;
 	inset: 0;

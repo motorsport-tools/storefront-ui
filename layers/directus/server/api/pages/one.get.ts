@@ -20,8 +20,7 @@ export default defineEventHandler(async (event) => {
 				token as string,
 				readItems(collection, {
 					filter: { 
-                        permalink: { _eq: permalink },
-                        status: { _eq: 'published' } 
+                        permalink: { _eq: permalink }, 
                     },
 					limit: 1,
 					fields: [

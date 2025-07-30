@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
 
 	const token = preview === 'true' && rawToken ? String(rawToken) : null;
 
+
     const collection = 'Pages' as RegularCollections<String> 
 
 	try {

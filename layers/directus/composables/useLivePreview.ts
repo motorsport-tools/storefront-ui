@@ -12,6 +12,6 @@ export function useLivePreview() {
 			return {
 				token: route.query.token || currentState.token,
 			};
-		},
+		}
 	});
 }

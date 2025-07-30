@@ -19,7 +19,7 @@ const {
 	query: {
 		permalink,
 		preview: enabled.value ? true : undefined,
-		token: enabled.value ? state.token : undefined,
+		token: enabled.value ? state.token : undefined
 	},
 })
 

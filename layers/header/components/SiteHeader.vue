@@ -76,7 +76,7 @@ const isOverlayVisible = ref(false)
                         Account
                     </span>
                 </NuxtLink>
-                <NuxtLink
+                <button
                     variant="tertiary"
                     class="h-full flex items-center hover:bg-transparent !text-white hover:!text-neutral-200 flex align-center transition cursor-pointer"
                 >
@@ -92,7 +92,7 @@ const isOverlayVisible = ref(false)
                         </svg>
                     </span>
                     <span class="text-sm">EN</span>
-                </NuxtLink>
+                </button>
             </div>
         </div>
 

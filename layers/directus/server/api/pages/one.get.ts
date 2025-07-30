@@ -37,14 +37,10 @@ export default defineEventHandler(async (event) => {
 						sections: { 
                             item: {
                                 _sort: ['sort'], 
-                                _filter: { 
-                                    status: { _eq: 'published' } 
-                                },
                                 blocks: {
                                     item: {
                                         _filter: {
                                             _sort: ['sort'],
-                                            status: { _eq: 'published' }
                                         }
                                     },
                                 },

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+if (import.meta.client) {
+    import('~/assets/css/transitions.css')
+}
 const props = defineProps({
     isOpen: Boolean
 })
@@ -12,26 +15,3 @@ const props = defineProps({
     
     </transition>
 </template>
-
-<style scoped>
-    .backdrop-fade-enter-active,
-    .backdrop-fade-leave-active {
-        transition: backdrop-filter 0.5s ease, opacity 0.5s ease;
-    }
-
-    .backdrop-fade-leave-active {
-        transition-delay: 0ms;
-    }
-
-    .backdrop-fade-enter-from,
-    .backdrop-fade-leave-to {
-        backdrop-filter: blur(0px);
-        opacity: 0;
-    }
-
-    .backdrop-fade-enter-to,
-    .backdrop-fade-leave-from {
-        backdrop-filter: blur(25px);
-        opacity: 1;
-    } 
-</style>

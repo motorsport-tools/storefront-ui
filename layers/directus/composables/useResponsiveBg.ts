@@ -31,5 +31,5 @@ export function useResponsiveBg(src: string) {
     // reactive inline style string
     const bgStyle = computed(() => `background-image: url('${responsiveUrl.value.url}'); background-size: cover; background-position: center;`)
 
-    return { bgStyle }
+    return { bgStyle, url: responsiveUrl.value.url }
 }

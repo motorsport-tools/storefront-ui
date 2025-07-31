@@ -27,6 +27,7 @@ if (!page.value || error.value) {
 	throw createError({ statusCode: 404, statusMessage: 'Page not found - page', fatal: true });
 }
 
+
 useHead({
 
 })

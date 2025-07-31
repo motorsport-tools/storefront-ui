@@ -9,7 +9,15 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { bgStyle: backgroundStyles } = useResponsiveBg(props.slide?.background_image || '')
+const { bgStyle: backgroundStyles, url: imageUrl } = useResponsiveBg(props.slide?.background_image || '')
+
+useHead({
+    link: [{
+        rel: 'preload',
+        as: 'image',
+        href: imageUrl
+    }]
+})
 
 </script>
 <template>

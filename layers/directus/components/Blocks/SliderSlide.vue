@@ -12,7 +12,7 @@ const props = defineProps<Props>()
 
 const { bgStyle: backgroundStyles, url: imageUrl } = useResponsiveBg(props.slide?.background_image || '')
 
-if(props.itemKey == 1) {
+if(props.itemKey == 0) {
     useHead({
         link: [{
             rel: 'preload',

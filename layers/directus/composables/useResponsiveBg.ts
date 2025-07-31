@@ -2,24 +2,27 @@ export function useResponsiveBg(src: string) {
     const img = useImage()
     const { breakpoint } = useViewport() 
 
-    // Nuxt image screens from runtime config
-    const screens = {
-        'xs': 376,
-        'sm': 640,
-        'md': 768,
-        'lg': 1024,
-        'xl': 1280,
-        'xxl': 1440,
-        '2xl': 1536,
-    }
-
     // Find matching width for current breakpoint
     const getWidthForBreakpoint = (bp: string) => {
-        const keys = Object.keys(screens)
-        const currentIndex = keys.indexOf(bp)
-        if (currentIndex === -1) return 1024
-        const nextKey = keys[currentIndex + 1]
-        return nextKey ? screens[nextKey] : screens[bp]
+        console.log('BP', bp)
+        const screens = {
+            'xs': 376,
+            'sm': 640,
+            'md': 768,
+            'lg': 1024,
+            'xl': 1280,
+            'xxl': 1440,
+            '2xl': 1536,
+        }
+
+        const entries = Object.entries(screens)
+        const index = entries.findIndex(([key]) => key === bp)
+        if (index === -1) {
+            console.warn(`Breakpoint "${bp}" not found`)
+            return 1024
+        }
+        const next = entries[index + 1]
+        return next ? next[1] : entries[index][1]
     }
 
     // reactive width

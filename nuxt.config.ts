@@ -203,14 +203,22 @@ export default defineNuxtConfig({
   },
   viewport: {
     breakpoints: {
-      "2xl": 1536,
-      xxl: 1440,
-      xl: 1280,
-      lg: 1024,
-      md: 768,
-      sm: 640,
+      xxs: 375.9,
       xs: 376,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xxl: 1440,
+      "2xl": 1536,
     },
+
+    defaultBreakpoints: {
+      desktop: 'lg',
+      mobile: 'xs',
+      tablet: 'md',
+    },
+
+    fallbackBreakpoint: 'lg'
   },
   critters: {
     config: {

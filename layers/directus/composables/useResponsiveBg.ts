@@ -1,6 +1,6 @@
 export function useResponsiveBg(src: string) {
     const img = useImage()
-    const { breakpoint } = useViewport()
+    const { breakpoint } = useViewport() 
 
     // Nuxt image screens from runtime config
     const screens = {
@@ -15,7 +15,11 @@ export function useResponsiveBg(src: string) {
 
     // Find matching width for current breakpoint
     const getWidthForBreakpoint = (bp: string) => {
-        return screens[bp] ? screens[bp] : 1024
+        const keys = Object.keys(screens)
+        const currentIndex = keys.indexOf(bp)
+        if (currentIndex === -1) return 1024
+        const nextKey = keys[currentIndex + 1]
+        return nextKey ? screens[nextKey] : screens[bp]
     }
 
     // reactive width
@@ -31,5 +35,5 @@ export function useResponsiveBg(src: string) {
     // reactive inline style string
     const bgStyle = computed(() => `background-image: url('${responsiveUrl.value.url}'); background-size: cover; background-position: center;`)
 
-    return { bgStyle, url: responsiveUrl.value.url }
+    return { bgStyle, url: responsiveUrl.value.url, width: width.value }
 }

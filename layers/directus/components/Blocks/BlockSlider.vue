@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // @ts-ignore
-import { Splide, SplideSlide, SplideTrack, type Options } from '@splidejs/vue-splide'
+import { Splide, SplideTrack, type Options } from '@splidejs/vue-splide'
 import { SfLoaderCircular } from '@storefront-ui/vue'
 import { type BlockSlider } from '../../shared/types/schema'
 //import '@splidejs/vue-splide/css'
@@ -30,17 +30,19 @@ const slideOptions: Options = computed(() => ({
     perMove: props.blockData?.perMove || 1,
 }))
 
-const { url: imageUrl } = useResponsiveBg(props.blockData?.slider_slides[0]?.background_image || '')
+if(props.blockData?.slider_slides[0]?.background_image) {
+    const { url: imageUrl } = useResponsiveBg(props.blockData?.slider_slides[0]?.background_image || '')
 
-if(imageUrl) {
-    useHead({
-        link: [{
-            rel: 'preload',
-            as: 'image',
-            fetchpriority: 'high',
-            href: imageUrl
-        }]
-    })
+    if(imageUrl) {
+        useHead({
+            link: [{
+                rel: 'preload',
+                as: 'image',
+                fetchpriority: 'high',
+                href: imageUrl
+            }]
+        })
+    }
 }
 
 const hydrated = ref(false)

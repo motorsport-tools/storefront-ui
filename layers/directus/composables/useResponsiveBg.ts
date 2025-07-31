@@ -1,0 +1,35 @@
+export function useResponsiveBg(src: string) {
+    const img = useImage()
+    const { breakpoint } = useViewport()
+
+    // Nuxt image screens from runtime config
+    const screens = {
+        'xs': 376,
+        'sm': 640,
+        'md': 768,
+        'lg': 1024,
+        'xl': 1280,
+        'xxl': 1440,
+        '2xl': 1536,
+    }
+
+    // Find matching width for current breakpoint
+    const getWidthForBreakpoint = (bp: string) => {
+        return screens[bp] ? screens[bp] : 1024
+    }
+
+    // reactive width
+    const width = ref(getWidthForBreakpoint(breakpoint.value))
+
+    // computed url for current viewport width
+    const responsiveUrl = computed(() => 
+        img.getImage(`/assets/${src}?format=webp&width=${width.value}&quality=70`, {
+            provider: 'directus'
+        })
+    )
+
+    // reactive inline style string
+    const bgStyle = computed(() => `background-image: url('${responsiveUrl.value.url}'); background-size: cover; background-position: center;`)
+
+    return { bgStyle }
+}

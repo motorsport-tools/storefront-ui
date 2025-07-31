@@ -106,7 +106,6 @@ export default defineNuxtConfig({
       "vue-toastification",
     ],
   },
-
   image: {
     providers: {
       odooProvider: {
@@ -114,14 +113,16 @@ export default defineNuxtConfig({
         provider: "~/providers/odoo-provider.ts",
       },
     },
-    screens: {
-      "2xl": 1536,
-      xxl: 1440,
-      xl: 1280,
-      lg: 1024,
-      md: 768,
-      sm: 640,
-      xs: 376,
+    viewport: {
+      breakpoints: {
+        "2xl": 1536,
+        xxl: 1440,
+        xl: 1280,
+        lg: 1024,
+        md: 768,
+        sm: 640,
+        xs: 376,
+      },
     },
   },
   nitro: {
@@ -183,19 +184,16 @@ export default defineNuxtConfig({
     crossOriginPrefetch: true,
     asyncContext: true,
   },
-
   sitemap: {
     sources: ['/api/sitemap/urls/products', '/api/sitemap/urls/categories'],
     runtimeCacheStorage: {
       driver: process.env.NUXT_STORAGE_DRIVER || '',
     }
   },
-
   robots: {
     allow: ['/*', '/product/*'],
     disallow: ['/cart', '/checkout/*', '/my-account/*', '/forgot-password', '/search?'],
   },
-
   tailwindcss: {
     viewer: false,
   },
@@ -203,7 +201,6 @@ export default defineNuxtConfig({
   device: {
     refreshOnResize: true,
   },
-
   viewport: {
     breakpoints: {
       "2xl": 1536,

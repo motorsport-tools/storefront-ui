@@ -22,4 +22,12 @@ export default defineNuxtConfig({
 	alias: {
 		'@directus-utils': resolve(__dirname, 'server/utils')
 	},
+	image: {
+		providers: {
+			directus: {
+				name: 'directus',
+				provider: '~/layers/directus/providers/directus-provider',
+			},
+		},
+	},
 });

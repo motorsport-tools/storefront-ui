@@ -32,17 +32,6 @@ const slideOptions: Options = computed(() => ({
 
 const hydrated = ref(false)
 
-const slides = [
-    {
-        id: 0,
-        title: 'Slide 1',
-    },
-    {
-        id: 1,
-        title: 'Slide 2',
-    }
-]
-
 const progressBar = () => {
     return h('div', { class: 'splide__progress' }, [
         h('div', { class: 'splide__progress__bar' })
@@ -97,13 +86,10 @@ watch(sliderRef, (newVal) => {
             <SplideTrack
                 class="overflow-y-hidden w-full h-full"
             >
-                <SplideSlide
-                    v-for="slide in slides"
-                    :key="slide.id"
-                    class="text-black bg-cover bg-no-repeat bg-center p-6 w-full h-full"
-                >
-                    <h2>{{ slide?.title || `Title!` }}</h2>
-                </SplideSlide>
+                <BlocksSliderSlide 
+                    v-for="slide in blockData.slider_slides"
+                    :slide="slide"
+                />
             </SplideTrack>
 
             <template v-if="blockData?.ShowProgress && blockData?.ProgressLocation === 'bottom'">

@@ -32,6 +32,8 @@ export default defineEventHandler(async (event) => {
                         'sections.item.*',
                         'sections.item.blocks.*',
                         'sections.item.blocks.item.*',
+                        'sections.item.blocks.item.slider_slides.*',
+                        //'sections.item.blocks.item.slider_slides.slides.*',
 					],
 					deep: {
 						sections: { 

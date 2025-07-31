@@ -54,6 +54,19 @@ export interface BlockSlider {
 	/** @description How many slides to move at once @required */
 	perMove: number;
 	ProgressColor?: string | null;
+	slider_slides?: BlockSliderSlide[] | string[];
+}
+
+export interface BlockSliderSlide {
+	/** @primaryKey */
+	id: number;
+	sort?: number | null;
+	user_created?: string | null;
+	date_created?: string | null;
+	user_updated?: string | null;
+	date_updated?: string | null;
+	slider?: BlockSlider | string | null;
+	background_image?: string | null;
 }
 
 export interface Globals {
@@ -70,8 +83,6 @@ export interface Page {
 	status?: 'published' | 'draft' | 'archived';
 	sort?: number | null;
 	date_created?: string | null;
-	user_updated?: string | null;
-	date_updated?: string | null;
 	seo?: ExtensionSeoMetadata | null;
 	/** @description Unique URL - must start with can have multiple segments i.e. /about/company @required */
 	permalink: string;
@@ -195,6 +206,7 @@ export interface DirectusTranslation {
 
 export interface Schema {
 	block_slider: BlockSlider[];
+	block_slider_slides: BlockSliderSlide[];
 	globals: Globals;
 	Pages: Page[];
 	page_sections: PageSection[];
@@ -208,6 +220,7 @@ export interface Schema {
 
 export enum CollectionNames {
 	block_slider = 'block_slider',
+	block_slider_slides = 'block_slider_slides',
 	globals = 'globals',
 	Pages = 'Pages',
 	page_sections = 'page_sections',

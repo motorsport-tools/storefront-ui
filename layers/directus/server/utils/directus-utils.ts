@@ -1,3 +1,5 @@
+import { type DirectusFile } from "@directus/sdk";
+
 export function getDirectusAssetURL(fileOrString: string | DirectusFile | null | undefined): string {
 	if (!fileOrString) return '';
 

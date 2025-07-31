@@ -30,6 +30,18 @@ const slideOptions: Options = computed(() => ({
     perMove: props.blockData?.perMove || 1,
 }))
 
+const { url: imageUrl } = useResponsiveBg(props.blockData?.slider_slides[0]?.background_image || '')
+
+if(imageUrl) {
+    useHead({
+        link: [{
+            rel: 'preload',
+            as: 'image',
+            href: imageUrl
+        }]
+    })
+}
+
 const hydrated = ref(false)
 
 const progressBar = () => {

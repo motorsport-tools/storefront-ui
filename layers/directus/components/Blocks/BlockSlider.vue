@@ -88,7 +88,8 @@ watch(sliderRef, (newVal) => {
             >
                 <BlocksSliderSlide 
                     v-for="(slide, index) in blockData.slider_slides"
-                    :key="`slide-${index}`"
+                    :key="index"
+                    :itemKey="index"
                     :slide="slide"
                 />
             </SplideTrack>

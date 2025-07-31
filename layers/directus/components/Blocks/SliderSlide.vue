@@ -5,14 +5,14 @@ import { useResponsiveBg } from '../../composables/useResponsiveBg';
 
 interface Props {
     slide: BlockSliderSlide
-    key?: String
+    itemKey: Number
 }
 
 const props = defineProps<Props>()
 
 const { bgStyle: backgroundStyles, url: imageUrl } = useResponsiveBg(props.slide?.background_image || '')
 
-if(props.key?.startsWith('slide-0')) {
+if(props.itemKey == 1) {
     useHead({
         link: [{
             rel: 'preload',

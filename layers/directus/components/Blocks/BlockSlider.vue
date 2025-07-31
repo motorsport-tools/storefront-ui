@@ -87,7 +87,8 @@ watch(sliderRef, (newVal) => {
                 class="overflow-y-hidden w-full h-full"
             >
                 <BlocksSliderSlide 
-                    v-for="slide in blockData.slider_slides"
+                    v-for="(slide, index) in blockData.slider_slides"
+                    :key="`slide-${index}`"
                     :slide="slide"
                 />
             </SplideTrack>

@@ -30,21 +30,6 @@ const slideOptions: Options = computed(() => ({
     perMove: props.blockData?.perMove || 1,
 }))
 
-if(props.blockData?.slider_slides[0]?.background_image) {
-    const { url: imageUrl } = useResponsiveBg(props.blockData?.slider_slides[0]?.background_image || '')
-
-    if(imageUrl) {
-        useHead({
-            link: [{
-                rel: 'preload',
-                as: 'image',
-                fetchpriority: 'high',
-                href: imageUrl
-            }]
-        })
-    }
-}
-
 const hydrated = ref(false)
 
 const progressBar = () => {
@@ -65,9 +50,7 @@ const sliderKey = ref(0)
 
 onMounted(async () => {
     await nextTick()
-    requestIdleCallback(() => {
-        hydrated.value = true
-    })
+    hydrated.value = true
 })
 
 watch(() => props.blockData, () => {
@@ -80,6 +63,9 @@ watch(sliderRef, (newVal) => {
         sliderRef.value.splide.Components.Autoplay.play()
     }
 })
+if(import.meta.server) {
+    hydrated.value = true
+}
 </script>
 <template>
         <div v-if="!hydrated" class="h-60 lg:h-[30rem] w-full flex items-center justify-center">

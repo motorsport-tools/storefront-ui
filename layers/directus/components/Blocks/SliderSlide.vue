@@ -13,7 +13,6 @@ const props = defineProps<Props>()
 const { width: imageWidth } = useResponsiveBg(props.slide?.background_image || '')
 
 
-
 </script>
 <template>
     <SplideSlide

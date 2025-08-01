@@ -38,7 +38,6 @@ const emit = defineEmits(['navigationReady'])
 onMounted(() => {
     if(headerNavRef.value) {
         props.navigationRef.value = headerNavRef.value
-        console.log('Set ref')
         emit('navigationReady', headerNavRef.value)
     }
 })

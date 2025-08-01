@@ -4,7 +4,6 @@ export function useResponsiveBg(src: string) {
 
     // Find matching width for current breakpoint
     const getWidthForBreakpoint = (bp: string) => {
-        console.log('BP', bp)
         const screens = {
             'xs': 376,
             'sm': 640,

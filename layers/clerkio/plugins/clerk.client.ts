@@ -1,6 +1,8 @@
 export default defineNuxtPlugin(() => {
+
     // Ensure this runs only in the browser
     if (typeof window === 'undefined') return
+    
   
     // Avoid loading multiple times
     if (document.getElementById('clerk-script')) return

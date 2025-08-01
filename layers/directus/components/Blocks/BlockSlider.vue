@@ -64,6 +64,7 @@ watch(sliderRef, (newVal) => {
             </template>
             <SplideTrack
                 class="overflow-y-hidden w-full h-full"
+                role=""
             >
                 <BlocksSliderSlide 
                     v-for="(slide, index) in blockData.slider_slides"

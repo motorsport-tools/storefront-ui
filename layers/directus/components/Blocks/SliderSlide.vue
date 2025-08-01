@@ -18,6 +18,7 @@ const { width: imageWidth } = useResponsiveBg(props.slide?.background_image.id |
     <SplideSlide
         :key="slide.id"
         class="text-black bg-cover bg-no-repeat bg-center w-full h-full"
+        role=""
     >   
         <NuxtImg
             class="w-full h-full object-cover absolute z-0"

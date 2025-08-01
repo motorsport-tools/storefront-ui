@@ -30,28 +30,13 @@ const slideOptions: Options = computed(() => ({
     perMove: props.blockData?.perMove || 1,
 }))
 
-const hydrated = ref(false)
-
 const progressBar = () => {
     return h('div', { class: 'splide__progress' }, [
         h('div', { class: 'splide__progress__bar' })
     ])
 }
-
-const { $viewport } = useNuxtApp() 
-
-const loaderSize = computed(() => {
-  if ($viewport.isLessThan('md')) return 'base'
-  if ($viewport.isLessThan('lg')) return 'xl'
-  return 'lg'
-})
-
+ 
 const sliderKey = ref(0)
-
-onMounted(async () => {
-    await nextTick()
-    hydrated.value = true
-})
 
 watch(() => props.blockData, () => {
   sliderKey.value++
@@ -63,16 +48,9 @@ watch(sliderRef, (newVal) => {
         sliderRef.value.splide.Components.Autoplay.play()
     }
 })
-if(import.meta.server) {
-    hydrated.value = true
-}
 </script>
 <template>
-        <div v-if="!hydrated" class="h-60 lg:h-[30rem] w-full flex items-center justify-center">
-            <SfLoaderCircular :size="loaderSize" />
-        </div>
         <Splide
-            v-else
             :key="sliderKey"
             class="h-60 lg:h-[30rem] w-full mb-[3px]"
             :has-track="false" 

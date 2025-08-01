@@ -75,6 +75,8 @@ export interface Globals {
 	social_links?: Array<{ url: string; service: 'facebook' | 'instagram' | 'linkedin' | 'x' | 'youtube' | 'tiktok' }> | null;
 	/** @description Public URL for the website */
 	url?: string | null;
+	/** @description Organization name - will show up in schema, meta and jsonLd */
+	organization?: string | null;
 }
 
 export interface Page {

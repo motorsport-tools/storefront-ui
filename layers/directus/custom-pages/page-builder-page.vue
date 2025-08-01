@@ -2,13 +2,20 @@
 import { withLeadingSlash, withoutTrailingSlash } from 'ufo'
 import type { Page } from '../shared/types/schema'
 import VisualEditor from '~/layers/directus/components/VisualEditor.vue'
+import generateSeo, { type SeoEntity } from '~/utils/buildSEOHelper'
+import { getDirectusAssetURL } from '@directus-utils/directus-utils'
 
 const route = useRoute()
+const baseUrl = useRequestURL().origin
 const { enabled, state } = useLivePreview()
 const permalink = withoutTrailingSlash(withLeadingSlash(route.path))
 const { isVisualEditingEnabled, apply } = useVisualEditing()
 
 const cacheKey = `pages-directus-${permalink}`
+
+const {
+	siteData,
+} = await useSiteGlobals()
 
 const {
 	data: page,
@@ -26,11 +33,35 @@ const {
 if (!page.value || error.value) {
 	throw createError({ statusCode: 404, statusMessage: 'Page not found - page', fatal: true });
 }
+const seo = page.value.seo
+if(seo) {
+    const robots = `${seo.no_index ? 'noindex' : 'index'},${seo.no_follow ? 'nofollow' : 'follow'}`
+    const org = computed(() => siteData.value?.globals?.organization ?? '')
+    const seoData = {
+        ...(seo.title ? { metaTitle: seo.title }: null),
+        ...(seo.meta_description ? { metaDescription: seo.meta_description }: null),
+        ...(seo.og_image ? { metaImage: getDirectusAssetURL(seo.og_image) } : null),
+        ...(seo.focus_keyphrase ? { metaKeyword: seo.focus_keyphrase } : null ),
+        robots: robots,
+        jsonLd: {
+            "@context": "https://schema.org/",
+            "@type": "WebPage",
+            "name": `${seo.title}`,
+            "description": `${seo.meta_description}`,
+            "publisher": {
+                "@type": "Organization",
+                "name": `${siteData.value?.globals.organization}`
+            },
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": `${baseUrl + route.path}`
+            }
+        }
 
-
-useHead({
-
-})
+        
+    }
+    useHead(generateSeo<SeoEntity>(seoData, 'Page'))
+}
 
 function applyVisualEditing() {
 	apply({

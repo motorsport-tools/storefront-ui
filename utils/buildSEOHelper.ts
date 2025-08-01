@@ -8,6 +8,7 @@ export interface SeoEntity {
     metaImage?: string | null
     name?: string | null
     id?: string | number | null
+    robots?: object | null
 }
 
 const validateSEO = (entity: SeoEntity, fullPath: string, entityType: string) => {
@@ -87,6 +88,11 @@ const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
                 name: "twitter:description",
                 content: entity.metaDescription || `Browsing ${entity.name} ${entityType}`,
             },
+            entity?.robots && {
+                hid: "robots",
+                name: "robots",
+                content: entity.robots
+            }
         ].filter(Boolean) as Meta[],
         script: [
             entity?.jsonLd && {

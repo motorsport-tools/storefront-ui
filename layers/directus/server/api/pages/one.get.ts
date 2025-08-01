@@ -28,6 +28,7 @@ export default defineEventHandler(async (event) => {
 						'title',
                         'id',
                         'permalink',
+                        'seo',
                         'sections',
                         'sections.item.*',
                         'sections.item.blocks.*',
@@ -51,9 +52,7 @@ export default defineEventHandler(async (event) => {
 					},
 				}),
 			),
-		)
-        console.log('Directus Response: ', pageData)
-        
+		)        
 
 		if (!pageData.length) {
 			throw createError({ statusCode: 404, statusMessage: 'Page not found' })

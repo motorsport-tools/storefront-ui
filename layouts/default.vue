@@ -4,12 +4,10 @@ defineProps({
 })
 
 const {
-	data: siteData,
-	error: siteError,
+	siteData,
+	siteError,
 	refresh,
-} = await useFetch('/api/site-data', {
-	key: 'site-data',
-})
+} = useSiteGlobals()
 
 const { isVisualEditingEnabled, apply } = useVisualEditing()
 
@@ -17,6 +15,7 @@ const navigation = ref<HTMLElement>()
 const footer = useTemplateRef('footerRef')
 
 function onNavigationReady(el: HTMLElement) {
+  if(!isVisualEditingEnabled) return
   navigation.value = el
   apply({
     elements: [navigation.value as HTMLElement, footer.value?.footerRef as HTMLElement],

@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
 		const [globals, /*headerNavigation, footerNavigation*/] = await Promise.all([
 			directusServer.request(
 				readSingleton(globalsCollection, {
-					fields: ['social_links'],
+					fields: ['organization','social_links'],
 				}),
 			),
             /*

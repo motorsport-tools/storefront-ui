@@ -25,6 +25,8 @@ const { width: imageWidth } = useResponsiveBg(props.slide?.background_image || '
             :fetchpriority="itemKey == 0? 'high': 'auto'"
             :src="`/assets/${slide?.background_image}`"
             :width="imageWidth"
+            format="webp"
+            quality="75"
             provider="directus"
         />
     </SplideSlide>

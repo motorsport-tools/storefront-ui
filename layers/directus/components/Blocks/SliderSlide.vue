@@ -10,7 +10,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { width: imageWidth } = useResponsiveBg(props.slide?.background_image || '')
+const { width: imageWidth } = useResponsiveBg(props.slide?.background_image.id || '')
 
 
 </script>
@@ -23,11 +23,12 @@ const { width: imageWidth } = useResponsiveBg(props.slide?.background_image || '
             class="w-full h-full object-cover absolute z-0"
             :loading="itemKey >= 1? 'lazy': 'eager'"
             :fetchpriority="itemKey == 0? 'high': 'auto'"
-            :src="`/assets/${slide?.background_image}`"
+            :src="`/assets/${slide?.background_image.id}`"
             :width="imageWidth"
             format="webp"
             quality="75"
             provider="directus"
+            :alt="slide?.background_image.title? slide?.background_image.title : `Promotional image slide ${itemKey}`"
         />
     </SplideSlide>
 </template>

@@ -66,7 +66,7 @@ export interface BlockSliderSlide {
 	user_updated?: string | null;
 	date_updated?: string | null;
 	slider?: BlockSlider | string | null;
-	background_image?: string | null;
+	background_image?: DirectusFile | string | null;
 }
 
 export interface Globals {
@@ -181,6 +181,36 @@ export interface DirectusField {
 	validation_message?: string | null;
 }
 
+export interface DirectusFile {
+	/** @primaryKey */
+	id: string;
+	storage?: string;
+	filename_disk?: string | null;
+	filename_download?: string;
+	title?: string | null;
+	type?: string | null;
+	folder?: string | null;
+	uploaded_by?: string | null;
+	created_on?: string;
+	modified_by?: string | null;
+	modified_on?: string;
+	charset?: string | null;
+	filesize?: number | null;
+	width?: number | null;
+	height?: number | null;
+	duration?: number | null;
+	embed?: string | null;
+	description?: string | null;
+	location?: string | null;
+	tags?: string[] | null;
+	metadata?: 'json' | null;
+	focal_point_x?: number | null;
+	focal_point_y?: number | null;
+	tus_id?: string | null;
+	tus_data?: 'json' | null;
+	uploaded_on?: string | null;
+}
+
 export interface DirectusRelation {
 	/** @primaryKey */
 	id: number;
@@ -216,6 +246,7 @@ export interface Schema {
 	Pages_sections: PagesSection[];
 	directus_collections: DirectusCollection[];
 	directus_fields: DirectusField[];
+	directus_files: DirectusFile[];
 	directus_relations: DirectusRelation[];
 	directus_translations: DirectusTranslation[];
 }
@@ -230,6 +261,7 @@ export enum CollectionNames {
 	Pages_sections = 'Pages_sections',
 	directus_collections = 'directus_collections',
 	directus_fields = 'directus_fields',
+	directus_files = 'directus_files',
 	directus_relations = 'directus_relations',
 	directus_translations = 'directus_translations'
 }

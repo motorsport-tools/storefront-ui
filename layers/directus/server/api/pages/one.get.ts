@@ -34,7 +34,8 @@ export default defineEventHandler(async (event) => {
                         'sections.item.blocks.*',
                         'sections.item.blocks.item.*',
                         'sections.item.blocks.item.slider_slides.*',
-                        //'sections.item.blocks.item.slider_slides.slides.*',
+                        'sections.item.blocks.item.slider_slides.background_image.id',
+                        'sections.item.blocks.item.slider_slides.background_image.title',
 					],
 					deep: {
 						sections: { 
@@ -44,7 +45,12 @@ export default defineEventHandler(async (event) => {
                                     item: {
                                         _filter: {
                                             _sort: ['sort'],
-                                        }
+                                        },
+                                        slider_slides: {
+                                            background_image: {
+                                                _fields: ['id', 'title']
+                                            }
+                                        },
                                     },
                                 },
                             },

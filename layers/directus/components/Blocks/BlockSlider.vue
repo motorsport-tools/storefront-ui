@@ -1,9 +1,8 @@
 <script setup lang="ts">
 // @ts-ignore
 import { Splide, SplideTrack, type Options } from '@splidejs/vue-splide'
-import { SfLoaderCircular } from '@storefront-ui/vue'
 import { type BlockSlider } from '../../shared/types/schema'
-//import '@splidejs/vue-splide/css'
+
 import '@splidejs/vue-splide/css/core'
 import { SfIconBase } from '@storefront-ui/vue'
 
@@ -64,7 +63,6 @@ watch(sliderRef, (newVal) => {
             </template>
             <SplideTrack
                 class="overflow-y-hidden w-full h-full"
-                role=""
             >
                 <BlocksSliderSlide 
                     v-for="(slide, index) in blockData.slider_slides"

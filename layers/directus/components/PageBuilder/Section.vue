@@ -20,6 +20,7 @@ const styleObject = computed(() => ({
     backgroundSize: props.sectionData?.background_size,
     alignItems: props.sectionData?.align_items,
     justifyContent: props.sectionData?.justify_content,
+    ...(props.sectionData.full_width? {} : { paddingTop: '2rem', paddingBottom: '2rem'}),
     ...(backgroundImage.value ? { backgroundImage: `url('${backgroundImage.value}')` } : {})
         
 }))
@@ -27,7 +28,7 @@ const styleObject = computed(() => ({
 </script>
 <template>
     <section 
-        class="flex"
+        class="flex flex-col"
         :class="sectionData?.full_width ? 'w-full' : 'narrow-container'"
         :style="styleObject"
     >

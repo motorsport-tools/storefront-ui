@@ -12,6 +12,19 @@ export interface ExtensionSeoMetadata {
     no_follow?: boolean;
 }
 
+export interface BlockProduct {
+	/** @primaryKey */
+	id: number;
+	sort?: number | null;
+	user_created?: string | null;
+	date_created?: string | null;
+	user_updated?: string | null;
+	date_updated?: string | null;
+	title?: string | null;
+	/** @description The number of products to load (default 10) @required */
+	number_products: number;
+}
+
 export interface BlockSlider {
 	/** @primaryKey */
 	id: number;
@@ -121,7 +134,7 @@ export interface PageSectionsBlock {
 	/** @primaryKey */
 	id: number;
 	page_sections_id?: PageSection | string | null;
-	item?: BlockSlider | string | null;
+	item?: BlockSlider | BlockProduct | string | null;
 	collection?: string | null;
 }
 
@@ -237,6 +250,7 @@ export interface DirectusTranslation {
 }
 
 export interface Schema {
+	block_products: BlockProduct[];
 	block_slider: BlockSlider[];
 	block_slider_slides: BlockSliderSlide[];
 	globals: Globals;
@@ -252,6 +266,7 @@ export interface Schema {
 }
 
 export enum CollectionNames {
+	block_products = 'block_products',
 	block_slider = 'block_slider',
 	block_slider_slides = 'block_slider_slides',
 	globals = 'globals',

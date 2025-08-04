@@ -3,8 +3,7 @@ import { SfScrollable } from '@storefront-ui/vue';
 import type { Product } from '~/graphql';
 
 defineProps({
-  heading: String,
-  text: String,
+  heading: String || null || undefined
 });
 
 const { loadProductTemplateList, loading, productTemplateList } = useProductTemplateList('');
@@ -15,12 +14,9 @@ await loadProductTemplateList({ pageSize: numOfProducts });
 </script>
 
 <template>
-  <h2 v-if="heading" class="text-center mb-6 font-bold typography-headline-3 md:typography-headline-2">
+  <h2 v-if="heading" class="text-center mb-6 font-bold typography-headline-3 md:typography-headline-2 block">
     {{ heading }}
   </h2>
-  <p class="my-4 typography-text-lg">
-    {{ text }}
-  </p>
   <div>
   <SfScrollable
     v-if="productTemplateList.length > 0"

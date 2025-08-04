@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { resolve } from 'pathe'
+import { execSync } from 'child_process';
 export default defineNuxtConfig({
     runtimeConfig: {
 		public: {
@@ -30,4 +31,9 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+	hooks: {
+		'build:before'() {
+			execSync('npx directus-sdk-typegen -u '+process.env.DIRECTUS_URL+' -t '+process.env.DIRECTUS_SERVER_TOKEN+' -o ./layers/directus/shared/types/schema.ts', { stdio: 'inherit' });
+		},
+	}
 });

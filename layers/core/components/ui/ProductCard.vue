@@ -73,9 +73,7 @@ const handleWishlistRemoveItem = async (firstVariant: CustomProductWithStockFrom
 <template>
   <div
     class="relative border border-neutral-200 rounded-md hover:shadow-lg min-h-[330px] flex flex-col justify-around"
-  >
-    <p>Product card</p>
-    
+  > 
     <div class="relative">
       <NuxtLink :to="slug">
         <NuxtImg

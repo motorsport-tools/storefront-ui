@@ -32,6 +32,7 @@ export default `
   price
   name
   description
+  brand
   image
   imageFilename
   mediaGallery{

@@ -109,6 +109,7 @@ onMounted(() => {
     </main>
     <ClientOnly>
         <VisualEditor
+            v-if="isVisualEditingEnabled"
             :page="page"
         />
     </ClientOnly>

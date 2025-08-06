@@ -4,8 +4,6 @@ import {
   SfCounter,
   SfButton,
   SfIconShoppingCart,
-  SfIconFavorite,
-  SfIconFavoriteFilled,
 } from '@storefront-ui/vue'
 import type { CustomProductWithStockFromRedis, Product } from '~/graphql'
 
@@ -47,6 +45,10 @@ defineProps({
     required: false,
     default: null,
   },
+  brand: {
+    type: String,
+    default: null,
+  },
   firstVariant: {
     type: Object as PropType<CustomProductWithStockFromRedis>,
     required: false,
@@ -68,20 +70,25 @@ const handleWishlistAddItem = async (firstVariant: CustomProductWithStockFromRed
 const handleWishlistRemoveItem = async (firstVariant: CustomProductWithStockFromRedis) => {
   await wishlistRemoveItem(firstVariant.id)
 }
+
+const handleWishListClick = async (firstVariant: CustomProductWithStockFromRedis) => {
+  isInWishlist(firstVariant?.id)
+          ? handleWishlistRemoveItem(firstVariant as CustomProductWithStockFromRedis)
+          : handleWishlistAddItem(firstVariant as CustomProductWithStockFromRedis)
+}
 </script>
 
 <template>
   <div
-    class="relative border border-neutral-200 rounded-md hover:shadow-lg min-h-[330px] flex flex-col justify-around"
+    class="product_card relative hover:shadow-lg min-h-[330px] flex flex-col justify-around min-w-[190px] max-w-[250px] m-auto mb-6"
   > 
     <div class="relative">
-      <NuxtLink :to="slug">
+      <NuxtLink :to="slug" class="product_card__img" :title="name">
         <NuxtImg
           :src="imageUrl"
           :alt="imageAlt"
           :width="370"
           :height="370"
-          class="rounded-md"
           :loading="loading"
         />
       </NuxtLink>
@@ -92,23 +99,21 @@ const handleWishlistRemoveItem = async (firstVariant: CustomProductWithStockFrom
         size="sm"
         square
         :class="[
-          'absolute bottom-0 right-0 mr-2 mb-2 bg-white border border-neutral-200 !rounded-full',
+          'absolute top-0 right-0 mr-2 mt-2 bg-white border border-neutral-200 !rounded-full',
           { '!bg-green-200': isInWishlist(firstVariant?.id) },
         ]"
         aria-label="Add to wishlist"
-        @click="
-          isInWishlist(firstVariant?.id)
-          ? handleWishlistRemoveItem(firstVariant as CustomProductWithStockFromRedis)
-          : handleWishlistAddItem(firstVariant as CustomProductWithStockFromRedis)
-        "
+        @click="handleWishListClick(firstVariant as CustomProductWithStockFromRedis)"
       >
-        <SfIconFavoriteFilled
+        <Icon 
           v-if="isInWishlist(firstVariant?.id)"
-          size="sm"
+          name="ic:outline-star"
+          size="24px"
         />
-        <SfIconFavorite
+        <Icon 
           v-else
-          size="sm"
+          name="ic:outline-star-border"
+          size="24px"
         />
       </SfButton>
     </div>
@@ -119,8 +124,10 @@ const handleWishlistRemoveItem = async (firstVariant: CustomProductWithStockFrom
         :to="slug"
         variant="secondary"
         class="no-underline self-start text-left"
+        :title="name"
       >
-        {{ name }}
+        <span class="product_card__brand">{{ brand }}</span>
+        <span class="product_card__title block pb-1 border-b border-neutral-200 text-neutral-700">{{ name }}</span>
       </NuxtLink>
       <div class="flex items-center mb-2">
         <SfRating
@@ -135,12 +142,6 @@ const handleWishlistRemoveItem = async (firstVariant: CustomProductWithStockFrom
           26
         </SfCounter>
       </div>
-      <p
-        v-if="description"
-        class="block font-normal leading-5 typography-text-sm text-neutral-700"
-      >
-        {{ description }}
-      </p>
       <div class="flex justify-between">
         <div class="block">
           <span class="font-bold typography-text-sm">{{
@@ -168,3 +169,28 @@ const handleWishlistRemoveItem = async (firstVariant: CustomProductWithStockFrom
     
   </div>
 </template>
+<style>
+.product_card__img::after {
+  content:'';
+  position: absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  background-color:rgba(19, 6, 6, 0.04);
+}
+.product_card__brand {
+  display: block;
+  font-weight: 600;
+  height: 1.25rem;
+}
+.product_card__title {
+  text-wrap: balance;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  height: calc(1.25rem * 2 + 0.25rem);
+}
+</style>

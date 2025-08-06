@@ -950,6 +950,7 @@ export type Product = {
   /** Specific to Product Template */
   attributeValues: Maybe<Array<AttributeValue>>;
   barcode: Maybe<Scalars['String']['output']>;
+  brand: Maybe<Scalars['String']['output']>;
   breadcrumb: Maybe<Scalars['GenericScalar']['output']>;
   categories: Maybe<Array<Category>>;
   /** Specific to Product Template */

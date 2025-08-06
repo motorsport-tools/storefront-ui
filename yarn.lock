@@ -12391,6 +12391,11 @@ vue@^3.4, vue@^3.4.27, vue@^3.5.13, vue@^3.5.14, vue@^3.5.16:
     "@vue/server-renderer" "3.5.17"
     "@vue/shared" "3.5.17"
 
+vueperslides@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/vueperslides/-/vueperslides-3.6.0.tgz#96d9a2e440a3fb9c496f0e177d953f681a546026"
+  integrity sha512-ip2/Mvzhs9A21NnPQWsnx2JVoa0v5ecRNa3Kobyp6VTdxTH+xJRdT9bjVV3EVoK/YUyhYMpPJLExhB9udd91JA==
+
 wcwidth@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/wcwidth/-/wcwidth-1.0.1.tgz#f0b0dcf915bc5ff1528afadb2c0e17b532da2fe8"

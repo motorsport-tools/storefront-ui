@@ -2,7 +2,6 @@
 import { VueperSlides, VueperSlide } from 'vueperslides'
 import 'vueperslides/dist/vueperslides.css'
 
-import { Splide, SplideSlide, type Options } from '@splidejs/vue-splide'
 import type { CustomProductWithStockFromRedis, Product } from '~/graphql'
 
 const props = defineProps({
@@ -101,6 +100,7 @@ watch(loading, (val) => {
       {{ heading }}
     </h2>
     <VueperSlides
+      ref="sliderRef"
       v-bind="options"
       class="no-shadow w-full product-slider"
     >
@@ -187,7 +187,7 @@ watch(loading, (val) => {
   right: -1rem;
 }
 
-// No JS
+/** No JS */
 .product-slider.vueperslides--no-animation {
 
 }

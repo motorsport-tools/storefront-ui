@@ -1,9 +1,9 @@
 <script setup lang="ts">
 // @ts-ignore
-import { Splide, SplideTrack, type Options } from '@splidejs/vue-splide'
+import { VueperSlides, VueperSlide } from 'vueperslides'
+import 'vueperslides/dist/vueperslides.css'
 import { type BlockSlider } from '../../shared/types/schema'
 
-import '@splidejs/vue-splide/css/core'
 import { SfIconBase } from '@storefront-ui/vue'
 
 interface Props {
@@ -12,70 +12,67 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const sliderRef = ref()
-const slideOptions: Options = computed(() => ({
-    type: props.blockData?.type || 'loop',
-    rewind: props.blockData?.rewind,
-    lazyLoad: props.blockData?.lazyLoad,
-    autoplay: props.blockData?.autoplay,
-    speed: props.blockData?.speed || 400,
-    rewindSpeed: props.blockData?.rewindSpeed || 400,
-    wheel: props.blockData?.wheel,
-    keyboard: props.blockData?.keyboard,
-    pauseOnHover: props.blockData?.pauseOnHover,
-    pauseOnFocus: props.blockData?.pauseOnFocus,
-    start: props.blockData?.start || 0,
-    perPage: props.blockData?.perPage || 1,
-    perMove: props.blockData?.perMove || 1,
-}))
+console.log(props.blockData);
 
-const progressBar = () => {
-    return h('div', { class: 'splide__progress' }, [
-        h('div', { class: 'splide__progress__bar' })
-    ])
+const sliderRef = ref()
+
+const options = {
+    arrows: true,
+    draggingDistance: 70,
+    infinite: props.blockData?.rewind ? false : true,
+    lazy: props.blockData?.lazyLoad || false,
+    autoplay: props.blockData?.autoplay || false,
+    progress: props.blockData?.ShowProgress || true,
+    pauseOnHover: props.blockData?.pauseOnHover || false,
+    pauseOnTouch: props.blockData?.pauseOnHover || false,
+    initSlide: props.blockData?.start || 1,
+    transitionSpeed: props.blockData?.speed || 600,
+    visibleSlides: props.blockData?.perPage || 1,
+    slideMultiple: props.blockData?.perMove > 1 ? true : false,
+    gap: 0,
+    slideRatio: null,
+    bullets: true,
 }
- 
+
+console.log('Slider Options: ',options)
+
 const sliderKey = ref(0)
 
 watch(() => props.blockData, () => {
   sliderKey.value++
 })
-
-watch(sliderRef, (newVal) => {
-    if(newVal) {
-        if(!slideOptions.value.autoplay) return
-        sliderRef.value.splide.Components.Autoplay.play()
-    }
-})
 </script>
 <template>
-        <Splide
+        <VueperSlides
+            v-bind="options"
             :key="sliderKey"
-            class="h-60 lg:h-[30rem] w-full mb-[3px]"
-            :has-track="false" 
-            :options="slideOptions"
-            :aria-label="blockData?.ariaLabel"
             ref="sliderRef"
+            class="no-shadow h-60 lg:h-[30rem] w-full"
+            aria-roledescription="carousel"
+            :aria-label="blockData?.ariaLabel"
             :style="{'--slider-progress-color': blockData?.ProgressColor || '#0097d6'}"
         >
-            <template v-if="blockData?.ShowProgress && blockData?.ProgressLocation === 'top'">
-                <component :is="progressBar" />
+            <template #arrow-right>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
             </template>
-            <SplideTrack
-                class="overflow-y-hidden w-full h-full"
+            <template #arrow-left>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
+            </template>
+            <VueperSlide
+                v-for="(slide, slideIndex) in blockData.slider_slides"
+                :key="slideIndex"
+                class="text-black bg-cover bg-no-repeat bg-center w-full h-60 lg:h-[30rem]"
+                aria-roledescription="slide"
             >
-                <BlocksSliderSlide 
-                    v-for="(slide, index) in blockData.slider_slides"
-                    :key="index"
-                    :itemKey="index"
-                    :slide="slide"
-                />
-            </SplideTrack>
-
-            <template v-if="blockData?.ShowProgress && blockData?.ProgressLocation === 'bottom'">
-                <component :is="progressBar" />
-            </template>
-
+                <template #content>
+                    <BlocksSliderSlide
+                        :slide="slide"
+                        :itemKey="slideIndex"
+                    />
+                </template>
+            </VueperSlide>
+        </VueperSlides>
+            
             <button
                 class="splide__toggle 
                 border-transparent
@@ -98,10 +95,79 @@ watch(sliderRef, (newVal) => {
                 </SfIconBase>
             </button>
 
-        </Splide>
+ 
 </template>
 
 <style>
+.vueperslides__progress {
+    background: rgba(0, 0, 0, 0.25);
+    color:var(--slider-progress-color);
+    height: 3px;
+}
+
+.vueperslides__bullet .default {
+    background: #222222;
+    border: 0;
+    display: inline-block;
+    height: 8px;
+    margin: 3px;
+    padding: 0;
+    position: relative;
+    transition: transform .2s linear;
+    width: 20px;
+}
+
+.vueperslides__bullet--active .default {
+    background: hsla(0,0%,98%,.75);
+    transform: scale(1.1);
+    z-index: 1;
+}
+
+.vueperslides__bullet span {
+  display: none;
+  visibility: hidden;
+}
+
+.vueperslides__track {
+  position: relative !important;
+}
+
+.vueperslides__arrow {
+  align-items: center;
+  background: hsla(0, 0%, 85%, 0.75);
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  height: 2.5em;
+  justify-content: center;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.5em;
+  z-index: 1;
+  transition: background-color ease .3s;
+}
+.vueperslides__arrow svg {
+  fill: #000;
+  height: 1.2em;
+  width: 1.2em;
+  padding:0;
+}
+.vueperslides__arrow--prev svg {
+  transform: scaleX(-1);
+}
+.vueperslides__arrow:hover {
+  background-color:hsla(0, 0%, 85%, 1);
+}
+.vueperslides__arrow--prev {
+  left: 1rem;
+}
+.vueperslides__arrow--next {
+  right: 1rem;
+}
+
 .splide__toggle {
     position: absolute;
     bottom: 0;

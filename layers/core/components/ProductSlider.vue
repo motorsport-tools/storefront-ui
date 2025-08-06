@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// @ts-ignore
 import { VueperSlides, VueperSlide } from 'vueperslides'
 import 'vueperslides/dist/vueperslides.css'
 
@@ -15,51 +16,13 @@ const props = defineProps({
 const { getRegularPrice, getSpecialPrice } = useProductAttributes()
 
 const sliderRef = ref()
-const slideOptions: Options = computed(() => ({
-    type: 'loop',
-    rewind: true,
-    lazyLoad: 'nearby',
-    autoplay: false,
-    speed: 400,
-    rewindSpeed: 400,
-    pagination: false,
-    arrows: true,
-    wheel: false,
-    keyboard: true,
-    pauseOnHover: true,
-    pauseOnFocus: true,
-    start: 0,
-    perPage: 1,
-    perMove: 1,
-    snap: true,
-    mediaQuery: 'min',
-    breakpoints: {
-      0: {
-        perPage:1,
-      },
-      430: {
-        perPage: 2,
-      },
-      640: {
-        perPage: 2,
-      },
-      768: {
-        perPage: 3,
-      },
-      1024: {
-        perPage: 5,
-      }
-    }
-
-}))
-
 const options = {
   arrows: true,
   arrowsOutside: false,
   draggingDistance: 70,
   parallax: false,
   lazy: true,
-  autoPlaying: false,
+  autoplay: false,
   internalAutoPlaying: false,
   fractions: false,
   gap: 10,

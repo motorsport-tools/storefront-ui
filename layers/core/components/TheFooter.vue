@@ -13,6 +13,7 @@
         >
           {{ label }}
         </div>
+        <menu>
         <SfListItem
           v-for="{ subcategoryLabel, link } in subcategories"
           :key="subcategoryLabel"
@@ -26,6 +27,7 @@
             {{ subcategoryLabel }}
           </SfLink>
         </SfListItem>
+        </menu>
       </div>
     </div>
     <hr>

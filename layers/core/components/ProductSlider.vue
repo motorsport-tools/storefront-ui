@@ -103,6 +103,7 @@ watch(loading, (val) => {
       ref="sliderRef"
       v-bind="options"
       class="no-shadow w-full product-slider"
+      aria-roledescription="carousel"
     >
       <template #arrow-right>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
@@ -113,6 +114,7 @@ watch(loading, (val) => {
       <VueperSlide
         v-for="(productTemplate, index) in productTemplateList"
         :key="index"
+        aria-roledescription="slide"
       >
         <template #content>
           <UiProductCard
@@ -188,9 +190,6 @@ watch(loading, (val) => {
 }
 
 /** No JS */
-.product-slider.vueperslides--no-animation {
-
-}
 .product-slider.vueperslides--no-animation .vueperslides__track-inner {
   overflow-x: hidden;
 }

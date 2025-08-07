@@ -75,7 +75,7 @@ defineExpose({
             ref="drawerRef"
             v-model="isOpen"
             placement="left"
-            class="lg:hidden right-[50px] max-w-[376px] bg-white z-10 h-full"
+            class="lg:hidden right-[50px] max-w-[376px] bg-white z-100 h-full"
         >
             <nav class="text-white h-full">
                 <div class="flex items-center justify-between p-4 border-b border-b-neutral-200 border-b-solid bg-neutral-900 relative">

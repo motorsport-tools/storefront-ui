@@ -17,7 +17,7 @@ provide(
   categoriesForMegaMenu
 )
 
-await loadCategoriesForMegaMenu({ filter: { parent: true }, pageSize: 5 })
+await loadCategoriesForMegaMenu({ filter: { parent: true }, pageSize: 100 })
 
 const headerRef = ref(null)
 const headerNavRef = ref<HTMLElement>()

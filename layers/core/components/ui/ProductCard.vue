@@ -80,7 +80,7 @@ const handleWishListClick = async (firstVariant: CustomProductWithStockFromRedis
 
 <template>
   <div
-    class="product_card relative hover:shadow-lg min-h-[330px] flex flex-col justify-around min-w-[190px] max-w-[250px] m-auto mb-6"
+    class="product_card relative hover:shadow-lg min-h-[330px] flex flex-col justify-around min-w-[190px] max-w-[250px] mb-6"
   > 
     <div class="relative">
       <NuxtLink :to="slug" class="product_card__img" :title="name">
@@ -132,14 +132,14 @@ const handleWishListClick = async (firstVariant: CustomProductWithStockFromRedis
       <div class="flex items-center mb-2">
         <SfRating
           size="xs"
-          :value="4"
+          :value="rating"
           :max="5"
         />
         <SfCounter
           class="ml-1"
           size="xs"
         >
-          26
+          {{ ratingCount }}
         </SfCounter>
       </div>
       <div class="flex justify-between">

@@ -122,6 +122,7 @@ export default defineNuxtConfig({
         md: 768,
         sm: 640,
         xs: 376,
+        xxs:0,
       },
     },
   },

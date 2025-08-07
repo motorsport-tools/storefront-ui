@@ -2,6 +2,9 @@
 import { resolve } from 'pathe'
 import { execSync } from 'child_process';
 export default defineNuxtConfig({
+	modules: [
+    	'vue3-carousel-nuxt'
+  	],
     runtimeConfig: {
 		public: {
 			siteUrl: process.env.NUXT_PUBLIC_SITE_URL as string,

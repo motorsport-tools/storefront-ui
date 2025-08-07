@@ -1,7 +1,6 @@
 <script setup lang="ts">
-// @ts-ignore
-import { VueperSlides, VueperSlide } from 'vueperslides'
-import 'vueperslides/dist/vueperslides.css'
+import 'vue3-carousel/carousel.css'
+import { Carousel, Slide, Navigation } from 'vue3-carousel'
 
 import type { CustomProductWithStockFromRedis, Product } from '~/graphql'
 
@@ -16,43 +15,36 @@ const props = defineProps({
 const { getRegularPrice, getSpecialPrice } = useProductAttributes()
 
 const sliderRef = ref()
-const options = {
-  arrows: true,
-  arrowsOutside: false,
-  draggingDistance: 70,
-  parallax: false,
-  lazy: true,
-  autoplay: false,
-  internalAutoPlaying: false,
-  fractions: false,
+const sliderOptions = {
+  ignoreAnimations: true,
+  itemsToScroll: 1,
+  clamp: true,
   gap: 10,
-  slideRatio: null,
-  visibleSlides: 1,
-  bullets: false,
+  slideEffect: 'slide',
+  touchDrag: true,
+  transition: 300,
+  wrapAround: true,
   breakpoints: {
+    0: {
+      itemsToShow: 1,
+      snapAlign: 'center',
+    },
     430: {
-      visibleSlides: 1,
+      itemsToShow: 2,
+      snapAlign: 'start',
     },
     768: {
-      visibleSlides: 2,
+      itemsToShow: 3,
+      snapAlign: 'start',
     },
     1024: {
-      visibleSlides: 3,
+      itemsToShow: 5,
+      snapAlign: 'start',
     },
-    99999: {
-      visibleSlides: 5,
-    }
-  }
+  },
 }
 
-
 const { loading } = useProductTemplateList(`product-slider--block-${props.blockId}`)
-
-console.log(loading.value)
-
-watch(loading, (val) => {
-  console.log('Loading Changed: ', val)
-})
 </script>
 
 <template>
@@ -62,25 +54,18 @@ watch(loading, (val) => {
     >
       {{ heading }}
     </h2>
-    <VueperSlides
+    <Carousel
+      v-bind="sliderOptions"
       ref="sliderRef"
-      v-bind="options"
-      class="no-shadow w-full product-slider"
+      class=""
       aria-roledescription="carousel"
     >
-      <template #arrow-right>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
-      </template>
-      <template #arrow-left>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
-      </template>
-      <VueperSlide
+      <Slide
         v-for="(productTemplate, index) in productTemplateList"
         :key="index"
         aria-roledescription="slide"
       >
-        <template #content>
-          <UiProductCard
+        <UiProductCard
             v-if="!loading"
             :key="productTemplate?.id || index"
             :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product) || '' "
@@ -101,62 +86,58 @@ watch(loading, (val) => {
             :rating-count="productTemplate.ratingCount || 0"
             :rating="productTemplate.rating || 0"
             :first-variant="productTemplate.firstVariant as CustomProductWithStockFromRedis"
-          >
-          </UiProductCard>
+          />
           <UiProductCardSkeleton
             v-else
           />
-        </template>
-      </VueperSlide>
-    </VueperSlides>
+      </Slide>
+
+      <template #addons>
+        <Navigation>
+          <template #prev>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
+          </template>
+          <template #next>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
+          </template>
+        </Navigation>
+      </template>
+    </Carousel>
 </template>
 <style>
-.product-slider .vueperslides__track {
-  height: auto !important;
-  position: relative !important;
+.carousel {
+  width: 100%;
+  overflow: hidden;
 }
 
-.product-slider .vueperslides__arrow {
-  align-items: center;
+.carousel__prev,
+.carousel__next {
   background: hsla(0, 0%, 85%, 0.75);
-  border: 0;
   border-radius: 4px;
-  cursor: pointer;
   display: flex;
-  height: 2.5em;
+  align-items: center;
   justify-content: center;
-  padding: 0;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  height: 2.5em;
   width: 2.5em;
   z-index: 1;
-  transition: background-color ease .3s;
+  font-size: 16px;
 }
-.product-slider .vueperslides__arrow svg {
+
+.carousel__prev svg,
+.carousel__next svg {
   fill: #000;
   height: 1.2em;
   width: 1.2em;
   padding:0;
 }
-.product-slider .vueperslides__arrow--prev svg {
+
+.carousel__prev svg {
   transform: scaleX(-1);
 }
-.product-slider .vueperslides__arrow:hover {
-  background-color:hsla(0, 0%, 85%, 1);
-}
-.product-slider .vueperslides__arrow--prev {
-  left: -1rem;
-}
-.product-slider .vueperslides__arrow--next {
-  right: -1rem;
-}
 
-/** No JS */
-.product-slider.vueperslides--no-animation .vueperslides__track-inner {
-  overflow-x: hidden;
-}
-.product-slider.vueperslides--no-animation .vueperslide {
-  width: auto;
+.carousel__prev:hover,
+.carousel__next:hover {
+  background-color:hsla(0, 0%, 85%, 1);
+  transition: background-color ease .3s;
 }
 </style>

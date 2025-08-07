@@ -35,8 +35,8 @@ export interface BlockSlider {
 	date_updated?: string | null;
 	/** @required */
 	title: string;
-	/** @description Loop - a regular carousel, Slide - with slide transition, Fade - fade transition @required */
-	type: 'loop' | 'slide' | 'fade';
+	/** @description Slide - with slide transition, Fade - fade transition @required */
+	type: 'slide' | 'fade';
 	/** @required */
 	lazyLoad: boolean;
 	ariaLabel?: string | null;
@@ -46,27 +46,16 @@ export interface BlockSlider {
 	rewind: boolean;
 	/** @description Transition speed in milliseconds. If 0 will immediately jump to the next slide @required */
 	speed: number;
-	/** @description Rewind transition speed in milliseconds.  @required */
-	rewindSpeed: number;
 	/** @description Enables navigation with the mouse wheel @required */
 	wheel: boolean;
-	/** @description Enables keyboard navigation  @required */
-	keyboard: boolean;
 	/** @description Pause the slider if mouse hover @required */
 	pauseOnHover: boolean;
-	/** @description Pause the slider on slide focus @required */
-	pauseOnFocus: boolean;
-	/** @description Show a progress bar on the slider @required */
-	ShowProgress: boolean;
-	/** @description Progress bar on the top or bottom @required */
-	ProgressLocation: 'top' | 'bottom';
-	/** @description Which slide to start on - default 0 @required */
-	start: number;
 	/** @description How many slides to show per page @required */
 	perPage: number;
 	/** @description How many slides to move at once @required */
 	perMove: number;
-	ProgressColor?: string | null;
+	/** @description How long to wait on a slide, before swapping to the next in ms - 1000 ms = 1 second @required */
+	autoplay_delay: number;
 	slider_slides?: BlockSliderSlide[] | string[];
 }
 

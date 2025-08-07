@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// @ts-ignore
-import { VueperSlide } from 'vueperslides'
 import type { BlockSliderSlide } from '../../shared/types/schema';
 import { useResponsiveBg } from '../../composables/useResponsiveBg';
 

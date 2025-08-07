@@ -55,6 +55,7 @@
     "vue": "^3.4.27",
     "vue-router": "^4.3.2",
     "vue-toastification": "next",
+    "vue3-carousel-nuxt": "^1.1.6",
     "vueperslides": "^3.6.0"
   },
   "devDependencies": {

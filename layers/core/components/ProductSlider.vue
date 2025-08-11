@@ -15,6 +15,7 @@ const props = defineProps({
 const { getRegularPrice, getSpecialPrice } = useProductAttributes()
 
 const sliderRef = ref()
+const wrapperRef = ref()
 const sliderOptions = {
   ignoreAnimations: true,
   itemsToScroll: 1,
@@ -45,6 +46,13 @@ const sliderOptions = {
 }
 
 const { loading } = useProductTemplateList(`product-slider--block-${props.blockId}`)
+
+const SliderInit = async () => {
+  await nextTick()
+  if(wrapperRef.value) {
+    wrapperRef.value.classList?.remove('loading')
+  }
+}
 </script>
 
 <template>
@@ -54,60 +62,81 @@ const { loading } = useProductTemplateList(`product-slider--block-${props.blockI
     >
       {{ heading }}
     </h2>
-    <Carousel
-      v-bind="sliderOptions"
-      ref="sliderRef"
-      class=""
-      aria-roledescription="carousel"
-    >
-      <Slide
-        v-for="(productTemplate, index) in productTemplateList"
-        :key="index"
-        aria-roledescription="slide"
+    <div ref="wrapperRef" class="loading w-full h-auto">
+      <Carousel
+        v-bind="sliderOptions"
+        ref="sliderRef"
+        class="product_slider"
+        aria-roledescription="carousel"
+        @init="SliderInit"
       >
-        <UiProductCard
-            v-if="!loading"
-            :key="productTemplate?.id || index"
-            :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product) || '' "
-            :name="productTemplate?.name || ''"
-            :image-url="
-              $getImage(
-                String(productTemplate.image),
-                370,
-                370,
-                String(productTemplate.imageFilename),
-              )
-            "
-            :brand="productTemplate?.brand"
-            :image-alt="productTemplate?.name || ''"
-            :regular-price="getRegularPrice(productTemplate.firstVariant as Product)"
-            :special-price="getSpecialPrice(productTemplate.firstVariant as Product)"
-            :is-in-wishlist="productTemplate?.isInWishlist || false"
-            :rating-count="productTemplate.ratingCount || 0"
-            :rating="productTemplate.rating || 0"
-            :first-variant="productTemplate.firstVariant as CustomProductWithStockFromRedis"
-          />
-          <UiProductCardSkeleton
-            v-else
-          />
-      </Slide>
+        <Slide
+          v-for="(productTemplate, index) in productTemplateList"
+          :key="index"
+          aria-roledescription="slide"
+        >
+          <UiProductCard
+              v-if="!loading"
+              :key="productTemplate?.id || index"
+              :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product) || '' "
+              :name="productTemplate?.name || ''"
+              :image-url="
+                $getImage(
+                  String(productTemplate.image),
+                  370,
+                  370,
+                  String(productTemplate.imageFilename),
+                )
+              "
+              :brand="productTemplate?.brand"
+              :image-alt="productTemplate?.name || ''"
+              :regular-price="getRegularPrice(productTemplate.firstVariant as Product)"
+              :special-price="getSpecialPrice(productTemplate.firstVariant as Product)"
+              :is-in-wishlist="productTemplate?.isInWishlist || false"
+              :rating-count="productTemplate.ratingCount || 0"
+              :rating="productTemplate.rating || 0"
+              :first-variant="productTemplate.firstVariant as CustomProductWithStockFromRedis"
+            />
+            <UiProductCardSkeleton
+              v-else
+            />
+        </Slide>
 
-      <template #addons>
-        <Navigation>
-          <template #prev>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
-          </template>
-          <template #next>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
-          </template>
-        </Navigation>
-      </template>
-    </Carousel>
+        <template #addons>
+          <Navigation>
+            <template #prev>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
+            </template>
+            <template #next>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
+            </template>
+          </Navigation>
+        </template>
+      </Carousel>
+    </div>
 </template>
 <style>
+.loading .carousel:not(.is-vertical) .carousel__slide--clone:first-child {
+    --vc-cloned-offset: -100%;
+}
 .carousel {
   width: 100%;
   overflow: hidden;
+}
+@media (min-width: 430px) {
+  .loading .product_slider .carousel__slide {
+    width: calc(50% - 5px) !important;
+  }
+}
+@media (min-width: 768px) {
+  .loading .product_slider .carousel__slide {
+    width: calc(33% - 5px) !important;
+  }
+}
+@media (min-width: 1024px) {
+  .loading .product_slider .carousel__slide {
+    width: calc(20% - 5px) !important;
+  }
 }
 
 .carousel__prev,
@@ -121,6 +150,14 @@ const { loading } = useProductTemplateList(`product-slider--block-${props.blockI
   width: 2.5em;
   z-index: 1;
   font-size: 16px;
+}
+
+.product_slider .carousel__prev {
+    left: 0em;
+}
+
+.product_slider .carousel__next {
+    right: 0em;
 }
 
 .carousel__prev svg,

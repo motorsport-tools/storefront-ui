@@ -12,6 +12,7 @@ const props = defineProps<Props>()
 const isAutoplayActive = ref(props.blockData?.autoplay);
 
 const sliderRef = ref()
+const wrapperRef = ref()
 const sliderOptions:CarouselConfig = {
     ignoreAnimations: true,
     itemsToScroll: props.blockData?.perMove || 1,
@@ -40,16 +41,26 @@ watch(() => props.blockData, () => {
 const onClickHandler = () => {
     isAutoplayActive.value = !isAutoplayActive.value
 }
+
+const SliderInit = async () => {
+  await nextTick()
+  if(wrapperRef.value) {
+    wrapperRef.value.classList?.remove('loading')
+  }
+}
 </script>
 <template>
+    <div ref="wrapperRef" class="loading w-full h-auto">
         <Carousel
             v-bind="sliderOptions"
             :key="sliderKey"
             ref="sliderRef"
             class="block_slider h-60 lg:h-[30rem] w-full"
+            :class="['loading']"
             aria-roledescription="carousel"
             :aria-label="blockData?.ariaLabel"
             :autoplay="isAutoplayActive ? props.blockData?.autoplay_delay :0"
+            @init="SliderInit"
         >
             <Slide
                 v-for="(slide, slideIndex) in blockData.slider_slides"
@@ -78,7 +89,7 @@ const onClickHandler = () => {
                 />
             </template>
         </Carousel>
-            
+    </div>        
 
  
 </template>
@@ -127,11 +138,9 @@ const onClickHandler = () => {
     transform: translateX(0px);
 }
 
-.carousel:not(.is-vertical) .carousel__slide--clone:first-child {
-    margin-inline-start: -100%;
+.loading .carousel:not(.is-vertical) .carousel__slide--clone:first-child {
+    --vc-cloned-offset: -100%;
 }
-
-
 
 .vueperslides__progress {
     background: rgba(0, 0, 0, 0.25);

@@ -14,6 +14,51 @@ export default `
             id
             name
             slug
+            childs {
+              id
+              name
+              slug
+              childs {
+                id
+                name
+                slug
+                childs {
+                  id
+                  name
+                  slug
+                  childs {
+                    id
+                    name
+                    slug
+                    childs {
+                      id
+                      name
+                      slug
+                      childs {
+                        id
+                        name
+                        slug
+                        childs {
+                          id
+                          name
+                          slug
+                          childs {
+                            id
+                            name
+                            slug
+                            childs {
+                              id
+                              name
+                              slug
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
         parent {

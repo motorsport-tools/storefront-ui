@@ -35,7 +35,22 @@ const props = defineProps<{
           </li>
         </ul>
       </div>
-
+      <div v-if="results.results.categories?.estimated_total_count > 0">
+        <h3 class="px-4 pt-2 text-s text-black font-bold uppercase">Categories</h3>
+        <ul>
+          <li
+            v-for="p in results.results.categories?.result"
+            :key="p.id"
+            class="flex gap-2 text-xs"
+          >
+            <NuxtLink :to="p.url"
+                class="flex gap-4 px-4 py-2 hover:bg-gray-100 w-full"
+            >
+              {{ p.display_name }}
+            </NuxtLink>
+          </li>
+        </ul>
+      </div>
       <div v-if="results.results.products?.estimated_total_count > 0">
         <h3 class="px-4 pt-2 text-s text-black font-bold uppercase">Products</h3>
         <ul>

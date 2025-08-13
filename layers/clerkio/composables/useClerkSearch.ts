@@ -67,6 +67,7 @@ export const useClerkSearch = (formSearchTemplateRef?: any, options = { limit: 6
                         categories: {
                             index: 'categories',
                             limit: 6,
+                            attributes: ['id', 'name', 'url', 'display_name'],
                         },
                         pages: {
                             index: 'pages',

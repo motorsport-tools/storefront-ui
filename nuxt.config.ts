@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     'nuxt-viewport',
     '@nuxtjs/sitemap',
     '@nuxtjs/critters',
+    '@nuxtjs/partytown',
   ],
   $production: {
     routeRules: {
@@ -89,17 +90,14 @@ export default defineNuxtConfig({
     defaultLocale: "en",
     vueI18n: "~/i18n.config.ts",
   },
-
   delayHydration: {
     mode: "init",
   },
-
   vite: {
     optimizeDeps: {
       include: ["lodash-es"],
     },
   },
-
   build: {
     transpile: [
       "tslib",
@@ -198,7 +196,9 @@ export default defineNuxtConfig({
   tailwindcss: {
     viewer: false,
   },
+  partytown: {
 
+  },
   device: {
     refreshOnResize: true,
   },

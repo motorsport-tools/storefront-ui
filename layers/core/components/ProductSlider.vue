@@ -52,6 +52,7 @@ const SliderInit = async () => {
   if(wrapperRef.value) {
     wrapperRef.value.classList?.remove('loading')
   }
+  console.log(props.productTemplateList[0])
 }
 </script>
 
@@ -75,7 +76,7 @@ const SliderInit = async () => {
           :key="index"
           aria-roledescription="slide"
         >
-          <UiProductCard
+          <LazyUiProductCard
               v-if="!loading"
               :key="productTemplate?.id || index"
               :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product) || '' "

@@ -15,11 +15,11 @@ export default defineNuxtPlugin(() => {
     window.Clerk = window.Clerk || function () {
       window.__clerk_q.push(arguments)
     }
-    
-    window.Clerk('config', {
-        key: apiKey
-    })
 
+    window.Clerk('config', {
+      key: apiKey
+    })
+    
     // Create and inject the script
     const script = document.createElement('script')
     script.id = 'clerk-script'
@@ -28,4 +28,5 @@ export default defineNuxtPlugin(() => {
     script.src = 'https://cdn.clerk.io/clerk.js'
   
     document.head.appendChild(script)
+
 })

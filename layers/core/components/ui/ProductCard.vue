@@ -24,10 +24,6 @@ defineProps({
     type: String,
     required: true,
   },
-  description: {
-    type: String,
-    required: false,
-  },
   ratingCount: {
     type: Number,
     required: false,
@@ -60,6 +56,7 @@ defineProps({
   },
 })
 
+const { t } = useI18n()
 const { cartAdd } = useCart()
 const { wishlistAddItem, isInWishlist, wishlistRemoveItem } = useWishlist()
 
@@ -75,6 +72,10 @@ const handleWishListClick = async (firstVariant: CustomProductWithStockFromRedis
   isInWishlist(firstVariant?.id)
           ? handleWishlistRemoveItem(firstVariant as CustomProductWithStockFromRedis)
           : handleWishlistAddItem(firstVariant as CustomProductWithStockFromRedis)
+}
+
+const wishlistButtonTitle = (id: number | undefined) => {
+  return isInWishlist(id) ? t('wishlist.removeFromWishlist') : t('wishlist.addToWishlist')
 }
 </script>
 
@@ -104,16 +105,17 @@ const handleWishListClick = async (firstVariant: CustomProductWithStockFromRedis
         ]"
         aria-label="Add to wishlist"
         @click="handleWishListClick(firstVariant as CustomProductWithStockFromRedis)"
+        :title="wishlistButtonTitle(firstVariant?.id)"
       >
         <Icon 
           v-if="isInWishlist(firstVariant?.id)"
           name="ic:outline-star"
-          size="24px"
+          size="16px"
         />
         <Icon 
           v-else
           name="ic:outline-star-border"
-          size="24px"
+          size="16px"
         />
       </SfButton>
     </div>

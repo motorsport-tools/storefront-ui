@@ -11,6 +11,6 @@ export default defineNitroPlugin((nitroApp) => {
     const script = `
     (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.defer=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "${microsoftClarityID}");`
 
-    html.head.push(`<script>${script}</script>`)
+    html.head.push(`<script type="text/partytown">${script}</script>`)
   })
 })

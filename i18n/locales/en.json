@@ -1,4 +1,8 @@
 {
+  "menu": {
+    "viewAll": "View all {category}",
+    "viewAllTitle": "View all products in {category}"
+  },
   "searchPlaceholder": "Searh by product, sku or brand",
   "billing": {
     "heading": "Billing Address",
@@ -41,7 +45,7 @@
   "formValidation": {
     "errorMessage": "Please review the form and fix any errors before continuing"
   },
-  "myCart": "My Cart",
+  "myCart": "My Basket",
   "orderSummary": "Order Summary",
   "itemsInCart": "(Items: {count})",
   "itemsSubtotal": "Items subtotal",
@@ -169,10 +173,9 @@
   },
   "size": "Size",
   "color": "Color",
-  "addToCart": "Add to cart",
+  "addToCart": "Add to basket",
   "addToCartShort": "Add",
   "search": "Search",
-  "vsfHomepage": "VSF Homepage",
   "home": "Home",
   "products": "Products",
   "cart": "View Cart",

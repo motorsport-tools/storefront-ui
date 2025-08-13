@@ -61,7 +61,7 @@ defineExpose({
         </ul>
     </nav>
     
-    <Overlay :isOpen="isOpen" class="lg:hidden"/>
+    <Overlay :isOpen="isOpen" class="lg:hidden !z-[100]"/>
     
     <transition
         enter-active-class="transition duration-500 ease-in-out delay-200"
@@ -104,6 +104,17 @@ defineExpose({
                                 <div class="flex items-center">
                                     <SfIconArrowBack />
                                     <p class="ml-5 font-medium">{{ activeMenu.value.label }}</p>
+                                </div>
+                            </SfListItem>
+                            <SfListItem
+                                size="lg"
+                                tag="a"
+                                class="font-medium"
+                                :href="activeMenu.value.link"
+                                :title="$t('menu.viewAllTitle', { category: activeMenu.value.label})"
+                            >
+                                <div class="flex items-center">
+                                    <p class="text-left">{{ $t('menu.viewAll', { category: activeMenu.value.label}) }}</p>
                                 </div>
                             </SfListItem>
                         </li>

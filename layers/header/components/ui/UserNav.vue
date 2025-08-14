@@ -4,7 +4,7 @@ const NuxtLink = resolveComponent("NuxtLink")
 
 <template>
     <UiUserNavButton
-        title="View Wishlist"
+        :title="$t('wishlistLinkTitle')"
     >
         <Icon
             name="material-symbols:star"
@@ -13,7 +13,7 @@ const NuxtLink = resolveComponent("NuxtLink")
     </UiUserNavButton>
 
     <UiUserNavButton
-        title="View Shopping Basket"
+        :title="$t('cartLinkTitle')"
         to="/cart"
         :tag="NuxtLink"
     >

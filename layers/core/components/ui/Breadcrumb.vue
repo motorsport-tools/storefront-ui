@@ -48,7 +48,7 @@ const computedBreadcrumbs = computed(() => {
   <nav data-testid="breadcrumbs" class="inline-flex items-center text-sm font-normal font-body capitalize">
     <ol class="flex w-auto leading-none group md:flex-wrap pl-0">
       <li class="flex items-center sm:hidden text-neutral-500 z-1">
-        <div ref="referenceRef" class="w-max z-100">
+        <div ref="referenceRef" class="w-max">
           <SfButton
             class="relative w-5 h-5 !p-0 rounded-sm outline-secondary-600 hover:bg-transparent active:bg-transparent"
             aria-label="Show more breadcrumbs"

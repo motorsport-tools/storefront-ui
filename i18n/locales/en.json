@@ -178,9 +178,10 @@
   "search": "Search",
   "home": "Home",
   "products": "Products",
-  "cart": "View Cart",
-  "cartLinkTitle": "View your cart",
-  "cartAddProduct": "Product added to cart",
+  "wishlistLinkTitle": "View your wishlist",
+  "cart": "View Basket",
+  "cartLinkTitle": "View your basket",
+  "cartAddProduct": "Product added to basket",
   "cartRemoveProduct": "Product removed successfully",
   "cartUpdateProduct": "Product updated successfully",
   "wishlist": {

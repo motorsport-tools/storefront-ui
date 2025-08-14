@@ -5,9 +5,17 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const { loadProductTemplateList, productTemplateList, loading } = useProductTemplateList(`product-slider--block-${props.blockData.id}`)
- 
+const { loadProductTemplateList, productTemplateList } = useProductTemplateList(`product-slider--block-${props.blockData.id}`)
+
 await loadProductTemplateList({ pageSize: props.blockData?.number_products || 10 })
+
+const sliderKey = ref(0)
+
+watch(() => productTemplateList, () => {
+  sliderKey.value++
+  console.log('Slider Key Updated to: ', sliderKey.value)
+})
+
 
 
 </script>

@@ -36,6 +36,8 @@ export default defineEventHandler(async (event) => {
                         'sections.item.blocks.item.slider_slides.*',
                         'sections.item.blocks.item.slider_slides.background_image.id',
                         'sections.item.blocks.item.slider_slides.background_image.title',
+                        'sections.item.blocks.item.section_content.item.*',
+
 					],
 					deep: {
 						sections: { 

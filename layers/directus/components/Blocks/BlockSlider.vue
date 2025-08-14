@@ -87,6 +87,7 @@ const SliderInit = async () => {
                     :isPlaying="isAutoplayActive"
                     @click="onClickHandler()"
                 />
+                <Pagination/>
             </template>
         </Carousel>
     </div>        
@@ -142,35 +143,25 @@ const SliderInit = async () => {
     --vc-cloned-offset: -100%;
 }
 
-.vueperslides__progress {
-    background: rgba(0, 0, 0, 0.25);
-    color:var(--slider-progress-color);
-    height: 3px;
-}
-.vueperslides__bullet {
+.carousel__pagination .carousel__pagination-item {
     margin: 1em .1em;
 }
-.vueperslides__bullet .default {
+
+.carousel__pagination .carousel__pagination-item .carousel__pagination-button {
     background: #222222;
-    border: 0;
-    display: inline-block;
     height: 8px;
     margin: 3px;
     padding: 0;
     position: relative;
     transition: transform .2s linear;
     width: 20px;
-    border-radius: 0;
+    border:1px solid rgba(0,0,0,.5);
+    box-shadow: 1px 1px 2px rgba(0,0,0,.2);
 }
 
-.vueperslides__bullet--active .default {
+.carousel__pagination .carousel__pagination-item .carousel__pagination-button--active {
     background: hsla(0,0%,98%,.75);
-    transform: scale(1.1);
+    transform: scale(1.2);
     z-index: 1;
-}
-
-.vueperslides__bullet span {
-  display: none;
-  visibility: hidden;
 }
 </style>

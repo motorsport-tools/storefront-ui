@@ -23,6 +23,32 @@ export interface BlockLunchbox {
 	title?: string | null;
 	/** @required */
 	layout: '1' | '2' | '3' | '4';
+	section_content?: BlockLunchboxSectionContent[] | string[];
+}
+
+export interface BlockLunchboxContent {
+	/** @primaryKey */
+	id: number;
+	sort?: number | null;
+	user_created?: string | null;
+	date_created?: string | null;
+	user_updated?: string | null;
+	date_updated?: string | null;
+	background_image?: DirectusFile | string | null;
+	/** @required */
+	background_color: string;
+	content?: string | null;
+	/** @required */
+	link_to: string;
+	link_title?: string | null;
+}
+
+export interface BlockLunchboxSectionContent {
+	/** @primaryKey */
+	id: number;
+	block_lunchbox_id?: BlockLunchbox | string | null;
+	item?: BlockLunchboxContent | string | null;
+	collection?: string | null;
 }
 
 export interface BlockProduct {
@@ -253,6 +279,8 @@ export interface DirectusTranslation {
 
 export interface Schema {
 	block_lunchbox: BlockLunchbox[];
+	block_lunchbox_content: BlockLunchboxContent[];
+	block_lunchbox_section_content: BlockLunchboxSectionContent[];
 	block_products: BlockProduct[];
 	block_slider: BlockSlider[];
 	block_slider_slides: BlockSliderSlide[];
@@ -270,6 +298,8 @@ export interface Schema {
 
 export enum CollectionNames {
 	block_lunchbox = 'block_lunchbox',
+	block_lunchbox_content = 'block_lunchbox_content',
+	block_lunchbox_section_content = 'block_lunchbox_section_content',
 	block_products = 'block_products',
 	block_slider = 'block_slider',
 	block_slider_slides = 'block_slider_slides',

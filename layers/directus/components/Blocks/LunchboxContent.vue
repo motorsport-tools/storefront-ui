@@ -45,7 +45,7 @@ function getPositionClass(position: string): string {
             :src="`/assets/${data?.background_image}`"
             sizes="50vw sm:640px"
         />
-        <div class="inline-block absolute p-2 z-1 text-white font-bold text-4xl drop-shadow-md" v-html="data?.content" :class="getPositionClass(data?.text_position)">
+        <div class="inline-block absolute p-2 z-1 text-white font-bold text-4xl drop-shadow-md" v-html="data?.content" :class="getPositionClass(data?.text_position || 'bottom-left')">
         </div>
     </NuxtLink>
 </template>

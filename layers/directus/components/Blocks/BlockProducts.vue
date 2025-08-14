@@ -13,7 +13,6 @@ const sliderKey = ref(0)
 
 watch(() => productTemplateList, () => {
   sliderKey.value++
-  console.log('Slider Key Updated to: ', sliderKey.value)
 })
 
 

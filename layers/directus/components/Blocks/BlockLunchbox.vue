@@ -9,7 +9,7 @@ const props = defineProps<Props>()
 
 const item1Class = computed( () => {
     if (props.blockData.layout === 2) {
-        return 'col-start-1 col-span-2 row-start-1 row-span-1 rounded-tl-xl'
+        return 'col-start-1 col-span-2 rounded-lg md:rounded-none md:rounded-tl-xl'
     } else if (props.blockData.layout === 3) {
         return 'col-start-1 col-span-2 row-start-1 row-span-2 rounded-l-xl'
     } else if (props.blockData.layout === 4) {
@@ -20,7 +20,7 @@ const item1Class = computed( () => {
 })
 const item2Class = computed( () => {
     if (props.blockData.layout === 2) {
-        return 'col-start-3 col-span-2 row-start-1 row-span-2 rounded-r-xl'
+        return 'col-start-1 md:col-start-3 col-span-2 row-start-2 md:row-start-1 md:row-span-2 rounded-lg md:rounded-none md:rounded-r-xl'
     } else if (props.blockData.layout === 3) {
         return 'col-start-3 row-start-1'
     } else if (props.blockData.layout === 4) {
@@ -31,7 +31,7 @@ const item2Class = computed( () => {
 })
 const item3Class = computed( () => {
     if (props.blockData.layout === 2) {
-        return 'col-start-1 row-start-2 rounded-bl-xl'
+        return 'col-start-1 row-start-3 md:row-start-2 rounded-l-lg md:rounded-none md:rounded-bl-xl'
     } else if (props.blockData.layout === 3) {
         return 'col-start-4 row-start-1 rounded-tr-xl'
     } else if (props.blockData.layout === 4) {
@@ -42,7 +42,7 @@ const item3Class = computed( () => {
 })
 const item4Class = computed( () => {
     if (props.blockData.layout === 2) {
-        return 'col-start-2 row-start-2'
+        return 'col-start-2 row-start-3 md:row-start-2 rounded-r-lg md:rounded-none'
     } else if (props.blockData.layout === 3) {
         return 'col-start-3 col-span-2 row-start-2 rounded-br-xl'
     } else if (props.blockData.layout === 4) {

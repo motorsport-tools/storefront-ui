@@ -41,6 +41,7 @@ export interface BlockLunchboxContent {
 	/** @required */
 	link_to: string;
 	link_title?: string | null;
+	text_position?: `top-left` | `top-right` | `bottom-left` | `bottom-right` | null;
 }
 
 export interface BlockLunchboxSectionContent {

@@ -6,6 +6,30 @@ interface Props {
 }
 
 defineProps<Props>()
+
+function getPositionClass(position: string): string {
+  switch (position) {
+    default:
+    case 'center':
+      return 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2';
+    case 'top':
+      return 'absolute top-0 left-1/2 -translate-x-1/2';
+    case 'bottom':
+      return 'absolute bottom-0 left-1/2 -translate-x-1/2';
+    case 'left':
+      return 'absolute left-0 top-1/2 -translate-y-1/2';
+    case 'right':
+      return 'absolute right-0 top-1/2 -translate-y-1/2';
+    case 'top-left':
+      return 'absolute top-0 left-0';
+    case 'top-right':
+      return 'absolute top-0 right-0';
+    case 'bottom-left':
+      return 'absolute bottom-0 left-0';
+    case 'bottom-right':
+      return 'absolute bottom-0 right-0';
+  }
+}
 </script>
 <template>
     <NuxtLink
@@ -21,7 +45,7 @@ defineProps<Props>()
             :src="`/assets/${data?.background_image}`"
             sizes="50vw sm:640px"
         />
-        <div class="inline-block absolute p-2 z-1 text-white font-bold text-4xl drop-shadow-md" v-html="data?.content">
+        <div class="inline-block absolute p-2 z-1 text-white font-bold text-4xl drop-shadow-md" v-html="data?.content" :class="getPositionClass(data?.text_position)">
         </div>
     </NuxtLink>
 </template>

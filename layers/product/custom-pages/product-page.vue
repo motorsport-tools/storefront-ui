@@ -132,8 +132,8 @@ watch(
   () => params.value,
   async (newValue, oldValue) => {
     if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
-      await loadProductVariant(newValue)
-      addProductToRecentViews(productTemplate.value?.id)
+        await loadProductVariant(newValue)
+        addProductToRecentViews(productTemplate.value?.id)
     }
   },
   { deep: true },
@@ -144,8 +144,9 @@ const mainImage = computed(() => getMainImage(380, 505))
 const thumbs = computed(() => getThumbs(78, 78))
 
 await loadProductTemplate({ slug: cleanPath.value })
+
 if (productTemplate.value?.id) {
-  await loadProductVariant({
+    await loadProductVariant({
     combinationId: Object.values(route.query)?.map(value =>
       parseInt(value as string),
     ),
@@ -280,7 +281,7 @@ if (productTemplate.value?.id) {
                     class="min-w-[145px] flex-grow flex-shrink-0 basis-0"
                     />
                     <SfButton
-                    :disabled="loadingProductVariant || productVariant.stock <= 0"
+                    :disabled="loadingProductVariant || productVariant?.stock <= 0"
                     type="button"
                     size="lg"
                     class="flex-grow-[2] flex-shrink basis-auto whitespace-nowrap"

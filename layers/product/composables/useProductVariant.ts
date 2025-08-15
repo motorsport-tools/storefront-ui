@@ -11,14 +11,13 @@ export const useProductVariant = (slugWithCombinationIds: string) => {
   const { $sdk } = useNuxtApp();
 
   const loadingProductVariant = ref(false);
-  const productVariant = useState<CustomProductWithStockFromRedis>(`product-${slugWithCombinationIds}`, () => ({}) as CustomProductWithStockFromRedis)
+  const productVariant = useState<CustomProductWithStockFromRedis>(`product-variant-${slugWithCombinationIds}`, () => ({}) as CustomProductWithStockFromRedis)
 
   const loadProductVariant = async (params: QueryProductVariantArgs) => {
     loadingProductVariant.value = true
     const { data, status } = await useAsyncData(`product-variant-${slugWithCombinationIds}`, () =>
       $sdk().odoo.query<QueryProductVariantArgs, ProductVariantResponse>(
-        { queryName: QueryName.GetProductVariantQuery }, params),
-        { lazy: import.meta.client }
+        { queryName: QueryName.GetProductVariantQuery }, params)
     )
     loadingProductVariant.value = false
 

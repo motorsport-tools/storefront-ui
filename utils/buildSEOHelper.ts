@@ -45,10 +45,9 @@ const validateSEO = (entity: SeoEntity, fullPath: string, entityType: string) =>
     warnings.forEach((warning) => console.warn(warning));
 };
 
+const { href } = useRequestURL()
 const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
     if (!entity) return
-
-    const { href } = useRequestURL()
 
     validateSEO(entity, href, entityType);
     
@@ -99,12 +98,6 @@ const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
                 type: "application/ld+json",
                 //children: JSON.parse(JSON.stringify(entity.jsonLd)),
                 children: JSON.stringify(entity.jsonLd),
-            },
-        ].filter(Boolean),
-        link: [
-            {
-                rel: "canonical",
-                href
             },
         ],
     };

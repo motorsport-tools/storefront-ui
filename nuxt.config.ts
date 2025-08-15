@@ -26,6 +26,11 @@ export default defineNuxtConfig({
     },
 
   },
+  security: {
+    headers: {
+      xFrameOptions: 'SAMEORIGIN',
+    },
+  },
   app: {
     head: {
       viewport:

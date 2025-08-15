@@ -126,7 +126,7 @@ const wishlistButtonTitle = (id: number | undefined) => {
         :to="slug"
         variant="secondary"
         class="no-underline self-start text-left"
-        :title="name"
+        :title="name"  
       >
         <span class="product_card__brand">{{ brand }}</span>
         <span class="product_card__title block pb-1 border-b border-neutral-200 text-neutral-700">{{ name }}</span>

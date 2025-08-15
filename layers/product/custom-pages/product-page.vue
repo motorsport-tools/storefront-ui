@@ -156,7 +156,7 @@ if (productTemplate.value?.id) {
 
 <template>
     <main 
-        class="w-full narrow-container mb-20"
+        class="w-full narrow-container mb-20 pt-6"
         data-testid="product-page"
     >
         <NuxtErrorBoundary>

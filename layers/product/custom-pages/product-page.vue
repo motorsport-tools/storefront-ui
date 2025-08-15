@@ -536,6 +536,7 @@ if (productTemplate.value?.id) {
             </section>
             <UiDivider class="mt-4 mb-2" />
         </div>
+        <!--
         <section
             v-if="!loadingProductTemplate && productTemplate?.frequentlyBoughtTogether"
             class="lg:mx-4 mt-28"
@@ -564,6 +565,7 @@ if (productTemplate.value?.id) {
             />
             </ClientOnly>
         </section>
+        -->
         </div>
         <template #error="{ error }">
             <ErrorDisplay :msg="$t('error.404')"/>

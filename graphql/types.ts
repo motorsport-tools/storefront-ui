@@ -65,7 +65,9 @@ export type ProductResponse = {
 }
 
 export type ProductVariantResponse = {
-  product: CustomProductWithStockFromRedis
+  productVariant: {
+    product: CustomProductWithStockFromRedis
+  }
 }
 
 export type WishlistLoadResponse = AsyncData<

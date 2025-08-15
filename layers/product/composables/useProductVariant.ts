@@ -15,20 +15,21 @@ export const useProductVariant = (slugWithCombinationIds: string) => {
 
   const loadProductVariant = async (params: QueryProductVariantArgs) => {
     loadingProductVariant.value = true
-    const { data, status } = await useAsyncData(`product-${slugWithCombinationIds}`, () =>
+    const { data, status } = await useAsyncData(`product-variant-${slugWithCombinationIds}`, () =>
       $sdk().odoo.query<QueryProductVariantArgs, ProductVariantResponse>(
         { queryName: QueryName.GetProductVariantQuery }, params),
+        { server: true }
     )
     loadingProductVariant.value = false
 
-    if (!data?.value?.product?.id) {
+    if (!data?.value?.productVariant?.product?.id) {
       showError({
         status: 404,
-        message: "Product not found",
+        message: "Product not found - Variant Error",
       })
     }
 
-    productVariant.value = (data?.value?.product) || {} as CustomProductWithStockFromRedis
+    productVariant.value = (data?.value?.productVariant?.product) || {} as CustomProductWithStockFromRedis
 
   }
 

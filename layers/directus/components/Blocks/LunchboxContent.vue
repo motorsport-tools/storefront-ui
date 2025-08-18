@@ -42,8 +42,9 @@ function getPositionClass(position: string): string {
             class="w-full h-full object-cover absolute z-0"
             loading="lazy"
             provider="directus"
-            :src="`/assets/${data?.background_image}`"
+            :src="`/assets/${data?.background_image?.id}`"
             sizes="50vw sm:640px"
+            :alt="data?.background_image?.title || ''"
         />
         <div class="inline-block absolute p-2 z-1 text-white font-bold text-4xl drop-shadow-md" v-html="data?.content" :class="getPositionClass(data?.text_position || 'bottom-left')">
         </div>

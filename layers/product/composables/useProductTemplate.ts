@@ -31,7 +31,7 @@ export const useProductTemplate = (slug: string) => {
         params,
         { headers: useRequestHeaders() },
       ),
-      { server: true, lazy: true }
+      { server: true, lazy: import.meta.client }
     )
 
     watch(status, () => {
@@ -40,6 +40,10 @@ export const useProductTemplate = (slug: string) => {
       }
       if(status.value === 'error') {
         loadingProductTemplate.value = false
+        showError({
+          status: 404,
+          message: 'Product not found',
+        })
       }
       if(status.value === 'success') {
         loadingProductTemplate.value = false

@@ -96,7 +96,6 @@ const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
         script: [
             entity?.jsonLd && {
                 type: "application/ld+json",
-                //children: JSON.parse(JSON.stringify(entity.jsonLd)),
                 children: JSON.stringify(entity.jsonLd),
             },
         ],

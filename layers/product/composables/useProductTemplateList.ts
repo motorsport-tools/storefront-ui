@@ -41,7 +41,7 @@ export const useProductTemplateList = (customIndex: string = '') => {
           params,
           { headers: useRequestHeaders() },
         ),
-      { server: true, lazy: false },
+      { server: true, lazy: import.meta.client },
     )
     data = asyncResult.data
     status = asyncResult.status

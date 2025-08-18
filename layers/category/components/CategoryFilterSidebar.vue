@@ -20,10 +20,14 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  loading: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const stockCount = inject("stockCount")
-const loading = ref(false)
+
 const route = useRoute()
 const router = useRouter()
 const {

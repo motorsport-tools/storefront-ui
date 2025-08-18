@@ -76,50 +76,53 @@ await loadProductTemplateList(getFacetsFromURL(route.query))
         data-testid="category-layout"
     >
         <div class="pb-20">
-            <UiBreadcrumb
+          <UiBreadcrumb
             :breadcrumbs="category.breadcrumb"
             class="self-start mt-5 mb-5"
-            />
-            <div class="grid grid-cols-12 lg:gap-x-6">
+          />
+          <div class="grid grid-cols-12 lg:gap-x-6">
             <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-                <LazyCategoryFilterSidebar
+              <LazyCategoryFilterSidebar
                 v-if="$viewport.isGreaterOrEquals('lg')"
                 :attributes="organizedAttributes"
                 :categories="[]"
-                />
-                <LazyCategoryMobileSidebar
+                :loading="loading"
+              />
+              <LazyCategoryMobileSidebar
                 v-if="$viewport.isLessThan('lg')"
                 :is-open="isOpen"
                 @close="close"
-                >
+              >
                 <template #default>
                     <CategoryFilterSidebar
                     class="block lg:hidden"
                     :attributes="organizedAttributes"
                     :categories="[]"
+                    :loading="loading"
                     @close="close"
                     />
                 </template>
-                </LazyCategoryMobileSidebar>
+              </LazyCategoryMobileSidebar>
             </div>
             <div class="col-span-12 lg:col-span-8 xl:col-span-9">
-                <div v-if="!loading">
+              <div v-if="!loading">
                 <div class="flex justify-between items-center mb-6">
-                    <span class="font-bold font-headings md:text-lg">{{ totalItems }} Products
-                    </span>
-                    <SfButton
+                  <span class="font-bold font-headings md:text-lg">{{ totalItems }} Products
+                  </span>
+                  <SfButton
                     variant="tertiary"
                     class="lg:hidden whitespace-nowrap"
                     @click="open"
-                    >
+                  >
                     <template #prefix>
                         <SfIconTune />
                     </template>
                     Filter
-                    </SfButton>
+                  </SfButton>
                 </div>
                 <section
                   v-if="productTemplateList.length > 0"
+                  id="product-list"
                   class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
                 >
                   <LazyUiProductCard
@@ -161,17 +164,17 @@ await loadProductTemplateList(getFacetsFromURL(route.query))
                     :page-size="pagination.itemsPerPage"
                     :max-visible-pages="maxVisiblePages"
                 />
-                </div>
-                <div
-                v-else
-                class="w-full text-center"
-                >
+              </div>
+              <div
+              v-else
+              class="w-full text-center"
+              >
                 <SfLoaderCircular
                     size="xl"
                     class="mt-[160px]"
                 />
-                </div>
-            </div>
+              </div>
+              </div>
             </div>
         </div>
     </main>

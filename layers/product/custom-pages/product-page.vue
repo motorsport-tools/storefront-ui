@@ -46,13 +46,6 @@ const { cart, cartAdd } = useCart()
 
 useHead(generateSeo<SeoEntity>(productVariant.value, 'Product'))
 
-const params = computed(() => ({
-  combinationId: Object.values(route.query)?.map(value =>
-    parseInt(value as string),
-  ),
-  productTemplateId: productTemplate?.value?.id,
-}))
-
 const selectedSize = computed(() =>
   route.query.Size ? Number(route.query.Size) : getAllSizes?.value?.[0]?.value,
 )
@@ -127,31 +120,34 @@ const handleWishlistRemoveItem = async (firstVariant: CustomProductWithStockFrom
   await wishlistRemoveItem(firstVariant.id)
 }
 
-watch(
-  () => params.value,
-  async (newValue, oldValue) => {
-    if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
-        await loadProductVariant(newValue)
-        addProductToRecentViews(productTemplate.value?.id)
-    }
-  },
-  { deep: true },
-)
-
 const { getMainImage, getThumbs } = useProductGetters(productVariant)
 const mainImage = computed(() => getMainImage(380, 505))
 const thumbs = computed(() => getThumbs(78, 78))
 
-await loadProductTemplate({ slug: cleanPath.value })
+watch(
+  () => cleanPath.value,
+  async (slug) => {
+    if (!slug) return;
+    await loadProductTemplate({ slug })
+  },
+  { immediate: true }
+)
 
-if (productTemplate.value?.id) {
+watch(
+  [() => productTemplate.value?.id, () => route.query],
+  async ([id, query]) => {
+    if (!id) return;
+
     await loadProductVariant({
-    combinationId: Object.values(route.query)?.map(value =>
-      parseInt(value as string),
-    ),
-    productTemplateId: productTemplate?.value?.id,
-  })
-}
+        combinationId: Object.values(query)?.map(value =>
+            parseInt(value as string),
+        ),
+        productTemplateId: productTemplate?.value?.id,
+    })
+    addProductToRecentViews(id)
+  },
+  { immediate: true, deep: true }
+)
 </script>
 
 <template>

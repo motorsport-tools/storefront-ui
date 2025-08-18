@@ -17,19 +17,32 @@ export const useProductVariant = (slugWithCombinationIds: string) => {
     loadingProductVariant.value = true
     const { data, status } = await useAsyncData(`product-variant-${slugWithCombinationIds}`, () =>
       $sdk().odoo.query<QueryProductVariantArgs, ProductVariantResponse>(
-        { queryName: QueryName.GetProductVariantQuery }, params)
+        { queryName: QueryName.GetProductVariantQuery }, params),
+        { server: true, lazy: import.meta.client }
     )
-    loadingProductVariant.value = false
 
-    if (!data?.value?.productVariant?.product?.id) {
-      showError({
-        status: 404,
-        message: "Product not found - Variant Error",
-      })
+    if (data.value?.productVariant?.product) {
+      productVariant.value = (data?.value?.productVariant?.product) || {} as CustomProductWithStockFromRedis
+      loadingProductVariant.value = false
     }
 
-    productVariant.value = (data?.value?.productVariant?.product) || {} as CustomProductWithStockFromRedis
-
+    watch(status, () => {
+      if(status.value === 'pending') {
+        loadingProductVariant.value = true
+      }
+      if(status.value === 'error' && !data.value?.productVariant.product) {
+        loadingProductVariant.value = false
+        showError({
+          status: 404,
+          message: 'Product not found - Variant Error',
+        })
+      }
+      if(status.value === 'success') {
+        loadingProductVariant.value = false
+        productVariant.value
+          = (data?.value?.productVariant?.product as CustomProductWithStockFromRedis) || {}
+      }
+    })  
   }
 
   const getImages = computed(() => {

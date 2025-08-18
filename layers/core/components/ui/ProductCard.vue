@@ -3,6 +3,7 @@ import {
   SfRating,
   SfCounter,
   SfButton,
+  SfIconSell,
   SfIconShoppingCart,
 } from '@storefront-ui/vue'
 import type { CustomProductWithStockFromRedis, Product } from '~/graphql'
@@ -93,7 +94,11 @@ const wishlistButtonTitle = (id: number | undefined) => {
           :loading="loading"
         />
       </NuxtLink>
-
+      <UiProductCardRibbon
+        :isOnSale="!!regularPrice"
+        size="xs"
+        class="absolute top-0 left-0 p-2"
+      />
       <SfButton
         type="button"
         variant="tertiary"
@@ -181,6 +186,11 @@ const wishlistButtonTitle = (id: number | undefined) => {
   height: 100%;
   background-color:rgba(19, 6, 6, 0.04);
 }
+
+.product_card:hover .product_card__img::after {
+  background-color: rgba(19, 6, 6, 0.08);
+}
+
 .product_card__brand {
   display: block;
   font-weight: 600;

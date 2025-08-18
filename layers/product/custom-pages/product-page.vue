@@ -195,16 +195,11 @@ if (productTemplate.value?.id) {
                     data-api="log/product"
                     :data-product="productVariant.id">
                 </span>
-                <div
-                class="inline-flex items-center justify-center font-medium rounded-none bg-secondary-800 text-sm p-1.5 gap-1 mb-4"
-                >
-                <SfIconSell
-                    color="white"
+                <UiProductCardRibbon
+                    :isOnSale="productVariant
+                    && productVariant?.combinationInfoVariant?.has_discounted_price"
                     size="sm"
-                    class="mr-1"
                 />
-                <span class="mr-1 text-white">{{ $t(`sale`) }}</span>
-                </div>
                 <h1
                 class="mb-1 font-bold typography-headline-4"
                 data-testid="product-name"

@@ -1268,6 +1268,8 @@ export type QueryProductsArgs = {
   pageSize?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
   sort?: InputMaybe<ProductSortInput>;
+  tag?: InputMaybe<Scalars['String']['input']>;
+  tagId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 

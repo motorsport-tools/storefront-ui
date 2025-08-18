@@ -6,6 +6,8 @@ query(
   $pageSize: Int = 0
   $search: String
   $sort: ProductSortInput
+  $tag: String
+  $tagId: Int
 ) {
   products(
     filter: $filter
@@ -13,6 +15,8 @@ query(
     pageSize: $pageSize
     search: $search
     sort: $sort
+    tag: $tag
+    tagId: $tagId
   ) {
     totalCount
     filterCounts

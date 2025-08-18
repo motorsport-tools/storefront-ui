@@ -12,7 +12,13 @@ const sliderKey = ref(0)
 watch(
   () => props.blockData,
   async (newVal) => {
-    await loadProductTemplateList({ pageSize: newVal?.number_products || 10 });
+    const params: Record<string, any> = {
+      pageSize: newVal?.number_products || 10,
+    }
+
+  if (newVal?.tag) params.tag = newVal.tag;
+  if (newVal?.tag_id) params.tagId = newVal.tag_id;
+    await loadProductTemplateList(params);
     sliderKey.value++;
   },
   { immediate: true, deep: true }
@@ -22,7 +28,7 @@ watch(
 <template>
     <ProductSlider
       :key="sliderKey"
-      :heading="blockData.title"
+      :heading="blockData?.title"
       :product-template-list="productTemplateList"
       :blockId="props.blockData.id"
     />

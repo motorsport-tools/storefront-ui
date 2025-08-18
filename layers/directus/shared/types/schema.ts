@@ -63,6 +63,8 @@ export interface BlockProduct {
 	title?: string | null;
 	/** @description The number of products to load (default 10) @required */
 	number_products: number;
+	tag?: string | null;
+	tag_id?: number | null;
 }
 
 export interface BlockSlider {

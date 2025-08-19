@@ -7,7 +7,6 @@ query(
   $search: String
   $sort: ProductSortInput
   $tag: String
-  $tagId: Int
 ) {
   products(
     filter: $filter
@@ -16,7 +15,6 @@ query(
     search: $search
     sort: $sort
     tag: $tag
-    tagId: $tagId
   ) {
     totalCount
     filterCounts

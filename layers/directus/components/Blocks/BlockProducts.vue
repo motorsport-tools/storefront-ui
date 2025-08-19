@@ -14,10 +14,11 @@ watch(
   async (newVal) => {
     const params: Record<string, any> = {
       pageSize: newVal?.number_products || 10,
+      sort: newVal?.sort_by && newVal?.sort_direction ?  { [newVal?.sort_by]: newVal?.sort_direction } : { "newest": "ASC" },
     }
 
   if (newVal?.tag) params.tag = newVal.tag;
-  if (newVal?.tag_id) params.tagId = newVal.tag_id;
+
   console.log(  'Loading product template list with params:', params);
     await loadProductTemplateList(params);
     sliderKey.value++;

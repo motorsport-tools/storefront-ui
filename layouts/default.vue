@@ -7,7 +7,7 @@ const {
 	siteData,
 	siteError,
 	refresh,
-} = useSiteGlobals()
+} = await useSiteGlobals()
 
 const { isVisualEditingEnabled, apply } = useVisualEditing()
 
@@ -27,19 +27,14 @@ function onNavigationReady(el: HTMLElement) {
 </script>
 
 <template>
-    <!--
-    <TheHeader />
-    -->
     <SiteHeader @navigationReady="onNavigationReady" />
     <div>
       <slot></slot>
     </div>
     
     <LazyNewsletter />
-    <!--
-    <LazyBottomNavbar hydrate-on-visible />
-    -->
-    <LazyTheFooter 
+
+    <LazySiteFooter 
       hydrate-on-visible 
       ref="footerRef"
       :navigation="siteData?.footerNavigation || []"

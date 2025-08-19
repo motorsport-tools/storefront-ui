@@ -18,8 +18,6 @@ watch(
     }
 
   if (newVal?.tag) params.tag = newVal.tag;
-
-  console.log(  'Loading product template list with params:', params);
     await loadProductTemplateList(params);
     sliderKey.value++;
   },

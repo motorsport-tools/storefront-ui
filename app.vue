@@ -11,7 +11,6 @@ nuxtApp.hook("page:finish", () => {
 });
 
 onMounted(async () => {
-    console.log('Is Authenticated? ', isAuthenticated.value)
     if ( isAuthenticated.value ) {  
       await loadUser(true)
     }

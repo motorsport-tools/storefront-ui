@@ -34,7 +34,7 @@ export const useProductTemplateList = (customIndex: string = '') => {
 
     
     const asyncResult = await useAsyncData(
-      `${cleanFullSearchIndex.value}${customIndex}`,
+      `product-template-list${cleanFullSearchIndex.value}${customIndex}`,
       () =>
         $sdk().odoo.query<QueryProductsArgs, ProductTemplateListResponse>(
           { queryName: QueryName.GetProductTemplateListQuery },

@@ -47,7 +47,7 @@ const icon = computed(() => {
         <component
             :is="icon"
             loading="lazy"
-            size="sm"
+            size="20px"
         />
     </SfButton>
 </template>

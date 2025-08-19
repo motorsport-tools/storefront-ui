@@ -22,6 +22,9 @@ await loadCategoriesForMegaMenu({ filter: { parent: true }, pageSize: 100 })
 const headerRef = ref(null)
 const headerNavRef = ref<HTMLElement>()
 const categoryMenuRef = ref(null)
+const headerSticky = ref<HTMLElement>()
+const isHidden = ref(false)
+const isFixed = ref(false)
 
 onClickOutside(headerRef, () => {
   close()
@@ -35,11 +38,54 @@ const megaMenuClick = (menuType: string[]) => {
 
 const emit = defineEmits(['navigationReady'])
 
-onMounted(() => {
+let lastScroll = 0
+let SCROLL_THRESHOLD = 200
+let ticking = false
+
+const handleScroll = () => {
+    const currentScroll = window.scrollY
+
+    if (currentScroll >= SCROLL_THRESHOLD) {
+        isFixed.value = true
+
+        if (currentScroll > lastScroll){
+            // Scrolling down
+            isHidden.value = true
+        } else if (currentScroll < lastScroll) {
+            // Scrolling up
+            isHidden.value = false
+        }
+
+    } else {
+        isFixed.value = false
+        isHidden.value = false
+    }
+
+    lastScroll = currentScroll
+    ticking = false
+}
+
+const onScroll = () => {
+  if (!ticking) {
+    window.requestAnimationFrame(handleScroll)
+    ticking = true
+  }
+}
+
+onMounted(async () => {
     if(headerNavRef.value) {
         props.navigationRef.value = headerNavRef.value
         emit('navigationReady', headerNavRef.value)
     }
+    await nextTick() 
+    if (headerSticky.value) {
+        SCROLL_THRESHOLD = headerSticky.value.getBoundingClientRect().top + window.scrollY + 20
+        window.addEventListener('scroll', onScroll)
+    }
+})
+
+onBeforeUnmount(() => {
+    window.removeEventListener('scroll', onScroll)
 })
 
 const isOverlayVisible = ref(false)
@@ -94,9 +140,17 @@ const isOverlayVisible = ref(false)
                 </button>
             </div>
         </div>
-
+        <div 
+            ref="headerSticky"
+            :class="[
+                'w-full z-50',
+                isHidden ? '-translate-y-full' : 'translate-y-0',
+                isFixed ? 'fixed top-0 left-0 transition-transform duration-300' : 'relative'
+            ]"
+        >
         <div 
             class="h-[48px] max-h-[48px] bg-white border-black-500/50 border-b flex flex-row justify-between items-center flex-nowrap px-2 lg:px-4 relative z-[20]"
+            
         >
             <button
                 class="lg:hidden h-full block flex justify-center items-center !text-black hover:bg-transparent cursor-pointer pr-2"
@@ -136,6 +190,7 @@ const isOverlayVisible = ref(false)
             <UiCategoryMenu
                 :headerRef="headerRef" ref="categoryMenuRef"
             />
+        </div>
         </div>
     </header>
 </template>

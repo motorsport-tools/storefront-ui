@@ -1269,7 +1269,6 @@ export type QueryProductsArgs = {
   search?: InputMaybe<Scalars['String']['input']>;
   sort?: InputMaybe<ProductSortInput>;
   tag?: InputMaybe<Scalars['String']['input']>;
-  tagId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 

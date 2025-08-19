@@ -38,8 +38,8 @@ function onNavigationReady(el: HTMLElement) {
       hydrate-on-visible 
       ref="footerRef"
       :navigation="siteData?.footerNavigation || []"
-      :globals="siteData?.globals || []"
+      :globals="siteData?.globals || {}"
     />
-    <WishlistSidebar />
+    <LazyWishlistSidebar />
     
 </template>

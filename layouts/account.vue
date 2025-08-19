@@ -1,5 +1,5 @@
 <template>
-  <TheHeader />
+  <SiteHeader @navigationReady="onNavigationReady"/>
 
   <main class="narrow-container">
     <UiBreadcrumb :breadcrumbs="breadcrumbs" class="mt-5 mb-10" />
@@ -95,13 +95,17 @@
       </div>
     </div>
   </main>
-  <Newsletter />
-  <LazyTheFooter />
+  <LazyNewsletter />
+  <LazySiteFooter 
+    hydrate-on-visible 
+    ref="footerRef"
+    :navigation="siteData?.footerNavigation || []"
+    :globals="siteData?.globals || {}"
+  />
   <LazyWishlistSidebar />
-  <LazyBottomNavbar />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {
   SfIconBase,
   SfIconLogout,
@@ -118,6 +122,32 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const { logout } = useAuth();
+
+defineProps({
+  error: Object
+})
+
+const {
+	siteData,
+	siteError,
+	refresh,
+} = await useSiteGlobals()
+
+const { isVisualEditingEnabled, apply } = useVisualEditing()
+
+const navigation = ref<HTMLElement>()
+const footer = useTemplateRef('footerRef')
+
+function onNavigationReady(el: HTMLElement) {
+  if(!isVisualEditingEnabled) return
+  navigation.value = el
+  apply({
+    elements: [navigation.value as HTMLElement, footer.value?.footerRef as HTMLElement],
+    onSaved: () => {
+      refresh()
+    },
+  })
+}
 
 const sections = [
   {

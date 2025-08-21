@@ -28,7 +28,7 @@ function onNavigationReady(el: HTMLElement) {
 
 <template>
     <SiteHeader @navigationReady="onNavigationReady" />
-    <div>
+    <div class="relative z-1">
       <slot></slot>
     </div>
     

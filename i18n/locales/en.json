@@ -1,7 +1,8 @@
 {
   "menu": {
     "viewAll": "View all {category}",
-    "viewAllTitle": "View all products in {category}"
+    "viewAllTitle": "View all products in {category}",
+    "browse": "Browse"
   },
   "searchPlaceholder": "Searh by product, sku or brand",
   "billing": {

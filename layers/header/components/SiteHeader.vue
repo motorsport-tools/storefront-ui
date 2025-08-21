@@ -3,6 +3,8 @@ import { useMegaMenuCategories } from '~/layers/core/composable/useMegaMenuCateg
 import { SfIconMenu } from '@storefront-ui/vue'
 import Overlay from './ui/Overlay.vue'
 
+const { $viewport } = useNuxtApp()
+
 const props = defineProps({
   navigationRef: {
     type: Object,
@@ -25,10 +27,9 @@ const categoryMenuRef = ref(null)
 const headerSticky = ref<HTMLElement>()
 const isHidden = ref(false)
 const isFixed = ref(false)
+const isMobile = useState(() => $viewport.isLessThan('lg'))
 
-onClickOutside(headerRef, () => {
-  close()
-})
+const isOverlayVisible = ref(false)
 
 const megaMenuClick = (menuType: string[]) => {
   if(categoryMenuRef.value) {
@@ -41,8 +42,19 @@ const emit = defineEmits(['navigationReady'])
 let lastScroll = 0
 let SCROLL_THRESHOLD = 200
 let ticking = false
+let resizeTimeout: ReturnType<typeof setTimeout>
+
+const handleResize = () => {
+    isMobile.value = $viewport.isLessThan('lg')
+    ticking = false
+}
 
 const handleScroll = () => {
+    if(isMobile.value) {
+        isFixed.value = false
+        isHidden.value = false
+        return
+    }
     const currentScroll = window.scrollY
 
     if (currentScroll >= SCROLL_THRESHOLD) {
@@ -72,6 +84,20 @@ const onScroll = () => {
   }
 }
 
+const onResize = () => {
+    clearTimeout(resizeTimeout)
+    resizeTimeout = setTimeout(() => {
+        handleResize()
+    }, 200)
+}
+
+const onOpenMenu = () => {
+    isOverlayVisible.value = true
+}
+const onCloseMenu = () => {
+    isOverlayVisible.value = false
+}   
+
 onMounted(async () => {
     if(headerNavRef.value) {
         props.navigationRef.value = headerNavRef.value
@@ -80,22 +106,23 @@ onMounted(async () => {
     await nextTick() 
     if (headerSticky.value) {
         SCROLL_THRESHOLD = headerSticky.value.getBoundingClientRect().top + window.scrollY + 20
-        window.addEventListener('scroll', onScroll)
+        window.addEventListener('scroll', onScroll, { passive: true })
+        window.addEventListener('resize', onResize, { passive: true })
     }
 })
 
 onBeforeUnmount(() => {
     window.removeEventListener('scroll', onScroll)
+    window.removeEventListener('resize', onResize)
+    clearTimeout(resizeTimeout)
 })
 
-const isOverlayVisible = ref(false)
 </script>
 
 <template>
     <Overlay :isOpen="isOverlayVisible"/>
     <header
         ref="headerRef"
-        class="relative"
     >
         <!-- Top Dark Bar -->
         <div class="bg-[#222222] h-[36px] max-h-[36px] text-white hover:text-neutral-200 text-sm px-4 flex justify-between items-center relative z-[20]">
@@ -143,54 +170,61 @@ const isOverlayVisible = ref(false)
         <div 
             ref="headerSticky"
             :class="[
-                'w-full z-50',
+                'w-full z-[90]',
                 isHidden ? '-translate-y-full' : 'translate-y-0',
                 isFixed ? 'fixed top-0 left-0 transition-transform duration-300' : 'relative'
             ]"
         >
-        <div 
-            class="h-[48px] max-h-[48px] bg-white border-black-500/50 border-b flex flex-row justify-between items-center flex-nowrap px-2 lg:px-4 relative z-[20]"
-            
-        >
-            <button
-                class="lg:hidden h-full block flex justify-center items-center !text-black hover:bg-transparent cursor-pointer pr-2"
-                aria-label="Open menu"
-                title="Open menu"
-                @click="megaMenuClick([])"
+            <div 
+                class="h-[48px] max-h-[48px] bg-white border-black-500/50 border-b flex flex-row justify-between items-center flex-nowrap px-2 lg:px-4 relative z-[20]"
+                
             >
-                <SfIconMenu class="text-black" size="md" />
-            </button>
-            <NuxtLink 
-                to="/"
-                aria-label="Motorsport-Tools Homepage"
-                class="h-full block w-[250px] flex align-center pr-2"
-            >
-                <Logo />
-            </NuxtLink>
-            <div class="h-full flex-grow flex justify-end md:items-center md:justify-center">
-                <UiUserNavButton
-                    title="Search"
-                    class="md:hidden"
+                <button
+                    class="lg:hidden h-full block flex justify-center items-center !text-black hover:bg-transparent cursor-pointer pr-2"
+                    aria-label="Open menu"
+                    title="Open menu"
+                    @click="megaMenuClick([])"
                 >
-                    <Icon
-                        name="weui:search-filled"
-                        size="26px"
-                    />
-                </UiUserNavButton>
-                <UiSearchBar @update-overlay="isOverlayVisible = $event"/>
+                    <SfIconMenu class="text-black" size="base" />
+                </button>
+                <NuxtLink 
+                    to="/"
+                    aria-label="Motorsport-Tools Homepage"
+                    class="h-full block w-[250px] flex align-center pr-2"
+                >
+                    <Logo />
+                </NuxtLink>
+                <div class="h-full flex-grow flex justify-end md:items-center md:justify-center">
+                    <UiUserNavButton
+                        title="Search"
+                        class="md:hidden"
+                    >
+                        <Icon
+                            name="weui:search-filled"
+                            size="26px"
+                        />
+                    </UiUserNavButton>
+                    <UiSearchBar @update-overlay="isOverlayVisible = $event"/>
+                </div>
+                <div
+                    class="h-full flex items-center flex-nowrap"
+                >
+                    <UiUserNav/>
+                </div>    
             </div>
-            <div
-                class="h-full flex items-center flex-nowrap"
-            >
-                <UiUserNav/>
-            </div>    
-        </div>
 
-        <div class="bg-[#222222] text-white flex items-center justify-center flex-nowrap relative">
-            <UiCategoryMenu
-                :headerRef="headerRef" ref="categoryMenuRef"
-            />
-        </div>
+            <div 
+                class="hidden lg:flex bg-[#222222] text-white items-center justify-center flex-nowrap relative"
+            >
+                <UiCategoryMenuDesktop
+                    :headerRef="headerSticky"
+                    @openMenu="onOpenMenu"
+                    @closeMenu="onCloseMenu"
+                />
+            </div>
         </div>
     </header>
+    <UiCategoryMenuMobile
+        ref="categoryMenuRef"
+    />
 </template>

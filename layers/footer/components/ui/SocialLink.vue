@@ -43,6 +43,7 @@ const icon = computed(() => {
         :href="url"
         :aria-label="`Go to ${service} page`"
         target="_blank"
+        rel="nofollow"
     >
         <component
             :is="icon"

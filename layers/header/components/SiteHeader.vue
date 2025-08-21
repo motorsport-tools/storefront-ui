@@ -171,7 +171,7 @@ onBeforeUnmount(() => {
             ref="headerSticky"
             :class="[
                 'w-full z-[90]',
-                isHidden ? '-translate-y-full' : 'translate-y-0',
+                isHidden ? '-translate-y-full pointer-events-none' : 'translate-y-0 pointer-events-auto',
                 isFixed ? 'fixed top-0 left-0 transition-transform duration-300' : 'relative'
             ]"
         >

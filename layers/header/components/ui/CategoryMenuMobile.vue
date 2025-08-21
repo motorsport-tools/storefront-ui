@@ -2,10 +2,15 @@
 import Overlay  from './Overlay.vue'
 import type { Category } from '~/graphql'
 import type { Node as menuNode } from '#layers/header/types'
-import { useDisclosure, useDropdown, useTrapFocus, SfListItem, SfCounter, SfButton, SfDrawer, SfIconChevronRight, SfIconClose, SfIconArrowBack } from '@storefront-ui/vue'
+import { useDisclosure, useTrapFocus, SfListItem, SfCounter, SfButton, SfDrawer, SfIconChevronRight, SfIconClose, SfIconArrowBack } from '@storefront-ui/vue'
 
-const router = useRouter()
-router.beforeEach(() => isOpen.value = false)
+const route = useRoute()
+watch(
+  () => route.fullPath,
+  () => {
+    isOpen.value = false
+  }
+)
 
 const siteGlobals = useNuxtApp().payload.data['site-data'].globals
 

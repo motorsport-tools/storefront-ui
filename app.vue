@@ -7,8 +7,8 @@ const { loadWishlist } = useWishlist()
 
 
 nuxtApp.hook("page:finish", () => {
-  window.scrollTo(0, 0);
-});
+  window.scrollTo(0, 0)
+})
 
 onMounted(async () => {
     if ( isAuthenticated.value ) {  

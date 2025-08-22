@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
     query: string
     results?: {
         pages?: {
@@ -16,12 +16,13 @@ const props = defineProps<{
         }
     }
 }>()
+
 </script>
 
 <template>
     <div
       v-if="results"
-      class="absolute top-12 bg-white shadow-md rounded-md w-full overflow-hidden z-10"
+      class="bg-white shadow-md rounded-md border border-neutral-200 w-full overflow-hidden z-10"
     >
       <div v-if="results.suggestions?.length">
         <h3 class="px-4 pt-2 text-gray-500 text-xs uppercase">Suggestions</h3>
@@ -29,7 +30,7 @@ const props = defineProps<{
           <li
             v-for="s in results.suggestions"
             :key="s"
-            class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+            class="px-4 py-2 hover:bg-gray-100 cursor-pointer group"
           >
             <NuxtLink :to="`/search?query=${query}`">{{ query }}</NuxtLink>
           </li>
@@ -41,7 +42,7 @@ const props = defineProps<{
           <li
             v-for="p in results.results.categories?.result"
             :key="p.id"
-            class="flex gap-2 text-xs"
+            class="flex gap-2 text-xs group"
           >
             <NuxtLink :to="p.url"
                 class="flex gap-4 px-4 py-2 hover:bg-gray-100 w-full"

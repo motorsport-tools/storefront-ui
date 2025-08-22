@@ -30,6 +30,7 @@ const isFixed = ref(false)
 const isMobile = useState(() => $viewport.isLessThan('lg'))
 
 const isOverlayVisible = ref(false)
+const isSearchOverlayVisible = ref(false)
 
 const megaMenuClick = (menuType: string[]) => {
   if(categoryMenuRef.value) {
@@ -120,7 +121,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <Overlay :isOpen="isOverlayVisible"/>
+    <Overlay :isOpen="isOverlayVisible || isSearchOverlayVisible"/>
     <header
         ref="headerRef"
     >
@@ -204,7 +205,7 @@ onBeforeUnmount(() => {
                             size="26px"
                         />
                     </UiUserNavButton>
-                    <UiSearchBar @update-overlay="isOverlayVisible = $event"/>
+                    <UiSearchBar @update-overlay="isSearchOverlayVisible = $event"/>
                 </div>
                 <div
                     class="h-full flex items-center flex-nowrap"

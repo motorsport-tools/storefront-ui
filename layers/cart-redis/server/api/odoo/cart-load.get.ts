@@ -15,7 +15,7 @@ export default defineEventHandler(async (event: any) => {
     try {
       (orderLine.product as CustomProductWithStockFromRedis).stock = 0
       if (stock) {
-        (orderLine.product as CustomProductWithStockFromRedis).stock = stock?.[websiteId] || 0
+        (orderLine.product as CustomProductWithStockFromRedis).stock = Number(stock?.[websiteId]) || 0
       }
     }
     catch (e) {

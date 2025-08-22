@@ -2,25 +2,16 @@
 import {
     SfButton,
     SfLoaderCircular,
-    SfInput,
     useDisclosure,
-    useTrapFocus,
+    useDropdown
 } from '@storefront-ui/vue'
 import SearchList from '~/layers/clerkio/components/SearchList.vue'
+import { offset } from '@floating-ui/vue'
 
 const emit = defineEmits(['update-overlay'])
 const formSearchTemplateRef = ref(null)
-/*
-const {
-  searchInputValue,
-  highlightedIndex,
-  search,
-  searchHits,
-  selectHit,
-  enterPress,
-  showResultSearch,
-} = useSearch(formSearchTemplateRef)
-*/
+const searchInputRef = ref<HTMLElement>()
+const isTrapper = ref(false)
 
 const { 
     searchInputValue,
@@ -31,22 +22,109 @@ const {
     search,
 } = useClerkSearch(formSearchTemplateRef)
 
-onClickOutside(formSearchTemplateRef, () => {
-  //showResultSearch.value = false
-  searchInputValue.value = ''
-  showInstantSearch.value = false
+const { close, open } = useDisclosure()
+
+const { floatingRef, style } = useDropdown({
+    isOpen: showInstantSearch,
+    onClose: close,
+    placement: 'bottom-start',
+    referenceRef: formSearchTemplateRef,
+    middleware: [offset(4)],
 })
 
-const handleKeydown = (e) => {
-  if (e.key === 'Escape') {
-    //showResultSearch.value = false
+const focusInput = () => {
+    const inputEl = unrefElement(searchInputRef)?.querySelector('input');
+    inputEl?.focus();
+}
+
+const reset = () => {
     searchInputValue.value = ''
     showInstantSearch.value = false
-  }
+    close()
+    focusInput()
+}
+
+onClickOutside(formSearchTemplateRef, () => {
+  reset()
+})
+
+const engageTrap = () => {
+    if(showInstantSearch.value) isTrapper.value = true
+}
+
+const handleInputKeydown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+        reset()
+    }
+    if(e.key === 'ArrowDown') {
+        open()
+        if (showInstantSearch.value) {
+            const el = unrefElement(floatingRef)?.querySelector('a')
+            el?.focus()
+            engageTrap()
+        }
+    }
+    if (e.key === 'Tab') {
+        if(!e.shiftKey) {
+            const el = unrefElement(floatingRef)?.querySelector<HTMLElement>(
+                'a, button, [tabindex]:not([tabindex="-1"])'
+            )
+            el?.focus()
+            engageTrap()
+        } else if (e.shiftKey) {
+            reset()
+        }
+    }
+}   
+
+const handleKeydown = (e: KeyboardEvent) => {
+    if(!isTrapper.value || !floatingRef.value || !showInstantSearch.value) return
+
+    const focusable =  unrefElement(floatingRef)?.querySelectorAll<HTMLElement>(
+        'a, button, [tabindex]:not([tabindex="-1"])'
+    )
+    if (focusable?.length === 0) return
+
+    const first = focusable?.[0]
+    const last = focusable?.[focusable.length - 1]
+    const currentIndex = Array.from(focusable ?? []).indexOf(document.activeElement as HTMLElement)
+
+    if (e.key === 'Escape') {
+        reset()
+    }
+    if(e.key ==='ArrowUp') {
+        open()
+        e.preventDefault()
+        const prev = focusable?.[currentIndex - 1] || last
+        prev?.focus()
+    }
+    if(e.key === 'ArrowDown') {
+        open()
+        e.preventDefault()
+        const next = focusable?.[currentIndex + 1] || first
+        next?.focus()
+    }
+    if (e.key === 'Tab') {
+        if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault()
+            last?.focus()
+        } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault()
+            first?.focus()
+        }
+    }
 }
 
 watch(showInstantSearch, (val) => {
     emit('update-overlay', val)
+    document.body.classList.toggle('overflow-hidden', val)
+})
+
+watch(searchInputValue, () => {
+    if(searchInputValue.value === '') {
+        reset()
+        return
+    }
 })
 </script>
 
@@ -67,7 +145,9 @@ watch(showInstantSearch, (val) => {
             size="sm"
             @input="search()"
             @keydown.enter.prevent="enterPress"
-            @keydown="handleKeydown"
+            @keydown="handleInputKeydown"
+            ref="searchInputRef"
+            aria-label="Search"
         >
             <template #suffix>
                 <span class="flex items-center">
@@ -90,32 +170,15 @@ watch(showInstantSearch, (val) => {
                 </span>
             </template>
         </UiFormCustomSfInput>
-        <!--
-        <transition
-            enter-active-class="transform transition duration-500 ease-in-out"
-            leave-active-class="transform transition duration-500 ease-in-out"
-            enter-from-class="-translate-x-full md:translate-x-0 md:opacity-0"
-            enter-to-class="translate-x-0 md:translate-x-0 md:opacity-100"
-            leave-from-class="translate-x-0 md:opacity-100"
-            leave-to-class="-translate-x-full md:translate-x-0 md:opacity-0"
-        >
-        -->
-            <SearchList 
-                v-if="showInstantSearch"
-                :query="searchInputValue"
-                :results="results"
-            />
-            <!--            
-            <DesktopSearchList
-                v-if="showResultSearch"
-                :hits="searchHits"
-                :search-text="searchInputValue"
-                @select="selectHit"
-            />
-            -->
-        <!--
-        </transition>
-        -->
+        
+        <SearchList 
+            v-if="showInstantSearch"
+            :query="searchInputValue"
+            :results="results"
+            ref="floatingRef"
+            :style="style"
+            @keydown="handleKeydown"
+        />
     
     </form>
 </template>

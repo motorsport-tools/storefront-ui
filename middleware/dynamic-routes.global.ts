@@ -1,14 +1,14 @@
 export default defineNuxtRouteMiddleware(async (to) => {
-  // Skip middleware if route exists in the static route tree
-  if (to.matched.length > 0 || to.path.startsWith('/api/')) {
-    return
-  }
+    // Skip middleware if route exists in the static route tree
+    if (to.matched.length > 0 || to.path.startsWith('/api/') || to.path.startsWith('/~partytown')) {
+        return
+    }
 
-  // Get the slug from the current route
-  const router = useRouter()
-  const slug = to.path
+    // Get the slug from the current route
+    const router = useRouter()
+    const slug = to.path
 
-  try {
+    try {
         const { data: routeData } = await useFetch(`/api/route-resolver`, {
             params: {
                 slug,
@@ -40,7 +40,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
             name: slug.replace(/^\//, '').replace(/\//g, '-'),
             component: component,
         })
-    
+
         // Trigger the route replacement
         return to.fullPath
     } catch (error) {

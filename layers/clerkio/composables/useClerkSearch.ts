@@ -6,11 +6,11 @@ interface ClerkSearchResult<T = any> {
 }
 
 interface ClerkResults {
-    pages?: ClerkSearchResult<{  }>
-    products?: ClerkSearchResult<{ id: number; [key: string]: any }>
-    categories?: ClerkSearchResult<{  }>
+    pages?: ClerkSearchResult<{}>
+    products?: ClerkSearchResult<{ id: number;[key: string]: any }>
+    categories?: ClerkSearchResult<{}>
 }
-  
+
 interface ClerkSearchResponse {
     query: string
     results: ClerkResults
@@ -51,7 +51,7 @@ export const useClerkSearch = (formSearchTemplateRef?: any, options = { limit: 6
         }
 
         try {
-            const predictive = await $fetch<ClerkSearchResponse>('https://api.clerk.io/v3/search/omni', {
+            const predictive = await $fetch<ClerkSearchResponse>('/api/search/v3/search/omni', {
                 method: 'POST',
                 body: {
                     key: config.public.clerkApiKey,

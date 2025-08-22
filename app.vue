@@ -4,8 +4,6 @@ const { isAuthenticated, loadUser } = useAuth()
 const { loadCart } = useCart()
 const { loadWishlist } = useWishlist()
 
-
-
 nuxtApp.hook("page:finish", () => {
   window.scrollTo(0, 0)
 })

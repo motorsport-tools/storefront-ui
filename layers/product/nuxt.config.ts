@@ -9,7 +9,6 @@ export default defineNuxtConfig({
         'nitro:init': async (nitro: Nitro) => {
 
             if (process.env.NODE_ENV === 'development') {
-                console.log('Nitro Init - on Dev')
                 process.stdout.write('Start warmup stock...\n')
                 const data = Array.from(Array(2300).keys())
 

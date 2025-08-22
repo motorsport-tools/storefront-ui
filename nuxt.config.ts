@@ -45,7 +45,6 @@ export default defineNuxtConfig({
   site: {
     url: '',
     name: 'Motorspor-Tools',
-    description: 'Welcome to an awesome ecommerce site!',
     defaultLocale: 'en',
   },
 
@@ -125,7 +124,7 @@ export default defineNuxtConfig({
         md: 768,
         sm: 640,
         xs: 376,
-        xxs:0,
+        xxs: 0,
       },
     },
   },
@@ -134,7 +133,7 @@ export default defineNuxtConfig({
       gzip: true, brotli: true
     },
     //logLevel: 'debug',
-    sourceMap: true,
+    //sourceMap: true,
     storage: {
       cart: {
         driver: process.env.NUXT_STORAGE_DRIVER,
@@ -202,7 +201,7 @@ export default defineNuxtConfig({
     viewer: false,
   },
   partytown: {
-
+    debug: false,
   },
   device: {
     refreshOnResize: true,

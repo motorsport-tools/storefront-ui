@@ -29,6 +29,13 @@ export default defineNuxtConfig({
   security: {
     headers: {
       xFrameOptions: 'SAMEORIGIN',
+      contentSecurityPolicy: {
+        'img-src': ["'self'", 'data:', '*'],
+        'script-src': ["'self'", "'unsafe-inline'", '*'],
+        'connect-src': ["'self'", process.env.DIRECTUS_URL || ''],
+        'frame-ancestors': ["'self'", process.env.DIRECTUS_URL || ''],
+        'upgrade-insecure-requests': true,
+      }
     },
   },
   app: {
@@ -138,6 +145,7 @@ export default defineNuxtConfig({
       cart: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
+        password: process.env.NUXT_STORAGE_PASSWORD,
         ttl: process.env?.NUXT_SWR_CACHE_TIME || 0,
         lazyConnect: true,
       },
@@ -150,12 +158,14 @@ export default defineNuxtConfig({
       stock: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
+        password: process.env.NUXT_STORAGE_PASSWORD,
         ttl: process.env?.NUXT_SWR_CACHE_TIME || 3600,
         lazyConnect: true,
       },
       slug: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
+        password: process.env.NUXT_STORAGE_PASSWORD,
         ttl: process.env?.NUXT_SWR_CACHE_TIME || 3600,
         lazyConnect: true,
       },
@@ -164,6 +174,7 @@ export default defineNuxtConfig({
       cart: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
+        password: process.env.NUXT_STORAGE_PASSWORD,
         ttl: process.env?.NUXT_SWR_CACHE_TIME || 0,
       },
       cache: {
@@ -174,11 +185,13 @@ export default defineNuxtConfig({
       stock: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
+        password: process.env.NUXT_STORAGE_PASSWORD,
         ttl: process.env?.NUXT_SWR_CACHE_TIME || 3600,
       },
       slug: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
+        password: process.env.NUXT_STORAGE_PASSWORD,
         ttl: process.env?.NUXT_SWR_CACHE_TIME || 3600,
       },
     },

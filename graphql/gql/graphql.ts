@@ -769,7 +769,6 @@ export type Order = {
   currency: Maybe<Currency>;
   currencyRate: Maybe<Scalars['String']['output']>;
   dateOrder: Maybe<Scalars['String']['output']>;
-  easyshipRate: Maybe<Array<EasyshipRate>>;
   giftCards: Maybe<Array<GiftCard>>;
   id: Scalars['Int']['output'];
   invoiceCount: Maybe<Scalars['Int']['output']>;
@@ -785,6 +784,7 @@ export type Order = {
   partnerShipping: Maybe<Partner>;
   reportOrderLine: Maybe<Array<OrderLine>>;
   shippingMethod: Maybe<ShippingMethod>;
+  shippingRate: Maybe<Array<EasyshipRate>>;
   stage: Maybe<OrderStage>;
   taxTotals: Maybe<Scalars['GenericScalar']['output']>;
   transactions: Maybe<Array<PaymentTransaction>>;
@@ -798,7 +798,7 @@ export type OrderFilterInput = {
 
 export type OrderLine = {
   __typename?: 'OrderLine';
-  coupon: Maybe<Scalars['Boolean']['output']>;
+  coupon: Maybe<Array<Coupon>>;
   giftCard: Maybe<GiftCard>;
   id: Scalars['Int']['output'];
   isClickAndCollect: Maybe<Scalars['Boolean']['output']>;

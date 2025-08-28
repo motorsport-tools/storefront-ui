@@ -124,6 +124,11 @@ const { getMainImage, getThumbs } = useProductGetters(productVariant)
 const mainImage = computed(() => getMainImage(380, 505))
 const thumbs = computed(() => getThumbs(78, 78))
 
+watch(thumbs, (newThumbs) => {
+  // Do something with the new thumbs
+  console.log('Loaded Thumbs: ', newThumbs)
+})
+
 watch(
   () => cleanPath.value,
   async (slug) => {
@@ -177,7 +182,6 @@ watch(
         >
             <section class="grid-in-left-top md:h-full xl:max-h-[700px]">
                 <LazyUiGallery
-                    :main-image="mainImage || {} as ImageGalleryItem"
                     :thumbs="thumbs"
                 />
             </section>

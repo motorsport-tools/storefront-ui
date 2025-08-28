@@ -4,10 +4,6 @@ import { ref, computed, type PropType } from 'vue'
 import type { ImageGalleryItem } from '~/graphql'
 
 const props = defineProps({
-  mainImage: {
-    type: Object as PropType<ImageGalleryItem>,
-    required: true,
-  },
   thumbs: {
     type: Array as PropType<ImageGalleryItem[]>,
     default: () => [],
@@ -18,17 +14,14 @@ const thumbsRef = ref<HTMLElement>()
 const activeIndex = ref(0)
 
 const allImages = computed(() => [
-  {
-    imageSrc: props.mainImage.url,
-    imageThumbSrc: props.mainImage.url,
-    alt: props.mainImage.alt,
-  },
   ...props.thumbs.map(thumb => ({
     imageSrc: thumb.url,
     imageThumbSrc: thumb.url,
     alt: thumb.alt,
   })),
 ])
+
+console.log('All Images:', allImages.value)
 </script>
 
 <template>

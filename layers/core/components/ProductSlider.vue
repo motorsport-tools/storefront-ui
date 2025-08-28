@@ -82,7 +82,7 @@ const SliderInit = async () => {
               :name="productTemplate?.name || ''"
               :image-url="
                 $getImage(
-                  String(productTemplate.image),
+                  `${String(productTemplate.image)}`,
                   370,
                   370,
                   String(productTemplate.imageFilename),

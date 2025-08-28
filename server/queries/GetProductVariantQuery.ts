@@ -14,6 +14,12 @@ export default `
         imageFilename
         combinationInfoVariant
         slug
+        mediaGallery {
+          id
+          name
+          image
+          imageFilename
+        }
         metaTitle
         metaImage
         metaKeyword

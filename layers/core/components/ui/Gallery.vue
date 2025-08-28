@@ -20,8 +20,6 @@ const allImages = computed(() => [
     alt: thumb.alt,
   })),
 ])
-
-console.log('All Images:', allImages.value)
 </script>
 
 <template>

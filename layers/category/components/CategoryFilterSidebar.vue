@@ -7,7 +7,6 @@ import {
   SfRadio,
   SfSelect,
   SfThumbnail,
-  SfLoaderCircular,
 } from "@storefront-ui/vue";
 
 const emit = defineEmits(["close"]);
@@ -74,7 +73,6 @@ const facets = computed(() => [
 
 const selectPriceFilter = (option: { id: string, label: string, values: string }) => {
   const wasSelected = isPriceFilterSelected(option.values)
-  console.log('Was selected before?', wasSelected)
 
   selectedFilters.value = selectedFilters.value.filter(
     (filter: any) => filter.filterName !== 'Price',
@@ -86,10 +84,6 @@ const selectPriceFilter = (option: { id: string, label: string, values: string }
       label: option.id,
       id: option.values,
     })
-    console.log('Added price filter:', option.values)
-  }
-  else {
-    console.log('Removed price filter:', option.values)
   }
 
   applyFiltersInstantly()
@@ -156,14 +150,6 @@ const clearFilters = () => {
 
 <template>
   <aside class="w-full lg:max-w-[376px] relative">
-    <!-- Loading overlay -->
-    <div
-      v-if="loading"
-      class="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center"
-    >
-      <SfLoaderCircular size="base" />
-    </div>
-
     <h5
       class="py-2 px-4 mb-6 bg-neutral-100 typography-headline-6 font-bold text-neutral-900 uppercase tracking-widest md:rounded-md"
     >
@@ -295,16 +281,16 @@ const clearFilters = () => {
             :class="[
               'px-4 bg-transparent hover:bg-transparent',
               {
-                'font-medium': isFilterSelected({ id, value }),
+                'font-medium': isFilterSelected({ id }),
               },
             ]"
-            :selected="isFilterSelected({ id, value })"
+            :selected="isFilterSelected({ id })"
           >
             <template #prefix>
               <SfCheckbox
                 :value="label"
                 class="appearance-none peer hidden"
-                :model-value="isFilterSelected({ id, value })"
+                :model-value="isFilterSelected({ id })"
                 @update:model-value="
                   selectFilter(facet, { id, value, label })
                 "

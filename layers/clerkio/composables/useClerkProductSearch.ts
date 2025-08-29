@@ -58,7 +58,7 @@ export const useClerkProductSearch = (customIndex: string = '') => {
                     body: {
                         key: config.public.clerkApiKey,
                         visitor: 'auto',
-                        attributes: ['id', 'name', 'image', 'image_slug', 'image_filename', 'price', 'on_sale', 'list_price', 'rating', 'ratingCount', 'sku', 'url'],
+                        attributes: ['id', 'name', 'brand', 'image', 'image_slug', 'image_filename', 'price', 'on_sale', 'list_price', 'rating', 'ratingCount', 'sku', 'slug'],
                         ...query.value
                     },
                 }),

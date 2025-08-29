@@ -5,7 +5,7 @@ import {
   useDisclosure,
   SfLoaderCircular,
 } from "@storefront-ui/vue";
-import type { Product } from "~/graphql";
+import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
 
 const route = useRoute();
 const { isOpen, open, close } = useDisclosure();
@@ -64,6 +64,8 @@ onMounted( () => {
 search( {
   query: String(route.query.search || '')
 })
+
+const typedProducts = computed(() => searchResults.value as Product[])
 </script>
 <template>
   <main 
@@ -106,7 +108,7 @@ search( {
             class="mt-[160px]"
           />
         </div>
-        <div v-else-if="searchResults && searchResults.length > 0">
+        <div v-else-if="searchResults.length > 0">
           <div class="flex justify-between items-center mb-6">
             <span class="font-bold font-headings md:text-lg"
               >{{ totalItems }} Products
@@ -128,7 +130,7 @@ search( {
             <LazyUiProductCard
               v-for="productTemplate in searchResults"
               :key="productTemplate?.id"
-              :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product || productTemplate) || '' "
+              :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product || productTemplate as Product) || '' "
               :name="productTemplate?.name || ''"
               :image-url="
                 $getImage(
@@ -140,7 +142,7 @@ search( {
               "
               :brand="productTemplate?.brand"
               :image-alt="productTemplate?.name || ''"
-              :regular-price="productTemplate.list_price"
+              :regular-price="productTemplate.on_sale ? productTemplate.list_price : 0"
               :special-price="productTemplate.price"
               :is-in-wishlist="productTemplate?.isInWishlist || false"
               :rating-count="productTemplate.ratingCount || 0"

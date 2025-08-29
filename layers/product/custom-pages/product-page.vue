@@ -7,7 +7,6 @@ import {
   SfIconFavoriteFilled,
   SfIconPackage,
   SfIconSafetyCheck,
-  SfIconSell,
   SfIconShoppingCart,
   SfIconShoppingCartCheckout,
   SfIconWarehouse,
@@ -17,7 +16,7 @@ import {
   SfThumbnail,
 } from '@storefront-ui/vue'
 import type { LocationQueryRaw } from 'vue-router'
-import type { CustomProductWithStockFromRedis, ImageGalleryItem, OrderLine } from '~/graphql'
+import type { CustomProductWithStockFromRedis, OrderLine } from '~/graphql'
 import generateSeo, { type SeoEntity } from '~/utils/buildSEOHelper'
 
 const route = useRoute()
@@ -120,8 +119,7 @@ const handleWishlistRemoveItem = async (firstVariant: CustomProductWithStockFrom
   await wishlistRemoveItem(firstVariant.id)
 }
 
-const { getMainImage, getThumbs } = useProductGetters(productVariant)
-const mainImage = computed(() => getMainImage(380, 505))
+const { getMainImage, getThumbs } = useProductGetters(productVariant as Ref< CustomProductWithStockFromRedis>)
 const thumbs = computed(() => getThumbs(78, 78))
 
 watch(
@@ -148,6 +146,19 @@ watch(
   },
   { immediate: true, deep: true }
 )
+
+const isLoadingPage = computed(() => {
+  const hasTemplate = productTemplate.value?.id
+  const hasVariant = productVariant.value?.id
+  const isTemplateLoading = loadingProductTemplate.value
+  const isVariantLoading = loadingProductVariant.value
+
+  return isTemplateLoading || isVariantLoading || !hasTemplate || !hasVariant
+})
+
+const hasProductData = computed(() => {
+  return productTemplate.value?.id && productVariant.value?.id
+})
 </script>
 
 <template>
@@ -163,7 +174,7 @@ watch(
             class="self-start mt-5 mb-10"
         />
         <div
-            v-if="loadingProductTemplate"
+            v-if="isLoadingPage"
             class="w-full flex flex-col items-center justify-center min-h-[60vh]"
         >
             <SfLoaderCircular
@@ -172,7 +183,7 @@ watch(
             />
         </div>
         <div
-            v-else-if="productVariant.id"
+            v-else-if="hasProductData"
             class="md:grid grid-areas-product-page grid-cols-product-page gap-x-6"
         >
             <section class="grid-in-left-top md:h-full xl:max-h-[700px]">

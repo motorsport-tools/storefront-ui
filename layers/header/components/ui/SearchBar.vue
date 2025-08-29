@@ -9,18 +9,19 @@ import SearchList from '~/layers/clerkio/components/SearchList.vue'
 import { offset } from '@floating-ui/vue'
 
 const emit = defineEmits(['update-overlay'])
+const route = useRoute()
 const formSearchTemplateRef = ref(null)
 const searchInputRef = ref<HTMLElement>()
 const isTrapper = ref(false)
 
 const { 
     searchInputValue,
-    results,
+    omniResults,
     loading,
     showInstantSearch,
     enterPress,
-    search,
-} = useClerkSearch(formSearchTemplateRef)
+    omniSearch,
+} = useClerkOmniSearch(formSearchTemplateRef)
 
 const { close, open } = useDisclosure()
 
@@ -115,8 +116,12 @@ const handleKeydown = (e: KeyboardEvent) => {
     }
 }
 
+const handleInputEnter = () => {
+    enterPress()
+    showInstantSearch.value = false
+}
+
 watch(showInstantSearch, (val) => {
-    emit('update-overlay', val)
     document.body.classList.toggle('overflow-hidden', val)
 })
 
@@ -126,6 +131,14 @@ watch(searchInputValue, () => {
         return
     }
 })
+
+
+watch(() => ({ ...route.query }),
+    async (query) => {
+        searchInputValue.value = query.search ? String(query.search) : ''
+    },
+    { immediate: true }
+)
 </script>
 
 <template>
@@ -143,8 +156,8 @@ watch(searchInputValue, () => {
             :placeholder="$t('searchPlaceholder')"
             wrapper-class="flex-grow pr-0"
             size="sm"
-            @input="search()"
-            @keydown.enter.prevent="enterPress"
+            @input="omniSearch()"
+            @keydown.enter.prevent="handleInputEnter"
             @keydown="handleInputKeydown"
             ref="searchInputRef"
             aria-label="Search"
@@ -174,7 +187,7 @@ watch(searchInputValue, () => {
         <SearchList 
             v-if="showInstantSearch"
             :query="searchInputValue"
-            :results="results"
+            :results="omniResults"
             ref="floatingRef"
             :style="style"
             @keydown="handleKeydown"

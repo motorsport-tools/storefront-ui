@@ -5,7 +5,7 @@ interface ClerkSearchResult<T = any> {
     estimated_total_count: number
 }
 
-interface ClerkResults {
+interface ClerkOmniResults {
     pages?: ClerkSearchResult<{}>
     products?: ClerkSearchResult<{ id: number;[key: string]: any }>
     categories?: ClerkSearchResult<{}>
@@ -13,35 +13,35 @@ interface ClerkResults {
 
 interface ClerkSearchResponse {
     query: string
-    results: ClerkResults
+    results: ClerkOmniResults
 }
-
-export const useClerkSearch = (formSearchTemplateRef?: any, options = { limit: 6 }) => {
-    const route = useRoute()
+export const useClerkOmniSearch = (formSearchTemplateRef?: any, options = { limit: 6 }) => {
     const router = useRouter()
 
     const config = useRuntimeConfig()
-    const loading = ref(false)
-    const searchInputValue = useState(`odoo-search-input-${formSearchTemplateRef}`, () => '')
-    const results = useState<ClerkSearchResponse[]>(`clerk-results-${formSearchTemplateRef}`, () => [])
+
+    const searchInputValue = useState(`clerk-search-input-${formSearchTemplateRef}`, () => '')
+    const omniResults = useState<ClerkSearchResponse[]>(`clerk-results-${formSearchTemplateRef}`, () => [])
     const showInstantSearch = ref(false)
+
+    const loading = useState(`clerk-loading-omni`, () => false)
 
     watch(searchInputValue, async (val) => {
         if (!val || val.length < 3) {
             loading.value = false
             showInstantSearch.value = false
-            results.value = []
+            omniResults.value = []
             return
         }
     })
 
     const enterPress = () => {
         if (!searchInputValue.value) return
-        showInstantSearch.value = false
+
         router.push({ path: '/search', query: { search: searchInputValue.value } })
     }
 
-    const search = async () => {
+    const omniSearch = async () => {
         loading.value = true
 
         if (searchInputValue.value.length < 3) {
@@ -56,7 +56,7 @@ export const useClerkSearch = (formSearchTemplateRef?: any, options = { limit: 6
                 body: {
                     key: config.public.clerkApiKey,
                     visitor: 'auto',
-                    labels: ['search bar'],
+                    labels: ['Search bar'],
                     query: searchInputValue.value,
                     searches: {
                         products: {
@@ -77,7 +77,7 @@ export const useClerkSearch = (formSearchTemplateRef?: any, options = { limit: 6
                 },
             })
 
-            results.value = predictive || {}
+            omniResults.value = predictive || {}
             showInstantSearch.value = true
 
         } catch (err) {
@@ -89,11 +89,11 @@ export const useClerkSearch = (formSearchTemplateRef?: any, options = { limit: 6
     }
 
     return {
-        results,
+        omniResults,
         loading,
         showInstantSearch,
         searchInputValue,
         enterPress,
-        search
+        omniSearch,
     }
 }

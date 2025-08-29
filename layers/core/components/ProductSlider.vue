@@ -78,7 +78,7 @@ const SliderInit = async () => {
           <LazyUiProductCard
               v-if="!loading"
               :key="productTemplate?.id || index"
-              :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product) || '' "
+              :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product || productTemplate as Product) || '' "
               :name="productTemplate?.name || ''"
               :image-url="
                 $getImage(

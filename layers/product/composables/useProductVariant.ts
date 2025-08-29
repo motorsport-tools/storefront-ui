@@ -1,7 +1,5 @@
 import type {
   CustomProductWithStockFromRedis,
-  Product,
-  ProductVariant,
   ProductVariantResponse,
   QueryProductVariantArgs,
 } from "~/graphql";
@@ -18,7 +16,7 @@ export const useProductVariant = (slugWithCombinationIds: string) => {
     const { data, status } = await useAsyncData(`product-variant-${slugWithCombinationIds}`, () =>
       $sdk().odoo.query<QueryProductVariantArgs, ProductVariantResponse>(
         { queryName: QueryName.GetProductVariantQuery }, params),
-        { server: true, lazy: import.meta.client }
+      { server: true, lazy: import.meta.client }
     )
 
     if (data.value?.productVariant?.product) {
@@ -27,33 +25,23 @@ export const useProductVariant = (slugWithCombinationIds: string) => {
     }
 
     watch(status, () => {
-      if(status.value === 'pending') {
+      if (status.value === 'pending') {
         loadingProductVariant.value = true
       }
-      if(status.value === 'error' && !data.value?.productVariant.product) {
+      if (status.value === 'error' && !data.value?.productVariant.product) {
         loadingProductVariant.value = false
         showError({
           status: 404,
           message: 'Product not found - Variant Error',
         })
       }
-      if(status.value === 'success') {
+      if (status.value === 'success') {
         loadingProductVariant.value = false
         productVariant.value
           = (data?.value?.productVariant?.product as CustomProductWithStockFromRedis) || {}
       }
-    })  
+    })
   }
-
-  const getImages = computed(() => {
-    return [
-      {
-        imageSrc: productVariant?.value?.image,
-        imageThumbSrc: productVariant?.value?.image,
-        alt: productVariant.value?.name,
-      },
-    ];
-  });
 
   const getRegularPrice = computed(
     () =>
@@ -68,7 +56,6 @@ export const useProductVariant = (slugWithCombinationIds: string) => {
   return {
     loadingProductVariant,
     productVariant,
-    getImages,
     getRegularPrice,
     getSpecialPrice,
     loadProductVariant,

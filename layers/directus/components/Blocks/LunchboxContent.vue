@@ -128,7 +128,7 @@ function getPositionClass(position: string): string {
             loading="lazy"
             provider="directus"
             :src="`/assets/${data?.background_image?.id}`"
-            sizes="sm:100vw md:100vw lg:662px xl:662px xxl:662px"
+            sizes="xs:376px sm:640px md:384px lg:662px xl:662px xxl:662px"
             format="webp"
             quality="75"
             :alt="data?.background_image?.title || `Image background for ${data?.link_title}`"

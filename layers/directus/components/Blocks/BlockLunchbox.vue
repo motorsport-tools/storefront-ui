@@ -54,7 +54,7 @@ const item4Class = computed( () => {
 
 </script>
 <template>
-    <div class="w-full h-full min-h-60 md:min-h-[30rem] relative grid grid-cols-2 md:grid-cols-4  grid-rows-3 md:grid-rows-2 gap-3">
+    <div class="w-full h-full min-h-80 md:min-h-[46rem] relative grid grid-cols-2 md:grid-cols-4  grid-rows-3 md:grid-rows-2 gap-3">
         <div :class="item1Class" class="overflow-hidden">
             <BlocksLunchboxContent :data="blockData?.section_content[0]?.item" />
         </div>

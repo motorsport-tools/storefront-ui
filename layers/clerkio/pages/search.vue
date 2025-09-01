@@ -6,6 +6,7 @@ import {
   SfLoaderCircular,
 } from "@storefront-ui/vue";
 import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
+import ProductCardSkeleton from "~/layers/core/components/ui/ProductCardSkeleton.vue";
 
 const route = useRoute();
 const { isOpen, open, close } = useDisclosure();
@@ -53,6 +54,7 @@ onMounted( () => {
   watch(
     () => route,
     async () => {
+      hasLoadedOnce.value = false
       search( {
         query: String(route.query.search || '')
       })
@@ -65,7 +67,13 @@ search( {
   query: String(route.query.search || '')
 })
 
-const typedProducts = computed(() => searchResults.value as Product[])
+const hasLoadedOnce = ref(false)
+
+watch(loading, (val) => {
+  if (!val) {
+    hasLoadedOnce.value = true
+  }
+})
 </script>
 <template>
   <main 
@@ -103,12 +111,31 @@ const typedProducts = computed(() => searchResults.value as Product[])
           v-if="loading"
           class="w-full text-center"
         >
-          <SfLoaderCircular
-            size="xl"
-            class="mt-[160px]"
-          />
+          <div class="flex justify-between items-center mb-6">
+            <span class="font-bold font-headings md:text-lg"
+              >Loading Products
+            </span>
+            <SfButton
+              variant="tertiary"
+              class="lg:hidden whitespace-nowrap"
+              @click="open"
+            >
+              <template #prefix>
+                <SfIconTune />
+              </template>
+              Filter
+            </SfButton>
+          </div>
+          <section
+            class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
+          >
+            <ProductCardSkeleton
+              v-for="n in 12"
+              :key="n"
+            />
+          </section>
         </div>
-        <div v-else-if="searchResults.length > 0">
+        <div v-else-if="totalItems > 0">
           <div class="flex justify-between items-center mb-6">
             <span class="font-bold font-headings md:text-lg"
               >{{ totalItems }} Products
@@ -161,7 +188,7 @@ const typedProducts = computed(() => searchResults.value as Product[])
           />
         </div>
         <CategoryEmptyState
-          v-if="!loading && route.query.search && totalItems === 0"
+          v-else-if="!loading && route.query.search && hasLoadedOnce && totalItems === 0"
           :page="pagination.currentPage"
         />
       </div>

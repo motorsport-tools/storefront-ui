@@ -56,16 +56,16 @@ const item4Class = computed( () => {
 <template>
     <div class="w-full h-full min-h-80 md:min-h-[46rem] relative grid grid-cols-2 md:grid-cols-4  grid-rows-3 md:grid-rows-2 gap-3">
         <div :class="item1Class" class="overflow-hidden">
-            <BlocksLunchboxContent :data="blockData?.section_content[0]?.item" />
+            <BlocksLunchboxContent :data="blockData?.section_content[0]?.item" block="1" :layout="blockData.layout"/>
         </div>
         <div :class="item2Class" class="overflow-hidden">
-            <BlocksLunchboxContent :data="blockData?.section_content[1]?.item" />
+            <BlocksLunchboxContent :data="blockData?.section_content[1]?.item" block="2"/>
         </div>
         <div :class="item3Class" class="overflow-hidden">
-            <BlocksLunchboxContent :data="blockData?.section_content[2]?.item" />
+            <BlocksLunchboxContent :data="blockData?.section_content[2]?.item" block="3"/>
         </div>
         <div :class="item4Class" class="overflow-hidden">
-            <BlocksLunchboxContent :data="blockData?.section_content[3]?.item" />
+            <BlocksLunchboxContent :data="blockData?.section_content[3]?.item" block="4"/>
         </div>
     </div>
 </template>

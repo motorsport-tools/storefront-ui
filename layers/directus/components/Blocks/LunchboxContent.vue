@@ -3,9 +3,93 @@ import type { BlockLunchboxContent } from '../../shared/types/schema';
 
 interface Props {
     data: BlockLunchboxContent
+    block: string
+    layout: number
 }
+const props = defineProps<Props>()
 
-defineProps<Props>()
+const dims = computed(() => {
+  let width = "0"
+  let height = "0"
+  if( props.layout === 1 ) {
+    switch (props.block) {
+      case "1":
+        width = "662px"
+        height = "736px"
+        break
+      case "2":
+        width = "662px"
+        height = "368px"
+        break
+      case "3":
+        width = "331px"
+        height = "368px"
+        break
+      case "4":
+        width = "331px"
+        height = "368px"
+        break
+    }
+  } else if( props.layout === 2 ) {
+    switch (props.block) {
+      case "1":
+        width = "662px"
+        height = "368px"
+        break
+      case "2":
+        width = "662px"
+        height = "736px"
+        break
+      case "3":
+        width = "331px"
+        height = "368px"
+        break
+      case "4":
+        width = "331px"
+        height = "368px"
+        break
+    }
+  } else if( props.layout === 3 ) {
+    switch (props.block) {
+      case "1":
+        width = "496px"
+        height = "736px"
+        break
+      case "2":
+        width = "331px"
+        height = "368px"
+        break
+      case "3":
+        width = "331px"
+        height = "368px"
+        break
+      case "4":
+        width = "662px"
+        height = "368px"
+        break
+    }
+  } else if( props.layout === 4 ) {
+    switch (props.block) {
+      case "1":
+        width = "331px"
+        height = "736px"
+        break
+      case "2":
+        width = "331px"
+        height = "368px"
+        break
+      case "3":
+        width = "662px"
+        height = "736px"
+        break
+      case "4":
+        width = "662px"
+        height = "368px"
+        break
+    }
+  } 
+  return { width: width, height: height }
+})
 
 function getPositionClass(position: string): string {
   switch (position) {
@@ -30,6 +114,7 @@ function getPositionClass(position: string): string {
       return 'absolute bottom-0 right-0';
   }
 }
+
 </script>
 <template>
     <NuxtLink
@@ -43,10 +128,12 @@ function getPositionClass(position: string): string {
             loading="lazy"
             provider="directus"
             :src="`/assets/${data?.background_image?.id}`"
-            sizes="50vw sm:640px"
+            sizes="sm:100vw md:100vw lg:662px xl:662px xxl:662px"
             format="webp"
             quality="75"
             :alt="data?.background_image?.title || `Image background for ${data?.link_title}`"
+            :width="dims.width"
+            :height="dims.height"
         />
         <div class="inline-block absolute p-2 z-1 text-white font-bold text-2xl sm:text-3xl md:text-4xl drop-shadow-md" v-html="data?.content" :class="getPositionClass(data?.text_position || 'bottom-left')">
         </div>

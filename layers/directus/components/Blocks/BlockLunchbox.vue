@@ -59,13 +59,13 @@ const item4Class = computed( () => {
             <BlocksLunchboxContent :data="blockData?.section_content[0]?.item" block="1" :layout="blockData.layout"/>
         </div>
         <div :class="item2Class" class="overflow-hidden">
-            <BlocksLunchboxContent :data="blockData?.section_content[1]?.item" block="2"/>
+            <BlocksLunchboxContent :data="blockData?.section_content[1]?.item" block="2" :layout="blockData.layout"/>
         </div>
         <div :class="item3Class" class="overflow-hidden">
-            <BlocksLunchboxContent :data="blockData?.section_content[2]?.item" block="3"/>
+            <BlocksLunchboxContent :data="blockData?.section_content[2]?.item" block="3" :layout="blockData.layout"/>
         </div>
         <div :class="item4Class" class="overflow-hidden">
-            <BlocksLunchboxContent :data="blockData?.section_content[3]?.item" block="4"/>
+            <BlocksLunchboxContent :data="blockData?.section_content[3]?.item" block="4" :layout="blockData.layout"/>
         </div>
     </div>
 </template>

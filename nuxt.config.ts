@@ -252,6 +252,5 @@ export default defineNuxtConfig({
       cert: process.env.NUXT_SERVER_CERT,
     },
   },
-
   compatibilityDate: "2025-01-29",
 });

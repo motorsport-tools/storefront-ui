@@ -8,83 +8,75 @@ interface Props {
 }
 const props = defineProps<Props>()
 
+const { $viewport } = useNuxtApp()
+
+const map = {
+  'large': [$viewport.isGreaterOrEquals('md')? `${ $viewport.breakpointValue( $viewport.breakpoint.value ) / 2 }px` : `${ $viewport.breakpointValue( $viewport.breakpoint.value ) }px`, $viewport.isGreaterOrEquals('md') ? "736px" : "240px"],
+  'rectangle': [$viewport.isGreaterOrEquals('md')? `${ $viewport.breakpointValue( $viewport.breakpoint.value ) / 2 }px` : `${ $viewport.breakpointValue( $viewport.breakpoint.value ) }px`, $viewport.isGreaterOrEquals('md') ? "368px" : "240px"],
+  'square': [$viewport.isGreaterOrEquals('md')? `${ $viewport.breakpointValue( $viewport.breakpoint.value ) / 4 }px` : `${ $viewport.breakpointValue( $viewport.breakpoint.value ) /2 }px`, $viewport.isGreaterOrEquals('md') ? "368px" : "240px"]
+}
+
 const dims = computed(() => {
   let width = "0"
   let height = "0"
   if( props.layout === 1 ) {
     switch (props.block) {
       case "1":
-        width = "662px"
-        height = "736px"
+        [width, height ] = map['large']
         break
       case "2":
-        width = "662px"
-        height = "368px"
+        [width, height ] = map['rectangle']
         break
       case "3":
-        width = "331px"
-        height = "368px"
+        [width, height ] = map['square']
         break
       case "4":
-        width = "331px"
-        height = "368px"
+        [width, height ] = map['square']
         break
     }
   } else if( props.layout === 2 ) {
     switch (props.block) {
       case "1":
-        width = "662px"
-        height = "368px"
+        [width, height ] = map['rectangle']
         break
       case "2":
-        width = "662px"
-        height = "736px"
+        [width, height ] = map['large']
         break
       case "3":
-        width = "331px"
-        height = "368px"
+        [width, height ] = map['square']
         break
       case "4":
-        width = "331px"
-        height = "368px"
+        [width, height ] = map['square']
         break
     }
   } else if( props.layout === 3 ) {
     switch (props.block) {
       case "1":
-        width = "496px"
-        height = "736px"
+        [width, height ] = map['large']
         break
       case "2":
-        width = "331px"
-        height = "368px"
+        [width, height ] = map['square']
         break
       case "3":
-        width = "331px"
-        height = "368px"
+        [width, height ] = map['square']
         break
       case "4":
-        width = "662px"
-        height = "368px"
+        [width, height ] = map['rectangle']
         break
     }
   } else if( props.layout === 4 ) {
     switch (props.block) {
       case "1":
-        width = "331px"
-        height = "736px"
+        [width, height ] = map['square']
         break
       case "2":
-        width = "331px"
-        height = "368px"
+        [width, height ] = map['square']
         break
       case "3":
-        width = "662px"
-        height = "736px"
+        [width, height ] = map['large']
         break
       case "4":
-        width = "662px"
-        height = "368px"
+        [width, height ] = map['rectangle']
         break
     }
   } 
@@ -128,12 +120,12 @@ function getPositionClass(position: string): string {
             loading="lazy"
             provider="directus"
             :src="`/assets/${data?.background_image?.id}`"
-            sizes="xs:376px sm:640px md:768px lg:662px xl:662px xxl:662px 2xl:662px"
             format="webp"
             quality="75"
             :alt="data?.background_image?.title || `Image background for ${data?.link_title}`"
             :width="dims.width"
             :height="dims.height"
+            densities="1"
         />
         <div class="inline-block absolute p-2 z-1 text-white font-bold text-2xl sm:text-3xl md:text-4xl drop-shadow-md" v-html="data?.content" :class="getPositionClass(data?.text_position || 'bottom-left')">
         </div>

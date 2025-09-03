@@ -7,6 +7,7 @@ import {
 } from "@storefront-ui/vue";
 import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
 import ProductCardSkeleton from "~/layers/core/components/ui/ProductCardSkeleton.vue";
+import { generateQueryFromUrl } from "~/layers/clerkio/utils";
 
 const route = useRoute();
 const { isOpen, open, close } = useDisclosure();
@@ -17,10 +18,9 @@ const {
   searchResults,
   stockCount,
   totalItems,
+  organizedAttributes,
   search
 } = useClerkProductSearch(route.fullPath)
-
-const organizedAttributes = ref([])
 
 provide("stockCount", stockCount)
 
@@ -40,14 +40,17 @@ watch(isTabletScreen, (value) => {
   }
 })
 
-
 const pagination = computed(() => ({
   currentPage: route?.query?.page ? Number(route.query.page) : 1,
-  totalPages: Math.ceil(totalItems.value / 12) || 1,
+  totalPages: Math.ceil(totalItems.value / 20) || 1,
   totalItems: totalItems.value,
-  itemsPerPage: 12,
-  pageOptions: [5, 12, 15, 20],
+  itemsPerPage: 20,
+  pageOptions: [4, 8, 12, 16, 20],
 }))
+
+const tempQuery =  generateQueryFromUrl(route.query)
+
+console.log('Query Vals: ', tempQuery)
 
 onMounted( () => {
   setMaxVisiblePages(isWideScreen.value);
@@ -55,17 +58,13 @@ onMounted( () => {
     () => route,
     async () => {
       hasLoadedOnce.value = false
-      search( {
-        query: String(route.query.search || '')
-      })
+      search( generateQueryFromUrl(route.query) )
     },
     { deep: true, immediate: true }
   )
 })
 
-search( {
-  query: String(route.query.search || '')
-})
+search( generateQueryFromUrl(route.query))
 
 const hasLoadedOnce = ref(false)
 

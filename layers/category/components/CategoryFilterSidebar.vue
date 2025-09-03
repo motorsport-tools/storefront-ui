@@ -51,25 +51,8 @@ const getSortOptions = (searchData: { input: any }) => ({
 });
 
 const facets = computed(() => [
-  {
-    id: null,
-    label: "Price",
-    type: "price",
-    options: [
-      { id: "pr1", label: "Under $250.00", values: "0-250" },
-      { id: "pr2", label: "$250.00 - $500.00", values: "250-500" },
-      { id: "pr3", label: "$500.00 - $750.00", values: "500-750" },
-      { id: "pr4", label: "$750.00 - $1000.00", values: "750-1000" },
-      { id: "pr5", label: "$1000.00- $1500.00", values: "1000-1500" },
-    ],
-  },
   ...props.attributes,
-  {
-    id: 888,
-    label: "Availability",
-    type: "in-stock",
-  },
-]);
+])
 
 const selectPriceFilter = (option: { id: string, label: string, values: string }) => {
   const wasSelected = isPriceFilterSelected(option.values)
@@ -195,8 +178,8 @@ const clearFilters = () => {
         >
           <fieldset id="radio-price">
             <SfListItem
-              v-for="option in facet.options"
-              :key="option.id"
+              v-for="(option, index) in facet.options"
+              :key="index"
               tag="label"
               @click.prevent="selectPriceFilter(option)"
             >
@@ -309,6 +292,25 @@ const clearFilters = () => {
               <span class="text-[16px] text-[#808080]">({{ total }})</span>
             </div>
           </SfListItem>
+        </div>
+
+        <div 
+          v-if="facet.type == 'boolean'"
+          class="mt-4"
+        >
+          <div
+            class="flex items-center gap-2 px-4 cursor-pointer"
+            :class="{ 'pointer-events-none opacity-50': facet.options?.find(option => option.value === 'true')?.total === 0 }"
+          >
+            <SfCheckbox
+              :model-value="isStockSelected()"
+              @update:model-value="selectStockFilter()"
+            />
+            <div class="w-full flex justify-between">
+              <span>{{ facet.label }}</span>
+              <span class="text-[16px] text-[#808080]">({{ facet.options?.find(option => option.value === 'true')?.total }})</span>
+            </div>
+          </div>
         </div>
 
         <div

@@ -46,7 +46,7 @@ const reset = () => {
 }
 
 onClickOutside(formSearchTemplateRef, () => {
-  reset()
+  //reset()
 })
 
 const engageTrap = () => {

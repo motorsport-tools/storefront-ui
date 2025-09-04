@@ -3,32 +3,32 @@ import hash from "object-hash";
 export const sortOptions = [
   {
     id: 'list_price desc',
-    value: 'price,DESC',
+    value: 'price:desc',
     attrName: 'Price: High to Low',
     type: '',
   },
   {
     id: 'list_price asc',
-    value: 'price,ASC',
+    value: 'price:asc',
     attrName: 'Price: Low to High',
     type: '',
   },
   { id: 'name asc', value: 'name,ASC', attrName: 'Name: A to Z', type: '' },
   {
     id: 'name desc',
-    value: 'name,DESC',
+    value: 'name:desc',
     attrName: 'Name: Z to A',
     type: '',
   },
   {
     id: 'popular desc',
-    value: 'popular,DESC',
+    value: 'popular:desc',
     attrName: 'Most Popular',
     type: '',
   },
   {
     id: 'newest desc',
-    value: 'newest,DESC',
+    value: 'newest:desc',
     attrName: 'Newest',
     type: '',
   },
@@ -51,7 +51,6 @@ export const getUniqueUrlFromRouteFilteringByAttributes = (
 
   const hashQueryParams = hash(newQuery, { algorithm: "md5" });
 
-  return `${cleanPath}-${
-    Object.keys(newQuery).length > 0 ? hashQueryParams : ""
-  }`;
+  return `${cleanPath}-${Object.keys(newQuery).length > 0 ? hashQueryParams : ""
+    }`;
 };

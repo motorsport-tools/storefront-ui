@@ -78,6 +78,8 @@
   "filters": "Filters",
   "allProducts": "All products",
   "sortBy": "Sort by",
+  "show": "Show",
+  "productsPerPage": "Products per page",
   "sortType": {
     "latest": "Latest",
     "priceUp": "Price from low to high",
@@ -475,7 +477,7 @@
     "thankYou": "Thank you - your order #{orderNumber} has been received",
     "text": "We will begin processing your order, you will receive email confirmation shortly"
   },
-  "error":{
+  "error": {
     "404": "Page Not Found",
     "wentWrong": "Something Went Wrong"
   }

@@ -47,7 +47,7 @@ const changeSorting = (newSort: string) => {
 };
 const getSortOptions = (searchData: { input: any }) => ({
   options: sortOptions,
-  selected: searchData.input.sort || "popular,DESC",
+  selected: searchData.input.sort || "popular:desc",
 });
 
 const facets = computed(() => [

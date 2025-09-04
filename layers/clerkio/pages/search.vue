@@ -1,33 +1,38 @@
 <script setup lang="ts">
 import {
-  SfButton,
-  SfIconTune,
-  useDisclosure,
-  SfLoaderCircular,
-} from "@storefront-ui/vue";
-import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
+    SfButton,
+    SfSelect,
+    SfIconTune,
+    useDisclosure
+} from "@storefront-ui/vue"
 import ProductCardSkeleton from "~/layers/core/components/ui/ProductCardSkeleton.vue";
-import { generateQueryFromUrl } from "~/layers/clerkio/utils";
+import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
 
-const route = useRoute();
-const { isOpen, open, close } = useDisclosure();
-
-// searching on Clerk with query params
+const route = useRoute()
+const { open, close, isOpen } = useDisclosure()
 const {
-  loading,
-  searchResults,
-  stockCount,
-  totalItems,
-  organizedAttributes,
-  search
-} = useClerkProductSearch(route.fullPath)
-
-provide("stockCount", stockCount)
+    query,
+    results,
+    availableFacets,
+    selectedFacets,
+    totalPages,
+    page,
+    limit,
+    total,
+    sort,
+    loading,
+    sortByOptions,
+    limitOptions,
+    setFacet,
+    setLimit,
+    setSort,
+} = useProductSearch()
 
 const breadcrumbs = [
-  { name: "Home", link: "/" },
-  { name: "Search", link: "/" },
-];
+    { name: "Home", link: "/" },
+    { name: "Search", link: "/" },
+    { name: `Results "${query.value}"`}
+]
 
 const maxVisiblePages = useState("search-page-max-visible", () => 1)
 const setMaxVisiblePages = (isWide: boolean) =>
@@ -39,159 +44,138 @@ watch(isTabletScreen, (value) => {
     close()
   }
 })
-
-const pagination = computed(() => ({
-  currentPage: route?.query?.page ? Number(route.query.page) : 1,
-  totalPages: Math.ceil(totalItems.value / 20) || 1,
-  totalItems: totalItems.value,
-  itemsPerPage: 20,
-  pageOptions: [4, 8, 12, 16, 20],
-}))
-
-const tempQuery =  generateQueryFromUrl(route.query)
-
-console.log('Query Vals: ', tempQuery)
-
-onMounted( () => {
-  setMaxVisiblePages(isWideScreen.value);
-  watch(
-    () => route,
-    async () => {
-      hasLoadedOnce.value = false
-      search( generateQueryFromUrl(route.query) )
-    },
-    { deep: true, immediate: true }
-  )
-})
-
-search( generateQueryFromUrl(route.query))
-
-const hasLoadedOnce = ref(false)
-
-watch(loading, (val) => {
-  if (!val) {
-    hasLoadedOnce.value = true
-  }
-})
 </script>
 <template>
-  <main 
-      class="w-full narrow-container bg-white mb-20"
-      data-testid="search-layout"
-  >
-  <div class="pb-20" :key="route.fullPath">
-    <UiBreadcrumb :breadcrumbs="breadcrumbs" class="self-start mt-5 mb-5" />
-    <h1
-      v-if="route.query.search"
-      class="font-bold typography-headline-3 md:typography-headline-2 mb-10"
+    <main 
+        class="w-full narrow-container bg-white mb-20"
+        data-testid="search-layout"
     >
-      Results for "{{ route.query.search }}"
-    </h1>
-    <div class="grid grid-cols-12 lg:gap-x-6">
-      <div class="col-span-12 lg:col-span-4 xl:col-span-3">
-        <CategoryFilterSidebar
-          class="hidden lg:block"
-          :attributes="organizedAttributes"
-          :categories="[]"
-        />
-        <LazyCategoryMobileSidebar :is-open="isOpen" @close="close">
-          <template #default>
-            <CategoryFilterSidebar
-              class="block lg:hidden"
-              :attributes="organizedAttributes"
-              :categories="[]"
-              @close="close"
-            />
-          </template>
-        </LazyCategoryMobileSidebar>
-      </div>
-      <div class="col-span-12 lg:col-span-8 xl:col-span-9">
         <div
-          v-if="loading"
-          class="w-full text-center"
+            :key="route.fullPath" 
+            class="pb-20"
         >
-          <div class="flex justify-between items-center mb-6">
-            <span class="font-bold font-headings md:text-lg"
-              >Loading Products
-            </span>
-            <SfButton
-              variant="tertiary"
-              class="lg:hidden whitespace-nowrap"
-              @click="open"
-            >
-              <template #prefix>
-                <SfIconTune />
-              </template>
-              Filter
-            </SfButton>
-          </div>
-          <section
-            class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
-          >
-            <ProductCardSkeleton
-              v-for="n in 12"
-              :key="n"
+            <UiBreadcrumb
+                :breadcrumbs="breadcrumbs"
+                class="self-start mt-5 mb-5"
             />
-          </section>
-        </div>
-        <div v-else-if="totalItems > 0">
-          <div class="flex justify-between items-center mb-6">
-            <span class="font-bold font-headings md:text-lg"
-              >{{ totalItems }} Products
-            </span>
-            <SfButton
-              variant="tertiary"
-              class="lg:hidden whitespace-nowrap"
-              @click="open"
+            <h1
+                 v-if="query"
+                class="font-bold typography-headline-3 md:typography-headline-2 mb-10"
             >
-              <template #prefix>
-                <SfIconTune />
-              </template>
-              Filter
-            </SfButton>
-          </div>
-          <section
-            class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
-          >
-            <LazyUiProductCard
-              v-for="productTemplate in searchResults"
-              :key="productTemplate?.id"
-              :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product || productTemplate as Product) || '' "
-              :name="productTemplate?.name || ''"
-              :image-url="
-                $getImage(
-                  `${String(productTemplate.image_slug)}`,
-                  370,
-                  370,
-                  String(productTemplate.imageFilename),
-                )
-              "
-              :brand="productTemplate?.brand"
-              :image-alt="productTemplate?.name || ''"
-              :regular-price="productTemplate.on_sale ? productTemplate.list_price : 0"
-              :special-price="productTemplate.price"
-              :is-in-wishlist="productTemplate?.isInWishlist || false"
-              :rating-count="productTemplate.ratingCount || 0"
-              :rating="productTemplate.rating || 0"
-              :first-variant="productTemplate as CustomProductWithStockFromRedis"
-            />
-          </section>
+                Showing results for "{{ query }}"
+            </h1>
+            <div class="grid grid-cols-12 lg:gap-x-6">
+                <aside class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <div v-for="(facet, index) in availableFacets" :key="index">
+                        <h4>{{ index }}</h4>
+                        <div v-for="val in facet" :key="val.v">
+                            <label>
+                                <input
+                                type="checkbox"
+                                :checked="selectedFacets[index]?.includes(val.v)"
+                                @change="setFacet(index, val.v)"
+                                />
+                                {{ val.v }} ({{ val.c }})
+                            </label>
+                        </div>
+                    </div>
 
-          <LazyUiPagination
-            v-if="pagination.totalPages > 1"
-            class="mt-5"
-            :current-page="pagination.currentPage"
-            :total-items="pagination.totalItems"
-            :page-size="pagination.itemsPerPage"
-            :max-visible-pages="maxVisiblePages"
-          />
+                </aside>
+                <div class="col-span-12 lg:col-span-8 xl:col-span-9">
+                   <div class="flex justify-start items-center mb-6">
+                        <SfSelect
+                            v-model="sort"
+                            placeholder="Select sorting"
+                            :aria-label="$t('sortBy')"
+                            @update:model-value="setSort"
+                            class="min-w-[300px] mr-4"
+                        >
+                            <option
+                                v-for="{ id, value, attrName } in sortByOptions"
+                                :key="id"
+                                :selected="sort === value"
+                                :value="value"
+                            >
+                                {{$t('sortBy') }}: {{ attrName }}
+                            </option>
+                        </SfSelect>
+                        
+                        <SfSelect
+                            v-model="limit"
+                            aria-label="Select per-page"
+                            placeholder="Per page"
+                            @update:model-value="setLimit"
+                            class="min-w-[120px] mr-2"
+                        >
+                            <option 
+                                v-for="l in limitOptions"
+                                :key="l"
+                                :selected="limit === l"
+                                :value="l"
+                            >
+                                {{$t('show')}}: {{ l }}
+                            </option>
+                        </SfSelect>
+                        <span class="text-[12px]">
+                            {{ $t('productsPerPage') }}
+                        </span>
+                        
+                    </div>
+                    <div class="flex justify-between items-center mb-6">
+                        <span v-if="!loading" class="font-bold font-headings md:text-sm"
+                        >{{ total }} Products
+                        </span>
+                        <span v-if="loading" class="font-bold font-headings md:text-sm"
+                        >Loading Products
+                        </span>
+                        <SfButton
+                        variant="tertiary"
+                        class="lg:hidden whitespace-nowrap"
+                        @click="open"
+                        >
+                        <template #prefix>
+                            <SfIconTune />
+                        </template>
+                        Filter
+                        </SfButton>
+                    </div>
+                   <section
+                        class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
+                    >
+                        <ProductCardSkeleton v-if="loading" v-for="i in limit" :key="i" />
+                        <LazyUiProductCard
+                            v-for="productTemplate in results"
+                            :key="productTemplate?.id"
+                            :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product || productTemplate as Product) || '' "
+                            :name="productTemplate?.name || ''"
+                            :image-url="
+                                $getImage(
+                                `${String(productTemplate.image_slug)}`,
+                                370,
+                                370,
+                                String(productTemplate.imageFilename),
+                                )
+                            "
+                            :brand="productTemplate?.brand"
+                            :image-alt="productTemplate?.name || ''"
+                            :regular-price="productTemplate.on_sale ? productTemplate.list_price : 0"
+                            :special-price="productTemplate.price"
+                            :is-in-wishlist="productTemplate?.isInWishlist || false"
+                            :rating-count="productTemplate.ratingCount || 0"
+                            :rating="productTemplate.rating || 0"
+                            :first-variant="productTemplate as CustomProductWithStockFromRedis"
+                        />
+                    </section>
+                    <LazyUiPagination
+                        v-if="totalPages > 1"
+                        class="mt-5"
+                        :current-page="page"
+                        :total-items="total"
+                        :page-size="limit"
+                        :max-visible-pages="maxVisiblePages"   
+                    />
+                </div>
+            </div>
         </div>
-        <CategoryEmptyState
-          v-else-if="!loading && route.query.search && hasLoadedOnce && totalItems === 0"
-          :page="pagination.currentPage"
-        />
-      </div>
-    </div>
-  </div>
-  </main>
+    </main>
 </template>

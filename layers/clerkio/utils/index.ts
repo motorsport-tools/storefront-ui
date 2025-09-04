@@ -1,4 +1,4 @@
-const queryParamsNotFilters = ["page", "sort", "itemsPerPage", "search"];
+const queryParamsNotFilters = ["page", "itemsPerPage", "sort", "search"];
 
 const facetTypes: Record<string, string> = {
     "price": 'price',
@@ -92,14 +92,14 @@ export const generateQueryFromUrl = (query: any) => {
     const price = query?.price?.split("-")
     const availability = query?.Availability ? true : false
     const pageSize = query.itemsPerPage ? parseInt(query.itemsPerPage) : 20
-    const sort = query?.sort?.split(",") || []
+    const sort = query?.sort ? String(query?.sort) : 'popular:desc'
     const page = query?.page ? parseInt(query.page) : 1
-
 
     return {
         query: String(query?.search) || '',
         limit: pageSize || 20,
         offset: page > 1 ? (page - 1) * pageSize : 0,
         filter: filters,
+        sort: sort
     }
 }

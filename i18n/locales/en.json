@@ -46,6 +46,14 @@
   "formValidation": {
     "errorMessage": "Please review the form and fix any errors before continuing"
   },
+  "filters": {
+    "heading": "Filters",
+    "_category_name": "Categories",
+    "has_stock": "Availability",
+    "price": "Price",
+    "brand": "Brand",
+    "on_sale": "On Sale"
+  },
   "myCart": "My Basket",
   "orderSummary": "Order Summary",
   "itemsInCart": "(Items: {count})",
@@ -75,7 +83,6 @@
   "showProducts": "Apply",
   "showMore": "Show more",
   "showLess": "Show less",
-  "filters": "Filters",
   "allProducts": "All products",
   "sortBy": "Sort by",
   "show": "Show",

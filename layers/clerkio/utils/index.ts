@@ -7,7 +7,7 @@ const facetTypes: Record<string, string> = {
     "_price_range": 'price',
 }
 
-const formatLabel = (str: string) => {
+export const formatLabel = (str: string) => {
     if (str === 'has_stock') return 'Availability'
     if (str === '_all_category_names' || str === '_category_name') return 'Categories'
     return str

@@ -5,6 +5,7 @@ import {
     SfIconTune,
     useDisclosure
 } from "@storefront-ui/vue"
+import { formatLabel } from "../utils/index"
 import ProductCardSkeleton from "~/layers/core/components/ui/ProductCardSkeleton.vue";
 import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
 
@@ -66,14 +67,19 @@ watch(isTabletScreen, (value) => {
             </h1>
             <div class="grid grid-cols-12 lg:gap-x-6">
                 <aside class="col-span-12 lg:col-span-4 xl:col-span-3">
+                    <h5
+                        class="py-2 px-4 mt-0 mb-4 bg-neutral-100 typography-headline-6 font-bold text-neutral-900 uppercase tracking-widest md:rounded-md"
+                    >
+                        {{ $t('filters.heading') }}
+                    </h5>
                     <div v-for="(facet, index) in availableFacets" :key="index">
-                        <h4>{{ index }}</h4>
+                        <h4>{{ $t(`filters.${index}`) }}</h4>
                         <div v-for="val in facet" :key="val.v">
                             <label>
                                 <input
-                                type="checkbox"
-                                :checked="selectedFacets[index]?.includes(val.v)"
-                                @change="setFacet(index, val.v)"
+                                    type="checkbox"
+                                    :checked="selectedFacets[index]?.includes(val.v)"
+                                    @change="setFacet(index, val.v)"
                                 />
                                 {{ val.v }} ({{ val.c }})
                             </label>
@@ -110,10 +116,10 @@ watch(isTabletScreen, (value) => {
                             <option 
                                 v-for="l in limitOptions"
                                 :key="l"
-                                :selected="limit === l"
-                                :value="l"
+                                :selected="limit === String(l)"
+                                :value="String(l)"
                             >
-                                {{$t('show')}}: {{ l }}
+                                {{$t('show')}}: {{ String(l) }}
                             </option>
                         </SfSelect>
                         <span class="text-[12px]">

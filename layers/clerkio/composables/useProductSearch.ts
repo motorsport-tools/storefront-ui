@@ -62,6 +62,12 @@ export const useProductSearch = () => {
     const totalPages = computed(() => total.value ? Math.ceil(total.value / limit.value) : 0)
 
     //Static
+    const nonFacetKeys = [
+        'page',
+        'search',
+        'sort'
+    ]
+
     const sortByOptions = [
         {
             id: 'list_price desc',
@@ -97,6 +103,7 @@ export const useProductSearch = () => {
 
     const limitOptions = [4, 8, 12, 16, 20]
 
+    //Functions
     const fetchSearch = async () => {
         loading.value = true
         const reqSort = sort.value == 'default' ? undefined : sort.value
@@ -110,6 +117,7 @@ export const useProductSearch = () => {
             body: {
                 key: config.public.clerkApiKey,
                 visitor: 'auto',
+                labels: ['Search page'],
                 attributes: ['id', 'name', 'brand', 'image', 'image_slug', 'image_filename', 'price', 'on_sale', 'list_price', 'rating', 'ratingCount', 'sku', 'slug'],
                 facets: ['price', 'brand', '_category_name', 'on_sale', 'has_stock'],
                 semantic: 1.0,
@@ -144,7 +152,7 @@ export const useProductSearch = () => {
 
         for (const [facet, values] of Object.entries(selectedFacets.value)) {
             for (const v of values) {
-                filters.push(`${facet} = ${v}`)
+                filters.push(`${facet} = '${v}'`)
             }
         }
         return filters
@@ -229,7 +237,7 @@ export const useProductSearch = () => {
             page: page.value > 1 ? page.value.toString() : undefined,
         }
 
-        if (sort.value !== 'default') {
+        if (sort.value && sort.value !== 'default') {
             queryObj['sort'] = sort.value
         }
 
@@ -247,10 +255,20 @@ export const useProductSearch = () => {
         () => route.query,
         newQuery => {
             query.value = newQuery.search?.toString() || ''
-            sort.value = newQuery.sort?.toString() || ''
+            sort.value = newQuery.sort?.toString() || 'default'
             page.value = parseInt(newQuery.page?.toString() || '1')
+
+            selectedFacets.value = {}
+            for (const [key, value] of Object.entries(newQuery)) {
+                if (nonFacetKeys.includes(key)) continue
+                if (typeof value === 'string') {
+                    selectedFacets.value[key] = value.split(',')
+                }
+            }
+
             fetchSearch()
-        }
+        },
+        { immediate: true, deep: true }
     )
 
     //Init

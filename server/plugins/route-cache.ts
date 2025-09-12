@@ -69,6 +69,7 @@ export default defineNitroPlugin((nitroApp) => {
           shouldBypassCache: (event: H3Event) => {
             const query = getQuery(event)
             if (query.token && (query.preview || query['visual-editing'])) return true
+            if (event.path.startsWith('/api/search/')) return true
             return false
           },
         },

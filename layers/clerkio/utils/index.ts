@@ -7,14 +7,6 @@ const facetTypes: Record<string, string> = {
     "_price_range": 'price',
 }
 
-export const formatLabel = (str: string) => {
-    if (str === 'has_stock') return 'Availability'
-    if (str === '_all_category_names' || str === '_category_name') return 'Categories'
-    return str
-        .replace(/_/g, ' ')
-        .replace(/\b\w/g, char => char.toUpperCase())
-}
-
 export const generateFacet = (key: string) => {
     return {
         id: key,

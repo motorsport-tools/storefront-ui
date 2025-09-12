@@ -5,7 +5,6 @@ import {
     SfIconTune,
     useDisclosure
 } from "@storefront-ui/vue"
-import { formatLabel } from "../utils/index"
 import ProductCardSkeleton from "~/layers/core/components/ui/ProductCardSkeleton.vue";
 import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
 
@@ -29,10 +28,16 @@ const {
     setSort,
 } = useProductSearch()
 
+const searchTitle = computed( () => {
+    if(query.value) return query.value
+    if('brand' in selectedFacets.value) return selectedFacets.value['brand'].join(', ')
+    return 'All Products'
+})
+
 const breadcrumbs = [
     { name: "Home", link: "/" },
     { name: "Search", link: "/" },
-    { name: `Results "${query.value}"`}
+    { name: `Results "${searchTitle.value}"`}
 ]
 
 const maxVisiblePages = useState("search-page-max-visible", () => 1)
@@ -60,10 +65,9 @@ watch(isTabletScreen, (value) => {
                 class="self-start mt-5 mb-5"
             />
             <h1
-                 v-if="query"
                 class="font-bold typography-headline-3 md:typography-headline-2 mb-10"
             >
-                Showing results for "{{ query }}"
+                Showing results for "{{ searchTitle }}"
             </h1>
             <div class="grid grid-cols-12 lg:gap-x-6">
                 <aside class="col-span-12 lg:col-span-4 xl:col-span-3">

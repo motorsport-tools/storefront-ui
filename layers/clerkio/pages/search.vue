@@ -6,6 +6,7 @@ import {
     useDisclosure
 } from "@storefront-ui/vue"
 import ProductCardSkeleton from "~/layers/core/components/ui/ProductCardSkeleton.vue";
+import FilterSidebar from "~/layers/clerkio/components/FilterSidebar.vue";
 import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
 
 const route = useRoute()
@@ -70,27 +71,12 @@ watch(isTabletScreen, (value) => {
                 Showing results for "{{ searchTitle }}"
             </h1>
             <div class="grid grid-cols-12 lg:gap-x-6">
-                <aside class="col-span-12 lg:col-span-4 xl:col-span-3">
-                    <h5
-                        class="py-2 px-4 mt-0 mb-4 bg-neutral-100 typography-headline-6 font-bold text-neutral-900 uppercase tracking-widest md:rounded-md"
-                    >
-                        {{ $t('filters.heading') }}
-                    </h5>
-                    <div v-for="(facet, index) in availableFacets" :key="index">
-                        <h4>{{ $t(`filters.${index}`) }}</h4>
-                        <div v-for="val in facet" :key="val.v">
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    :checked="selectedFacets[index]?.includes(val.v)"
-                                    @change="setFacet(index, val.v)"
-                                />
-                                {{ val.v }} ({{ val.c }})
-                            </label>
-                        </div>
-                    </div>
-
-                </aside>
+                <FilterSidebar 
+                    class="hidden lg:block"
+                    :availableFacets="availableFacets"
+                    :selectedFacets="selectedFacets"
+                    :setFacet="setFacet"
+                />
                 <div class="col-span-12 lg:col-span-8 xl:col-span-9">
                    <div class="flex justify-start items-center mb-6">
                         <SfSelect

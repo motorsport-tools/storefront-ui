@@ -1,9 +1,9 @@
 export default defineNuxtPlugin(() => {
   onMounted(() => {
     if ('requestIdleCallback' in window) {
-      requestIdleCallback(loadLiveChat)
+      requestIdleCallback(loadLiveChat, { timeout: 10000 })
     } else {
-      setTimeout(loadLiveChat, 2000) 
+      setTimeout(loadLiveChat, 2000)
     }
   })
 

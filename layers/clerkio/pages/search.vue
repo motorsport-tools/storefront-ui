@@ -16,6 +16,7 @@ const {
     results,
     availableFacets,
     selectedFacets,
+    filterCount,
     totalPages,
     page,
     limit,
@@ -72,11 +73,24 @@ watch(isTabletScreen, (value) => {
             </h1>
             <div class="grid grid-cols-12 lg:gap-x-6">
                 <FilterSidebar 
-                    class="hidden lg:block"
+                    class="hidden lg:block col-span-12 lg:col-span-4 xl:col-span-3"
                     :availableFacets="availableFacets"
                     :selectedFacets="selectedFacets"
                     :setFacet="setFacet"
+                    :filterCount="filterCount"
                 />
+                <LazyCategoryMobileSidebar :is-open="isOpen" @close="close">
+                    <template #default>
+                        <FilterSidebar 
+                            class="block lg:hidden"
+                            :availableFacets="availableFacets"
+                            :selectedFacets="selectedFacets"
+                            :setFacet="setFacet"
+                            :filterCount="filterCount"
+                            @close="close"
+                        />
+                    </template>
+                </LazyCategoryMobileSidebar>
                 <div class="col-span-12 lg:col-span-8 xl:col-span-9">
                    <div class="flex justify-start items-center mb-6">
                         <SfSelect

@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import {
-    SfButton
-} from "@storefront-ui/vue"
-
 const router = useRouter()
 const emit = defineEmits(["close"]);
 
@@ -10,13 +6,10 @@ interface Props {
     selectedFacets: Ref<Record<string, string[]>>
     availableFacets: Ref<ClerkFacets>
     setFacet: (key: string, value: string | number | boolean) => void
+    filterCount: number
 }
 
 const props = defineProps<Props>()
-
-const isFacetSelected = (key: string, value: string) => {
-    return props.selectedFacets.value[key]?.includes(value) ?? false
-}
 
 const clearFilters = () => {
     props.selectedFacets.value = {};
@@ -25,24 +18,20 @@ const clearFilters = () => {
 }
 </script>
 <template>
-    <aside class="hidden lg:block col-span-12 lg:col-span-4 xl:col-span-3">
-        <h5
-            class="py-2 px-4 mt-0 mb-4 bg-neutral-100 typography-headline-6 font-bold text-neutral-900 uppercase tracking-widest md:rounded-md"
-        >
-            {{ $t('filters.heading') }}
-        </h5>
-        <div
-            v-if="Object.keys(selectedFacets).length > 0"
-            class="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 lg:justify-between px-3 lg:px-0 mt-6 mb-3"
-        >
-            <SfButton
-                variant="secondary"
-                class="w-auto mr-3"
-                size="sm"
+    <aside >
+        <div class="flex flex-row py-2 px-4 mt-0 mb-4 bg-neutral-100 md:rounded-md items-center justify-between">
+            <h5
+                class="typography-headline-6 font-bold text-neutral-900 uppercase tracking-widest"
+            >
+                {{ $t('filters.heading') }}
+            </h5>
+            <UiUserNavButton
+                v-if="filterCount > 0"
+                class="w-auto mr-3 text-sm"
                 @click="clearFilters"
             >
-                {{ $t("clearFilters") }}
-            </SfButton>
+                <span class="underline mr-1">{{ $t("filters.clearFilters" ) }}</span> ({{ filterCount }})
+            </UiUserNavButton>
         </div>
         <div v-for="(facet, index) in availableFacets" :key="index">
             <h4>{{ $t(`filters.${index}`) }}</h4>

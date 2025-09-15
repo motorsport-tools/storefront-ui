@@ -1,21 +1,3 @@
-interface ClerkProductSearchParams {
-    query: string
-    filter?: Record<string, any>
-    sort?: string
-    offset?: {
-        type: number
-        default: 0
-    }
-    limit?: {
-        type: number
-        default: 20
-    }
-    label?: {
-        type: string
-        default: 'Product Search'
-    }
-}
-
 interface ClerkFacetValue {
     v: string
     c: number
@@ -54,6 +36,7 @@ export const useProductSearch = () => {
     const results = ref<ClerkProductSearchResult[]>([])
     const availableFacets = ref<ClerkFacets>({})
     const selectedFacets = ref<Record<string, string[]>>({})
+    const filterCount = computed(() => Object.keys(selectedFacets.value).length || 0)
     const total = ref<number>(0)
     const loading = ref<boolean>(false)
 
@@ -282,6 +265,7 @@ export const useProductSearch = () => {
         results,
         availableFacets,
         selectedFacets,
+        filterCount,
         total,
         totalPages,
         loading,

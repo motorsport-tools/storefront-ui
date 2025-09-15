@@ -1,5 +1,5 @@
-export default defineNuxtPlugin(() => {
-  onMounted(() => {
+export default defineNuxtPlugin((nuxtApp) => {
+  nuxtApp.hook('app:mounted', () => {
     if ('requestIdleCallback' in window) {
       requestIdleCallback(loadLiveChat, { timeout: 10000 })
     } else {
@@ -8,8 +8,8 @@ export default defineNuxtPlugin(() => {
   })
 
   function loadLiveChat() {
-    const baseUrl = useRuntimeConfig().public.NUXT_PUBLIC_ODOO_BASE_URL
-    const channelId = useRuntimeConfig().public.NUXT_PUBLIC_LIVECHAT_CHANNEL_ID
+    const baseUrl = useRuntimeConfig().public.odooBaseUrl
+    const channelId = useRuntimeConfig().public.livechatChannelId
 
     if (!baseUrl || !channelId) return
 

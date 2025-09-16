@@ -1,4 +1,5 @@
 <script setup>
+import { useMegaMenuCategories } from "~/layers/core/composable/useMegaMenuCategories"
 const nuxtApp = useNuxtApp();
 const { isAuthenticated, loadUser } = useAuth()
 const { loadCart } = useCart()
@@ -7,6 +8,15 @@ const { loadWishlist } = useWishlist()
 nuxtApp.hook("page:finish", () => {
   window.scrollTo(0, 0)
 })
+
+const { loadCategoriesForMegaMenu, categoriesForMegaMenu } = useMegaMenuCategories()
+
+provide(
+  "categoriesForMegaMenu",
+  categoriesForMegaMenu
+);
+
+await loadCategoriesForMegaMenu({ filter: { parent: true }, pageSize: 4 })
 
 onMounted(async () => {
     if ( isAuthenticated.value ) {  

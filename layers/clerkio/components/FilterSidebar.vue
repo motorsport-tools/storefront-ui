@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import type { Category } from '~/graphql'
+import type { Node as menuNode } from '#layers/header/types'
+
 const router = useRouter()
 const emit = defineEmits(["close"]);
 
@@ -7,6 +10,7 @@ interface Props {
     availableFacets: Ref<ClerkFacets>
     setFacet: (key: string, value: string | number | boolean) => void
     filterCount: number
+    loading: boolean
 }
 
 const props = defineProps<Props>()
@@ -16,6 +20,71 @@ const clearFilters = () => {
     router.push({ query: {} });
     emit("close");
 }
+
+const categoriesForMegaMenu = inject<Ref<Category[]> | undefined>('categoriesForMegaMenu')
+
+const categories = computed(() => categoriesForMegaMenu?.value ?? [])
+
+interface ClerkFacetValue {
+    v: string
+    c: number
+}
+
+function mergeFacetCounts(menuNode: menuNode, facetValues: ClerkFacetValue[]): menuNode {
+    const mergedNode: menuNode = { ...menuNode }
+
+    const countEntry = facetValues.find(f => f.v === mergedNode.key)
+
+    if (countEntry) {
+        mergedNode.value.counter = countEntry.c
+    }
+
+    // Recurse into children if any
+    if (mergedNode.children?.length) {
+        mergedNode.children = mergedNode.children.map(child => mergeFacetCounts(child, facetValues))
+    }
+
+    return mergedNode
+}
+
+const mergedCategories = computed(() => {
+    if (!props.availableFacets) return categories.value
+    const facets = props.availableFacets
+    if (!facets || !facets['_all_categories']) {
+        return categories.value as unknown as menuNode[]
+    }
+    return mergeFacetCounts(categories.value as unknown as menuNode[], facets['_all_categories'])
+})
+
+const expandedFacets = reactive<Record<string, boolean>>({})
+const SHOW_LIMIT = 8
+
+const visibleFacets = computed(() => {
+    const facets = { ...props.availableFacets }
+    if(facets['_all_categories']) {
+        delete facets['_all_categories']
+    }
+    return facets
+})
+
+function isCategoryOrChildSelected(cat: menuNode, selected: string[]): boolean {
+    if (selected.includes(cat.key)) return true
+    if (!cat.children) return false
+    return cat.children.some(child => isCategoryOrChildSelected(child, selected))
+}
+
+watch(
+    () => mergedCategories.value,
+    (cats) => {
+        if (!cats?.children || !props.selectedFacets) return
+        const selected = props.selectedFacets['_all_categories'] ?? []
+        cats.children.forEach(cat => {
+            const shouldExpand = isCategoryOrChildSelected(cat, selected)
+            expandedFacets[cat.key] = expandedFacets[cat.key] ?? shouldExpand
+        })
+    },
+    { immediate: true }
+)
 </script>
 <template>
     <aside >
@@ -33,9 +102,52 @@ const clearFilters = () => {
                 <span class="underline mr-1">{{ $t("filters.clearFilters" ) }}</span> ({{ filterCount }})
             </UiUserNavButton>
         </div>
-        <div v-for="(facet, index) in availableFacets" :key="index">
+        <div>
+            <h4>{{ $t(`filters._all_categories`) }}</h4>
+            <div 
+                v-if="mergedCategories && !loading"
+                v-for="cat in mergedCategories?.children"
+                :key="cat.key"
+                class="facet-category"
+            >
+                <label>
+                    <input 
+                        type="checkbox" 
+                        :checked="selectedFacets['_all_categories']?.includes(cat.key)" 
+                        @change="setFacet('_all_categories', cat.key)" 
+                    />
+                    {{ cat.value?.label || cat.key }} ({{ cat.value?.counter ?? 0 }})
+                </label>
+                <!-- Children -->
+                <div 
+                    v-if="selectedFacets['_all_categories']?.includes(cat.key)"
+                    class="ml-4"
+                >
+                    <div
+                        v-for="sub in cat.children.slice(0, expandedFacets[cat.key] ? cat.children.length : SHOW_LIMIT)"
+                        :key="sub.id"
+                    >
+                        <label>
+                            <input
+                                type="checkbox"
+                                :checked="selectedFacets['_all_categories']?.includes(sub.key)"
+                                @change="setFacet('_all_categories', sub.key)"
+                            />
+                            {{ sub.value.label }} ({{ sub.value.counter || '-'}})
+                        </label>
+                    </div>
+                    <button v-if="cat.children.length > SHOW_LIMIT"
+                        @click="expandedFacets[cat.key] = !expandedFacets[cat.key]"
+                    >
+                        {{ expandedFacets[cat.key] ? 'Show Less' : 'Show More' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="!loading" v-for="(facet, index) in visibleFacets" :key="index">
             <h4>{{ $t(`filters.${index}`) }}</h4>
-            <div v-for="val in facet" :key="val.v">
+            <div v-for="val in facet.slice(0, expandedFacets[index] ? facet.length : SHOW_LIMIT)" :key="val.v">
                 <label>
                     <input
                         type="checkbox"
@@ -45,6 +157,11 @@ const clearFilters = () => {
                     {{ val.v }} ({{ val.c }})
                 </label>
             </div>
+            <button v-if="facet.length > SHOW_LIMIT"
+                @click="expandedFacets[index] = !expandedFacets[index]"
+            >
+                {{ expandedFacets[index] ? 'Show Less' : 'Show More' }}
+            </button>
         </div>
     </aside>
 </template>

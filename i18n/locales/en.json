@@ -49,6 +49,7 @@
   "filters": {
     "heading": "Filters",
     "_category_name": "Categories",
+    "_all_categories": "Categories",
     "has_stock": "Availability",
     "price": "Price",
     "brand": "Brand",

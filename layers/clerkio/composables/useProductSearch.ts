@@ -4,6 +4,7 @@ interface ClerkFacetValue {
 }
 
 export type ClerkFacets = Record<string, ClerkFacetValue[]>
+
 interface ClerkProductSearchResult {
     id: string
     name: string
@@ -88,12 +89,8 @@ export const useProductSearch = () => {
 
     //Functions
     const fetchSearch = async () => {
-        loading.value = true
         const reqSort = sort.value == 'default' ? undefined : sort.value
         const reqFilters = buildQueryFilters()
-
-        console.log('Selected Facets: ', selectedFacets.value)
-        console.log('Built Filters', reqFilters)
 
         const res = await $fetch<ClerkProductSearchResponse>('/api/search/v3/search/products', {
             method: 'POST',
@@ -102,25 +99,22 @@ export const useProductSearch = () => {
                 visitor: 'auto',
                 labels: ['Search page'],
                 attributes: ['id', 'name', 'brand', 'image', 'image_slug', 'image_filename', 'price', 'on_sale', 'list_price', 'rating', 'ratingCount', 'sku', 'slug'],
-                facets: ['price', 'brand', '_category_name', 'on_sale', 'has_stock'],
+                facets: ['price', 'brand', '_all_categories', 'on_sale', 'has_stock'],
                 semantic: 1.0,
                 query: query.value,
                 sort: reqSort,
                 limit: limit.value,
                 offset: offset.value,
                 filter: reqFilters,
-            },
+            }
         })
 
         results.value = res?.result || []
 
         if (total.value === 0) {
-            if (res.total_count) {
-                total.value = res.total_count
-            } else if (res.estimated_total_count) {
-                total.value = res.estimated_total_count
-            }
+            total.value = res.total_count || res.estimated_total_count || 0
         }
+
         if (Object.keys(availableFacets.value).length === 0) {
             availableFacets.value = res.facets || {}
         } else {
@@ -128,6 +122,7 @@ export const useProductSearch = () => {
         }
 
         loading.value = false
+
     }
 
     const buildQueryFilters = () => {
@@ -135,7 +130,11 @@ export const useProductSearch = () => {
 
         for (const [facet, values] of Object.entries(selectedFacets.value)) {
             for (const v of values) {
-                filters.push(`${facet} = '${v}'`)
+                if (facet == '_all_categories') {
+                    filters.push(`${facet} contains '${v}'`)
+                } else {
+                    filters.push(`${facet} = '${v}'`)
+                }
             }
         }
         return filters

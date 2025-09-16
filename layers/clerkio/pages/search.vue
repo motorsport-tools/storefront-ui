@@ -78,6 +78,7 @@ watch(isTabletScreen, (value) => {
                     :selectedFacets="selectedFacets"
                     :setFacet="setFacet"
                     :filterCount="filterCount"
+                    :loading="loading"
                 />
                 <LazyCategoryMobileSidebar :is-open="isOpen" @close="close">
                     <template #default>
@@ -87,6 +88,7 @@ watch(isTabletScreen, (value) => {
                             :selectedFacets="selectedFacets"
                             :setFacet="setFacet"
                             :filterCount="filterCount"
+                            :loading="loading"
                             @close="close"
                         />
                     </template>
@@ -150,6 +152,7 @@ watch(isTabletScreen, (value) => {
                         </SfButton>
                     </div>
                    <section
+                        :key="route.hash"
                         class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
                     >
                         <ProductCardSkeleton v-if="loading" v-for="i in limit" :key="i" />

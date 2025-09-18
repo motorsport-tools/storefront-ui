@@ -99,8 +99,8 @@ export const useProductSearch = () => {
                 visitor: 'auto',
                 labels: ['Search page'],
                 attributes: ['id', 'name', 'brand', 'image', 'image_slug', 'image_filename', 'price', 'on_sale', 'list_price', 'rating', 'ratingCount', 'sku', 'slug'],
-                facets: ['price', 'brand', '_all_categories', 'on_sale', 'has_stock'],
-                semantic: 1.0,
+                facets: ['price', 'brand', 'categories', 'on_sale', 'has_stock'],
+                semantic: 0,
                 query: query.value,
                 sort: reqSort,
                 limit: limit.value,
@@ -130,7 +130,7 @@ export const useProductSearch = () => {
 
         for (const [facet, values] of Object.entries(selectedFacets.value)) {
             for (const v of values) {
-                if (facet == '_all_categories') {
+                if (facet == 'categories') {
                     filters.push(`${facet} contains '${v}'`)
                 } else {
                     filters.push(`${facet} = '${v}'`)
@@ -196,6 +196,8 @@ export const useProductSearch = () => {
         fetchSearch()
         updateRoute()
     }
+
+    /* Write A Clear Facet Func */
 
     const setPage = (p: number) => {
         if (p < 1 || p > totalPages.value) return

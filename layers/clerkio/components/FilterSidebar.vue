@@ -50,19 +50,18 @@ function mergeFacetCounts(menuNode: menuNode, facetValues: ClerkFacetValue[]): m
 const mergedCategories = computed(() => {
     if (!props.availableFacets) return categories.value
     const facets = props.availableFacets
-    if (!facets || !facets['_all_categories']) {
+    if (!facets || !facets['categories']) {
         return categories.value as unknown as menuNode[]
     }
-    return mergeFacetCounts(categories.value as unknown as menuNode[], facets['_all_categories'])
+    return mergeFacetCounts(categories.value as unknown as menuNode[], facets['categories'])
 })
 
 const expandedFacets = reactive<Record<string, boolean>>({})
 const SHOW_LIMIT = 8
-
 const visibleFacets = computed(() => {
     const facets = { ...props.availableFacets }
-    if(facets['_all_categories']) {
-        delete facets['_all_categories']
+    if(facets['categories']) {
+        delete facets['categories']
     }
     return facets
 })
@@ -73,11 +72,41 @@ function isCategoryOrChildSelected(cat: menuNode, selected: string[]): boolean {
     return cat.children.some(child => isCategoryOrChildSelected(child, selected))
 }
 
+const handleSetFacet = (key: string, value: string | number | boolean) => {
+    props.setFacet(key, value)
+
+    if(key === 'categories') {
+        const loop = (nodes) => {
+            for (const cat of nodes) {
+                if (cat.key === value) {
+                    // If it has children, recurse
+                    if (cat.children?.length) {
+                        const unsetChildren = (node: any) => {
+                            node.children?.forEach(child => {
+                                if (props.selectedFacets[key]?.includes(child.key)) {
+                                    props.setFacet(key, child.key)
+                                }
+                                unsetChildren(child)
+                            })
+                        }
+                        unsetChildren(cat)
+                    }
+                    return // done after finding the category
+                }
+                // Recurse into other branches
+                if (cat.children?.length) loop(cat.children)
+            }
+        }
+
+        loop(mergedCategories.value.children)
+    }
+}
+
 watch(
     () => mergedCategories.value,
     (cats) => {
         if (!cats?.children || !props.selectedFacets) return
-        const selected = props.selectedFacets['_all_categories'] ?? []
+        const selected = props.selectedFacets['categories'] ?? []
         cats.children.forEach(cat => {
             const shouldExpand = isCategoryOrChildSelected(cat, selected)
             expandedFacets[cat.key] = expandedFacets[cat.key] ?? shouldExpand
@@ -102,66 +131,35 @@ watch(
                 <span class="underline mr-1">{{ $t("filters.clearFilters" ) }}</span> ({{ filterCount }})
             </UiUserNavButton>
         </div>
-        <div>
-            <h4>{{ $t(`filters._all_categories`) }}</h4>
+        <div 
+            class="h-full overflow-y-auto"
+        >
             <div 
                 v-if="mergedCategories && !loading"
-                v-for="cat in mergedCategories?.children"
-                :key="cat.key"
-                class="facet-category"
             >
-                <label>
-                    <input 
-                        type="checkbox" 
-                        :checked="selectedFacets['_all_categories']?.includes(cat.key)" 
-                        @change="setFacet('_all_categories', cat.key)" 
-                    />
-                    {{ cat.value?.label || cat.key }} ({{ cat.value?.counter ?? 0 }})
-                </label>
-                <!-- Children -->
-                <div 
-                    v-if="selectedFacets['_all_categories']?.includes(cat.key)"
-                    class="ml-4"
-                >
-                    <div
-                        v-for="sub in cat.children.slice(0, expandedFacets[cat.key] ? cat.children.length : SHOW_LIMIT)"
-                        :key="sub.id"
-                    >
-                        <label>
-                            <input
-                                type="checkbox"
-                                :checked="selectedFacets['_all_categories']?.includes(sub.key)"
-                                @change="setFacet('_all_categories', sub.key)"
-                            />
-                            {{ sub.value.label }} ({{ sub.value.counter || '-'}})
-                        </label>
-                    </div>
-                    <button v-if="cat.children.length > SHOW_LIMIT"
-                        @click="expandedFacets[cat.key] = !expandedFacets[cat.key]"
-                    >
-                        {{ expandedFacets[cat.key] ? 'Show Less' : 'Show More' }}
-                    </button>
-                </div>
+                <FacetCategories
+                    :categories="mergedCategories"
+                    :showlimit="SHOW_LIMIT"
+                    :selectedFacets="selectedFacets"
+                    :expandedFacets="expandedFacets"
+                    @setFacet="handleSetFacet"
+                />
             </div>
-        </div>
 
-        <div v-if="!loading" v-for="(facet, index) in visibleFacets" :key="index">
-            <h4>{{ $t(`filters.${index}`) }}</h4>
-            <div v-for="val in facet.slice(0, expandedFacets[index] ? facet.length : SHOW_LIMIT)" :key="val.v">
-                <label>
-                    <input
-                        type="checkbox"
-                        :checked="selectedFacets[index]?.includes(val.v)"
-                        @change="setFacet(index, val.v)"
-                    />
-                    {{ val.v }} ({{ val.c }})
-                </label>
-            </div>
-            <button v-if="facet.length > SHOW_LIMIT"
-                @click="expandedFacets[index] = !expandedFacets[index]"
+            <div 
+                v-if="!loading"
+                v-for="(facet, index) in visibleFacets"
+                :key="index"
             >
-                {{ expandedFacets[index] ? 'Show Less' : 'Show More' }}
-            </button>
+                <FacetDisplay
+                    :facet="facet"
+                    :index="index"
+                    :showlimit="SHOW_LIMIT"
+                    :selectedFacets="selectedFacets"
+                    :expandedFacets="expandedFacets"
+                    @setFacet="handleSetFacet"
+                />
+            </div>
         </div>
     </aside>
 </template>

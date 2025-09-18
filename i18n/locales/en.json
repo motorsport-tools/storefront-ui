@@ -48,13 +48,16 @@
   },
   "filters": {
     "heading": "Filters",
+    "categories": "Categories",
     "_category_name": "Categories",
     "_all_categories": "Categories",
     "has_stock": "Availability",
     "price": "Price",
     "brand": "Brand",
     "on_sale": "On Sale",
-    "clearFilters": "Clear filters"
+    "clearFilters": "Clear filters",
+    "showMore": "Show more",
+    "showLess": "Show less"
   },
   "myCart": "My Basket",
   "orderSummary": "Order Summary",

@@ -8,7 +8,6 @@ import {
 import ProductCardSkeleton from "~/layers/core/components/ui/ProductCardSkeleton.vue";
 import FilterSidebar from "~/layers/clerkio/components/FilterSidebar.vue";
 import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
-
 const route = useRoute()
 const { open, close, isOpen } = useDisclosure()
 const {
@@ -176,7 +175,7 @@ watch(isTabletScreen, (value) => {
                             :is-in-wishlist="productTemplate?.isInWishlist || false"
                             :rating-count="productTemplate.ratingCount || 0"
                             :rating="productTemplate.rating || 0"
-                            :first-variant="productTemplate as CustomProductWithStockFromRedis"
+                            :first-variant="productTemplate as unknown as CustomProductWithStockFromRedis"
                         />
                     </section>
                     <LazyUiPagination
@@ -190,5 +189,10 @@ watch(isTabletScreen, (value) => {
                 </div>
             </div>
         </div>
+        <svg class="absolute w-0 h-0 select-none pointer-events-none">
+            <symbol id="check-4" viewbox="0 0 12 10">
+                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+            </symbol>
+        </svg>
     </main>
 </template>

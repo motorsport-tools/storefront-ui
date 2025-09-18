@@ -68,6 +68,14 @@ export default <Config>{
           '950': '#480708',
         },
       },
+      keyframes: {
+        wave: {
+          '50%': { transform: 'scale(0.9)' },
+        },
+      },
+      animation: {
+        wave: 'wave 0.4s ease',
+      }
     },
   },
 };

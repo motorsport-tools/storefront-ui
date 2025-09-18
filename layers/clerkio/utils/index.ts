@@ -59,39 +59,28 @@ export const generatePriceBuckets = (values: any[], min: number | null, max: num
     return buckets
 }
 
-export const generateQueryFromUrl = (query: any) => {
-    const newQuery: any = { ...query }
-    let filters: string = ''
+export const facetShowToggle = async (el: HTMLDivElement | null, expandedFacets: Record<string, boolean>, index: string | number) => {
+    expandedFacets[index] = !expandedFacets[index]
 
-    if (newQuery) {
-        Object.keys(newQuery).forEach((filterKey) => {
-            if (![...queryParamsNotFilters, "Price"].includes(filterKey)) {
-                console.log('Filter Key:', filterKey)
-                if (query[filterKey].includes(",")) {
-                    filters += `${filterKey.toLowerCase()} in `
-                    query[filterKey]?.split(",").forEach((item) => {
-                        filters += `${item},`
-                    });
-                    filters = filters.slice(0, -1)
-                } else {
-                    const label = query[filterKey]?.split(",")[0];
-                    console.log('Label:', label)
-                    filters += `${filterKey.toLowerCase()} = ${label}`
-                }
-            }
-        })
+    if (!el) {
+        return
     }
-    const price = query?.price?.split("-")
-    const availability = query?.Availability ? true : false
-    const pageSize = query.itemsPerPage ? parseInt(query.itemsPerPage) : 20
-    const sort = query?.sort ? String(query?.sort) : 'popular:desc'
-    const page = query?.page ? parseInt(query.page) : 1
 
-    return {
-        query: String(query?.search) || '',
-        limit: pageSize || 20,
-        offset: page > 1 ? (page - 1) * pageSize : 0,
-        filter: filters,
-        sort: sort
-    }
+    const start = el.offsetHeight
+
+    await nextTick()
+
+    const end = el.scrollHeight
+
+
+    el.style.height = start + 'px'
+    // force reflow
+    void el.offsetHeight
+    el.style.transition = 'height 260ms ease'
+    el.style.height = end + 'px'
+
+    el.addEventListener('transitionend', () => {
+        el.style.height = ''
+        el.style.transition = ''
+    }, { once: true })
 }

@@ -1,0 +1,59 @@
+<script setup lang="ts">
+import {
+    SfIconChevronRight
+} from "@storefront-ui/vue"
+import {
+    facetShowToggle
+} from "../utils"
+const emit = defineEmits(["setFacet"])
+
+interface Props {
+    facet: any
+    index: any
+    showlimit: number
+    selectedFacets: Ref<Record<string, string[]>>
+    expandedFacets: Record<string, boolean>
+}
+
+const props = defineProps<Props>()
+
+const handleChange = (key: string, value: string | number | boolean) => {
+    emit("setFacet", key, value)
+}
+
+const list = ref<HTMLDivElement | null>(null)
+
+</script>
+<template>
+    <div class="border rounded-md mb-4">
+        <h4 
+            class="py-2 px-4 bg-neutral-50 border-b font-bold"
+        >
+            {{ $t(`filters.${index}`) }}
+        </h4>
+        <div ref="list" class="overflow-hidden">
+            <UiFormCustomSfCheckbox
+                v-for="val, i in facet.slice().sort((a, b) => a.v.localeCompare(b.v))"
+                :key="val.v"
+                :class="{ hidden: i >= showlimit && !expandedFacets[index] }"
+                :modelValue="selectedFacets[index]?.includes(val.v)"
+                @update:modelValue="handleChange(index, val.v)"
+            >
+                <span>{{ val.v }}</span> <span class="ml-auto text-[0.8em]">({{ val.c }})</span>
+            </UiFormCustomSfCheckbox>
+        </div>
+        <div 
+            v-if="facet.length > showlimit"
+            class="py-2 px-4 text-sm text-primary-700"
+        >
+            <button 
+                @click="facetShowToggle(list, expandedFacets, index)"
+            >
+                <SfIconChevronRight
+                    :class="[expandedFacets[index] ? '-rotate-90' : 'rotate-90', 'transition-transform']"
+                />
+                {{ expandedFacets[index] ? $t('filters.showLess') : $t('filters.showMore') }}
+            </button>
+        </div>
+    </div>
+</template>

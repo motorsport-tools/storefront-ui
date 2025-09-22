@@ -98,7 +98,7 @@ export const useProductSearch = () => {
                 key: config.public.clerkApiKey,
                 visitor: 'auto',
                 labels: ['Search page'],
-                attributes: ['id', 'name', 'brand', 'image', 'image_slug', 'image_filename', 'price', 'on_sale', 'list_price', 'rating', 'ratingCount', 'sku', 'slug'],
+                attributes: ['id', 'name', 'brand', 'image', 'image_slug', 'image_filename', 'price', 'on_sale', 'list_price', 'rating', 'ratingCount', 'sku', 'slug', 'has_stock'],
                 facets: ['price', 'brand', 'categories', 'on_sale', 'has_stock'],
                 semantic: 0,
                 query: query.value,

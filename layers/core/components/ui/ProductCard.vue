@@ -163,7 +163,7 @@ const wishlistButtonTitle = (id: number | undefined) => {
           type="button"
           class="ottom-2"
           size="sm"
-          :disabled="!firstVariant?.stock || firstVariant?.stock <= 0"
+          :disabled="!firstVariant?.has_stock || (firstVariant.hasOwnProperty('stock') && firstVariant?.stock <= 0)"
           @click="cartAdd(firstVariant?.id, 1)"
         >
           <template #prefix>

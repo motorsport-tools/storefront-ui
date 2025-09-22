@@ -26,7 +26,7 @@ const proxyChecked = computed({
 </script>
 <template>
     <label 
-        class="flex flex-row items-center select-none cursor-pointer py-1 px-2 rounded-md overflow-hidden transition-all ease-in-out hover:bg-neutral-100 group mx-1 my-1"
+        class="customCheck flex flex-row items-center select-none cursor-pointer py-1 px-2 rounded-md overflow-hidden transition-all ease-in-out hover:bg-neutral-100 group mx-1 my-1"
         :class="[$attrs.class]"
     >
         <input
@@ -55,7 +55,7 @@ const proxyChecked = computed({
     </slot>
 </template>
 <style>
-svg {
+.customCheck svg {
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-dasharray: 16px;
@@ -64,7 +64,7 @@ svg {
     transition-delay: 0.1s;
     transform: translate3d(0, 0, 0);
 }
-label:has(:checked) span svg {
+label.customCheck:has(:checked) span svg {
     stroke-dashoffset: 0;
 }
 </style>

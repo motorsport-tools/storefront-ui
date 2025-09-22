@@ -1,9 +1,11 @@
 <script setup lang="ts">
 const NuxtLink = resolveComponent("NuxtLink")
+const { isAuthenticated } = useAuth()
 </script>
 
 <template>
     <UiUserNavButton
+        v-if="isAuthenticated"
         :title="$t('wishlistLinkTitle')"
     >
         <Icon

@@ -63,6 +63,7 @@ defineProps({
 
 const { t } = useI18n()
 const { cartAdd } = useCart()
+const { isAuthenticated } = useAuth()
 const { wishlistAddItem, isInWishlist, wishlistRemoveItem } = useWishlist()
 
 const handleWishlistAddItem = async (firstVariant: CustomProductWithStockFromRedis) => {
@@ -104,6 +105,7 @@ const wishlistButtonTitle = (id: number | undefined) => {
         class="absolute top-0 left-0 p-2"
       />
       <SfButton
+        v-if="isAuthenticated"
         type="button"
         variant="tertiary"
         size="sm"

@@ -57,7 +57,11 @@
     "on_sale": "On Sale",
     "clearFilters": "Clear filters",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "labels": {
+      "has_stock": "Hide out of stock",
+      "on_sale": "Only show on-sale"
+    }
   },
   "myCart": "My Basket",
   "orderSummary": "Order Summary",

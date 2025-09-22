@@ -23,6 +23,12 @@ const handleChange = (key: string, value: string | number | boolean) => {
 
 const list = ref<HTMLDivElement | null>(null)
 
+let type:string = ''
+
+if( props.index === 'has_stock' || props.index === 'on_sale' ) {
+    type = 'boolean'
+}
+
 </script>
 <template>
     <div class="border rounded-md mb-4">
@@ -32,7 +38,15 @@ const list = ref<HTMLDivElement | null>(null)
             {{ $t(`filters.${index}`) }}
         </h4>
         <div ref="list" class="overflow-hidden">
+            <UiFormCustomSfToggle
+                v-if="type === 'boolean'"
+                :model-value="Boolean(selectedFacets[index])"
+                @update:model-value="handleChange(index, !Boolean(selectedFacets[index]))"
+            >
+                <span class="ml-2 text-sm">{{ $t(`filters.labels.${index}`) }}</span>
+            </UiFormCustomSfToggle>
             <UiFormCustomSfCheckbox
+                v-else
                 v-for="val, i in facet.slice().sort((a, b) => a.v.localeCompare(b.v))"
                 :key="val.v"
                 :class="{ hidden: i >= showlimit && !expandedFacets[index] }"

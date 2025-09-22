@@ -79,7 +79,6 @@ const handleSetFacet = (key: string, value: string | number | boolean) => {
         const loop = (nodes) => {
             for (const cat of nodes) {
                 if (cat.key === value) {
-                    // If it has children, recurse
                     if (cat.children?.length) {
                         const unsetChildren = (node: any) => {
                             node.children?.forEach(child => {
@@ -91,9 +90,8 @@ const handleSetFacet = (key: string, value: string | number | boolean) => {
                         }
                         unsetChildren(cat)
                     }
-                    return // done after finding the category
+                    return
                 }
-                // Recurse into other branches
                 if (cat.children?.length) loop(cat.children)
             }
         }

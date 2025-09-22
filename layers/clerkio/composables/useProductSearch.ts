@@ -180,16 +180,31 @@ export const useProductSearch = () => {
         updateRoute()
     }
 
-    const setFacet = (name: string, value: string) => {
+    const setFacet = (name: string, value: string | number | boolean) => {
         const current = selectedFacets.value[name] || []
 
-        if (current.includes(value)) {
-            selectedFacets.value[name] = current.filter(v => v !== value)
-            if (selectedFacets.value[name].length === 0) {
-                delete selectedFacets.value[name]
+        switch (typeof value) {
+            case 'string':
+            case 'number': {
+                if (current.includes(value)) {
+                    selectedFacets.value[name] = current.filter(v => v !== value)
+                    if (selectedFacets.value[name].length === 0) {
+                        delete selectedFacets.value[name]
+                    }
+                } else {
+                    selectedFacets.value[name] = [...current, value]
+                }
+                break
             }
-        } else {
-            selectedFacets.value[name] = [...current, value]
+
+            case 'boolean': {
+                if (value) {
+                    selectedFacets.value[name] = [true]
+                } else {
+                    delete selectedFacets.value[name]
+                }
+                break
+            }
         }
         page.value = 1
         total.value = 0

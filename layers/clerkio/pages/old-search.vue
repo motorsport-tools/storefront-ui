@@ -7,7 +7,6 @@ import {
 } from "@storefront-ui/vue";
 import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
 import ProductCardSkeleton from "~/layers/core/components/ui/ProductCardSkeleton.vue";
-import { generateQueryFromUrl } from "~/layers/clerkio/utils";
 
 const route = useRoute();
 const { isOpen, open, close } = useDisclosure();
@@ -48,9 +47,8 @@ const pagination = computed(() => ({
   pageOptions: [4, 8, 12, 16, 20],
 }))
 
-const tempQuery =  generateQueryFromUrl(route.query)
 
-console.log('Query Vals: ', tempQuery)
+
 
 onMounted( () => {
   setMaxVisiblePages(isWideScreen.value);
@@ -58,13 +56,13 @@ onMounted( () => {
     () => route,
     async () => {
       hasLoadedOnce.value = false
-      search( generateQueryFromUrl(route.query) )
+      search( {} )
     },
     { deep: true, immediate: true }
   )
 })
 
-search( generateQueryFromUrl(route.query))
+search( {} )
 
 const hasLoadedOnce = ref(false)
 

@@ -160,6 +160,7 @@ watch(isTabletScreen, (value) => {
                             :key="productTemplate?.id"
                             :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product || productTemplate as Product) || '' "
                             :name="productTemplate?.name || ''"
+                            :sku="productTemplate?.sku || ''"
                             :image-url="
                                 $getImage(
                                 `${String(productTemplate.image_slug)}`,

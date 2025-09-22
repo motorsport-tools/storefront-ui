@@ -21,6 +21,10 @@ defineProps({
     type: String,
     required: true,
   },
+  sku: {
+    type: String,
+    required: false,
+  },
   slug: {
     type: String,
     required: true,
@@ -134,7 +138,8 @@ const wishlistButtonTitle = (id: number | undefined) => {
         :title="name"  
       >
         <span class="product_card__brand">{{ brand }}</span>
-        <span class="product_card__title block pb-1 border-b border-neutral-200 text-neutral-700">{{ name }}</span>
+        <span class="product_card__title block text-neutral-700">{{ name }}</span>
+        <span class="product_card__sku block pb-1 border-b border-neutral-200 text-neutral-700">{{ sku }}</span>
       </NuxtLink>
       <div class="flex items-center mb-2">
         <SfRating
@@ -204,5 +209,8 @@ const wishlistButtonTitle = (id: number | undefined) => {
   text-overflow: ellipsis;
   overflow: hidden;
   height: calc(1.25rem * 2 + 0.25rem);
+}
+.product_card__sku {
+  font-size:0.75rem;
 }
 </style>

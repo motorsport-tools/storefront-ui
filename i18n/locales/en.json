@@ -1,4 +1,5 @@
 {
+  "currencySymbol": "£",
   "menu": {
     "viewAll": "View all {category}",
     "viewAllTitle": "View all products in {category}",
@@ -60,7 +61,16 @@
     "showLess": "Show less",
     "labels": {
       "has_stock": "Hide out of stock",
-      "on_sale": "Only show on-sale"
+      "on_sale": "Only show on-sale",
+      "priceMin": "Minimum price",
+      "priceMax": "Maximum price"
+    },
+    "placeholder": {
+      "min": "Min",
+      "max": "Max"
+    },
+    "range": {
+      "to": "to"
     }
   },
   "myCart": "My Basket",

@@ -27,6 +27,8 @@ let type:string = ''
 
 if( props.index === 'has_stock' || props.index === 'on_sale' ) {
     type = 'boolean'
+} else if( props.index === 'price' ) {
+    type = 'range'
 }
 
 </script>
@@ -37,7 +39,7 @@ if( props.index === 'has_stock' || props.index === 'on_sale' ) {
         >
             {{ $t(`filters.${index}`) }}
         </h4>
-        <div ref="list" class="overflow-hidden">
+        <div ref="list" class="max-h-[300px] overflow-x-hidden overflow-y-auto">
             <UiFormCustomSfToggle
                 v-if="type === 'boolean'"
                 :model-value="Boolean(selectedFacets[index])"
@@ -45,6 +47,9 @@ if( props.index === 'has_stock' || props.index === 'on_sale' ) {
             >
                 <span class="ml-2 text-sm">{{ $t(`filters.labels.${index}`) }}</span>
             </UiFormCustomSfToggle>
+            <UiFormCustomSfRange
+                v-else-if="type === 'range'"
+            />
             <UiFormCustomSfCheckbox
                 v-else
                 v-for="val, i in facet.slice().sort((a, b) => a.v.localeCompare(b.v))"
@@ -57,7 +62,7 @@ if( props.index === 'has_stock' || props.index === 'on_sale' ) {
             </UiFormCustomSfCheckbox>
         </div>
         <div 
-            v-if="facet.length > showlimit"
+            v-if="facet.length > showlimit && type !== 'range'"
             class="py-2 px-4 text-sm text-primary-700"
         >
             <button 

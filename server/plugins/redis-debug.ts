@@ -4,6 +4,5 @@ export default defineNitroPlugin(() => {
 
     for (const store of storage) {
         console.log('Storage: ' + store.base + ' = ', store.driver.options)
-
     }
 })

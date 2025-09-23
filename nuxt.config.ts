@@ -208,6 +208,9 @@ export default defineNuxtConfig({
     sources: ['/api/sitemap/urls/products', '/api/sitemap/urls/categories'],
     runtimeCacheStorage: {
       driver: process.env.NUXT_STORAGE_DRIVER || '',
+      url: process.env.NUXT_STORAGE_URL,
+      password: process.env.NUXT_STORAGE_PASSWORD,
+      ttl: process.env?.NUXT_SWR_CACHE_TIME || 3600,
     }
   },
   robots: {

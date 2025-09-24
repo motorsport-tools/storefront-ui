@@ -90,6 +90,7 @@ export const useProductSearch = () => {
 
     //Functions
     const fetchSearch = async () => {
+        loading.value = true
         const reqSort = sort.value == 'default' ? undefined : sort.value
         const reqFilters = buildQueryFilters()
 

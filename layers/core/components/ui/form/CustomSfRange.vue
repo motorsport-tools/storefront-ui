@@ -1,16 +1,7 @@
 <script setup lang="ts">
-import type { InputHTMLAttributes, PropType } from 'vue'
-import { computed, toRefs } from 'vue'
+import { toRefs } from 'vue'
 
 const props = defineProps({
-  modelValue: {
-    type: [String, Array, Boolean] as PropType<InputHTMLAttributes>,
-    default: false,
-  },
-  invalid: {
-    type: Boolean,
-    default: false,
-  },
   min: {
     type: Number, String,
     default: 0,
@@ -21,67 +12,164 @@ const props = defineProps({
     default: 999,
     required: false,
   },
+  step: {
+    type: Number,
+    default: 1,
+  },
+  minValue: {
+    type: Number,
+    default: 0,
+  },
+  maxValue: {
+    type: Number,
+    default: 99999,
+  },
 })
 
-const emit = defineEmits<{
-  (event: 'update:modelValue', param: InputHTMLAttributes): void;
-}>()
+const emit = defineEmits(["update:minValue", "update:maxValue"])
 
-const { modelValue } = toRefs(props)
+const slider = ref(null)
+const progress = ref<HTMLElement | null>(null)
+const minValue = ref(props.minValue)
+const maxValue = ref(props.maxValue)
 
-const proxyChecked = computed({
-    get: () => modelValue?.value,
-    set: (value) => emit('update:modelValue', value),
+const setCss = () => {
+    if(progress.value) {
+        let left = ((minValue.value - props.min) / (props.max - props.min)) * 100
+        progress.value.style.left = `${left}%`
+
+        let right = 100 - ((maxValue.value - props.min) / (props.max - props.min)) * 100
+        progress.value.style.right = `${right}%`
+
+        let width = (( Math.abs(maxValue.value - minValue.value) - props.min) / (props.max - props.min)) * 100
+        progress.value.style.width = `${width}%`
+    }
+}
+
+const handleMinChange = ( { target } ) => {
+    minValue.value = parseInt(target.value)
+    emit("update:minValue", minValue.value)
+    setCss()
+}
+
+const handleMaxChange = ( { target }) => {
+    maxValue.value = parseInt(target.value)
+    emit("update:maxValue", maxValue.value)
+    setCss()
+}
+onMounted( () => {
+    setCss()
 })
 </script>
 <template>
     <div 
-        class="price-input relative block flex items-center select-none py-1 px-2 m-1 group w-full"
+        class="price-input relative block flex flex-col items-center select-none py-1 px-2 m-1 group w-auto"
         :class="[$attrs.class]"
     >
-        <span 
-            class="price-min absolute left-[1rem]"
+        <div
+            class="flex flex-row items-center w-full"
         >
-            {{ $t('currencySymbol') }}
-        </span>
-        <label
-            class="inline-block"
-            for="min"
-            :aria-label="$t(`filters.labels.priceMin`)"
-        ></label>
-        <input 
-            class="pl-5 h-10 text-sm inline-block min-w-0 border border-[#cccfdb] rounded"
-            type="number"
-            name="min"
-            inputmode="numeric" 
-            :placeholder="$t(`filters.placeholder.min`)"
-        />
-        <span 
-            class="pl-2 text-sm"
-        >
-        {{ $t(`filters.range.to`) }}
-        </span>
-        <span 
-            class="price-min relative left-[1rem]"
-        >
-            {{ $t('currencySymbol') }}
-        </span>
-        <label
-            class="inline-block"
-            :aria-label="$t(`filters.labels.priceMax`)"
-            for="max"
-        ></label>
-        <input 
-            class="pl-5 h-10 text-sm inline-block min-w-0 border border-[#cccfdb] rounded"
-            type="number"
-            name="max" 
-            inputmode="numeric" 
-            :placeholder="$t(`filters.placeholder.max`)"
-        />
+            <span 
+                class="price-min absolute left-[1rem]"
+            >
+                {{ $t('currencySymbol') }}
+            </span>
+            <label
+                class="inline-block"
+                for="min"
+                :aria-label="$t(`filters.labels.priceMin`)"
+            ></label>
+            <input 
+                class="pl-5 h-10 text-sm inline-block min-w-0 border border-[#cccfdb] rounded"
+                type="number"
+                name="min"
+                inputmode="numeric"
+                v-model="minValue"
+                :placeholder="$t(`filters.placeholder.min`)"
+                @change="handleMinChange"
+            />
+            <span 
+                class="pl-2 text-sm"
+            >
+            {{ $t(`filters.range.to`) }}
+            </span>
+            <span 
+                class="price-min relative left-[1rem]"
+            >
+                {{ $t('currencySymbol') }}
+            </span>
+            <label
+                class="inline-block"
+                :aria-label="$t(`filters.labels.priceMax`)"
+                for="max"
+            ></label>
+            <input 
+                class="pl-5 h-10 text-sm inline-block min-w-0 border border-[#cccfdb] rounded"
+                type="number"
+                name="max" 
+                inputmode="numeric"
+                v-model="maxValue"
+                :placeholder="$t(`filters.placeholder.max`)"
+                @change="handleMaxChange"
+            />
+        </div>
+        <div ref="slider" class="range-slider relative w-full h-[5px] my-4 bg-neutral-300">
+            <div ref="progress" class="progress w-full mx-auto absolute left-[0%] right-[100%] h-full rounded bg-blue-700"></div>
+            <input 
+                type="range"
+                class="absolute pointer-events-none w-full h-[5px]"
+                name="min"
+                :min="min"
+                :max="max"
+                :value="minValue"
+                :step="step"
+                data-testid="range"
+                @input="handleMinChange"
+            />
+            <input
+                type="range"
+                class="absolute pointer-events-none w-full h-[5px]"
+                name="max"
+                :min="min"
+                :max="max"
+                :value="maxValue"
+                :step="step"
+                data-testid="range"
+                @input="handleMaxChange"
+            />
+        </div>
     </div>
 </template>
 <style lang="css" scoped>
 .price-input input[type="number"] {
     appearance: textfield;
+}
+
+.range-slider input {
+    top: 0px;
+    background: none;
+    appearance: none;
+}
+
+.range-slider input[type="range"]::-webkit-slider-thumb {
+    height: 17px;
+    width: 17px;
+    border-radius: 50%;
+    background: #adb5bd;
+    pointer-events: auto;
+    -webkit-appearance: none;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+}
+.range-slider input[type="range"]::-moz-range-thumb {
+    height: 17px;
+    width: 17px;
+    border: none;
+    border-radius: 50%;
+    background: #adb5bd;
+    pointer-events: auto;
+    -moz-appearance: none;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
 }
 </style>

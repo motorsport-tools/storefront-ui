@@ -36,6 +36,7 @@ export const useProductSearch = () => {
 
     const results = ref<ClerkProductSearchResult[]>([])
     const availableFacets = ref<ClerkFacets>({})
+    const facetStats = ref<Object>({})
     const selectedFacets = ref<Record<string, string[]>>({})
     const filterCount = computed(() => Object.keys(selectedFacets.value).length || 0)
     const total = ref<number>(0)
@@ -120,6 +121,8 @@ export const useProductSearch = () => {
         } else {
             availableFacets.value = mergeFacets(availableFacets.value, res.facets || {})
         }
+
+        facetStats.value = res?.facets_stats || {}
 
         loading.value = false
 
@@ -281,6 +284,7 @@ export const useProductSearch = () => {
         results,
         availableFacets,
         selectedFacets,
+        facetStats,
         filterCount,
         total,
         totalPages,

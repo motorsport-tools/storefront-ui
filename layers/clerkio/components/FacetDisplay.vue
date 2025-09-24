@@ -13,6 +13,7 @@ interface Props {
     showlimit: number
     selectedFacets: Ref<Record<string, string[]>>
     expandedFacets: Record<string, boolean>
+    maxPrice: number
 }
 
 const props = defineProps<Props>()
@@ -20,6 +21,9 @@ const props = defineProps<Props>()
 const handleChange = (key: string, value: string | number | boolean) => {
     emit("setFacet", key, value)
 }
+
+const maxRef = ref(props.maxPrice)
+const minRef = ref(0)
 
 const list = ref<HTMLDivElement | null>(null)
 
@@ -49,6 +53,10 @@ if( props.index === 'has_stock' || props.index === 'on_sale' ) {
             </UiFormCustomSfToggle>
             <UiFormCustomSfRange
                 v-else-if="type === 'range'"
+                :min="0"
+                :max="maxPrice"
+                v-model:min-value="minRef"
+                v-model:max-value="maxRef"
             />
             <UiFormCustomSfCheckbox
                 v-else

@@ -9,6 +9,7 @@ interface Props {
     selectedFacets: Ref<Record<string, string[]>>
     availableFacets: Ref<ClerkFacets>
     setFacet: (key: string, value: string | number | boolean) => void
+    facetStats: Ref<Record<string, Object[]>>
     filterCount: number
     loading: boolean
 }
@@ -156,6 +157,7 @@ watch(
                     :selectedFacets="selectedFacets"
                     :expandedFacets="expandedFacets"
                     @setFacet="handleSetFacet"
+                    :max-price="facetStats?.price?.max || 999"
                 />
             </div>
         </div>

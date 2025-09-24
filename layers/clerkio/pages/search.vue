@@ -15,6 +15,7 @@ const {
     results,
     availableFacets,
     selectedFacets,
+    facetStats,
     filterCount,
     totalPages,
     page,
@@ -76,6 +77,7 @@ watch(isTabletScreen, (value) => {
                     :availableFacets="availableFacets"
                     :selectedFacets="selectedFacets"
                     :setFacet="setFacet"
+                    :facetStats="facetStats"
                     :filterCount="filterCount"
                     :loading="loading"
                 />
@@ -86,6 +88,7 @@ watch(isTabletScreen, (value) => {
                             :availableFacets="availableFacets"
                             :selectedFacets="selectedFacets"
                             :setFacet="setFacet"
+                            :facetStats="facetStats"
                             :filterCount="filterCount"
                             :loading="loading"
                             @close="close"

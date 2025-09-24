@@ -29,16 +29,25 @@ const minRef = ref(props.minPrice)
 const list = ref<HTMLDivElement | null>(null)
 
 let type:string = ''
-
+let show:boolean = false
 if( props.index === 'has_stock' || props.index === 'on_sale' ) {
     type = 'boolean'
+    show = true
 } else if( props.index === 'price' ) {
     type = 'range'
+    if(props.maxPrice) {
+        show = true
+    }
+} else {
+    show = true
 }
 
 </script>
 <template>
-    <div class="border rounded-md mb-4">
+    <div 
+        v-if="show"
+        class="border rounded-md mb-4"
+    >
         <h4 
             class="py-2 px-4 bg-neutral-50 border-b font-bold"
         >
@@ -53,7 +62,7 @@ if( props.index === 'has_stock' || props.index === 'on_sale' ) {
                 <span class="ml-2 text-sm">{{ $t(`filters.labels.${index}`) }}</span>
             </UiFormCustomSfToggle>
             <UiFormCustomSfRange
-                v-else-if="type === 'range' && maxPrice"
+                v-else-if="type === 'range'"
                 :min="minPrice"
                 :max="maxPrice"
                 v-model:min-value="minRef"

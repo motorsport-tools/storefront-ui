@@ -32,7 +32,7 @@ export const useProductSearch = () => {
     const query = ref<string>(route.query.search?.toString() || '')
     const sort = ref<string>(route.query.sort?.toString() || 'default')
     const page = ref<number>(parseInt(route.query.page?.toString() || '1'))
-    const limit = ref<number>(20)
+    const limit = ref<string>('20')
     const prevQuery = ref<string>('')
     const results = ref<ClerkProductSearchResult[]>([])
     const availableFacets = ref<ClerkFacets>({})
@@ -106,7 +106,7 @@ export const useProductSearch = () => {
                 semantic: 0,
                 query: query.value,
                 sort: reqSort,
-                limit: limit.value,
+                limit: Number(limit.value),
                 offset: offset.value,
                 filter: reqFilters,
             }

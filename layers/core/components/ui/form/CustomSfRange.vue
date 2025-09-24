@@ -84,7 +84,7 @@ watch(() => props.min, min => {
 })
 </script>
 <template>
-    <div 
+    <div
         class="price-input relative block flex flex-col items-center select-none py-1 px-2 m-1 group w-auto"
         :class="[$attrs.class]"
     >

@@ -47,7 +47,7 @@ const setCss = () => {
 
         const left = Math.round(((minClamped - props.min) / range) * 100 * 100) / 100
         const right = Math.round((100 - ((maxClamped - props.min) / range) * 100) * 100) / 100
-        const width = Math.round(((maxClamped - minClamped) / range) * 100 * 100) / 100
+        const width = range == 0 ? 100 : Math.round(((maxClamped - minClamped) / range) * 100 * 100) / 100
 
         progress.value.style.left = `${left}%`
         progress.value.style.right = `${right}%`
@@ -109,6 +109,7 @@ watch(() => props.min, min => {
                 v-model="minValue"
                 :placeholder="$t(`filters.placeholder.min`)"
                 @change="handleMinChange"
+                :disabled="min === max"
             />
             <span 
                 class="pl-2 text-sm"
@@ -133,6 +134,7 @@ watch(() => props.min, min => {
                 v-model="maxValue"
                 :placeholder="$t(`filters.placeholder.max`)"
                 @change="handleMaxChange"
+                :disabled="min === max"
             />
         </div>
         <div ref="slider" class="range-slider relative w-full h-[5px] my-4 bg-neutral-300">
@@ -147,6 +149,7 @@ watch(() => props.min, min => {
                 :step="step"
                 data-testid="range"
                 @input="handleMinChange"
+                :disabled="min === max"
             />
             <input
                 type="range"
@@ -158,6 +161,7 @@ watch(() => props.min, min => {
                 :step="step"
                 data-testid="range"
                 @input="handleMaxChange"
+                :disabled="min === max"
             />
         </div>
     </div>
@@ -182,6 +186,10 @@ watch(() => props.min, min => {
     -webkit-appearance: none;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
     cursor: pointer;
+}
+.range-slider input[type="range"]:disabled::-webkit-slider-thumb,
+.range-slider input[type="range"]:disabled:-moz-range-thumb {
+    display: none;
 }
 .range-slider input[type="range"]::-moz-range-thumb {
     height: 17px;

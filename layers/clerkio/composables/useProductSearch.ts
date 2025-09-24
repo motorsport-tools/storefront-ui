@@ -22,7 +22,8 @@ interface ClerkProductSearchResponse<T = any> {
     message?: string
 }
 
-export const useProductSearch = () => {
+export const useProductSearch = (categoryPage: number | boolean = false) => {
+    console.log('Use Product Search Called with', categoryPage)
     const route = useRoute()
     const router = useRouter()
 
@@ -50,7 +51,8 @@ export const useProductSearch = () => {
     const nonFacetKeys = [
         'page',
         'search',
-        'sort'
+        'sort',
+        '_all_categories',
     ]
 
     const sortByOptions = [
@@ -90,7 +92,10 @@ export const useProductSearch = () => {
 
     //Functions
     const fetchSearch = async () => {
+        console.log('Fetch Search triggered')
         loading.value = true
+
+        if (categoryPage) selectedFacets.value['_all_categories'] = [String(categoryPage)]
 
         const reqSort = sort.value == 'default' ? undefined : sort.value
         const reqFilters = buildQueryFilters()
@@ -100,7 +105,7 @@ export const useProductSearch = () => {
             body: {
                 key: config.public.clerkApiKey,
                 visitor: 'auto',
-                labels: ['Search page'],
+                labels: categoryPage ? ['Category page'] : ['Search page'],
                 attributes: ['id', 'name', 'brand', 'image', 'image_slug', 'image_filename', 'price', 'on_sale', 'list_price', 'rating', 'ratingCount', 'sku', 'slug', 'has_stock'],
                 facets: ['price', 'brand', 'categories', 'on_sale', 'has_stock'],
                 semantic: 0,
@@ -274,7 +279,9 @@ export const useProductSearch = () => {
     )
 
     //Init
-    fetchSearch()
+    if (!categoryPage) {
+        fetchSearch()
+    }
 
     return {
         query,
@@ -296,5 +303,6 @@ export const useProductSearch = () => {
         setLimit,
         setFacet,
         setPage,
+        fetchSearch,
     }
 }

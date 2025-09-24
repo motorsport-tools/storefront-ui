@@ -192,7 +192,7 @@ watch(
                     :expandedFacets="expandedFacets"
                     @setFacet="handleSetFacet"
                     :min-price="facetStats?.price?.min || 0"
-                    :max-price="facetStats?.price?.max || 999"
+                    :max-price="facetStats?.price?.max || 0"
                 />
             </div>
         </div>

@@ -33,7 +33,7 @@ export const useProductSearch = () => {
     const sort = ref<string>(route.query.sort?.toString() || 'default')
     const page = ref<number>(parseInt(route.query.page?.toString() || '1'))
     const limit = ref<number>(20)
-
+    const prevQuery = ref<string>('')
     const results = ref<ClerkProductSearchResult[]>([])
     const availableFacets = ref<ClerkFacets>({})
     const facetStats = ref<Object>({})
@@ -91,6 +91,7 @@ export const useProductSearch = () => {
     //Functions
     const fetchSearch = async () => {
         loading.value = true
+
         const reqSort = sort.value == 'default' ? undefined : sort.value
         const reqFilters = buildQueryFilters()
 
@@ -112,9 +113,12 @@ export const useProductSearch = () => {
         })
 
         results.value = res?.result || []
-
+        if (query.value != prevQuery.value) {
+            total.value = 0
+        }
         if (total.value === 0) {
             total.value = res.total_count || res.estimated_total_count || 0
+            availableFacets.value = {}
         }
 
         if (Object.keys(availableFacets.value).length === 0) {
@@ -125,6 +129,7 @@ export const useProductSearch = () => {
 
         facetStats.value = res?.facets_stats || {}
 
+        prevQuery.value = query.value
         loading.value = false
 
     }

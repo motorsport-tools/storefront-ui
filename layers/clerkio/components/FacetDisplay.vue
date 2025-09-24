@@ -53,7 +53,7 @@ if( props.index === 'has_stock' || props.index === 'on_sale' ) {
                 <span class="ml-2 text-sm">{{ $t(`filters.labels.${index}`) }}</span>
             </UiFormCustomSfToggle>
             <UiFormCustomSfRange
-                v-else-if="type === 'range'"
+                v-else-if="type === 'range' && maxPrice"
                 :min="minPrice"
                 :max="maxPrice"
                 v-model:min-value="minRef"

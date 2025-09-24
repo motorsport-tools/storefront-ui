@@ -101,6 +101,22 @@ const handleSetFacet = (key: string, value: string | number | boolean) => {
     }
 }
 
+const findCategoryNode = (nodes: menuNode[], id: string): menuNode | undefined => {
+    for (const node of nodes) {
+        if (node.key === id) return node
+        if (node.children?.length) {
+            const found = findCategoryNode(node.children, id)
+            if (found) return found
+        }
+    }
+    return undefined
+}
+
+const getCategoryLabel = (id: string) => {
+  const node = findCategoryNode([categories.value], id)
+  return node ? node.value.label : id
+}
+
 watch(
     () => mergedCategories.value,
     (cats) => {
@@ -129,6 +145,24 @@ watch(
             >
                 <span class="underline mr-1">{{ $t("filters.clearFilters" ) }}</span> ({{ filterCount }})
             </UiUserNavButton>
+        </div>
+        <div 
+            v-if="Object.keys(selectedFacets).length"
+            class="flex flex-wrap gap-2 mb-4"
+        >
+            <template v-for="[facet, values] in Object.entries(selectedFacets)" :key="facet">
+                <div 
+                    v-for="value in values" 
+                    :key="value"
+                    class="inline-flex items-center bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm"
+                >
+                    {{ $t(`filters.${facet}`) }}: {{ facet === 'categories' ? getCategoryLabel(value) : value }}
+                    <button 
+                        class="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                        @click="handleSetFacet(facet, value)"
+                    >x</button>
+                </div>
+            </template>
         </div>
         <div 
             class="h-full overflow-y-auto"

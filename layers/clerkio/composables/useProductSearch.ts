@@ -133,13 +133,7 @@ export const useProductSearch = () => {
         const filters: string[] = []
 
         for (const [facet, values] of Object.entries(selectedFacets.value)) {
-            for (const v of values) {
-                if (facet == 'categories') {
-                    filters.push(`${facet} contains '${v}'`)
-                } else {
-                    filters.push(`${facet} = '${v}'`)
-                }
-            }
+            filters.push(`${facet} in [${values.map(v => `'${v}'`).join(", ")}]`)
         }
         return filters
     }

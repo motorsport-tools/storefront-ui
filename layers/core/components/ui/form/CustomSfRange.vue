@@ -12,10 +12,6 @@ const props = defineProps({
     default: 999,
     required: false,
   },
-  step: {
-    type: Number,
-    default: 1,
-  },
   minValue: {
     type: Number,
     default: 0,
@@ -32,32 +28,58 @@ const slider = ref(null)
 const progress = ref<HTMLElement | null>(null)
 const minValue = ref(props.minValue)
 const maxValue = ref(props.maxValue)
+const step = computed( () => { return getStep(props.min, props.max) || 0.01 } )
+
+const getStep = (min: number, max: number) => {
+    const range = max - min
+    if (range < 20) return 0.01
+    if (range < 100) return 0.1
+    if (range < 1000) return 1
+    return 10
+}
 
 const setCss = () => {
     if(progress.value) {
-        let left = ((minValue.value - props.min) / (props.max - props.min)) * 100
+        const range = props.max - props.min
+
+        const minClamped = Math.max(props.min, Math.min(minValue.value, props.max))
+        const maxClamped = Math.max(props.min, Math.min(maxValue.value, props.max))
+
+        const left = Math.round(((minClamped - props.min) / range) * 100 * 100) / 100
+        const right = Math.round((100 - ((maxClamped - props.min) / range) * 100) * 100) / 100
+        const width = Math.round(((maxClamped - minClamped) / range) * 100 * 100) / 100
+
         progress.value.style.left = `${left}%`
-
-        let right = 100 - ((maxValue.value - props.min) / (props.max - props.min)) * 100
         progress.value.style.right = `${right}%`
-
-        let width = (( Math.abs(maxValue.value - minValue.value) - props.min) / (props.max - props.min)) * 100
         progress.value.style.width = `${width}%`
     }
 }
 
-const handleMinChange = ( { target } ) => {
-    minValue.value = parseInt(target.value)
+const handleMinChange = ({ target }: Event & { target: HTMLInputElement }) => {
+    minValue.value = parseFloat(target.value)
     emit("update:minValue", minValue.value)
     setCss()
 }
 
-const handleMaxChange = ( { target }) => {
-    maxValue.value = parseInt(target.value)
+const handleMaxChange = ({ target }: Event & { target: HTMLInputElement }) => {
+    maxValue.value = parseFloat(target.value)
     emit("update:maxValue", maxValue.value)
     setCss()
 }
 onMounted( () => {
+    setCss()
+})
+watch( () => props.max, max => {
+    if(maxValue.value > max) {
+        setTimeout(() => { maxValue.value = max },10)
+    } else {
+        maxValue.value = max
+    }
+    setCss()
+})
+
+watch(() => props.min, min => {
+    minValue.value = min
     setCss()
 })
 </script>

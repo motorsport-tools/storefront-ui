@@ -21,9 +21,9 @@ await loadCategoriesForMegaMenu({ filter: { parent: true }, pageSize: 4 })
 onMounted(async () => {
     if ( isAuthenticated.value ) {  
       await loadUser(true)
+      await loadWishlist()
     }
     await loadCart()
-    await loadWishlist()
 })
 </script>
 <template>

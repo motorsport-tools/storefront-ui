@@ -12,6 +12,7 @@ interface Props {
     facetStats: Ref<Record<string, Object[]>>
     filterCount: number
     loading: boolean
+    isCategory: boolean
 }
 
 const props = defineProps<Props>()
@@ -168,7 +169,7 @@ watch(
             class="h-full overflow-y-auto"
         >
             <div 
-                v-if="mergedCategories && !loading"
+                v-if="mergedCategories && !loading && !isCategory"
             >
                 <FacetCategories
                     :categories="mergedCategories"

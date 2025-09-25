@@ -22,8 +22,7 @@ interface ClerkProductSearchResponse<T = any> {
     message?: string
 }
 
-export const useProductSearch = (categoryPage: number | boolean = false) => {
-    console.log('Use Product Search Called with', categoryPage)
+export const useProductSearch = () => {
     const route = useRoute()
     const router = useRouter()
 
@@ -91,8 +90,7 @@ export const useProductSearch = (categoryPage: number | boolean = false) => {
     const limitOptions = [4, 8, 12, 16, 20]
 
     //Functions
-    const fetchSearch = async () => {
-        console.log('Fetch Search triggered')
+    const fetchSearch = async (categoryPage: number | boolean = false) => {
         loading.value = true
 
         if (categoryPage) selectedFacets.value['_all_categories'] = [String(categoryPage)]
@@ -116,6 +114,8 @@ export const useProductSearch = (categoryPage: number | boolean = false) => {
                 filter: reqFilters,
             }
         })
+
+        if (categoryPage) delete selectedFacets.value['_all_categories']
 
         results.value = res?.result || []
         if (query.value != prevQuery.value) {
@@ -257,31 +257,8 @@ export const useProductSearch = (categoryPage: number | boolean = false) => {
         router.replace({ query: queryObj })
     }
 
-    //Watcher
-    watch(
-        () => route.query,
-        newQuery => {
-            query.value = newQuery.search?.toString() || ''
-            sort.value = newQuery.sort?.toString() || 'default'
-            page.value = parseInt(newQuery.page?.toString() || '1')
-
-            selectedFacets.value = {}
-            for (const [key, value] of Object.entries(newQuery)) {
-                if (nonFacetKeys.includes(key)) continue
-                if (typeof value === 'string') {
-                    selectedFacets.value[key] = value.split(',')
-                }
-            }
-
-            fetchSearch()
-        },
-        { immediate: true, deep: true }
-    )
-
     //Init
-    if (!categoryPage) {
-        fetchSearch()
-    }
+    //fetchSearch()
 
     return {
         query,
@@ -289,6 +266,7 @@ export const useProductSearch = (categoryPage: number | boolean = false) => {
         page,
         limit,
         results,
+        nonFacetKeys,
         availableFacets,
         selectedFacets,
         facetStats,

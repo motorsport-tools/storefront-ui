@@ -13,6 +13,7 @@ const { open, close, isOpen } = useDisclosure()
 const {
     query,
     results,
+    nonFacetKeys,
     availableFacets,
     selectedFacets,
     facetStats,
@@ -28,6 +29,7 @@ const {
     setFacet,
     setLimit,
     setSort,
+    fetchSearch,
 } = useProductSearch()
 
 const searchTitle = computed( () => {
@@ -52,6 +54,25 @@ watch(isTabletScreen, (value) => {
     close()
   }
 })
+watch(
+    () => route.query,
+    newQuery => {
+        query.value = newQuery.search?.toString() || ''
+        sort.value = newQuery.sort?.toString() || 'default'
+        page.value = parseInt(newQuery.page?.toString() || '1')
+
+        selectedFacets.value = {}
+        for (const [key, value] of Object.entries(newQuery)) {
+            if (nonFacetKeys.includes(key)) continue
+            if (typeof value === 'string') {
+                selectedFacets.value[key] = value.split(',')
+            }
+        }
+
+        fetchSearch()
+    },
+    { immediate: true, deep: true }
+)
 </script>
 <template>
     <main 
@@ -157,8 +178,9 @@ watch(isTabletScreen, (value) => {
                         :key="route.hash"
                         class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
                     >
-                        <ProductCardSkeleton v-if="loading" v-for="i in limit" :key="i" />
+                        <ProductCardSkeleton v-if="loading" v-for="i in Number(limit)" :key="i" />
                         <LazyUiProductCard
+                            v-else
                             v-for="productTemplate in results"
                             :key="productTemplate?.id"
                             :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product || productTemplate as Product) || '' "

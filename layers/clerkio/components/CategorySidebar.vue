@@ -36,7 +36,7 @@ const parent = computed(() => {
         class="flex flex-wrap gap-2 mb-4"
     >
         <NuxtLink
-            v-if="parent"
+            v-if="parent !== undefined && parent.key != 'root'"
             :to="parent?.value.link"
             class="px-2"
         >
@@ -44,7 +44,7 @@ const parent = computed(() => {
         </NuxtLink>
         <ul
             v-if="node && node.children.length > 0"
-            class="px-2"
+            :class="[{ 'px-2': parent }]"
         >
             <li 
                 v-for="item in node.children"

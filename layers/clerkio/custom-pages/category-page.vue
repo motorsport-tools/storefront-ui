@@ -79,6 +79,8 @@ watch(
     { immediate: true, deep: true }
 )
 
+const categoryIdStr = computed(() => category.value?.id?.toString() || '')
+
 useHead(generateSeo<SeoEntity>(category.value, 'Category'))
 
 setMaxVisiblePages(isWideScreen.value)
@@ -103,15 +105,16 @@ setMaxVisiblePages(isWideScreen.value)
             </h1>
             <div class="grid grid-cols-12 lg:gap-x-6">
                     <FilterSidebar 
-                    class="hidden lg:block col-span-12 lg:col-span-4 xl:col-span-3"
-                    :availableFacets="availableFacets"
-                    :selectedFacets="selectedFacets"
-                    :setFacet="setFacet"
-                    :facetStats="facetStats"
-                    :filterCount="filterCount"
-                    :loading="loading"
-                    :isCategory="true"
-                />
+                        class="hidden lg:block col-span-12 lg:col-span-4 xl:col-span-3"
+                        :availableFacets="availableFacets"
+                        :selectedFacets="selectedFacets"
+                        :setFacet="setFacet"
+                        :facetStats="facetStats"
+                        :filterCount="filterCount"
+                        :loading="loading"
+                        :isCategory="true"
+                        :category-id="categoryIdStr"
+                    />
                 <LazyCategoryMobileSidebar :is-open="isOpen" @close="close">
                     <template #default>
                         <FilterSidebar 
@@ -124,6 +127,7 @@ setMaxVisiblePages(isWideScreen.value)
                             :loading="loading"
                             @close="close"
                             :isCategory="true"
+                            :category-id="categoryIdStr"
                         />
                     </template>
                 </LazyCategoryMobileSidebar>

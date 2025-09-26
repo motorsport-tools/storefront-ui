@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Category } from '~/graphql'
 import type { Node as menuNode } from '#layers/header/types'
-
+import { getCategoryLabel, isCategoryOrChildSelected } from '../utils/categories';
 const router = useRouter()
 const emit = defineEmits(["close"]);
 
@@ -13,6 +13,7 @@ interface Props {
     filterCount: number
     loading: boolean
     isCategory: boolean
+    categoryId: string
 }
 
 const props = defineProps<Props>()
@@ -23,7 +24,7 @@ const clearFilters = () => {
     emit("close");
 }
 
-const categoriesForMegaMenu = inject<Ref<Category[]> | undefined>('categoriesForMegaMenu')
+const categoriesForMegaMenu = inject<Ref<menuNode[]> | undefined>('categoriesForMegaMenu')
 
 const categories = computed(() => categoriesForMegaMenu?.value ?? [])
 
@@ -32,7 +33,7 @@ interface ClerkFacetValue {
     c: number
 }
 
-function mergeFacetCounts(menuNode: menuNode, facetValues: ClerkFacetValue[]): menuNode {
+function mergeFacetCounts(menuNode: menuNode[], facetValues: ClerkFacetValue[]): menuNode {
     const mergedNode: menuNode = { ...menuNode }
 
     const countEntry = facetValues.find(f => f.v === mergedNode.key)
@@ -53,9 +54,9 @@ const mergedCategories = computed(() => {
     if (!props.availableFacets) return categories.value
     const facets = props.availableFacets
     if (!facets || !facets['categories']) {
-        return categories.value as unknown as menuNode[]
+        return categories.value
     }
-    return mergeFacetCounts(categories.value as unknown as menuNode[], facets['categories'])
+    return mergeFacetCounts(categories.value, facets['categories'])
 })
 
 const expandedFacets = reactive<Record<string, boolean>>({})
@@ -67,12 +68,6 @@ const visibleFacets = computed(() => {
     }
     return facets
 })
-
-function isCategoryOrChildSelected(cat: menuNode, selected: string[]): boolean {
-    if (selected.includes(cat.key)) return true
-    if (!cat.children) return false
-    return cat.children.some(child => isCategoryOrChildSelected(child, selected))
-}
 
 const handleSetFacet = (key: string, value: string | number | boolean) => {
     props.setFacet(key, value)
@@ -102,22 +97,6 @@ const handleSetFacet = (key: string, value: string | number | boolean) => {
     }
 }
 
-const findCategoryNode = (nodes: menuNode[], id: string): menuNode | undefined => {
-    for (const node of nodes) {
-        if (node.key === id) return node
-        if (node.children?.length) {
-            const found = findCategoryNode(node.children, id)
-            if (found) return found
-        }
-    }
-    return undefined
-}
-
-const getCategoryLabel = (id: string) => {
-  const node = findCategoryNode([categories.value], id)
-  return node ? node.value.label : id
-}
-
 watch(
     () => mergedCategories.value,
     (cats) => {
@@ -133,6 +112,11 @@ watch(
 </script>
 <template>
     <aside >
+        <CategorySidebar
+            v-if="isCategory && categoryId"
+            :categories="categories"
+            :categoryId="categoryId"
+        />
         <div class="flex flex-row py-2 px-4 mt-0 mb-4 bg-neutral-100 md:rounded-md items-center justify-between">
             <h5
                 class="typography-headline-6 font-bold text-neutral-900 uppercase tracking-widest"
@@ -157,7 +141,7 @@ watch(
                     :key="value"
                     class="inline-flex items-center bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm"
                 >
-                    {{ $t(`filters.${facet}`) }}: {{ facet === 'categories' ? getCategoryLabel(value) : value }}
+                    {{ $t(`filters.${facet}`) }}: {{ facet === 'categories' ? getCategoryLabel(categories, value) : value }}
                     <button 
                         class="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none"
                         @click="handleSetFacet(facet, value)"

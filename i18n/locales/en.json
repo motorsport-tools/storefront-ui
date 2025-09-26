@@ -242,47 +242,7 @@
   "addToList": "Add to list",
   "category": "Category",
   "categories": {
-    "howToBuy": {
-      "label": "How to buy",
-      "subcategories": {
-        "paymentMethods": "Payment methods",
-        "orderPickup": "Order pickup",
-        "purchaseStatus": "Purchase status",
-        "trackOrders": "Track orders",
-        "returns": "Returns"
-      }
-    },
-    "help": {
-      "label": "Help",
-      "subcategories": {
-        "helpCenter": "Help center",
-        "securityFraud": "Security & fraud",
-        "feedback": "Feedback",
-        "contact": "Contact"
-      }
-    },
-    "services": {
-      "label": "Services",
-      "subcategories": {
-        "giftCards": "Gift cards",
-        "storeLocator": "Store Locator",
-        "clickCollect": "Click & Collect",
-        "sameDayDelivery": "Same Day Delivery",
-        "shippingDelivery": "Shipping & Delivery",
-        "couponsDiscounts": "Coupons & Discounts",
-        "newsletter": "Newsletter"
-      }
-    },
-    "about": {
-      "label": "About",
-      "subcategories": {
-        "aboutUs": "About us",
-        "jobs": "Jobs",
-        "pressCenter": "Press Center",
-        "affiliateProgram": "Affiliate program",
-        "suppliers": "Suppliers"
-      }
-    }
+    "heading": "Categories"
   },
   "contactOptions": {
     "helpCenter": {

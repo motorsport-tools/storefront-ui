@@ -31,6 +31,7 @@ const isMobile = useState(() => $viewport.isLessThan('lg'))
 
 const isOverlayVisible = ref(false)
 const isSearchOverlayVisible = ref(false)
+const isMenuOpen = ref(false)
 
 const megaMenuClick = (menuType: string[]) => {
   if(categoryMenuRef.value) {
@@ -92,6 +93,14 @@ const onResize = () => {
     }, 200)
 }
 
+const onOpenLoginMenu = () => {
+    isMenuOpen.value = true
+}
+
+const onCloseLoginMenu = () => {
+    isMenuOpen.value = false
+}
+
 const onOpenMenu = () => {
     isOverlayVisible.value = true
 }
@@ -117,16 +126,23 @@ onBeforeUnmount(() => {
     window.removeEventListener('resize', onResize)
     clearTimeout(resizeTimeout)
 })
-
 </script>
 
 <template>
-    <Overlay :isOpen="isOverlayVisible || isSearchOverlayVisible"/>
+    <Overlay :isOpen="isOverlayVisible || isSearchOverlayVisible || isMenuOpen"
+        :class="{
+            '!z-[91]': isMenuOpen
+        }"
+    />
     <header
         ref="headerRef"
     >
         <!-- Top Dark Bar -->
-        <div class="bg-[#222222] h-[36px] max-h-[36px] text-white hover:text-neutral-200 text-sm px-4 flex justify-between items-center relative z-[20]">
+        <div class="bg-[#222222] h-[36px] max-h-[36px] text-white hover:text-neutral-200 text-sm px-4 flex justify-between items-center relative"
+        :class="{
+            'z-[94]': isMenuOpen
+        }"
+        >
             <div class="h-full flex items-center justify-center text-xs">
                 <nav
                     ref="headerNavRef"
@@ -135,20 +151,10 @@ onBeforeUnmount(() => {
                 </nav>
             </div>
             <div class="h-full flex items-center justify-center">
-                <NuxtLink
-                    variant="tertiary"
-                    class="h-full block flex items-center hover:bg-transparent !text-white hover:!text-neutral-200 transition cursor-pointer mr-4"
-                    to="/login"
-                >
-                    <Icon
-                        name="flowbite:user-solid"
-                        size="20px"
-                    />
-
-                    <span class="text-sm">
-                        Account
-                    </span>
-                </NuxtLink>
+                <UiAccountButton
+                    @onMenuOpen="onOpenLoginMenu"
+                    @onMenuClose="onCloseLoginMenu"
+                />
                 <button
                     variant="tertiary"
                     class="h-full flex items-center hover:bg-transparent !text-white hover:!text-neutral-200 flex align-center transition cursor-pointer"

@@ -71,7 +71,8 @@ defineExpose({
             @blur="
                 (event) => {
                     if (!(event.currentTarget as Element).contains(event.relatedTarget as Element)) {
-                        closeMenu()
+                        console.log('Blur?')
+                        closeMenu
                     }
                 }
             "
@@ -80,8 +81,7 @@ defineExpose({
                 v-for="(menuNode, index) in content.children"
                 :key="menuNode?.key"
                 class="group flex-grow flex items-center justify-center px-3 text-white font-bold uppercase lg:text-sm xl:text-base"
-                @mouseleave="closeMenu()"
-            >
+                @mouseleave="closeMenu()">
                 <SfButton
                     ref="triggerRefs"
                     variant="tertiary"

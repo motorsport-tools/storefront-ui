@@ -315,7 +315,7 @@
   },
   "account": {
     "heading": "My Account",
-    "navHeading": "Account",
+    "navHeading": "Your Account",
     "login": "Login or Register",
     "logout": "Logout",
     "back": "Back",

@@ -36,7 +36,6 @@ function onNavigationReady(el: HTMLElement) {
 
 <template>
     <SiteHeader @navigationReady="onNavigationReady" />
-    <div><button @click="refresh">Refresh Site Data</button></div>
     <div class="relative z-1">
       <slot></slot>
     </div>

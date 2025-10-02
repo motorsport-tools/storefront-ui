@@ -1,7 +1,13 @@
 <script setup lang="ts">
+const props = defineProps({
+  headerNavigation: {
+    type: Object
+  }
+})
+
 const { setAttr } = useVisualEditing()
 
-const menuItems = useNuxtApp().payload?.data['site-data']?.headerNavigation
+const menuItems = props.headerNavigation || {}
 </script>
 <template>
     <nav

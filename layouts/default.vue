@@ -35,7 +35,10 @@ function onNavigationReady(el: HTMLElement) {
 </script>
 
 <template>
-    <SiteHeader @navigationReady="onNavigationReady" />
+    <SiteHeader 
+      :headerNavigation="siteData?.headerNavigation"
+      @navigationReady="onNavigationReady" 
+    />
     <div class="relative z-1">
       <slot></slot>
     </div>

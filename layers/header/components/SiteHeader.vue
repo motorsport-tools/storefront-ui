@@ -10,6 +10,9 @@ const props = defineProps({
     type: Object,
     default: () => ref(),
   },
+  headerNavigation: {
+    type: Object
+  }
 })
 
 const { loadCategoriesForMegaMenu, categoriesForMegaMenu } = useMegaMenuCategories()
@@ -147,6 +150,7 @@ onBeforeUnmount(() => {
             <div class="h-full flex items-center justify-center text-xs">
                 <UiNavigationBlock
                     ref="headerNavRef"
+                    :headerNavigation="headerNavigation"
                 />
             </div>
             <div class="h-full flex items-center justify-center">

@@ -126,6 +126,29 @@ export interface Globals {
 	organization?: string | null;
 }
 
+export interface Navigation {
+}
+
+export interface NavigationItem {
+	/** @primaryKey */
+	id: number;
+	sort?: number | null;
+	user_created?: string | null;
+	date_created?: string | null;
+	user_updated?: string | null;
+	date_updated?: string | null;
+	navigation?: number | null;
+	page?: Page | string | null;
+	/** @description Label shown to the user for the menu item. @required */
+	title: string;
+	/** @description What type of link is this? Page and Post allow you to link to internal content. URL is for external content. Group can contain other menu items. */
+	type?: 'page' | 'url' | 'group' | null;
+	/** @description The URL to link to. Could be relative (ie `/my-page`) or a full external URL (ie `https://docs.directus.io`) */
+	url?: string | null;
+	parent?: NavigationItem | string | null;
+	children?: NavigationItem[] | string[];
+}
+
 export interface Page {
 	/** @primaryKey */
 	id: number;
@@ -291,6 +314,8 @@ export interface Schema {
 	block_slider: BlockSlider[];
 	block_slider_slides: BlockSliderSlide[];
 	globals: Globals;
+	navigation: Navigation[];
+	navigation_items: NavigationItem[];
 	Pages: Page[];
 	page_sections: PageSection[];
 	page_sections_blocks: PageSectionsBlock[];
@@ -310,6 +335,8 @@ export enum CollectionNames {
 	block_slider = 'block_slider',
 	block_slider_slides = 'block_slider_slides',
 	globals = 'globals',
+	navigation = 'navigation',
+	navigation_items = 'navigation_items',
 	Pages = 'Pages',
 	page_sections = 'page_sections',
 	page_sections_blocks = 'page_sections_blocks',

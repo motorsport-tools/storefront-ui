@@ -138,17 +138,16 @@ onBeforeUnmount(() => {
         ref="headerRef"
     >
         <!-- Top Dark Bar -->
-        <div class="bg-[#222222] h-[36px] max-h-[36px] text-white hover:text-neutral-200 text-sm px-4 flex justify-between items-center relative"
+        <div class="hidden lg:flex bg-[#222222] h-[36px] max-h-[36px] text-white text-sm px-4 justify-between items-center relative"
         :class="{
             'z-[94]': isMenuOpen
         }"
         >
+
             <div class="h-full flex items-center justify-center text-xs">
-                <nav
+                <UiNavigationBlock
                     ref="headerNavRef"
-                >
-                FAQ | Contact | Order Status
-                </nav>
+                />
             </div>
             <div class="h-full flex items-center justify-center">
                 <UiAccountButton
@@ -176,6 +175,7 @@ onBeforeUnmount(() => {
         </div>
         <div 
             ref="headerSticky"
+            class="shadow-md"
             :class="[
                 'w-full z-[90]',
                 isHidden ? '-translate-y-full pointer-events-none' : 'translate-y-0 pointer-events-auto',

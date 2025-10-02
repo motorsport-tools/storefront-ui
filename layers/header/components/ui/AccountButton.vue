@@ -24,9 +24,9 @@ onMounted( () => {
 <template>
     <SfDropdown 
         v-model="isOpen"
-        class="h-full mr-4 z-[110] pl-1 pr-2"
+        class="h-full mr-4 pl-1 pr-2"
         :class="{
-            'bg-primary-900': isOpen
+            'bg-primary-900 z-[110]': isOpen
         }"
     >
         <template #trigger>

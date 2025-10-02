@@ -61,6 +61,9 @@ export default defineNitroPlugin((nitroApp) => {
             return `mobile-${event.path}`
           },
           shouldInvalidateCache: (event: H3Event) => {
+            if (event.node.req.headers['x-invalidate']) {
+              return true
+            }
             return false
           },
           maxAge: Number(process.env?.NUXT_SWR_CACHE_TIME),
@@ -68,7 +71,9 @@ export default defineNitroPlugin((nitroApp) => {
           staleMaxAge: Number(process.env?.NUXT_SWR_CACHE_TIME),
           shouldBypassCache: (event: H3Event) => {
             const query = getQuery(event)
-            if (query.token && (query.preview || query['visual-editing'])) return true
+            if (query.token && (query.preview || query['visual-editing'])) {
+              return true
+            }
             if (event.path.startsWith('/api/search/')) return true
             return false
           },

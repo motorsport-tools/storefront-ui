@@ -105,22 +105,22 @@ defineExpose({
                     :key="activeMenu.key"
                     ref="megaMenuRef"
                     :style="style"
-                    class="hidden bg-white lg:grid gap-x-6 gap-y-4 md:grid-cols-5
-                    lg:grid-cols-6 text-black normal-case shadow-lg p-2 left-0 right-0 outline-none lg:z-[9999] rounded-bl-[30px] rounded-br-[30px] border-b border-neutral-200"
+                    class="hidden bg-white lg:grid gap-x-6 gap-y-4
+                    lg:grid-cols-6 text-black normal-case shadow-lg p-4 left-0 right-0 outline-none lg:z-[9999] rounded-bl-[30px] rounded-br-[30px] border-b border-neutral-200 left-0 right-0 mx-auto max-w-[98vw]"
                     tabindex="0"
                     @keydown.esc="focusTrigger(index)"
                 >
-                    <div class="col-span-5 lg:col-span-6 row-span-1">
-                        <SfListItem
+                    <div class="lg:col-span-6 row-span-1">
+                        <NuxtLink
                             tag="a"
-                            size="sm"
                             :href="menuNode.value.link"
-                            class="text-sm text-black whitespace-nowrap cursor-pointer !px-0"
+                            class="text-black whitespace-nowrap cursor-pointer !px-0 hover:text-primary-700"
                         >
-                            <p class="text-left">
+                            <span class="text-left font-bold text-lg">
                                 {{ $t('menu.viewAll', { category: menuNode.value.label}) }}
-                            </p>
-                        </SfListItem>
+                            </span>
+                            <SfIconChevronRight/>
+                        </NuxtLink>
                     </div>
                     <template v-for="node in activeMenu.children" :key="node.key">
                         <div>

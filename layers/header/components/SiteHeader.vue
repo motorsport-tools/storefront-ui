@@ -144,10 +144,9 @@ onBeforeUnmount(() => {
         ref="headerRef"
     >
         <!-- Top Dark Bar -->
-        <div class="hidden lg:flex bg-[#222222] h-[36px] max-h-[36px] text-white text-sm px-4 justify-between items-center relative"
+        <div class="hidden lg:flex bg-[#222222] h-[36px] max-h-[36px] text-white text-sm px-4 justify-between items-center relative z-[20]"
         :class="{
-            'z-[94]': isMenuOpen,
-            '!z-[20]': isOverlayVisible || isSearchOverlayVisible,
+            '!z-[94]': isMenuOpen,
         }"
         >
 

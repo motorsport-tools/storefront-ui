@@ -74,7 +74,12 @@ export default defineNitroPlugin((nitroApp) => {
             if (query.token && (query.preview || query['visual-editing'])) {
               return true
             }
-            if (event.path.startsWith('/api/search/')) return true
+            if (event.path.startsWith('/api/search/')) {
+              return true
+            }
+            if (event.node.req.headers['x-invalidate']) {
+              return true
+            }
             return false
           },
         },

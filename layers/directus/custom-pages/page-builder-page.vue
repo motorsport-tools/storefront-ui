@@ -13,9 +13,7 @@ const { isVisualEditingEnabled, apply } = useVisualEditing()
 
 const cacheKey = `pages-directus-${permalink}`
 
-const {
-	siteData,
-} = await useSiteGlobals()
+const globals = useNuxtApp().payload?.data['site-data']
 
 const {
 	data: page,
@@ -36,7 +34,7 @@ if (!page.value || error.value) {
 const seo = page.value.seo
 if(seo) {
     const robots = `${seo.no_index ? 'noindex' : 'index'},${seo.no_follow ? 'nofollow' : 'follow'}`
-    const org = computed(() => siteData.value?.globals?.organization ?? '')
+    
     const seoData = {
         ...(seo.title ? { metaTitle: seo.title }: null),
         ...(seo.meta_description ? { metaDescription: seo.meta_description }: null),
@@ -50,7 +48,7 @@ if(seo) {
             "description": `${seo.meta_description}`,
             "publisher": {
                 "@type": "Organization",
-                "name": `${siteData.value?.globals.organization}`
+                "name": `${globals.organization}`
             },
             "mainEntityOfPage": {
                 "@type": "WebPage",

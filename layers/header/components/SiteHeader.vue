@@ -6,12 +6,12 @@ import Overlay from './ui/Overlay.vue'
 const { $viewport } = useNuxtApp()
 
 const props = defineProps({
-  navigationRef: {
-    type: Object,
-    default: () => ref(),
-  },
   headerNavigation: {
     type: Object
+  },
+  refresh: {
+    type: Function,
+    required: false,
   }
 })
 
@@ -23,6 +23,8 @@ provide(
 )
 
 await loadCategoriesForMegaMenu({ filter: { parent: true }, pageSize: 100 })
+
+
 
 const headerRef = ref(null)
 const headerNavRef = ref<HTMLElement>()
@@ -113,8 +115,7 @@ const onCloseMenu = () => {
 
 onMounted(async () => {
     if(headerNavRef.value) {
-        props.navigationRef.value = headerNavRef.value
-        emit('navigationReady', headerNavRef.value)
+        //emit('navigationReady', headerNavRef.value)
     }
     await nextTick() 
     if (headerSticky.value) {
@@ -150,6 +151,7 @@ onBeforeUnmount(() => {
             <div class="h-full flex items-center justify-center text-xs">
                 <UiNavigationBlock
                     ref="headerNavRef"
+                    :refresh="refresh"
                     :headerNavigation="headerNavigation"
                 />
             </div>

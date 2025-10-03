@@ -3,7 +3,7 @@ defineProps({
   error: Object
 })
 
-const { isVisualEditingEnabled, apply } = useVisualEditing()
+const { isVisualEditingEnabled } = useVisualEditing()
 
 const {
     data: siteData,
@@ -12,32 +12,16 @@ const {
 } = await useFetch('/api/site-data', {
     key: 'site-data',
     headers: isVisualEditingEnabled ? { 'x-invalidate': '1' } : {},
-    immediate: true,
+    cache: isVisualEditingEnabled? 'no-cache' : 'default'
 })
 
-
-const navigation = ref<HTMLElement>()
-const footer = useTemplateRef('footerRef')
-
-function onNavigationReady(el: HTMLElement) {
-  if(!isVisualEditingEnabled) {
-    console.log('Visual not Enabled')
-    return
-  } 
-  navigation.value = el
-  apply({
-    elements: [navigation.value as HTMLElement, footer.value?.footerRef as HTMLElement],
-    onSaved: () => {
-      refresh()
-    },
-  })
-}
+const navigationMenu = computed(() => siteData.value?.headerNavigation || {})
 </script>
 
 <template>
     <SiteHeader 
-      :headerNavigation="siteData?.headerNavigation"
-      @navigationReady="onNavigationReady" 
+      :headerNavigation="navigationMenu"
+      :refresh="refresh"
     />
     <div class="relative z-1">
       <slot></slot>
@@ -48,7 +32,7 @@ function onNavigationReady(el: HTMLElement) {
     <LazySiteFooter 
       hydrate-on-visible 
       ref="footerRef"
-      :navigation="siteData?.footerNavigation || []"
+      :navigation="navigationMenu"
       :globals="siteData?.globals || {}"
     />
     <LazyWishlistSidebar />

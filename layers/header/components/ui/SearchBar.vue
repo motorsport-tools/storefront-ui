@@ -123,6 +123,7 @@ const handleInputEnter = () => {
 
 watch(showInstantSearch, (val) => {
     document.body.classList.toggle('overflow-hidden', val)
+    emit('update-overlay', val)
 })
 
 watch(searchInputValue, () => {

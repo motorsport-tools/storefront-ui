@@ -137,6 +137,7 @@ onBeforeUnmount(() => {
         :class="{
             '!z-[91]': isMenuOpen,
             '!z-[10]': isOverlayVisible,
+            '!z-[12]': isSearchOverlayVisible,
         }"
     />
     <header
@@ -146,7 +147,7 @@ onBeforeUnmount(() => {
         <div class="hidden lg:flex bg-[#222222] h-[36px] max-h-[36px] text-white text-sm px-4 justify-between items-center relative"
         :class="{
             'z-[94]': isMenuOpen,
-            '!z-[20]': isOverlayVisible,
+            '!z-[20]': isOverlayVisible || isSearchOverlayVisible,
         }"
         >
 

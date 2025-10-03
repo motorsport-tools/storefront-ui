@@ -135,7 +135,8 @@ onBeforeUnmount(() => {
 <template>
     <Overlay :isOpen="isOverlayVisible || isSearchOverlayVisible || isMenuOpen"
         :class="{
-            '!z-[91]': isMenuOpen
+            '!z-[91]': isMenuOpen,
+            '!z-[10]': isOverlayVisible,
         }"
     />
     <header
@@ -144,7 +145,8 @@ onBeforeUnmount(() => {
         <!-- Top Dark Bar -->
         <div class="hidden lg:flex bg-[#222222] h-[36px] max-h-[36px] text-white text-sm px-4 justify-between items-center relative"
         :class="{
-            'z-[94]': isMenuOpen
+            'z-[94]': isMenuOpen,
+            '!z-[20]': isOverlayVisible,
         }"
         >
 

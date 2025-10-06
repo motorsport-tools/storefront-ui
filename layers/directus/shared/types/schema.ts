@@ -127,6 +127,17 @@ export interface Globals {
 }
 
 export interface Navigation {
+	/** @primaryKey */
+	id: number;
+	user_created?: string | null;
+	user_updated?: string | null;
+	date_updated?: string | null;
+	/** @description The name of this menu */
+	title?: string | null;
+	/** @description Show or hide this menu */
+	is_active?: boolean | null;
+	/** @description Links within the menu. */
+	items?: NavigationItem[] | string[];
 }
 
 export interface NavigationItem {
@@ -137,7 +148,7 @@ export interface NavigationItem {
 	date_created?: string | null;
 	user_updated?: string | null;
 	date_updated?: string | null;
-	navigation?: number | null;
+	navigation?: Navigation | string | null;
 	page?: Page | string | null;
 	/** @description Label shown to the user for the menu item. @required */
 	title: string;

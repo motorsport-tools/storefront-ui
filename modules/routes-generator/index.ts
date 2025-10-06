@@ -11,11 +11,9 @@ export default defineNuxtModule({
   async setup(_, nuxt) {
     const odooBaseUrl: string = process.env?.NUXT_PUBLIC_ODOO_BASE_URL ? `${process.env.NUXT_PUBLIC_ODOO_BASE_URL}/graphql/vsf` : ''
     const CATEGORY_PAGE_SIZE = parseInt(process.env?.NUXT_PUBLIC_CATEGORY_PAGE_SIZE || '10000', 10)
-    const PRODUCT_PAGE_SIZE = parseInt(process.env?.NUXT_PUBLIC_PRODUCT_PAGE_SIZE || '10000', 10)
     const swrValue = Number(process.env?.NUXT_SWR_CACHE_TIME || 300)
     const directusUrl = process.env.DIRECTUS_URL || ''
     const directusToken = process.env.DIRECTUS_SERVER_TOKEN || null
-
 
     if (!odooBaseUrl) {
       console.error('[routes-generator] ODOO_BASE_URL is not set')
@@ -26,16 +24,6 @@ export default defineNuxtModule({
             query {
                 categories(pageSize: ${CATEGORY_PAGE_SIZE}) {
                     categories {
-                        slug
-                    }
-                }
-            }
-        `;
-
-    const productsQuery = `
-            query {
-                products(pageSize: ${PRODUCT_PAGE_SIZE}) {
-                    products {
                         slug
                     }
                 }
@@ -59,29 +47,6 @@ export default defineNuxtModule({
       } catch (e) {
         console.error(
           '[routes-generator] Error fetching category slugs:',
-          e
-        );
-        return [];
-      }
-    };
-
-    const fetchProductSlugs = async (): Promise<string[]> => {
-      try {
-        const res = await ofetch(odooBaseUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: productsQuery }),
-        });
-        return (
-          res?.data?.products?.products
-            ?.map((p: any) => p.slug)
-            .filter(
-              (s: string) => !!s && s !== 'false' && s.startsWith('/')
-            ) || []
-        );
-      } catch (e) {
-        console.error(
-          '[routes-generator] Error fetching product slugs:',
           e
         );
         return [];
@@ -118,17 +83,12 @@ export default defineNuxtModule({
       }
     }
 
-    const [categorySlugs, productSlugs, websitePagesUrls] = await Promise.all([
+    const [categorySlugs, websitePagesUrls] = await Promise.all([
       fetchCategorySlugs(),
-      fetchProductSlugs(),
       fetchWebpageSlugs(),
     ])
 
     categorySlugs.forEach((slug) => {
-      extendRouteRules(slug, { swr: swrValue })
-    })
-
-    productSlugs.forEach((slug) => {
       extendRouteRules(slug, { swr: swrValue })
     })
 
@@ -139,7 +99,7 @@ export default defineNuxtModule({
     })
 
     console.info(
-      `[routes-generator] ✅ ${categorySlugs.length} categories and ${productSlugs.length} products and ${websitePagesUrls.length} website pages loaded`
+      `[routes-generator] ✅ ${categorySlugs.length} categories and ${websitePagesUrls.length} website pages loaded`
     );
 
     nuxt.hook('pages:extend', (pages: NuxtPage[]) => {
@@ -148,14 +108,6 @@ export default defineNuxtModule({
           name: slug.replace(/^\//, '').replace(/\//g, '-'),
           path: slug,
           file: '~/layers/clerkio/custom-pages/category-page.vue',
-        })
-      })
-
-      productSlugs.forEach(slug => {
-        pages.push({
-          name: slug.replace(/^\//, '').replace(/\//g, '-'),
-          path: slug,
-          file: '~/layers/product/custom-pages/product-page.vue',
         })
       })
 

@@ -1,4 +1,6 @@
+
 export default defineNitroPlugin((nitroApp) => {
+  /*
     process.on('uncaughtException', (err) => {
       console.error('Uncaught Exception:', err)
     })
@@ -22,6 +24,7 @@ export default defineNitroPlugin((nitroApp) => {
         console.error('Error payload:', errorPayload);
         } 
     })
-    
+  */
 })
+
 

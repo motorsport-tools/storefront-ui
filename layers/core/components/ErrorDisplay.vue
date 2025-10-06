@@ -3,6 +3,8 @@ import { SfIconArrowBack, SfButton } from '@storefront-ui/vue'
 defineProps({
     msg: String
 })
+
+const NuxtLink = resolveComponent("NuxtLink")
 </script>
 <template>
     <div class="py-5">

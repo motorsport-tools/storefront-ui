@@ -33,7 +33,7 @@ const socialLinks = computed(() => props.globals?.social_links || [])
 const org = computed(() => props.globals?.organization || {})
 </script>
 <template>
-    <footer class="pt-10 bg-[#72706d]">
+    <footer class="pt-10 bg-[#353535]">
         <div
             class="grid md:justify-items-center grid-cols-[1fr_1fr] md:grid-cols-[repeat(4,1fr)] narrow-container"
         >

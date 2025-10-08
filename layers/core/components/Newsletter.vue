@@ -14,32 +14,38 @@ const subscribeNewsletter = async () => {
 };
 </script>
 <template>
-  <div class="relative">
-    <div class="bg-neutral-100 p-4 sm:p-10 text-center">
-      <p class="typography-headline-4 sm:typography-headline-3 font-bold">
-        Subscribe and get discount on your first purchase!
-      </p>
-      <p class="typography-text-sm sm:typography-text-base my-2 mb-4">
-        Be aware of upcoming sales and events. Receive gifts and special offers!
-      </p>
-      <form
-        class="mb-4 flex flex-col sm:flex-row gap-4 max-w-[688px] mx-auto"
-        @submit.prevent="subscribeNewsletter()"
-      >
-        <UiFormEmailInput
-          v-model="inputValue"
-          @is-field-valid="(n) => (emailValidation = n)"
-        />
-        <SfButton :disabled="!emailValidation" type="submit" class="w-[325px]">
-          Subscribe to Newsletter
-        </SfButton>
-      </form>
-      <div class="typography-text-xs text-neutral-600">
-        To learn how we process your data, visit our
-        <SfLink href="#" class="!text-neutral-600">Privacy Notice</SfLink>. You
-        can <SfLink href="#" class="!text-neutral-600">unsubscribe</SfLink> at
-        any time without costs.
+  <div class="relative border-t border-b border-[#E5E7EB] bg-[#d9d9d9] newsletter">
+    <div class="flex flex-wrap gap-4 items-center justify-center sm:justify-between narrow-container py-8 sm:py-14">
+      <div class="text-center sm:text-left">
+        <h2 class="text-[24px] sm:text-[28px] mb-[5px] font-bold">
+          Save <span class="text-primary-700">10%</span> Off Your First Order
+        </h2>
+        <p class="text-[16px] text-neutral-700">
+          Sign up for exclusive special offers, latest news, updates and more. 
+        </p>
       </div>
+      <div 
+        class="flex flex-col gap-4"
+      >
+        <form class="w-full sm:w-auto flex flex-col sm:flex-row gap-4 mb-4 sm:mb-0" @submit.prevent="subscribeNewsletter()">
+          <UiFormEmailInput 
+            v-model="inputValue" 
+            @is-field-valid="(n) => (emailValidation = n)" 
+            class="w-full sm:min-w-[300px]"
+          />
+          <SfButton :disabled="!emailValidation" type="submit" class="w-[325px] disabled:bg-neutral-100 disabled:text-neutral-600">
+            Subscribe
+          </SfButton>
+        </form>
+        <div class="typography-text-xs text-neutral-600">
+          <p>We care about the protection of your data. Read our <SfLink href="#" class="!text-neutral-600">Privacy Policy</SfLink>.
+          By subscribing you agree to our <SfLink href="#" class="!text-neutral-600">Terms of Service</SfLink>.</p>
+        </div>
+      </div>
+      
     </div>
   </div>
 </template>
+<style lang="css" scoped>
+
+</style>

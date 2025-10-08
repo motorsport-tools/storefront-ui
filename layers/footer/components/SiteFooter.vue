@@ -33,7 +33,7 @@ const socialLinks = computed(() => props.globals?.social_links || [])
 const org = computed(() => props.globals?.organization || {})
 </script>
 <template>
-    <footer class="pt-10 bg-neutral-100">
+    <footer class="pt-10 bg-[#72706d]">
         <div
             class="grid md:justify-items-center grid-cols-[1fr_1fr] md:grid-cols-[repeat(4,1fr)] narrow-container"
         >
@@ -51,9 +51,13 @@ const org = computed(() => props.globals?.organization || {})
                     />
                 </div>
                 <p
-                    class="flex items-center justify-center py-2 leading-5 text-center typography-text-sm text-white/50 font-body md:ml-6 order-3 md:order-2"
+                    class="py-2 leading-5 text-left typography-text-xs text-white/50 font-body md:ml-6 order-3 md:order-2"
                 >
-                    &copy; {{ new Date().getFullYear() }} {{ org }}
+                    Registered in England & Wales. Company registration number: 07387608. VAT no: GB998663927<br/>
+                    Copyright &copy; {{ new Date().getFullYear() }} {{ org }} Ltd All rights reserved.
+                    <br/>
+                    <span class="text-[0.8em]">All Rights Reserved
+                    Note: Motorsport Tools UK Ltd. / MST Cars Ltd. Are not authorized or otherwise affiliated with the Ford Motor Company.</span>
                 </p>
                 <div class="flex items-center justify-center py-2 gap-x-4 order-1 md:order-3">
                     <UiSocialLink

@@ -7,8 +7,8 @@ export default defineEventHandler(async (event) => {
 
     if (!slug) {
         throw createError({
-            statusCode: 400,
-            message: 'Slug parameter is required',
+            statusCode: 404,
+            message: 'Not Found',
         })
     }
 

@@ -23,7 +23,7 @@ const allImages = computed(() => [
 </script>
 
 <template>
-  <div class="relative flex w-full max-h-[600px] aspect-[4/3]">
+  <div class="relative flex w-full max-h-[600px] aspect-[4/3] gap-4">
     <SfScrollable
       ref="thumbsRef"
       class="items-center w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
@@ -37,7 +37,7 @@ const allImages = computed(() => [
         type="button"
         :aria-label="alt"
         :aria-current="activeIndex === index"
-        class="md:w-[78px] md:h-auto relative shrink-0 pb-1 mx-4 border-b-4 snap-start cursor-pointer focus-visible:outline focus-visible:outline-offset transition-colors flex-grow md:flex-grow-0"
+        class="product__img md:w-[78px] md:h-auto relative shrink-0 pb-1 border-b-4 snap-start cursor-pointer focus-visible:outline focus-visible:outline-offset transition-colors flex-grow md:flex-grow-0"
         :class="activeIndex === index ? 'border-primary-700' : 'border-transparent'"
         @click="activeIndex = index"
       >
@@ -55,7 +55,7 @@ const allImages = computed(() => [
       class="w-full h-full snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
       :active-index="activeIndex"
       direction="vertical"
-      wrapper-class="h-full m-auto"
+      wrapperClass="w-full"
       is-active-index-centered
       buttons-placement="none"
       :drag="{ containerWidth: true }"
@@ -63,7 +63,7 @@ const allImages = computed(() => [
       <div
         v-for="({ imageSrc, alt }, index) in allImages"
         :key="`${alt}-${index}`"
-        class="flex justify-center h-full basis-full shrink-0 grow snap-center"
+        class="product__img flex justify-center h-full basis-full shrink-0 grow snap-center"
       >
         <NuxtImg
           provider="odooProvider"

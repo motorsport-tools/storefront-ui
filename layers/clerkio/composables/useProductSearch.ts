@@ -154,15 +154,14 @@ export const useProductSearch = () => {
         for (const [facetName, newValues] of Object.entries(newFacets)) {
             const oldValues = merged[facetName] || []
 
-            // map old values by v for quick lookup
             const map = new Map(oldValues.map(v => [v.v, v]))
 
             for (const newVal of newValues) {
                 if (map.has(newVal.v)) {
-                    // update count
+
                     map.get(newVal.v)!.c = newVal.c
                 } else {
-                    // add missing
+
                     map.set(newVal.v, newVal)
                 }
             }

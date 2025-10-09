@@ -158,13 +158,13 @@ export default defineNuxtConfig({
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
         password: process.env.NUXT_STORAGE_PASSWORD,
+        ttl: 300,
         preConnect: false,
       },
       stock: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
         password: process.env.NUXT_STORAGE_PASSWORD,
-        ttl: process.env?.NUXT_SWR_CACHE_TIME || 3600,
         preConnect: false,
       },
       slug: {
@@ -186,12 +186,12 @@ export default defineNuxtConfig({
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
         password: process.env.NUXT_STORAGE_PASSWORD,
+        ttl: 300,
       },
       stock: {
         driver: process.env.NUXT_STORAGE_DRIVER,
         url: process.env.NUXT_STORAGE_URL,
         password: process.env.NUXT_STORAGE_PASSWORD,
-        ttl: process.env?.NUXT_SWR_CACHE_TIME || 3600,
       },
       slug: {
         driver: process.env.NUXT_STORAGE_DRIVER,

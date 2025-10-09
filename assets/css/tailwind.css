@@ -84,4 +84,8 @@ html {
     height: 100%;
     background-color: rgba(19, 6, 6, 0.04);
   }
+
+  .product__img:hover:not(.main__img)::after {
+    background-color: rgba(19, 6, 6, 0.08);
+  }
 }

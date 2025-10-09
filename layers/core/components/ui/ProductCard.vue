@@ -90,7 +90,7 @@ const wishlistButtonTitle = (id: number | undefined) => {
     class="product_card relative hover:shadow-lg min-h-[330px] flex flex-col justify-around min-w-[190px] max-w-[250px] mb-6"
   > 
     <div class="relative">
-      <NuxtLink :to="slug" class="product_card__img" :title="name">
+      <NuxtLink :to="slug" class="product__img" :title="name">
         <NuxtImg
           :src="imageUrl"
           :alt="imageAlt"
@@ -184,17 +184,8 @@ const wishlistButtonTitle = (id: number | undefined) => {
   </div>
 </template>
 <style>
-.product_card__img::after {
-  content:'';
-  position: absolute;
-  top:0;
-  left:0;
-  width: 100%;
-  height: 100%;
-  background-color:rgba(19, 6, 6, 0.04);
-}
 
-.product_card:hover .product_card__img::after {
+.product_card:hover .product__img::after {
   background-color: rgba(19, 6, 6, 0.08);
 }
 

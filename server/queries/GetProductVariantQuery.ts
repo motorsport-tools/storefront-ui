@@ -6,6 +6,7 @@ export default `
     ) {
       product {
         id
+        sku
         smallImage
         price
         name

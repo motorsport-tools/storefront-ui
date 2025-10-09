@@ -63,7 +63,7 @@ const allImages = computed(() => [
       <div
         v-for="({ imageSrc, alt }, index) in allImages"
         :key="`${alt}-${index}`"
-        class="product__img flex justify-center h-full basis-full shrink-0 grow snap-center"
+        class="product__img main__img flex justify-center h-full basis-full shrink-0 grow snap-center"
       >
         <NuxtImg
           provider="odooProvider"

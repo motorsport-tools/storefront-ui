@@ -199,7 +199,7 @@ const hasProductData = computed(() => {
                 <span 
                     class="clerk"
                     data-api="log/product"
-                    :data-product="productVariant.id">
+                    :data-product="productTemplate.id">
                 </span>
                 <UiProductCardRibbon
                     :isOnSale="productVariant
@@ -207,65 +207,65 @@ const hasProductData = computed(() => {
                     size="sm"
                 />
                 <h1
-                class="mb-1 font-bold typography-headline-4"
+                class="mb-1 font-bold typography-headline-2"
                 data-testid="product-name"
                 >
                 {{ productVariant?.name }}
                 </h1>
                 <div
-                v-if="
-                    productVariant
-                    && productVariant?.combinationInfoVariant?.has_discounted_price
-                "
-                class="my-1"
+                    v-if="
+                        productVariant
+                        && productVariant?.combinationInfoVariant?.has_discounted_price
+                    "
+                    class="my-1"
                 >
-                <span
-                    class="mr-2 text-secondary-700 font-bold font-headings text-2xl"
-                    data-testid="price"
-                >
-                    {{ $currency(getSpecialPrice) }}
-                </span>
-                <span class="text-base font-normal text-neutral-500 line-through">
-                    {{ $currency(getRegularPrice) }}
-                </span>
+                    <span
+                        class="mr-2 text-secondary-700 font-bold font-headings text-2xl"
+                        data-testid="price"
+                    >
+                        {{ $currency(getSpecialPrice) }}
+                    </span>
+                    <span 
+                        class="text-base font-normal text-neutral-500 line-through"
+                    >
+                        {{ $currency(getRegularPrice) }}
+                    </span>
                 </div>
                 <div
-                v-else
-                class="my-1"
+                    v-else
+                    class="my-1"
                 >
-                <span
-                    class="mr-2 text-secondary-700 font-bold font-headings text-2xl"
-                    data-testid="price"
-                >
-                    {{ $currency(getRegularPrice) }}
-                </span>
+                    <span
+                        class="mr-2 text-secondary-700 font-bold font-headings text-2xl"
+                        data-testid="price"
+                    >
+                        {{ $currency(getRegularPrice) }}
+                    </span>
                 </div>
-                <div class="inline-flex items-center mt-4 mb-2">
-                <SfRating
-                    size="xs"
-                    :value="4"
-                    :max="5"
-                />
-                <SfCounter
-                    class="ml-1"
-                    size="xs"
-                >
-                    26
-                </SfCounter>
-                <SfLink
-                    href="#"
-                    variant="secondary"
-                    class="ml-2 text-xs text-neutral-500"
-                >
-                    26 reviews
-                </SfLink>
+                <div class="flex items-center mt-4 mb-2">
+                    <SfRating
+                        size="xs"
+                        :value="4"
+                        :max="5"
+                    />
+                    <SfCounter
+                        class="ml-1"
+                        size="xs"
+                    >
+                        26
+                    </SfCounter>
+                    <SfLink
+                        href="#"
+                        variant="secondary"
+                        class="ml-2 text-xs text-neutral-500"
+                    >
+                        26 reviews
+                    </SfLink>
+                    <span class="ml-auto">
+                        {{ productVariant?.sku }}
+                    </span>
                 </div>
-                <p
-                class="mb-4 font-normal typography-text-sm"
-                data-testid="product-description"
-                >
-                {{ productVariant?.description }}
-                </p>
+                
                 <div class="py-4 mb-4 border-gray-200 border-y">
                 <div
                     v-show="productsInCart"

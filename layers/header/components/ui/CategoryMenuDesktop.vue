@@ -31,6 +31,17 @@ const focusTrigger = (index: number) => {
     unrefElement(triggerRefs.value[index]).focus();
 }
 
+let hoverTimer:ReturnType<typeof setTimeout> | undefined = undefined
+
+const startHover = (menuType: string[]) => {
+    hoverTimer = setTimeout(() => {
+        openMenu(menuType)
+    }, 500)
+}
+const endHover = () => {
+    clearTimeout(hoverTimer)
+    closeMenu()
+}
 const openMenu = (menuType: string[]) => {
     activeNode.value = menuType
     if (activeMenu.value.isLeaf) {
@@ -71,7 +82,6 @@ defineExpose({
             @blur="
                 (event) => {
                     if (!(event.currentTarget as Element).contains(event.relatedTarget as Element)) {
-                        console.log('Blur?')
                         closeMenu
                     }
                 }
@@ -81,7 +91,7 @@ defineExpose({
                 v-for="(menuNode, index) in content.children"
                 :key="menuNode?.key"
                 class="group flex-grow flex items-center justify-center px-3 text-white font-bold uppercase lg:text-sm xl:text-base"
-                @mouseleave="closeMenu()">
+                @mouseleave="endHover()">
                 <SfButton
                     ref="triggerRefs"
                     variant="tertiary"
@@ -93,7 +103,7 @@ defineExpose({
                     ]"
                     :tag="NuxtLink"
                     :to="menuNode.value.link"
-                    @mouseenter="openMenu([menuNode.key])"
+                    @mouseenter="startHover([menuNode.key])"
                 >
                 <span>{{ menuNode.value.label }}</span>
                 <SfIconChevronRight v-if="menuNode.isLeaf"

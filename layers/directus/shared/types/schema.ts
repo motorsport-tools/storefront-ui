@@ -12,6 +12,42 @@ export interface ExtensionSeoMetadata {
     no_follow?: boolean;
 }
 
+export interface BlockGrid {
+	/** @primaryKey */
+	id: number;
+	sort?: number | null;
+	user_created?: string | null;
+	date_created?: string | null;
+	user_updated?: string | null;
+	date_updated?: string | null;
+	title?: string | null;
+	/** @required */
+	columns: number;
+	items?: BlockGridItem[] | string[];
+}
+
+export interface BlockGridItem {
+	/** @primaryKey */
+	id: number;
+	block_grid_id?: BlockGrid | string | null;
+	item?: BlockRichtext | BlockImage | string | null;
+	collection?: string | null;
+}
+
+export interface BlockImage {
+	/** @primaryKey */
+	id: number;
+	sort?: number | null;
+	/** @required */
+	lazy_loading: boolean;
+	class?: string | null;
+	alt?: string;
+	image?: DirectusFile | string | null;
+	link?: string | null;
+	/** @required */
+	link_target: '_self' | '_blank';
+}
+
 export interface BlockLunchbox {
 	/** @primaryKey */
 	id: number;
@@ -68,6 +104,17 @@ export interface BlockProduct {
 	sort_by: 'newest' | 'popular' | 'price' | 'name' | 'id';
 	/** @required */
 	sort_direction: 'ASC' | 'DESC';
+}
+
+export interface BlockRichtext {
+	/** @primaryKey */
+	id: number;
+	sort?: number | null;
+	user_created?: string | null;
+	date_created?: string | null;
+	user_updated?: string | null;
+	date_updated?: string | null;
+	content?: string | null;
 }
 
 export interface BlockSlider {
@@ -202,7 +249,7 @@ export interface PageSectionsBlock {
 	/** @primaryKey */
 	id: number;
 	page_sections_id?: PageSection | string | null;
-	item?: BlockSlider | BlockProduct | BlockLunchbox | string | null;
+	item?: BlockSlider | BlockProduct | BlockLunchbox | BlockImage | BlockRichtext | BlockGrid | string | null;
 	collection?: string | null;
 }
 
@@ -318,10 +365,14 @@ export interface DirectusTranslation {
 }
 
 export interface Schema {
+	block_grid: BlockGrid[];
+	block_grid_items: BlockGridItem[];
+	block_image: BlockImage[];
 	block_lunchbox: BlockLunchbox[];
 	block_lunchbox_content: BlockLunchboxContent[];
 	block_lunchbox_section_content: BlockLunchboxSectionContent[];
 	block_products: BlockProduct[];
+	block_richtext: BlockRichtext[];
 	block_slider: BlockSlider[];
 	block_slider_slides: BlockSliderSlide[];
 	globals: Globals;
@@ -339,10 +390,14 @@ export interface Schema {
 }
 
 export enum CollectionNames {
+	block_grid = 'block_grid',
+	block_grid_items = 'block_grid_items',
+	block_image = 'block_image',
 	block_lunchbox = 'block_lunchbox',
 	block_lunchbox_content = 'block_lunchbox_content',
 	block_lunchbox_section_content = 'block_lunchbox_section_content',
 	block_products = 'block_products',
+	block_richtext = 'block_richtext',
 	block_slider = 'block_slider',
 	block_slider_slides = 'block_slider_slides',
 	globals = 'globals',

@@ -1,5 +1,5 @@
 import type { DirectusFile } from '@directus/sdk';
-import type { BlockSliderSlide, BlockLunchbox } from './schema';
+import type { BlockSliderSlide, BlockLunchbox, BlockImage } from './schema';
 
 declare module './schema' {
     interface BlockSliderSlide {
@@ -7,5 +7,8 @@ declare module './schema' {
     }
     interface BlockLunchbox {
         layout: 1 | 2 | 3 | 4;
+    }
+    interface BlockImage {
+        image?: DirectusFile | string | null
     }
 }

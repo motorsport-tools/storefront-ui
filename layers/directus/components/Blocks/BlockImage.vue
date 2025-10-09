@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import type { BlockImage } from '../../shared/types/schema';
 interface Props {
-    blockData: Object
+    blockData: BlockImage
 }
 
 const props = defineProps<Props>()
@@ -14,7 +15,7 @@ const props = defineProps<Props>()
         :class="blockData?.class"
     >
         <NuxtImg
-            :loading="blockData?.lazy"
+            :loading="blockData?.lazy_loading ? 'lazy' : 'eager'"
             :alt="blockData?.alt"
             provider="directus"
             :src="`/assets/${blockData?.image?.id}`"
@@ -29,7 +30,7 @@ const props = defineProps<Props>()
     <NuxtImg
         v-else
         :class="blockData?.class"
-        :loading="blockData?.lazy"
+        :loading="blockData?.lazy_loading ? 'lazy' : 'eager'"
         :alt="blockData?.alt"
         provider="directus"
         :src="`/assets/${blockData?.image?.id}`"

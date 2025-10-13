@@ -986,6 +986,8 @@ export type Product = {
   /** Specific to Product Template */
   productVariants: Maybe<Array<Product>>;
   qty: Maybe<Scalars['Float']['output']>;
+  rating: Maybe<Scalars['Int']['output']>;
+  ratingCount: Maybe<Scalars['Int']['output']>;
   ribbon: Maybe<Ribbon>;
   showAvailableQty: Maybe<Scalars['Boolean']['output']>;
   sku: Maybe<Scalars['String']['output']>;

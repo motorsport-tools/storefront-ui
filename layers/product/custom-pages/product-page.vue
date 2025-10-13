@@ -1,22 +1,11 @@
 <script setup lang="ts">
 import {
-  SfButton,
   SfChip,
-  SfCounter,
-  SfIconFavorite,
-  SfIconFavoriteFilled,
-  SfIconPackage,
-  SfIconSafetyCheck,
-  SfIconShoppingCart,
-  SfIconShoppingCartCheckout,
-  SfIconWarehouse,
-  SfLink,
   SfLoaderCircular,
-  SfRating,
   SfThumbnail,
 } from '@storefront-ui/vue'
 import type { LocationQueryRaw } from 'vue-router'
-import type { CustomProductWithStockFromRedis, OrderLine } from '~/graphql'
+import type { CustomProductWithStockFromRedis } from '~/graphql'
 import generateSeo, { type SeoEntity } from '~/utils/buildSEOHelper'
 
 const route = useRoute()
@@ -40,8 +29,6 @@ const {
   getSpecialPrice,
 } = useProductVariant(cleanFullPath.value)
 const { addProductToRecentViews } = useRecentViewProducts()
-const { wishlistAddItem, isInWishlist, wishlistRemoveItem } = useWishlist()
-const { cart, cartAdd } = useCart()
 
 useHead(generateSeo<SeoEntity>(productVariant.value, 'Product'))
 
@@ -62,7 +49,6 @@ const selectedMaterial = computed(() =>
 )
 
 const productDetailsOpen = ref(true)
-const quantitySelectorValue = ref(1)
 
 const updateFilter = async (filter: LocationQueryRaw | undefined) => {
   const query: LocationQueryRaw = {}
@@ -88,38 +74,7 @@ const updateFilter = async (filter: LocationQueryRaw | undefined) => {
   await navigateTo({ query })
 }
 
-const tomorrow = computed(() => {
-  const date = new Date()
-  date.setDate(date.getDate() + 1)
-  return date.toDateString().slice(0, 10)
-})
-
-const productsInCart = computed(() => {
-  return (
-    cart.value?.order?.websiteOrderLine?.find(
-      (orderLine: OrderLine) =>
-        orderLine.product?.id === productVariant?.value.id,
-    )?.quantity || 0
-  )
-})
-
-const handleCartAdd = async () => {
-  let id = productVariant?.value.id
-  if (!productVariant.value.combinationInfoVariant) {
-    id = Number(productVariant?.value?.id)
-  }
-  await cartAdd(id, quantitySelectorValue.value)
-}
-
-const handleWishlistAddItem = async (firstVariant: CustomProductWithStockFromRedis) => {
-  await wishlistAddItem(firstVariant.id)
-}
-
-const handleWishlistRemoveItem = async (firstVariant: CustomProductWithStockFromRedis) => {
-  await wishlistRemoveItem(firstVariant.id)
-}
-
-const { getMainImage, getThumbs } = useProductGetters(productVariant as Ref< CustomProductWithStockFromRedis>)
+const { getThumbs } = useProductGetters(productVariant as Ref< CustomProductWithStockFromRedis>)
 const thumbs = computed(() => getThumbs(78, 78))
 
 watch(
@@ -192,205 +147,14 @@ const hasProductData = computed(() => {
                 />
             </section>
             <section class="col-span-5 grid-in-right md:mb-0">
-            <div
-                class="p-6 xl:p-6 md:border md:border-neutral-100 md:shadow-lg md:rounded-md md:sticky md:top-20"
-                data-testid="purchase-card"
-            >
-                <span 
-                    class="clerk"
-                    data-api="log/product"
-                    :data-product="productTemplate.id">
-                </span>
-                <UiProductCardRibbon
-                    :isOnSale="productVariant
-                    && productVariant?.combinationInfoVariant?.has_discounted_price"
-                    size="sm"
+                <ProductInfo
+                    :productTemplate
+                    :productVariant
+                    :specialPrice="getSpecialPrice"
+                    :regularPrice="getRegularPrice"
+                    :loadingProductVariant
                 />
-                <h1
-                class="mb-1 font-bold typography-headline-2"
-                data-testid="product-name"
-                >
-                {{ productVariant?.name }}
-                </h1>
-                <div
-                    v-if="
-                        productVariant
-                        && productVariant?.combinationInfoVariant?.has_discounted_price
-                    "
-                    class="my-1"
-                >
-                    <span
-                        class="mr-2 text-secondary-700 font-bold font-headings text-2xl"
-                        data-testid="price"
-                    >
-                        {{ $currency(getSpecialPrice) }}
-                    </span>
-                    <span 
-                        class="text-base font-normal text-neutral-500 line-through"
-                    >
-                        {{ $currency(getRegularPrice) }}
-                    </span>
-                </div>
-                <div
-                    v-else
-                    class="my-1"
-                >
-                    <span
-                        class="mr-2 text-secondary-700 font-bold font-headings text-2xl"
-                        data-testid="price"
-                    >
-                        {{ $currency(getRegularPrice) }}
-                    </span>
-                </div>
-                <div class="flex items-center mt-4 mb-2">
-                    <SfRating
-                        size="xs"
-                        :value="4"
-                        :max="5"
-                    />
-                    <SfCounter
-                        class="ml-1"
-                        size="xs"
-                    >
-                        26
-                    </SfCounter>
-                    <SfLink
-                        href="#"
-                        variant="secondary"
-                        class="ml-2 text-xs text-neutral-500"
-                    >
-                        26 reviews
-                    </SfLink>
-                    <span class="ml-auto">
-                        {{ productVariant?.sku }}
-                    </span>
-                </div>
-                
-                <div class="py-4 mb-4 border-gray-200 border-y">
-                <div
-                    v-show="productsInCart"
-                    class="w-full mb-4 bg-primary-200 p-2 rounded-md text-center text-primary-700"
-                >
-                    <SfIconShoppingCartCheckout />
-                    {{ productsInCart }} products in cart
-                </div>
-                <div class="flex flex-col md:flex-row flex-wrap gap-4">
-                    <UiQuantitySelector
-                    v-model="quantitySelectorValue"
-                    :value="quantitySelectorValue"
-                    class="min-w-[145px] flex-grow flex-shrink-0 basis-0"
-                    />
-                    <SfButton
-                    :disabled="loadingProductVariant || productVariant?.stock <= 0"
-                    type="button"
-                    size="lg"
-                    class="flex-grow-[2] flex-shrink basis-auto whitespace-nowrap"
-                    @click="handleCartAdd"
-                    >
-                    <template #prefix>
-                        <SfIconShoppingCart size="sm" />
-                    </template>
-                    {{ $t("addToCart") }}
-                    </SfButton>
-                </div>
-                <div class="flex justify-center mt-4 gap-x-4">
-                    <SfButton
-                    type="button"
-                    size="sm"
-                    variant="tertiary"
-                    :class="
-                        productVariant?.isInWishlist ? 'bg-primary-100' : 'bg-white'
-                    "
-                    @click="
-                        isInWishlist(productVariant?.id as number)
-                        ? handleWishlistRemoveItem(productVariant)
-                        : handleWishlistAddItem(productVariant)
-                    "
-                    >
-                    <SfIconFavoriteFilled
-                        v-show="isInWishlist(productVariant?.id as number)"
-                        size="sm"
-                    />
-                    <SfIconFavorite
-                        v-show="!isInWishlist(productVariant?.id as number)"
-                        size="sm"
-                    />
-                    {{
-                        isInWishlist(productVariant?.id as number)
-                        ? $t('wishlist.removeFromWishlist')
-                        : $t('wishlist.addToWishlist')
-                    }}
-                    </SfButton>
-                </div>
-                </div>
-                <div class="flex first:mt-4">
-                <SfIconPackage
-                    size="sm"
-                    class="flex-shrink-0 mr-1 text-neutral-500"
-                />
-                <p class="text-sm">
-                    <i18n-t
-                    keypath="additionalInfo.shipping"
-                    scope="global"
-                    >
-                    <template #date>
-                        {{ tomorrow }}
-                    </template>
-                    <template #addAddress>
-                        <SfLink
-                        class="ml-1"
-                        href="#"
-                        variant="secondary"
-                        >
-                        {{ $t("additionalInfo.addAddress") }}
-                        </SfLink>
-                    </template>
-                    </i18n-t>
-                </p>
-                </div>
-                <div class="flex mt-4">
-                <SfIconWarehouse
-                    size="sm"
-                    class="flex-shrink-0 mr-1 text-neutral-500"
-                />
-                <p class="text-sm">
-                    <i18n-t
-                    keypath="additionalInfo.pickup"
-                    scope="global"
-                    >
-                    <template #checkAvailability>
-                        <SfLink
-                        class="ml-1"
-                        href="#"
-                        variant="secondary"
-                        >
-                        {{ $t("additionalInfo.checkAvailability") }}
-                        </SfLink>
-                    </template>
-                    </i18n-t>
-                </p>
-                </div>
-                <div class="flex mt-4">
-                <SfIconSafetyCheck
-                    size="sm"
-                    class="flex-shrink-0 mr-1 text-neutral-500"
-                />
-                <i18n-t
-                    keypath="additionalInfo.returns"
-                    scope="global"
-                >
-                    <template #details>
-                    <SfLink
-                        class="ml-1"
-                        href="#"
-                        variant="secondary"
-                    >
-                        {{ $t("additionalInfo.details") }}
-                    </SfLink>
-                    </template>
-                </i18n-t>
-                </div>
-            </div>
+            
             </section>
             <section class="grid-in-left-bottom md:mt-8">
             <UiDivider class="mt-10 mb-6" />
@@ -569,6 +333,7 @@ const hasProductData = computed(() => {
         -->
         </div>
         <template #error="{ error }">
+            {{ error }}
             <ErrorDisplay :msg="$t('error.404')"/>
         </template>
     </NuxtErrorBoundary>

@@ -99,6 +99,7 @@ export default defineNuxtConfig({
         file: "en.json",
         language: "en-UK",
         country: "United Kingdom",
+        countryCode: 'GB',
       },
     ],
     strategy: "no_prefix",

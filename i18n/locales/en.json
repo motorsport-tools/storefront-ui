@@ -212,6 +212,7 @@
   "cartAddProduct": "Product added to basket",
   "cartRemoveProduct": "Product removed successfully",
   "cartUpdateProduct": "Product updated successfully",
+  "cartProductsIn": "products in basket",
   "wishlist": {
     "wishlist": "Wishlist",
     "emptyWishlist": "Your wishlist is empty",
@@ -286,9 +287,18 @@
   "productDetails": "Product Details",
   "customerReviews": "Customer Reviews",
   "loadingReviews": "Loading Reviews...",
-  "reviewsCount": "{count} reviews",
   "recommendedProducts": "Recommended with this product",
-  "outOfStock": "Out of stock",
+  "reviews": {
+    "readAll": "Read all reviews",
+    "count": "{count} review | {count} reviews",
+    "customerReviews": "Customer Reviews",
+    "loading": "Loading Reviews..."
+  },
+  "stock": {
+    "true": "In stock",
+    "false": "Out of stock",
+    "availability": "Only {stock} left"
+  },
   "additionalInfo": {
     "shipping": "Free delivery, arrives by {date}. Want it faster? {addAddress} to see options",
     "addAddress": "Add an address",

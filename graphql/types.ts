@@ -36,7 +36,7 @@ export type CategoryListResponse =
     }
   }
 
-export type ImageGalleryItem = 
+export type ImageGalleryItem =
   {
     id: number
     url: string
@@ -130,12 +130,12 @@ export type MakeGiftCardPaymentResponse = AsyncData<
   },
   H3Error
 >;
-export type CartUpdateItemResponse = 
+export type CartUpdateItemResponse =
   {
     cartUpdateMultipleItems: Cart
   }
 
-export type CartRemoveItemResponse = 
+export type CartRemoveItemResponse =
   {
     cartRemoveMultipleItems: Cart
   }
@@ -322,7 +322,7 @@ export type DeliveryMethodResponse = AsyncData<
   H3Error
 >;
 
-export type WebsiteHomepageResponse = 
+export type WebsiteHomepageResponse =
   {
     metaTitle: String;
     metaImage: String;
@@ -416,3 +416,10 @@ export type StripeTransactionResponse = AsyncData<
   },
   H3Error
 >
+
+export interface StripeDropinType {
+  on: (event: string, callback: (response: { error: { message: string } }) => void) => void
+  unmount: () => void
+  mount: (selector: string) => void
+  submit: () => void
+}

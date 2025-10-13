@@ -41,6 +41,8 @@ export default `
     image
     imageFilename
   }
+  rating
+  ratingCount
   combinationInfo
   slug
   sku

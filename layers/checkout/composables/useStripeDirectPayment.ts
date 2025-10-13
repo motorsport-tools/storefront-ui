@@ -2,7 +2,7 @@ import type {
     PaymentTransaction,
     MutationStripeProviderInfoArgs,
     StripeProviderInfoResponse,
-    PaymentProvider,
+    StripeProviderInfo,
     MutationStripeGetInlineFormValuesArgs,
     StripeGetInlineFormValueResponse,
     MutationStripeTransactionArgs,
@@ -10,12 +10,12 @@ import type {
 } from "~/graphql"
 import { MutationName } from "~/server/mutations";
 
-export const useStripeDirectPayment = (providerId: number, cartId: number, partnerId: number, pmCode: string) => {
+export const useStripeDirectPayment = (providerId: number, cartId: number, pmCode: string) => {
     const { $sdk } = useNuxtApp()
 
-    const acquirerInfo = useState<PaymentProvider>(
+    const acquirerInfo = useState<StripeProviderInfo>(
         `acquirerInfo-${cartId}`,
-        () => ({}) as PaymentProvider
+        () => ({}) as StripeProviderInfo
     );
 
     const transaction = useState<PaymentTransaction>(
@@ -38,7 +38,7 @@ export const useStripeDirectPayment = (providerId: number, cartId: number, partn
     }
 
     const getStripeAcquirerInfo = async () => {
-        const { data } = await $sdk().odoo.mutation<
+        const data = await $sdk().odoo.mutation<
             MutationStripeProviderInfoArgs,
             StripeProviderInfoResponse
         >({
@@ -46,7 +46,7 @@ export const useStripeDirectPayment = (providerId: number, cartId: number, partn
         }, {
             providerId
         })
-        acquirerInfo.value = data?.value?.stripeProviderInfo.stripeProviderInfo || {}
+        acquirerInfo.value = data?.stripeProviderInfo.stripeProviderInfo || {}
     }
 
     const getStripeInlineFormValues = async () => {

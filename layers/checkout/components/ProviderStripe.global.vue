@@ -5,7 +5,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import type { PaymentMethod } from '~/graphql';
+import type { PaymentMethod, StripeDropinType } from '~/graphql'
 
 const props = defineProps({
     method: {
@@ -17,13 +17,6 @@ const props = defineProps({
       type: Object,
     },
 })
-
-interface StripeDropinType {
-    on: (event: string, callback: (response: { error: { message: string } }) => void) => void
-    unmount: () => void
-    mount: (selector: string) => void
-    submit: () => void
-}
 
 const stripeRef = ref<any>(null)
 const stripeDropin = ref<StripeDropinType | null>(null)
@@ -66,11 +59,16 @@ onMounted( async () => {
     }
     
     const inlineFormValues = await getStripeInlineFormValues()
-    await openStripeTransaction(inlineFormValues['is_tokenization_required']);
+    await openStripeTransaction(inlineFormValues['is_tokenization_required'], false);
 
     //Prepare Element
     let elementsOptions =  {
-        appearance: { theme: 'stripe' },
+        appearance: { 
+            theme: 'stripe',
+            variables: {
+                fontFamily: ' "Figtree", sans-serif',
+            },
+        },
         currency: inlineFormValues['currency_name'],
         captureMethod: inlineFormValues['capture_method'],
         paymentMethodTypes: [

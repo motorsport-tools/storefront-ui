@@ -22,6 +22,7 @@ export default defineEventHandler(async (event) => {
             query ($id: Int = null, $slug: String = null, $barcode: String = null) {
                 product(id: $id, slug: $slug, barcode: $barcode) {
                     id
+                    visibility
                 }
             }
             `
@@ -32,7 +33,7 @@ export default defineEventHandler(async (event) => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ query: productQuery, variables }),
                 })
-                if (res.data?.product?.id) {
+                if (res.data?.product?.id && res.data?.product?.visibility) {
                     data = 'product.template'
                     await useStorage('slug').setItem(redisKey, data)
                 }

@@ -70,6 +70,8 @@ const maxQty = computed(() => {
         return productVariant.value.stock || 0
     }
 })
+
+console.log('Combination Info:', productVariant.value.combinationInfoVariant)
 </script>
 <template>
     <div
@@ -113,12 +115,12 @@ const maxQty = computed(() => {
             </ClientOnly>
         </div>
         <div class="py-4 my-4 border-gray-200 border-y">
-            <div class="flex align-center justify-between mb-4">
+            <div class="flex items-center justify-between mb-4">
                 <UiProductPrice
-                    class="my-1"
                     :regularPrice
                     :specialPrice
                     :hasDiscountedPrice="productVariant?.combinationInfoVariant?.has_discounted_price || false"
+                    :discPercentage="productVariant?.combinationInfoVariant?.discount_perc || 0"
                 />
                 <UiQuantitySelector
                     v-model="quantitySelectorValue"

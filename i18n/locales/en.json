@@ -73,6 +73,10 @@
       "to": "to"
     }
   },
+  "productInfo": {
+    "was": "was",
+    "save": "Save"
+  },
   "myCart": "My Basket",
   "orderSummary": "Order Summary",
   "itemsInCart": "(Items: {count})",

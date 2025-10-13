@@ -2,23 +2,44 @@
 interface Props {
     specialPrice: number,
     regularPrice: number,
-    hasDiscountedPrice: boolean
+    hasDiscountedPrice: boolean,
+    discPercentage: number
 }
 const props = defineProps<Props>()
 </script>
 <template>
-    <div data-test="product-price" >   
+    <div 
+        class="h-full flex flex-col items-baseline"
+        data-test="product-price"
+    >
+        <span 
+            v-if="discPercentage"
+            class="inline-block mr-2 text-red-700 text-md"
+        >
+            {{ $t('productInfo.save') }} {{ discPercentage }}%
+        </span>
         <span
             v-if="hasDiscountedPrice"
-            class="mr-2 text-neutral-500 font-bold font-headings text-2xl"
+            class="inline-block mr-2 text-neutral-500 font-bold font-headings text-3xl"
             data-testid="price"
         >
             {{ $currency(specialPrice) }}
         </span>
-        <span 
-            :class="[ hasDiscountedPrice ? 'text-base font-normal text-neutral-200 line-through' : 'mr-2 text-neutral-500 font-bold font-headings text-3xl' ]"
+        <div
+            class="flex flex-row gap-1 items-center"
         >
-            {{ $currency(regularPrice) }}
-        </span>
+            <span 
+                v-if="hasDiscountedPrice"
+                class="text-neutral-500 font-bold"
+            >
+                {{ $t('productInfo.was') }}
+            </span>
+            <span 
+                class="inline-block"
+                :class="[ hasDiscountedPrice ? 'text-base font-normal text-neutral-500 line-through' : 'text-neutral-500 font-bold font-headings text-3xl' ]"
+            >
+                {{ $currency(regularPrice) }}
+            </span>
+        </div>
     </div>
 </template>

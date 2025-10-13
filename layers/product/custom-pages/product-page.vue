@@ -13,6 +13,16 @@ const route = useRoute()
 const cleanPath = computed(() => route?.path?.replace(/\/$/, ''))
 const cleanFullPath = computed(() => route?.fullPath?.replace(/\/$/, ''))
 
+useHead({
+    script: [
+        {
+            src: 'https://js.stripe.com/v3/',
+            type: 'text/javascript',
+            async: true,
+        },
+    ]
+})
+
 const {
   loadProductTemplate,
   productTemplate,

@@ -10,16 +10,6 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-useHead({
-    script: [
-        {
-            src: 'https://js.stripe.com/v3/',
-            type: 'text/javascript',
-            async: true,
-        },
-    ]
-})
-
 // Use i18n to get locale currency code
 const { locale, getNumberFormat, locales } = useI18n()
 const format = getNumberFormat(locale.value);

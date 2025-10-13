@@ -60,7 +60,7 @@ const productsInCart = computed(() => {
 })
 
 const isStock = computed(() => {
-    return productVariant.value?.stock > 0 || productVariant.value?.combinationInfoVariant['allow_out_of_stock_orders']
+    return Boolean(productVariant.value?.stock > 0 || productVariant.value?.combinationInfoVariant['allow_out_of_stock_orders'])
 })
 
 const maxQty = computed(() => {

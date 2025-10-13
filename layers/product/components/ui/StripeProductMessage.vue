@@ -48,6 +48,7 @@ onMounted( async () => {
     let elementsOptions =  {
         appearance: { 
             theme: 'stripe',
+            disableAnimations: true,
             variables: {
                 fontFamily: ' "Figtree", sans-serif',
             },
@@ -55,7 +56,7 @@ onMounted( async () => {
                 '.PaymentMethodMessaging': {
                     textAlign: 'left'
                 }
-            }
+            },
         },
     }
 

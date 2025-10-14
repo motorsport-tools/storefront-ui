@@ -559,6 +559,8 @@ export type Mutation = {
   setRate: Maybe<CartData>;
   /** Set Shipping Method on Cart */
   setShippingMethod: Maybe<CartData>;
+  /** Stock Notification for Product */
+  stockNotification: Maybe<StockNotification>;
   /** Get Stripe Inline Form Values */
   stripeGetInlineFormValues: Maybe<StripeGetInlineFormValuesResult>;
   /** Get Stripe Provider Info. */
@@ -683,6 +685,12 @@ export type MutationSetRateArgs = {
 
 export type MutationSetShippingMethodArgs = {
   shippingMethodId: Scalars['Int']['input'];
+};
+
+
+export type MutationStockNotificationArgs = {
+  email: InputMaybe<Scalars['String']['input']>;
+  productId?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1341,6 +1349,11 @@ export type State = {
   code: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   name: Scalars['String']['output'];
+};
+
+export type StockNotification = {
+  __typename?: 'StockNotification';
+  subscribed: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type StripeGetInlineFormValuesResult = {

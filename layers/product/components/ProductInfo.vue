@@ -70,8 +70,6 @@ const maxQty = computed(() => {
         return productVariant.value.stock || 0
     }
 })
-
-console.log('Combination Info:', productVariant.value.combinationInfoVariant)
 </script>
 <template>
     <div
@@ -94,23 +92,24 @@ console.log('Combination Info:', productVariant.value.combinationInfoVariant)
         >
             {{ productVariant?.name }}
         </h1>
-        <div class="flex flex-col">
-            <span class="block text-sm my-1">
-                {{ productVariant?.sku }}
-            </span>
-            <UiProductRating
-                :rating="productTemplate?.rating || 0"
-                :ratingCount="productTemplate?.ratingCount || 0"
-            />
-        </div>
+        <span class="block text-sm my-1">
+            {{ productVariant?.sku }}
+        </span>
+        <UiProductRating
+            class="block"
+            :rating="productTemplate?.rating || 0"
+            :ratingCount="productTemplate?.ratingCount || 0"
+        />
         <div class="my-4">
             <ClientOnly>
                 <UiProductStockStatus
                     class="mb-4"
                     :stock="productVariant?.stock"
+                    :productId="productVariant?.id"
                     :showAvailability="productVariant?.combinationInfoVariant['show_availability']"
                     :availableThreshold="productVariant?.combinationInfoVariant['available_threshold']"
                     :isStock="isStock"
+                    :allowOutOfStockOrder="productVariant?.combinationInfoVariant['allow_out_of_stock_orders'] || false"
                 />
             </ClientOnly>
         </div>

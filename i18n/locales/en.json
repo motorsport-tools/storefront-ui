@@ -38,11 +38,13 @@
     "useAsShippingLabel": "Use as delivery address",
     "selectPlaceholder": "-- Select --",
     "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
     "passwordLabel": "Password",
     "passwordHint": "8 or more characters with a mix of letters, numbers and symbols.",
     "termsAndConditionsLabel": "I declare that I have read and accept the {terms}",
     "subscriptionLabel": "I wish to receive occasional emails about special offers, new products and exclusive promotions. I can cancel my subscription at any time. (Optional)",
-    "asterixHint": "* marked consents are required"
+    "asterixHint": "* marked consents are required",
+    "subscribe": "Subscribe"
   },
   "formValidation": {
     "errorMessage": "Please review the form and fix any errors before continuing"
@@ -75,7 +77,9 @@
   },
   "productInfo": {
     "was": "was",
-    "save": "Save"
+    "save": "Save",
+    "stockNotification": "Get notified when product is back in stock",
+    "notifSuccess": "We'll notify you once the product is back in stock"
   },
   "myCart": "My Basket",
   "orderSummary": "Order Summary",
@@ -248,28 +252,6 @@
   "category": "Category",
   "categories": {
     "heading": "Categories"
-  },
-  "contactOptions": {
-    "helpCenter": {
-      "label": "Help center",
-      "details": {
-        "description": "Find answers online anytime"
-      }
-    },
-    "liveChat": {
-      "label": "Live chat",
-      "details": {
-        "openingHours-1": "Mon–Fri, 5am–10pm PT",
-        "openingHours-2": "Sat–Sun, 6am–9pm PT"
-      }
-    },
-    "phone": {
-      "label": "1 234 567 8901",
-      "details": {
-        "openingHours-1": "Mon–Fri, 5am–10pm PT",
-        "openingHours-2": "Sat–Sun, 6am–9pm PT"
-      }
-    }
   },
   "bottomLinks": {
     "terms": "Terms",

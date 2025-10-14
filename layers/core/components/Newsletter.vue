@@ -34,7 +34,7 @@ const subscribeNewsletter = async () => {
             class="w-full sm:min-w-[300px]"
           />
           <SfButton :disabled="!emailValidation" type="submit" class="w-[325px] disabled:bg-neutral-100 disabled:text-neutral-600">
-            Subscribe
+            {{ $t('subscribe') }}
           </SfButton>
         </form>
         <div class="typography-text-xs text-neutral-600">

@@ -16,7 +16,7 @@ const props = defineProps<Props>()
     <SfLink
         href="#customer-reviews"
         variant="secondary"
-        class="inline-flex flex-row mt-auto items-end h-full text-xs text-neutral-500 no-underline"
+        class="inline-flex flex-row items-end w-auto h-full text-xs text-neutral-500 no-underline"
         :title="$t('reviewsView')"
     >
         <SfRating

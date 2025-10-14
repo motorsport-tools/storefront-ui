@@ -368,6 +368,13 @@ export type NewsletterSubscribeResponse = AsyncData<
   H3Error
 >;
 
+export type StockSubscribeResponse = AsyncData<
+  {
+    stockSubscribe: boolean
+  },
+  H3Error
+>;
+
 export interface AttributeFacet {
   id: string
   label: string

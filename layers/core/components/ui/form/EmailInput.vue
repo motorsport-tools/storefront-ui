@@ -28,7 +28,7 @@ watch(model, () => {
         v-bind="$attrs"
         v-model="model"
         type="text"
-        placeholder="Please type your email"
+        :placeholder="`${$t('form.emailPlaceholder')}`"
         class="w-full text-base outline-none appearance-none text-neutral-900 disabled:cursor-not-allowed disabled:bg-transparent read-only:bg-transparent"
         @input="clearError"
       />

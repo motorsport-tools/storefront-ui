@@ -35,7 +35,7 @@ const customCache = cachedFunction(
       const currentPartnerPricelist
         = (await useStorage().getItem<Partner>(keyName)) || ({} as Partner)
 
-      const isoCode = getCookie(event, 'i18n_redirected') || 'ci'
+      const isoCode = getCookie(event, 'i18n_redirected') || 'en'
 
       const pricelist = currentPartnerPricelist?.id
         ? `-pricelist${currentPartnerPricelist?.id}`

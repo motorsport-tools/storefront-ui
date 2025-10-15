@@ -54,11 +54,11 @@ export default defineNitroPlugin((nitroApp) => {
             const userAgent: any = headers['user-agent']
 
             const flags = generateFlags(headers, userAgent)
-
+            const isoCode = getCookie(event, 'i18n_redirected') || 'en'
             if (flags.isDesktop) {
-              return `desktop-${event.path}`
+              return `desktop-${event.path}-${isoCode}`
             }
-            return `mobile-${event.path}`
+            return `mobile-${event.path}-${isoCode}`
           },
           shouldInvalidateCache: (event: H3Event) => {
             if (event.node.req.headers['x-invalidate']) {

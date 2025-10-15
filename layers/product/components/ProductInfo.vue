@@ -6,10 +6,6 @@ import {
     SfIconShoppingCartCheckout,
     SfIconFavoriteFilled,
     SfIconFavorite,
-    SfIconPackage,
-    SfIconWarehouse,
-    SfIconSafetyCheck
-
 } from '@storefront-ui/vue'
 
 interface Props {
@@ -43,12 +39,6 @@ const handleWishlistAddItem = async (firstVariant: CustomProductWithStockFromRed
 const handleWishlistRemoveItem = async (firstVariant: CustomProductWithStockFromRedis) => {
   await wishlistRemoveItem(firstVariant.id)
 }
-
-const tomorrow = computed(() => {
-  const date = new Date()
-  date.setDate(date.getDate() + 1)
-  return date.toDateString().slice(0, 10)
-})
 
 const productsInCart = computed(() => {
   return (
@@ -186,72 +176,12 @@ const maxQty = computed(() => {
                 </SfButton>
             </div>
         </div>
-        <div class="flex first:mt-4">
-        <SfIconPackage
-            size="sm"
-            class="flex-shrink-0 mr-1 text-neutral-500"
-        />
-        <p class="text-sm">
-            <i18n-t
-            keypath="additionalInfo.shipping"
-            scope="global"
-            >
-            <template #date>
-                {{ tomorrow }}
-            </template>
-            <template #addAddress>
-                <SfLink
-                class="ml-1"
-                href="#"
-                variant="secondary"
-                >
-                {{ $t("additionalInfo.addAddress") }}
-                </SfLink>
-            </template>
-            </i18n-t>
-        </p>
-        </div>
-        <div class="flex mt-4">
-        <SfIconWarehouse
-            size="sm"
-            class="flex-shrink-0 mr-1 text-neutral-500"
-        />
-        <p class="text-sm">
-            <i18n-t
-            keypath="additionalInfo.pickup"
-            scope="global"
-            >
-            <template #checkAvailability>
-                <SfLink
-                class="ml-1"
-                href="#"
-                variant="secondary"
-                >
-                {{ $t("additionalInfo.checkAvailability") }}
-                </SfLink>
-            </template>
-            </i18n-t>
-        </p>
-        </div>
-        <div class="flex mt-4">
-        <SfIconSafetyCheck
-            size="sm"
-            class="flex-shrink-0 mr-1 text-neutral-500"
-        />
-        <i18n-t
-            keypath="additionalInfo.returns"
-            scope="global"
-        >
-            <template #details>
-            <SfLink
-                class="ml-1"
-                href="#"
-                variant="secondary"
-            >
-                {{ $t("additionalInfo.details") }}
-            </SfLink>
-            </template>
-        </i18n-t>
+        <div class="flex flex-col">
+            <ClientOnly>
+                <LazyUiProductDelivery
+
+                />
+            </ClientOnly>
         </div>
     </div>
 </template>

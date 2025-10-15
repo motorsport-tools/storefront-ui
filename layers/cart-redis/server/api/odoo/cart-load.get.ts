@@ -7,7 +7,9 @@ export default defineEventHandler(async (event: any) => {
   const keyName = `cache:cart:session:${session?.id}`
   const data = await useStorage().getItem(keyName);
 
-  for (const orderLine of data?.cart?.order?.websiteOrderLine || []) {
+  console.log('Cart Data initially?', data)
+
+  for (const orderLine of data?.cart?.order?.orderLines || []) {
     const stock = await useStorage('stock').getItem<string>(
       `stock:product-${orderLine?.product?.id}`,
     )
@@ -23,6 +25,6 @@ export default defineEventHandler(async (event: any) => {
       console.log(stock)
     }
   }
-
+  console.log('Data Loaded: ', data)
   return data || {}
 });

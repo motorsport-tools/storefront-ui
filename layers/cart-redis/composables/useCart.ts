@@ -33,12 +33,13 @@ export const useCart = () => {
     try {
       loading.value = true
 
-      const data  = await useFetch<{ cart: Cart }>(`/api/odoo/cart-load`)
+      const { data } = await useFetch<{ cart: Cart }>(`/api/odoo/cart-load`)
 
-      loading.value = false
+      if (!data.value?.cart)
+        return
 
-      cart.value = data?.cart || ({} as Cart)
-      frequentlyTogetherProducts.value = (data?.cart?.frequentlyBoughtTogether || []).filter((p): p is Product => p !== null)
+      cart.value = data.value.cart || ({} as Cart)
+      frequentlyTogetherProducts.value = (data.value.cart?.frequentlyBoughtTogether || []).filter((p): p is Product => p !== null)
     } catch (error: any) {
       return toast.error(error?.data?.message)
     } finally {
@@ -50,7 +51,7 @@ export const useCart = () => {
     const params: MutationCartAddMultipleItemsArgs = {
       products: [{ id, quantity }],
     }
-    
+
     try {
       loading.value = true
 
@@ -58,7 +59,7 @@ export const useCart = () => {
         { mutationName: MutationName.CartAddItem }, params,
       )
 
-      cart.value = data.cartAddMultipleItems || ({} as Cart )
+      cart.value = data.cartAddMultipleItems || ({} as Cart)
 
       toast.success({
         component: CartToast,
@@ -66,7 +67,7 @@ export const useCart = () => {
           message: $i18n.t('cartAddProduct')
         }
       })
-    } catch (error:any) {
+    } catch (error: any) {
       return toast.error(error?.data?.message)
     } finally {
       loading.value = false
@@ -86,7 +87,7 @@ export const useCart = () => {
         { mutationName: MutationName.CartUpdateQuantity }, params,
       )
 
-      cart.value = data.cartUpdateMultipleItems || ({} as Cart )
+      cart.value = data.cartUpdateMultipleItems || ({} as Cart)
 
       toast.success({
         component: CartToast,
@@ -94,7 +95,7 @@ export const useCart = () => {
           message: $i18n.t('cartUpdateProduct')
         }
       })
-    } catch( error: any ){ 
+    } catch (error: any) {
       return toast.error(error?.data?.message)
     } finally {
       loading.value = false
@@ -108,11 +109,11 @@ export const useCart = () => {
 
     try {
       loading.value = true
-      
+
       const data = await $sdk().odoo.mutation<MutationCartRemoveMultipleItemsArgs, CartRemoveItemResponse>(
         { mutationName: MutationName.CartRemoveItem }, params,
       )
-      cart.value = data.cartRemoveMultipleItems || ({} as Cart )
+      cart.value = data.cartRemoveMultipleItems || ({} as Cart)
       toast.success({
         component: CartToast,
         props: {
@@ -142,7 +143,7 @@ export const useCart = () => {
     loading.value = false;
 
     if (data.value.updateCartAddress.success) {
-      cart.value = data.value?.updateCartAddress?.cart || ({} as Cart )
+      cart.value = data.value?.updateCartAddress?.cart || ({} as Cart)
       return true
     }
 

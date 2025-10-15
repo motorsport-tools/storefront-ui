@@ -19,11 +19,13 @@ provide(
 await loadCategoriesForMegaMenu({ filter: { parent: true }, pageSize: 4 })
 
 onMounted(async () => {
+  if(import.meta.client) {
     if ( isAuthenticated.value ) {  
       await loadUser(true)
       await loadWishlist()
     }
     await loadCart()
+  }
 })
 </script>
 <template>

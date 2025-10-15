@@ -82,6 +82,7 @@
     "notifSuccess": "We'll notify you once the product is back in stock"
   },
   "myCart": "My Basket",
+  "subscribe": "Subscribe",
   "orderSummary": "Order Summary",
   "itemsInCart": "(Items: {count})",
   "itemsSubtotal": "Items subtotal",

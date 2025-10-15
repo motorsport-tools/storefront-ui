@@ -4,8 +4,7 @@ import { SfListItem, SfRadio, SfIconBlock, SfIconLocalShipping, SfIconWarehouse,
 
 const { cart, loadCart } = useCart();
 
-const { deliveryMethods, loadDeliveryMethods, setDeliveryMethod, loadRates, setRate, ratesLoading, rates } =
-  useDeliveryMethod();
+const { deliveryMethods, loadDeliveryMethods, setDeliveryMethod, loadRates, setRate, ratesLoading, rates } = useDeliveryMethod()
 
 const radioModel = ref("");
 const ratesModel = ref("")

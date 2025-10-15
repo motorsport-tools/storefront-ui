@@ -102,7 +102,7 @@ export default defineNuxtConfig({
         countryCode: 'GB',
       },
     ],
-    strategy: "prefix_except_default",
+    strategy: "no_prefix",
     lazy: true,
     defaultLocale: "en",
     vueI18n: "~/i18n.config.ts",

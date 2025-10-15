@@ -10,7 +10,6 @@ const goToCheckout = () => (isAuthenticated.value ? localePath('/checkout') : lo
 
 const isLoading = computed(() => loading.value || deliveryLoading.value);
 
-
 </script>
 
 <template>
@@ -30,7 +29,7 @@ const isLoading = computed(() => loading.value || deliveryLoading.value);
     />
   </div>
   <div 
-    v-else="!cartIsEmpty"
+    v-else-if="!cartIsEmpty"
       class="lg:grid lg:grid-cols-12 md:gap-x-6"
       data-testid="cart-page-content"
   >

@@ -71,7 +71,7 @@ export const useDeliveryMethod = () => {
   const loadDeliveryMethods = async () => {
     loading.value = true;
     try {
-      const { data } = await useAsyncData("shipping-methods", async () => 
+      const { data } = await useAsyncData("shipping-methods", async () =>
         await $sdk().odoo.queryNoCache<
           any,
           DeliveryMethodListResponse
@@ -153,6 +153,6 @@ export const useDeliveryMethod = () => {
     setRate,
     loading,
     ratesLoading,
-    rates
+    rates,
   };
 };

@@ -52,7 +52,7 @@ const allImages = computed(() => [
       </button>
     </SfScrollable>
     <SfScrollable
-      class="w-full h-full snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+      class="product__img w-full h-full snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
       :active-index="activeIndex"
       direction="vertical"
       wrapperClass="w-full"
@@ -63,7 +63,7 @@ const allImages = computed(() => [
       <div
         v-for="({ imageSrc, alt }, index) in allImages"
         :key="`${alt}-${index}`"
-        class="product__img main__img flex justify-center h-full basis-full shrink-0 grow snap-center"
+        class="main__img flex justify-center h-full basis-full shrink-0 grow snap-center"
       >
         <NuxtImg
           provider="odooProvider"

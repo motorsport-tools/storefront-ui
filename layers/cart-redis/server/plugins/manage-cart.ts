@@ -135,18 +135,11 @@ async function createUpdatePartner(event: any, body: any) {
     });
 
     const keyName = `cache:cart:session:${session?.id}`
-    console.log('keyname', keyName)
     const currentCart =
       (await useStorage().getItem<{ cart: Cart }>(keyName)) || ({} as any);
-    console.log('Current Cart', currentCart)
     currentCart.cart.order.partner = body.createUpdatePartner;
 
-    console.log('Current Cart with partner update', currentCart.cart.order.partner)
-
     const reducedCart = reduceCart(currentCart.cart as Cart)
-
-    console.log('Reduced Cart', reducedCart)
-    console.log('ReducedCart Partner', reducedCart.order.partner)
 
     await useStorage().setItem(keyName, { cart: reducedCart });
   }

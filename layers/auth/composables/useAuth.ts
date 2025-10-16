@@ -40,7 +40,7 @@ export const useAuth = () => {
     loading.value = true
     const query = withoutCache ? $sdk().odoo.queryNoCache : $sdk().odoo.query
 
-    const  data  = await query<null, LoadUserQueryResponse>({
+    const data = await query<null, LoadUserQueryResponse>({
       queryName: QueryName.LoadUserQuery,
     });
 
@@ -52,7 +52,7 @@ export const useAuth = () => {
   const updatePartner = async (params: MutationCreateUpdatePartnerArgs) => {
     loading.value = true;
 
-    const  data  = await $sdk().odoo.mutation<
+    const data = await $sdk().odoo.mutation<
       MutationCreateUpdatePartnerArgs,
       CreateUpdatePartnerResponse
     >({ mutationName: MutationName.CreateUpdatePartner }, params);
@@ -63,11 +63,11 @@ export const useAuth = () => {
       userCookie.value = data?.createUpdatePartner?.id;
     }
     //If update partner, update data on cart also
-    if (cart.value.order.partner) {
-      cart.value.order.partner = data.value?.createUpdatePartner
+    if (cart.value?.order?.partner) {
+      cart.value.order.partner = data?.createUpdatePartner
     }
 
-    toast.success("Partner updated successfully");
+    //toast.success("Partner updated successfully");
   };
 
   const logout = async () => {
@@ -92,7 +92,7 @@ export const useAuth = () => {
       await login({ email: params.email, password: params.password })
       router.push('/my-account/personal-data')
 
-    } catch ( error: any) {
+    } catch (error: any) {
       toast.error(error.data?.message)
       return
     } finally {
@@ -103,7 +103,7 @@ export const useAuth = () => {
   const login = async (params: MutationLoginArgs, redirectTo: any | false = false) => {
     try {
       loading.value = true;
-      
+
       const data = await $sdk().odoo.mutation<
         MutationLoginArgs,
         SignInUserResponse
@@ -131,7 +131,7 @@ export const useAuth = () => {
 
       router.push("/reset-password-success")
       resetEmail.value = params.email
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error.data?.message)
     } finally {
       loading.value = false
@@ -153,7 +153,7 @@ export const useAuth = () => {
         UpdatePasswordResponse
       >({ mutationName: MutationName.UpdatePasswordMutation }, params)
       toast.success('Password updated successfully')
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error?.data?.message)
     } finally {
       loading.value = false
@@ -171,7 +171,7 @@ export const useAuth = () => {
       >({ mutationName: MutationName.ChangePasswordMutation }, params)
       toast.success('Password changed successfully')
       router.push('/')
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error?.data?.message)
     } finally {
       loading.value = false

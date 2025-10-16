@@ -86,12 +86,11 @@ export const reduceCart = (cartData: Cart) => ({
 })
 
 export async function updateCart(event: any, updateData: any) {
-    const userCookie = getCookie(event, 'odoo-user')
     const session = await useSession(event, {
         password: "b013b03ac2231e0b448e9a22ba488dcf",
     });
 
-    const keyName = userCookie ? `cache:cart:id:${userCookie}` : `cache:cart:session:${session?.id}`
+    const keyName = `cache:cart:session:${session?.id}`
     const currentCart = (await useStorage().getItem<{ cart: Cart }>(
         keyName
     )) || { cart: {} };

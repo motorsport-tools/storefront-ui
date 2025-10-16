@@ -24,9 +24,10 @@ const props = defineProps({
  * @TODO extract this form behaviour, undo, commit, validate, etc. to a separate form composable
  */
 const { isOpen, open, close } = useDisclosure();
-const { email, name } = toRefs(props.partnerData);
+const { email, name, phone } = toRefs(props.partnerData);
 const { commit: commitEmail, undo: undoEmail } = useManualRefHistory(email);
 const { commit: commitName, undo: undoName } = useManualRefHistory(name);
+const { commit: commitPhone, undo: undoPhone } = useManualRefHistory(phone);
 
 watch(
   () => props.partnerData,
@@ -41,10 +42,11 @@ watch(
 const subscribeNewsletter = ref(false);
 
 const handleUpdatePartnerData = async () => {
-  if(name.value && email.value) {
+  if(name.value && email.value && phone.value) {
     const data: MutationCreateUpdatePartnerArgs = {
       email: String(email.value),
       name: String(name.value),
+      phone: String(phone.value),
       subscribeNewsletter: subscribeNewsletter.value,
     };
     
@@ -52,17 +54,20 @@ const handleUpdatePartnerData = async () => {
 
     commitEmail();
     commitName();
+    commitPhone();
     close();
   }
 };
 const handleOpenModal = () => {
   commitEmail();
   commitName();
+  commitPhone();
   open();
 };
 const handleCancel = () => {
   undoEmail();
   undoName();
+  undoPhone();
   close();
 };
 
@@ -89,6 +94,7 @@ const handleCancel = () => {
     >
       <p>{{ name }}</p>
       <p>{{ email }}</p>
+      <p>{{ phone }}</p>
     </div>
     <div v-if="!isAuthenticated" class="mt-2 md:w-[520px]">
 
@@ -122,6 +128,16 @@ const handleCancel = () => {
             @blur="handleUpdatePartnerData"
           />
         </label>
+        <div class="mt-4" />
+        <UiFormLabel>{{ $t("contactInfo.phone") }}</UiFormLabel>
+        <SfInput
+            v-model="phone"
+            name="phone"
+            type="tel"
+            placeholder="+44 123 456"
+            required
+            @blur="handleUpdatePartnerData"
+          />
         <div class="mt-4">
           <label>
             <UiFormLabel>{{ $t("contactInfo.subescribe") }}</UiFormLabel>
@@ -189,6 +205,15 @@ const handleCancel = () => {
               required
             />
           </label>
+          <UiFormLabel>{{ $t("contactInfo.phone") }}</UiFormLabel>
+          <SfInput
+              v-model="phone"
+              name="phone"
+              type="tel"
+              placeholder="+44 123 456"
+              required
+              @blur="handleUpdatePartnerData"
+            />
           <div class="mt-4">
             <label>
               <UiFormLabel>{{ $t("contactInfo.subescribe") }}</UiFormLabel>

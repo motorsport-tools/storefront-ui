@@ -5,14 +5,18 @@ import { SfLoaderCircular } from "@storefront-ui/vue";
 
 const { cart, totalItemsInCart, cartIsEmpty, loading: cartLoading, loadCart } = useCart()
 const { loadCountries } = useCountryList()
-const { loadUser } = useAuth()
+const { loadUser, isAuthenticated } = useAuth()
 const { loading: deliveryLoading } = useDeliveryMethod()
 const router = useRouter()
 
 const selectedProvider = ref<PaymentMethod | null>(null);
 
 onMounted(async () => {
-  await Promise.all([loadUser(true), loadCart(), loadCountries()]);
+  if(isAuthenticated.value) {
+    await Promise.all([loadUser(true), loadCart(), loadCountries()]);
+  } else {
+    await Promise.all([loadCart(), loadCountries()])
+  }
 
   if (totalItemsInCart?.value === 0) {
     await navigateTo("/cart")
@@ -37,7 +41,6 @@ function handleSelectedProviderUpdate(newProvider: Number) {
       <div class="lg:grid lg:grid-cols-12 md:gap-x-6">
         <div class="col-span-7 mb-10 md:mb-0">
           <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
-
           <LazyCheckoutContactInformation
             v-if="cart?.order?.partner"
             :heading="$t('contactInfo.heading')"

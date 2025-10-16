@@ -10,6 +10,7 @@ const goToCheckout = () => (isAuthenticated.value ? localePath('/checkout') : lo
 
 const isLoading = computed(() => loading.value || deliveryLoading.value);
 
+await loadCart()
 </script>
 
 <template>

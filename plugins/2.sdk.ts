@@ -13,7 +13,6 @@ const avoidErrorThrowForSomeRequests = (options: any) => {
   if (options.body) {
     try {
       const queryName = JSON.parse(options.body)?.[0]?.queryName
-
       if (SHOULD_BYPASS_ERROR_QUERIES?.includes(queryName)) {
         return true
       }

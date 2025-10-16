@@ -33,8 +33,9 @@ const { cart } = useCart()
 
                 <template v-if="showMethods">
                     <UiDividerText :text="$t('or')" />
-                    
-                    <ProviderStripeExpressCheckout :method="{ code: 'card', providerId: 14 }" :cart="cart"/>
+                    <ClientOnly>
+                        <ProviderStripeExpressCheckout :method="{ code: 'card', providerId: 14 }" :cart="cart"/>
+                    </ClientOnly>
                 </template>
 
                 <UiDividerText :text="$t('or')" />

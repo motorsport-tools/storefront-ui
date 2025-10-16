@@ -53,8 +53,7 @@
     transaction
   } = useStripeDirectPayment(
     props.method.providerId, 
-    props.cart?.order?.id, 
-    props.cart?.order?.partner?.id,  
+    props.cart?.order?.id,  
     props.method?.code
   );
   
@@ -149,7 +148,7 @@
       }
       
       console.log('Preparing shipping rates from delivery methods:', 
-        deliveryMethods.value.map(m => m.name));
+      deliveryMethods.value.map(m => m.name));
       
       // Handle shipping methods with rates
       const shippingMethods = deliveryMethods.value.filter(
@@ -263,7 +262,7 @@
       // Create Stripe Elements instance
       const elementsOptions = {
         appearance: { theme: 'stripe' },
-        currency: inlineFormValues['currency_name'] || 'usd',
+        currency: inlineFormValues['currency_name'] || 'gbp',
         captureMethod: inlineFormValues['capture_method'] || 'automatic',
         paymentMethodTypes: [
           inlineFormValues['payment_methods_mapping']?.[props.method.code] || props.method.code

@@ -50,7 +50,7 @@ export const useStripeDirectPayment = (providerId: number, cartId: number, pmCod
     }
 
     const getStripeInlineFormValues = async () => {
-        const { data } = await $sdk().odoo.mutation<
+        const data = await $sdk().odoo.mutation<
             MutationStripeGetInlineFormValuesArgs,
             StripeGetInlineFormValueResponse
         >({
@@ -59,7 +59,7 @@ export const useStripeDirectPayment = (providerId: number, cartId: number, pmCod
             providerId, pmCode
         })
 
-        return data.value?.stripeGetInlineFormValues?.stripeGetInlineFormValues
+        return data?.stripeGetInlineFormValues?.stripeGetInlineFormValues
     }
 
     return {

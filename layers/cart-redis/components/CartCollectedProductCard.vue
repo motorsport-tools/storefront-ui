@@ -22,13 +22,14 @@ const { updateItemQuantity, removeItemFromCart } = useCart();
     class="relative flex first:border-t border-b-[1px] border-neutral-200 hover:shadow-lg min-w-[320px] p-4 last:mb-0"
     data-testid="cart-product-card"
   >
-    <div class="relative overflow-hidden rounded-md w-[100px] sm:w-[176px]">
+    <div class="relative overflow-hidden w-[100px] sm:w-[176px]">
       <SfLink
         :to="mountUrlSlugForProductVariant(orderLine.product as Product)"
         :tag="NuxtLink"
+        class="product__img"
       >
         <NuxtImg
-          class="w-full h-auto border rounded-md border-neutral-200"
+          class="w-full h-auto"
           :src="
             $getImage(
               String(orderLine.product?.image),
@@ -45,7 +46,7 @@ const { updateItemQuantity, removeItemFromCart } = useCart();
         />
       </SfLink>
       <div
-        class="absolute top-0 left-0 text-white bg-secondary-600 py-1 pl-1.5 pr-2 text-xs font-medium"
+        class="absolute top-0 left-0 text-white bg-secondary-800 py-1 pl-1.5 pr-2 text-xs font-medium"
       >
         <SfIconSell size="xs" class="mr-1" />
         {{ $t("sale") }}

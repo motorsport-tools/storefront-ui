@@ -56,7 +56,8 @@ const { commit: commitPhone, undo: undoPhone } = useManualRefHistory(phone);
 const { commit: commitZip, undo: undoZip } = useManualRefHistory(zip);
 
 const { isOpen, open, close } = useDisclosure();
-const { addAddress, updateAddress } = useAddresses();
+//const { addAddress, updateAddress } = useAddresses();
+const { updateCartAddress } = useCart()
 
 const { countries } = useCountryList();
 

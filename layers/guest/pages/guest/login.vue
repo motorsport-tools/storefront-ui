@@ -4,6 +4,7 @@ import { SfButton, SfLink } from '@storefront-ui/vue';
 definePageMeta({
     pageType: 'static',
     middleware: ['guest'],
+    layout: 'checkout',
 });
 
 const showMethods = true
@@ -14,11 +15,14 @@ const { cart } = useCart()
 </script>
 
 <template>
-    <NuxtLayout 
-        name="checkout" 
-        :back-label="$t('back')" 
-        :heading="$t('checkout')"
+    <main 
+        class="w-full narrow-container mb-20"
+        data-testid="checkout-layout"
     >
+        <CheckoutHeader
+            :title="$t('secureCheckout')"
+            :backText="$t('backToCart')"
+        />
         <div class="lg:w-full lg:flex md:justify-center">
             <div class="flex flex-col gap-4 p-2 lg:p-6 rounded-md w-full md:w-2/3 lg:w-1/2 3xl:w-2/5">
                 <h2 class="font-bold text-lg">{{ $t('guest.guestCheckout') }}</h2>
@@ -61,5 +65,5 @@ const { cart } = useCart()
 
             </div>
         </div>
-    </NuxtLayout>
+    </main>
 </template>

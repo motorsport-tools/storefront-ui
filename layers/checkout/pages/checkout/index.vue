@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { useCountryList } from "~/layers/core/composable/useCountryList";
-import { AddressEnum, type Partner } from "~/graphql";
-import { SfLoaderCircular } from "@storefront-ui/vue";
+import { AddressEnum, type Partner, type PaymentMethod } from "~/graphql";
+import { SfLoaderCircular, SfIconLock } from "@storefront-ui/vue";
+
+definePageMeta({
+  layout: 'checkout',
+})
 
 const { cart, totalItemsInCart, cartIsEmpty, loading: cartLoading, loadCart } = useCart()
 const { loadCountries } = useCountryList()
@@ -17,13 +21,13 @@ onMounted(async () => {
   } else {
     await Promise.all([loadCart(), loadCountries()])
   }
-
-  if (totalItemsInCart?.value === 0) {
-    await navigateTo("/cart")
-  }
 })
 
 const isLoading = computed(() => cartLoading.value || deliveryLoading.value);
+
+if (!isLoading.value && cartIsEmpty && totalItemsInCart.value === 0) {
+    await navigateTo("/cart")
+  }
 
 function handleSelectedProviderUpdate(newProvider: Number) {
   selectedProvider.value = newProvider;
@@ -31,12 +35,15 @@ function handleSelectedProviderUpdate(newProvider: Number) {
 
 </script>
 <template>
-  <NuxtLayout
-    name="checkout"
-    :back-to-cart="false"
-    :back-label="$t('backToCart')"
-    :heading="$t('checkout')"
+  <main 
+    class="w-full narrow-container mb-20"
+    data-testid="checkout-layout"
   >
+    <CheckoutHeader
+        :title="$t('secureCheckout')"
+        :backText="$t('backToCart')"
+        :icon="SfIconLock"
+    />
     <div v-if="!cartIsEmpty">
       <div class="lg:grid lg:grid-cols-12 md:gap-x-6">
         <div class="col-span-7 mb-10 md:mb-0">
@@ -93,5 +100,5 @@ function handleSelectedProviderUpdate(newProvider: Number) {
       <SfLoaderCircular size="xl" class="mt-[160px] mb-[10px]" />
       <p>Loading checkout details...</p>
     </div>
-  </NuxtLayout>
+  </main>
 </template>

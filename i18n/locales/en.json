@@ -138,6 +138,7 @@
   "lastPageAriaLabel": "Last page",
   "currentPage": "Page {page} of {totalPages}",
   "checkout": "Checkout",
+  "secureCheckout": "Secure Checkout",
   "backToCart": "Back to Cart",
   "back": "Back",
   "placeOrder": "Place order and pay",

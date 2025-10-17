@@ -5,7 +5,7 @@ export default defineEventHandler(async (event: any) => {
     password: "b013b03ac2231e0b448e9a22ba488dcf",
   });
   const keyName = `cache:cart:session:${session?.id}`
-  const data = await useStorage().getItem(keyName);
+  const data = await useStorage('cart').getItem(keyName);
 
   for (const orderLine of data?.cart?.order?.orderLines || []) {
     const stock = await useStorage('stock').getItem<string>(

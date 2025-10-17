@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { SfButton, SfIconArrowBack, SfLoaderCircular } from '@storefront-ui/vue';
+import { SfButton, SfLoaderCircular } from '@storefront-ui/vue';
 
 const NuxtLink = resolveComponent('NuxtLink');
 const { cart, loadCart, cartIsEmpty, loading, frequentlyTogetherProducts } = useCart();
@@ -20,7 +20,7 @@ await loadCart()
   >
     <CheckoutHeader
       :title="$t('cart')"
-      :backText="$t('backToCart')"
+      :backText="$t('back')"
       :backToCart="false"
     />
     <div
@@ -39,9 +39,11 @@ await loadCart()
     >
 
       <div class="col-span-7 mb-10 lg:mb-0">
-        <div v-for="(orderLine, index) in cart.order?.orderLines?.filter(line => line.isRewardLine === false && line.isDelivery === false)" :key="orderLine?.id">
-          <CartCollectedProductCard :order-line="orderLine" :class="{ 'border-t': index === 0 }" />
-        </div>
+        <ClientOnly>
+          <div v-for="(orderLine, index) in cart.order?.orderLines?.filter(line => line.isRewardLine === false && line.isDelivery === false)" :key="orderLine?.id">
+            <CartCollectedProductCard :order-line="orderLine" :class="{ 'border-t': index === 0 }" />
+          </div>
+        </ClientOnly>
         <Discount v-if="$viewport.isLessThan('lg')" class="mb-2" />
       </div>
 
@@ -58,6 +60,10 @@ await loadCart()
             >
               {{ $t('goToCheckout') }}
             </SfButton>
+            <UiPaymentIcons
+              class="my-4"
+            />
+            <p class="text-center text-sm">{{ $t('cartDetailsProtected') }} <NuxtLink class="text-blue-600 hover:underline hover:text-blue-700" href="/privacy">{{ $t('learnMore') }}</NuxtLink></p>
           </UiOrderSummary>
         </div>
       </div>

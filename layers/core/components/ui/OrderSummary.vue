@@ -32,12 +32,13 @@ const { cart, totalItemsInCart, cartHasDiscount  } = useCart();
           <div class="flex flex-row grow pr-2">
             <p class="font-bold grow pr-2">{{ $t("delivery") }}</p>
             <p v-if="cart?.order?.shippingMethod?.id" class="flex text-right">{{ $currency(cart?.order?.shippingMethod?.price || 0) }}</p>
+            <p v-else class="flex text-right">--</p>
           </div>
           <div
             v-if="!cart?.order?.shippingMethod?.id" 
             class="flex flex-row grow pr-2"
           >
-            <p class="grow text-right text-sm text-neutral-600">
+            <p class="grow text-left text-sm text-neutral-600">
               {{ $t('deliveryAtCheckout') }}
             </p>
           </div>

@@ -2,7 +2,7 @@
 import { SfBadge } from "@storefront-ui/vue"
 const NuxtLink = resolveComponent("NuxtLink")
 const { isAuthenticated } = useAuth()
-const { totalItemsInCart } = useCart()
+const { totalItemsInCart, loadCart } = useCart()
 
 const { toggleWishlistSideBar } = useWishlistUiState();
 const { loadWishlist, wishlistTotalItems } = useWishlist();
@@ -11,6 +11,10 @@ const handleOpenWishListSidebar = async () => {
   toggleWishlistSideBar()
   await loadWishlist()
 }
+
+onMounted(async () => {
+    await loadCart()
+})
 </script>
 
 <template>

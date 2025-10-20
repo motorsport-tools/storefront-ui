@@ -3,7 +3,6 @@ import {
   SfChip,
   SfLoaderCircular,
   SfThumbnail,
-  SfButton
 } from '@storefront-ui/vue'
 import type { LocationQueryRaw } from 'vue-router'
 import type { CustomProductWithStockFromRedis } from '~/graphql'
@@ -39,20 +38,9 @@ const {
   getRegularPrice,
   getSpecialPrice,
 } = useProductVariant(cleanFullPath.value)
-const { isAuthenticated } = useAuth()
 const { addProductToRecentViews } = useRecentViewProducts()
 
 useHead(generateSeo<SeoEntity>(productVariant.value, 'Product'))
-
-const { wishlistAddItem, isInWishlist, wishlistRemoveItem } = useWishlist()
-
-const handleWishlistAddItem = async (firstVariant: CustomProductWithStockFromRedis) => {
-  await wishlistAddItem(firstVariant.id)
-}
-
-const handleWishlistRemoveItem = async (firstVariant: CustomProductWithStockFromRedis) => {
-  await wishlistRemoveItem(firstVariant.id)
-}
 
 const selectedSize = computed(() =>
   route.query.Size ? Number(route.query.Size) : getAllSizes?.value?.[0]?.value,
@@ -136,6 +124,13 @@ const isLoadingPage = computed(() => {
 const hasProductData = computed(() => {
   return productTemplate.value?.id && productVariant.value?.id
 })
+
+const breadcrumbs = computed(() => {
+    const p = productTemplate.value
+    if (!p?.breadcrumb || !p?.name) return []  
+    const bc = typeof p.breadcrumb === 'string' ? JSON.parse(p.breadcrumb) : p.breadcrumb
+    return [...bc, { name: p.name }]
+})
 </script>
 
 <template>
@@ -146,57 +141,22 @@ const hasProductData = computed(() => {
         <NuxtErrorBoundary>
         <div>
             <div class="flex md:flex-row mt-5 mb-10">
-        <UiBreadcrumb
-            v-if="productTemplate?.breadcrumb?.length"
-            :breadcrumbs="productTemplate?.breadcrumb"
-            class="grow self-start"
-        />
-        <div 
-            v-if="isAuthenticated"
-            class="flex justify-center"
-        >
-            <SfButton
-                type="button"
-                :title="isInWishlist(productVariant?.id as number)
-                    ? $t('wishlist.removeFromWishlist')
-                    : $t('wishlist.addProductToWishlist', { label: productVariant?.name })"
-                size="sm"
-                variant="tertiary"
-                class="inline-flex h-8 border"
-                :class="
-                    productVariant?.isInWishlist ? 'bg-primary-100' : 'bg-white'
-                "
-                @click="
-                    isInWishlist(productVariant?.id as number)
-                    ? handleWishlistRemoveItem(productVariant)
-                    : handleWishlistAddItem(productVariant)
-                "
-            >
-                <Icon 
-                    v-if="isInWishlist(productVariant?.id as number)"
-                    name="ic:outline-star"
-                    size="22px"
+                <UiBreadcrumb
+                    v-if="breadcrumbs.length"
+                    :breadcrumbs="breadcrumbs"
+                    class="grow self-start"
                 />
-                <Icon 
-                    v-else
-                    name="ic:outline-star-border"
-                    size="22px"
+                <LazyUiProductWishlistButton
+                    :productVariant="productVariant"
                 />
-                {{
-                    isInWishlist(productVariant?.id as number)
-                    ? $t('wishlist.removeFromWishlist')
-                    : $t('wishlist.addToWishlist')
-                }}
-            </SfButton>
-        </div>
-        </div>
+            </div>
         <div
             v-if="isLoadingPage"
             class="w-full flex flex-col items-center justify-center min-h-[60vh]"
         >
             <SfLoaderCircular
-            size="xl"
-            class="my-32"
+                size="xl"
+                class="my-32"
             />
         </div>
         <div

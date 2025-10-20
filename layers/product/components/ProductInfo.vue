@@ -4,8 +4,6 @@ import {
     SfButton,
     SfIconShoppingCart,
     SfIconShoppingCartCheckout,
-    SfIconFavoriteFilled,
-    SfIconFavorite,
 } from '@storefront-ui/vue'
 
 interface Props {
@@ -20,8 +18,6 @@ const props = defineProps<Props>()
 const { productTemplate, productVariant } = toRefs(props)
 
 const { cart, cartAdd } = useCart()
-const { wishlistAddItem, isInWishlist, wishlistRemoveItem } = useWishlist()
-const { isAuthenticated } = useAuth()
 
 const quantitySelectorValue = ref(1)
 
@@ -31,14 +27,6 @@ const handleCartAdd = async () => {
     id = Number(productVariant?.value?.id)
   }
   await cartAdd(id, quantitySelectorValue.value)
-}
-
-const handleWishlistAddItem = async (firstVariant: CustomProductWithStockFromRedis) => {
-  await wishlistAddItem(firstVariant.id)
-}
-
-const handleWishlistRemoveItem = async (firstVariant: CustomProductWithStockFromRedis) => {
-  await wishlistRemoveItem(firstVariant.id)
 }
 
 const productsInCart = computed(() => {

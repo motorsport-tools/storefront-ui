@@ -21,6 +21,7 @@ const { productTemplate, productVariant } = toRefs(props)
 
 const { cart, cartAdd } = useCart()
 const { wishlistAddItem, isInWishlist, wishlistRemoveItem } = useWishlist()
+const { isAuthenticated } = useAuth()
 
 const quantitySelectorValue = ref(1)
 
@@ -75,13 +76,15 @@ const maxQty = computed(() => {
             :isOnSale="productVariant
             && productVariant?.combinationInfoVariant?.has_discounted_price"
             size="sm"
+            class="grow"
         />
         <h1
-            class="font-bold typography-headline-2 !normal-case"
+            class="font-bold typography-headline-2 break-word !normal-case"
             data-testid="product-name"
         >
             {{ productVariant?.name }}
         </h1>
+            
         <span class="block text-sm my-1">
             {{ productVariant?.sku }}
         </span>
@@ -144,35 +147,6 @@ const maxQty = computed(() => {
                         <SfIconShoppingCart size="sm" />
                     </template>
                     {{ $t("addToCart") }}
-                </SfButton>
-            </div>
-            <div class="flex justify-center mt-4 gap-x-4">
-                <SfButton
-                    type="button"
-                    size="sm"
-                    variant="tertiary"
-                    :class="
-                        productVariant?.isInWishlist ? 'bg-primary-100' : 'bg-white'
-                    "
-                    @click="
-                        isInWishlist(productVariant?.id as number)
-                        ? handleWishlistRemoveItem(productVariant)
-                        : handleWishlistAddItem(productVariant)
-                    "
-                >
-                <SfIconFavoriteFilled
-                    v-show="isInWishlist(productVariant?.id as number)"
-                    size="sm"
-                />
-                <SfIconFavorite
-                    v-show="!isInWishlist(productVariant?.id as number)"
-                    size="sm"
-                />
-                {{
-                    isInWishlist(productVariant?.id as number)
-                    ? $t('wishlist.removeFromWishlist')
-                    : $t('wishlist.addToWishlist')
-                }}
                 </SfButton>
             </div>
         </div>

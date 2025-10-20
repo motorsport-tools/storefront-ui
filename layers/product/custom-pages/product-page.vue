@@ -3,6 +3,7 @@ import {
   SfChip,
   SfLoaderCircular,
   SfThumbnail,
+  SfButton
 } from '@storefront-ui/vue'
 import type { LocationQueryRaw } from 'vue-router'
 import type { CustomProductWithStockFromRedis } from '~/graphql'
@@ -38,9 +39,20 @@ const {
   getRegularPrice,
   getSpecialPrice,
 } = useProductVariant(cleanFullPath.value)
+const { isAuthenticated } = useAuth()
 const { addProductToRecentViews } = useRecentViewProducts()
 
 useHead(generateSeo<SeoEntity>(productVariant.value, 'Product'))
+
+const { wishlistAddItem, isInWishlist, wishlistRemoveItem } = useWishlist()
+
+const handleWishlistAddItem = async (firstVariant: CustomProductWithStockFromRedis) => {
+  await wishlistAddItem(firstVariant.id)
+}
+
+const handleWishlistRemoveItem = async (firstVariant: CustomProductWithStockFromRedis) => {
+  await wishlistRemoveItem(firstVariant.id)
+}
 
 const selectedSize = computed(() =>
   route.query.Size ? Number(route.query.Size) : getAllSizes?.value?.[0]?.value,
@@ -133,11 +145,51 @@ const hasProductData = computed(() => {
     >
         <NuxtErrorBoundary>
         <div>
+            <div class="flex md:flex-row mt-5 mb-10">
         <UiBreadcrumb
             v-if="productTemplate?.breadcrumb?.length"
             :breadcrumbs="productTemplate?.breadcrumb"
-            class="self-start mt-5 mb-10"
+            class="grow self-start"
         />
+        <div 
+            v-if="isAuthenticated"
+            class="flex justify-center"
+        >
+            <SfButton
+                type="button"
+                :title="isInWishlist(productVariant?.id as number)
+                    ? $t('wishlist.removeFromWishlist')
+                    : $t('wishlist.addProductToWishlist', { label: productVariant?.name })"
+                size="sm"
+                variant="tertiary"
+                class="inline-flex h-8 border"
+                :class="
+                    productVariant?.isInWishlist ? 'bg-primary-100' : 'bg-white'
+                "
+                @click="
+                    isInWishlist(productVariant?.id as number)
+                    ? handleWishlistRemoveItem(productVariant)
+                    : handleWishlistAddItem(productVariant)
+                "
+            >
+                <Icon 
+                    v-if="isInWishlist(productVariant?.id as number)"
+                    name="ic:outline-star"
+                    size="22px"
+                />
+                <Icon 
+                    v-else
+                    name="ic:outline-star-border"
+                    size="22px"
+                />
+                {{
+                    isInWishlist(productVariant?.id as number)
+                    ? $t('wishlist.removeFromWishlist')
+                    : $t('wishlist.addToWishlist')
+                }}
+            </SfButton>
+        </div>
+        </div>
         <div
             v-if="isLoadingPage"
             class="w-full flex flex-col items-center justify-center min-h-[60vh]"
@@ -176,64 +228,64 @@ const hasProductData = computed(() => {
                 v-if="getAllSizes && getAllSizes?.length"
                 class="pb-4 flex"
                 >
-                <legend
-                    class="block mb-2 text-base font-medium leading-6 text-neutral-900"
-                >
-                    Size
-                </legend>
-                <span
-                    v-for="{ label, value } in getAllSizes"
-                    :key="value"
-                    class="mr-2 mb-2 uppercase"
-                >
-                    <SfChip
-                    class="min-w-[48px]"
-                    size="sm"
-                    :v-model="value"
-                    :input-props="{
-                        onClick: (e) => value == selectedSize && e.preventDefault(),
-                    }"
-                    :model-value="value == selectedSize"
-                    @update:model-value="
-                        value != selectedSize
-                        && updateFilter({ ['Size']: value.toString() })
-                    "
+                    <legend
+                        class="block mb-2 text-base font-medium leading-6 text-neutral-900"
                     >
-                    {{ label }}
-                    </SfChip>
-                </span>
+                        Size
+                    </legend>
+                    <span
+                        v-for="{ label, value } in getAllSizes"
+                        :key="value"
+                        class="mr-2 mb-2 uppercase"
+                    >
+                        <SfChip
+                        class="min-w-[48px]"
+                        size="sm"
+                        :v-model="value"
+                        :input-props="{
+                            onClick: (e) => value == selectedSize && e.preventDefault(),
+                        }"
+                        :model-value="value == selectedSize"
+                        @update:model-value="
+                            value != selectedSize
+                            && updateFilter({ ['Size']: value.toString() })
+                        "
+                        >
+                        {{ label }}
+                        </SfChip>
+                    </span>
                 </fieldset>
                 <fieldset
-                v-if="getAllMaterials && getAllMaterials?.length"
-                class="pb-4 flex"
+                    v-if="getAllMaterials && getAllMaterials?.length"
+                    class="pb-4 flex"
                 >
-                <legend
-                    class="block mb-2 text-base font-medium leading-6 text-neutral-900"
-                >
-                    Material
-                </legend>
-                <span
-                    v-for="{ label, value } in getAllMaterials"
-                    :key="value"
-                    class="mr-2 mb-2 uppercase"
-                >
-                    <SfChip
-                    class="min-w-[48px]"
-                    size="sm"
-                    :v-model="value"
-                    :input-props="{
-                        onClick: (e) =>
-                        value == selectedMaterial && e.preventDefault(),
-                    }"
-                    :model-value="value == selectedMaterial"
-                    @update:model-value="
-                        value != selectedMaterial
-                        && updateFilter({ ['Material']: value.toString() })
-                    "
+                    <legend
+                        class="block mb-2 text-base font-medium leading-6 text-neutral-900"
                     >
-                    {{ label }}
-                    </SfChip>
-                </span>
+                        Material
+                    </legend>
+                    <span
+                        v-for="{ label, value } in getAllMaterials"
+                        :key="value"
+                        class="mr-2 mb-2 uppercase"
+                    >
+                        <SfChip
+                        class="min-w-[48px]"
+                        size="sm"
+                        :v-model="value"
+                        :input-props="{
+                            onClick: (e) =>
+                            value == selectedMaterial && e.preventDefault(),
+                        }"
+                        :model-value="value == selectedMaterial"
+                        @update:model-value="
+                            value != selectedMaterial
+                            && updateFilter({ ['Material']: value.toString() })
+                        "
+                        >
+                        {{ label }}
+                        </SfChip>
+                    </span>
                 </fieldset>
                 <fieldset
                 v-if="getAllColors && getAllColors?.length"

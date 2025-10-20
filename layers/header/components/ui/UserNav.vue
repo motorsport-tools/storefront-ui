@@ -21,7 +21,7 @@ onMounted(async () => {
     <UiUserNavButton
         v-if="isAuthenticated"
         class="group relative"
-        :title="$t('wishlistLinkTitle')"
+        :title="$t('wishlist.linkTitle')"
         @click="handleOpenWishListSidebar"
     >
         <Icon

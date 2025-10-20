@@ -16,6 +16,7 @@ const handleOpenWishListSidebar = async () => {
 <template>
     <UiUserNavButton
         v-if="isAuthenticated"
+        class="group relative"
         :title="$t('wishlistLinkTitle')"
         @click="handleOpenWishListSidebar"
     >

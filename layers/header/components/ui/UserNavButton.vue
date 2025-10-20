@@ -28,7 +28,8 @@ const type = computed(
     <component
         :is="tagWithDefaults"
         :type="type"
-        class="h-full block flex justify-center items-center !text-black hover:bg-transparent !px-2 lg:!px-3 cursor-pointer "
+        class="h-full block flex justify-center items-center !text-black hover:bg-transparent !px-2 lg:!px-3 cursor-pointer"
+        :class="attrs.class"
     >
         <slot/>
 </component>

@@ -93,6 +93,7 @@
   "apply": "Apply",
   "total": "Total",
   "or": "or",
+  "deliveryAtCheckout": "Delivery charges will be added at checkout (if applicable).",
   "learnMore": "Learn more",
   "goToCheckout": "Go to checkout",
   "savingsTag": "You are saving {amount} on your order today!",

@@ -23,19 +23,27 @@ const { cart, totalItemsInCart, cartHasDiscount  } = useCart();
     </div>
     <div>
       <div class="px-4 pb-4 mt-3 md:px-6 md:pb-6 md:mt-0">
-        <div class="flex flex-col justify-between typography-text-base mb-2 gap-2">
+        <div class="flex flex-col justify-between typography-text-base mb-2 gap-2 border-t pt-4">
           <div class="flex flex-row grow pr-2">
-            <p class="grow pr-2">{{ $t('itemsSubtotal') }}</p>
+            <p class="font-bold grow pr-2">{{ $t('itemsSubtotal') }}</p>
             <p class="flex text-right">{{ $currency(cart?.order?.amountSubtotal || 0) }}</p>
           </div>
           
           <div class="flex flex-row grow pr-2">
-            <p class="grow pr-2">{{ $t("delivery") }}</p>
-            <p class="flex text-right">{{ $currency(cart?.order?.shippingMethod?.price || 0) }}</p>
+            <p class="font-bold grow pr-2">{{ $t("delivery") }}</p>
+            <p v-if="cart?.order?.shippingMethod?.id" class="flex text-right">{{ $currency(cart?.order?.shippingMethod?.price || 0) }}</p>
+          </div>
+          <div
+            v-if="!cart?.order?.shippingMethod?.id" 
+            class="flex flex-row grow pr-2"
+          >
+            <p class="grow text-right text-sm text-neutral-600">
+              {{ $t('deliveryAtCheckout') }}
+            </p>
           </div>
 
           <div v-if="cartHasDiscount" class="flex flex-row grow pr-2 pb-2 border-b border-neutral-200">
-            <p class="grow pr-2">{{ $t("discounts", { count: cartHasDiscount }) }}</p>
+            <p class="font-bold grow pr-2">{{ $t("discounts", { count: cartHasDiscount }) }}</p>
           </div>
 
           <div
@@ -60,12 +68,12 @@ const { cart, totalItemsInCart, cartHasDiscount  } = useCart();
           </div>
 
           <div class="flex flex-row grow pr-2">
-            <p class="grow pr-2">{{ $t("beforeTax")}}</p>
+            <p class="font-bold grow pr-2">{{ $t("beforeTax")}}</p>
             <p class="flex text-right">{{ $currency( Number(cart?.order?.amountSubtotal || 0) + Number(cart?.order?.shippingMethod?.price || 0) + Number(cart?.order?.amountDiscounts || 0) ) }}</p>
           </div>
 
           <div class="flex flex-row grow pr-2">
-            <p class="grow pr-2">{{ $t("estimatedTax") }}</p>
+            <p class="font-bold grow pr-2">{{ $t("estimatedTax") }}</p>
             <p class="flex text-right">{{ $currency(Number(cart?.order?.amountTax)) }}</p>
           </div> 
 

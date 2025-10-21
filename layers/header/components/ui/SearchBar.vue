@@ -140,6 +140,38 @@ watch(() => ({ ...route.query }),
     },
     { immediate: true }
 )
+
+const {
+  isSupported: canVoiceSearch,
+  isListening,
+  isFinal,
+  result,
+  start,
+  stop,
+} = useSpeechRecognition({
+    lang: 'en-GB',
+    interimResults: true,
+    continuous: false,
+})
+
+
+const startVoiceSearch = () => {
+    result.value = ''
+    start()
+}
+
+watch(isListening, isListening => {
+    if(!isListening){
+        console.log('Stopped Listening', result.value)
+        alert('Detected '+ result.value)
+        searchInputValue.value = result.value
+        omniSearch()
+    }
+})
+watch(result, result => {
+    searchInputValue.value = result
+    omniSearch()
+})
 </script>
 
 <template>
@@ -166,6 +198,38 @@ watch(() => ({ ...route.query }),
             <template #suffix>
                 <span class="flex items-center">
                     <SfButton
+                        v-show="canVoiceSearch && !isListening"
+                        variant="tertiary"
+                        square
+                        aria-label="search"
+                        :disabled="loading"
+                        type="button"
+                        class="rounded-l-none hover:bg-transparent active:bg-transparent"
+                        @click="startVoiceSearch"
+                    >
+                        <Icon
+                            class="text-black"
+                            name="bxs:microphone"
+                            size="26px"
+                        />
+                    </SfButton>
+                    <SfButton
+                        v-show="canVoiceSearch && isListening"
+                        variant="tertiary"
+                        square
+                        aria-label="search"
+                        :disabled="loading"
+                        type="button"
+                        class="rounded-l-none hover:bg-transparent active:bg-transparent"
+                        @click="stop"
+                    >
+                        <Icon
+                            class="text-black"
+                            name="bxs:microphone-off"
+                            size="26px"
+                        />
+                    </SfButton>
+                    <SfButton
                         variant="tertiary"
                         square
                         aria-label="search"
@@ -184,7 +248,6 @@ watch(() => ({ ...route.query }),
                 </span>
             </template>
         </UiFormCustomSfInput>
-        
         <SearchList 
             v-if="showInstantSearch"
             :query="searchInputValue"

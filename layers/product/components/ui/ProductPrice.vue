@@ -5,6 +5,10 @@ interface Props {
     hasDiscountedPrice: boolean,
     discPercentage: number
 }
+/*
+Regular Price = list_price (this is Sales Price On Product)
+Special Price = PriceList price (Calculated)
+*/
 const props = defineProps<Props>()
 </script>
 <template>

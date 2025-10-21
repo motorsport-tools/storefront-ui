@@ -22,9 +22,15 @@ const handleWishlistRemoveItem = async (firstVariant: Product) => {
 
 <template>
   <div class="w-full">
+  <!--  
     <div
       v-if="wishlistSidebarIsOpen"
       class="fixed !w-screen !h-screen inset-0 bg-neutral-500 bg-opacity-50 transition-opacity duration-1000 top-index"
+    />
+  -->
+    <LazyUiOverlay
+      :isOpen="wishlistSidebarIsOpen"
+      class="!z-[91]"
     />
     <div>
       <transition
@@ -44,11 +50,13 @@ const handleWishlistRemoveItem = async (firstVariant: Product) => {
           data-testid="category-sidebar"
         >
           <div class="flex flex-col h-full">
-            <div class="p-4 flex justify-between items-center">
-              <span class="font-bold text-lg text-black">Wishlist</span>
+            <div class="bg-[#353535] text-white p-4 mb-4 flex justify-between items-center">
+              <span class="font-bold text-lg">{{ $t('wishlist.wishlist') }}</span>
               <SfButton
+                class="hover:bg-primary-700"
                 variant="tertiary"
-                :aria-label="$t('closeListSettings')"
+                :aria-label="$t('wishlist.closeTitle')"
+                :title="$t('wishlist.closeTitle')"
                 @click.prevent="toggleWishlistSideBar()"
               >
                 <template #prefix>
@@ -62,7 +70,7 @@ const handleWishlistRemoveItem = async (firstVariant: Product) => {
                 class="overflow-y-scroll h-[800px] p-4 text-black"
               >
                 <div class="flex items-center font-medium pb-6">
-                  <p class="text-gray-600 mr-1">Number of products :</p>
+                  <p class="text-gray-600 mr-1">{{ $t('wishlist.numberOfProducts') }}:</p>
                   {{ wishlistTotalItems }}
                 </div>
                 <div
@@ -82,14 +90,15 @@ const handleWishlistRemoveItem = async (firstVariant: Product) => {
                 class="flex items-center justify-center flex-col text-black"
                 data-testid="cart-page-content"
               >
+                <h2 class="mt-8 font-medium">{{ $t('wishlist.emptyWishlist') }}</h2>
                 <NuxtImg
-                  src="/images/empty-cart.svg"
+                  src="/img/wishlist-empty.png"
                   :alt="$t('emptyCartImgAlt')"
                   width="192"
                   height="192"
                   loading="lazy"
                 />
-                <h2 class="mt-8 font-medium">Your Wishlist is empty</h2>
+                <p>{{ $t('wishlist.emptyWishlistText') }}</p>
               </div>
             </div>
             <div v-else class="w-full text-center">

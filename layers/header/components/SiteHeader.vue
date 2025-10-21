@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { useMegaMenuCategories } from '~/layers/core/composable/useMegaMenuCategories'
 import { SfIconMenu } from '@storefront-ui/vue'
-import Overlay from './ui/Overlay.vue'
 
 const { $viewport } = useNuxtApp()
 
@@ -133,11 +132,12 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <Overlay :isOpen="isOverlayVisible || isSearchOverlayVisible || isMenuOpen"
+    <LazyUiOverlay :isOpen="isOverlayVisible || isSearchOverlayVisible || isMenuOpen"
         :class="{
             '!z-[91]': isMenuOpen,
             '!z-[10]': isOverlayVisible,
             '!z-[12]': isSearchOverlayVisible,
+
         }"
     />
     <header

@@ -228,6 +228,8 @@
   "wishlist": {
     "wishlist": "Favourites",
     "linkTitle": "View your favourites",
+    "closeTitle": "Close favourites",
+    "numberOfProducts": "Number of products",
     "emptyWishlist": "Your favourites is empty",
     "emptyWishlistText": "You have not added any products to favourites yet.",
     "backToShopping": "Back to shopping",

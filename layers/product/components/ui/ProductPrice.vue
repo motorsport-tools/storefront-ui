@@ -16,8 +16,6 @@ const props = defineProps<Props>()
         class="h-full flex flex-col items-baseline"
         data-test="product-price"
     >
-        Special: {{ specialPrice }}
-        <br/> Regular: {{ regularPrice }}
         <span 
             v-if="discPercentage"
             class="inline-block mr-2 text-red-700 text-md"

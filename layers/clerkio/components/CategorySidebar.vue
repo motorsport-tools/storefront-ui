@@ -33,7 +33,7 @@ const parent = computed(() => {
         </h5>
     </div>
     <div 
-        class="flex flex-wrap gap-2 mb-4"
+        class="flex flex-col flex-wrap gap-2 mb-4"
     >
         <NuxtLink
             v-if="parent !== undefined && parent.key != 'root'"

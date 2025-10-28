@@ -13,7 +13,6 @@ export default `
         description
         image
         imageFilename
-        combinationInfoVariant
         slug
         mediaGallery {
           id

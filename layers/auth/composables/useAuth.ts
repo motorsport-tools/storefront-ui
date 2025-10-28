@@ -29,7 +29,12 @@ export const useAuth = () => {
   const router = useRouter()
   const { cart } = useCart()
   const userCookie = useCookie<any | null>("odoo-user", { maxAge: 3600 * 30, sameSite: "lax" })
-  const user = useState<Partner>("user", () => ({}) as Partner);
+  const user = useState<Partner>("user", () => ({
+    isPublic: true,
+    publicPricelist: {
+      id: 4,
+    }
+  }) as Partner);
 
   const toast = useToast()
 

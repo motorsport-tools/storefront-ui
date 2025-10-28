@@ -8,6 +8,7 @@ const routesToSkipCache = [
   '/api/sitemap/urls/categories',
   '/api/sitemap/urls/products',
   '/api/sitemap/urls/pages',
+  '/api/search/**',
   '/web/health',
   '/__nuxt_error',
   '',
@@ -37,8 +38,7 @@ export default defineNitroPlugin((nitroApp) => {
 
   const enHandler = handlerList.filter((r) => {
     const isRouteToSkip = skipRoutesSet.has(r.route)
-
-    return !isRouteToSkip || r.route === '/**'
+    return !isRouteToSkip
   })
 
   if (enHandler.length > 0) {
@@ -56,9 +56,9 @@ export default defineNitroPlugin((nitroApp) => {
             const flags = generateFlags(headers, userAgent)
             const isoCode = getCookie(event, 'i18n_redirected') || 'en'
             if (flags.isDesktop) {
-              return `desktop-${event.path}-${isoCode}`
+              return `desktop:${event.path}:${isoCode}`
             }
-            return `mobile-${event.path}-${isoCode}`
+            return `mobile:${event.path}:${isoCode}`
           },
           shouldInvalidateCache: (event: H3Event) => {
             if (event.node.req.headers['x-invalidate']) {

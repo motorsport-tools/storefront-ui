@@ -87,27 +87,36 @@ const updateFilter = async (filter: LocationQueryRaw | undefined) => {
 const { getThumbs } = useProductGetters(productVariant as Ref< CustomProductWithStockFromRedis>)
 const thumbs = computed(() => getThumbs(78, 78))
 
+
 watch(
   () => cleanPath.value,
   async (slug) => {
-    if (!slug) return;
+    if (!slug) {
+        console.log('no slug returning')
+        return;
+    }
     await loadProductTemplate({ slug })
   },
   { immediate: true }
 )
 
 watch(
-  [() => productTemplate.value?.id, () => route.query],
-  async ([id, query]) => {
-    if (!id) return;
-
+  [productTemplate, () => route.query],
+  async ([template, query]) => {
+    if (!template?.id) {
+      console.log('No ID return..')
+      return
+    }
+    console.log('have ID', template.id)
+    console.log('have query', query)
+    
     await loadProductVariant({
-        combinationId: Object.values(query)?.map(value =>
-            parseInt(value as string),
-        ),
-        productTemplateId: productTemplate?.value?.id,
+      combinationId: Object.values(query)?.map(value =>
+        parseInt(value as string)
+      ),
+      productTemplateId: template.id,
     })
-    addProductToRecentViews(id)
+    addProductToRecentViews(template.id)
   },
   { immediate: true, deep: true }
 )
@@ -117,7 +126,6 @@ const isLoadingPage = computed(() => {
   const hasVariant = productVariant.value?.id
   const isTemplateLoading = loadingProductTemplate.value
   const isVariantLoading = loadingProductVariant.value
-
   return isTemplateLoading || isVariantLoading || !hasTemplate || !hasVariant
 })
 

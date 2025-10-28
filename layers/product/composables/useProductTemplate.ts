@@ -25,7 +25,7 @@ export const useProductTemplate = (slug: string) => {
       return
     }
 
-    const { data, status, error } =  await useAsyncData(`product-${cleanSlug}`, () =>
+    const { data, status, error } = await useAsyncData(`product-${cleanSlug}`, () =>
       $sdk().odoo.query<QueryProductArgs, ProductResponse>(
         { queryName: QueryName.GetProductTemplateQuery },
         params,
@@ -33,10 +33,12 @@ export const useProductTemplate = (slug: string) => {
       ),
       { server: true, lazy: import.meta.client }
     )
-    
+
     if (data.value?.product) {
-      productTemplate.value = data.value.product as CustomProductWithStockFromRedis || {}
-      loadingProductTemplate.value = false
+      if (import.meta.server) {
+        productTemplate.value = data.value.product as CustomProductWithStockFromRedis || {}
+        loadingProductTemplate.value = false
+      }
 
       if (!productTemplate.value?.id) {
         showError({
@@ -45,24 +47,24 @@ export const useProductTemplate = (slug: string) => {
         })
       }
     }
-    
+
     watch(status, () => {
-      if(status.value === 'pending') {
+      if (status.value === 'pending') {
         loadingProductTemplate.value = true
       }
-      if(status.value === 'error' && !data.value?.product) {
+      if (status.value === 'error' && !data.value?.product) {
         loadingProductTemplate.value = false
         showError({
           status: 404,
           message: 'Product not found',
         })
       }
-      if(status.value === 'success') {
+      if (status.value === 'success') {
         loadingProductTemplate.value = false
         productTemplate.value
           = (data.value?.product as CustomProductWithStockFromRedis) || {}
       }
-    })  
+    })
   }
 
   // const loadAlternativeProducts = async (params: QueryProductArgs) => {

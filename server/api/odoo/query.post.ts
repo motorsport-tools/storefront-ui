@@ -38,12 +38,16 @@ const customCache = cachedFunction(
       const isoCode = getCookie(event, 'i18n_redirected') || 'en'
 
       const pricelist = currentPartnerPricelist?.id
-        ? `-pricelist${currentPartnerPricelist?.id}`
+        ? `pricelist:${currentPartnerPricelist?.id}`
         : ''
 
       const hashedParams = hasher(body?.[1] || {})
 
-      return `${body?.[0].queryName}-${hashedParams}-${isoCode}-${pricelist}`
+      console.log('hashedParams:', body?.[1])
+
+      console.log(`${body?.[0].queryName}:${hashedParams}:${isoCode}:${pricelist}:content`)
+
+      return `${body?.[0].queryName}:${hashedParams}:${isoCode}:${pricelist}:content`
     },
     shouldBypassCache: async (event) => {
       const config = useRuntimeConfig(event)

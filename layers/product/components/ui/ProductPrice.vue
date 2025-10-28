@@ -5,11 +5,18 @@ interface Props {
     hasDiscountedPrice: boolean,
     discPercentage: number
 }
+
+const { user } = useAuth()
+
 /*
 Regular Price = list_price (this is Sales Price On Product)
 Special Price = PriceList price (Calculated)
 */
 const props = defineProps<Props>()
+
+console.log('Regular Price:', props.regularPrice)
+console.log('Special Price:', props.specialPrice)
+console.log('User:', user.value)
 </script>
 <template>
     <div 

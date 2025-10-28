@@ -17,6 +17,20 @@ export default defineNitroPlugin((nitro) => {
                 const stock = await useStorage('stock').getItem(`stock:product-${id}`);
 
                 (body as any).productVariant.product.stock = stock?.[websiteId] || 0
+
+                const session = await useSession(event, {
+                    password: 'b013b03ac2231e0b448e9a22ba488dcf',
+                })
+
+                const pricelistId = session.data?.pricelistId || 4
+
+                const priceInfo = await useStorage('price').getItem(`price:${id}:pricelist:${pricelistId}:website:${websiteId}`);
+
+                console.log(`price:${id}:pricelist:${pricelistId}:website:${websiteId}`);
+
+                console.log('Price Info:', priceInfo);
+
+                (body as any).productVariant.product['combinationInfoVariant'] = priceInfo || {}
             }
         }
     })

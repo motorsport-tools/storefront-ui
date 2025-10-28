@@ -1,6 +1,9 @@
 export default `
 partner{     
     id
+    publicPricelist {
+      id
+    }
     name
     isPublic
     street

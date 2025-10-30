@@ -5,7 +5,7 @@
     "viewAllTitle": "View all products in {category}",
     "browse": "Browse"
   },
-  "searchPlaceholder": "Searh by product, sku or brand",
+  "searchPlaceholder": "Search by product, sku or brand",
   "billing": {
     "heading": "Billing Address",
     "description": "Add a billing address. You will receive the invoice to the email address provided above.",
@@ -58,6 +58,7 @@
     "price": "Price",
     "brand": "Brand",
     "on_sale": "On Sale",
+    "fits": "Escort Application",
     "clearFilters": "Clear filters",
     "showMore": "Show more",
     "showLess": "Show less",

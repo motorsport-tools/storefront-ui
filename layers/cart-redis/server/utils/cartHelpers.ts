@@ -87,8 +87,9 @@ export const reduceCart = (cartData: Cart) => ({
 })
 
 export async function updateCart(event: any, updateData: any) {
+    const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
     const session = await useSession(event, {
-        password: "b013b03ac2231e0b448e9a22ba488dcf",
+        password: sessionPwd,
     });
 
     const keyName = `cache:cart:session:${session?.id}`

@@ -10,14 +10,14 @@ export default defineNitroPlugin((nitro) => {
     nitro.hooks.hook('beforeResponse', async (event, { body }) => {
         if (event.method === "POST") {
             const requestBody = await readBody(event)
-
+            const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
             // Login Mutation
             if (requestBody[0]?.mutationName === MutationName.LoginMutation) {
                 const pricelistId = (body as any)?.login?.user?.partner?.publicPricelist?.id
 
                 if (pricelistId) {
                     const session = await useSession(event, {
-                        password: 'b013b03ac2231e0b448e9a22ba488dcf',
+                        password: sessionPwd,
                     })
 
                     await session.update({
@@ -34,7 +34,7 @@ export default defineNitroPlugin((nitro) => {
 
                 if (pricelistId) {
                     const session = await useSession(event, {
-                        password: 'b013b03ac2231e0b448e9a22ba488dcf',
+                        password: sessionPwd,
                     })
 
                     await session.update({
@@ -50,7 +50,7 @@ export default defineNitroPlugin((nitro) => {
             // Logout Mutation
             if (requestBody[0]?.mutationName === MutationName.LogoutMutation) {
                 const session = await useSession(event, {
-                    password: 'b013b03ac2231e0b448e9a22ba488dcf',
+                    password: sessionPwd,
                 })
 
                 await session.clear()

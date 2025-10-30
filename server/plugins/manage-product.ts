@@ -17,9 +17,9 @@ export default defineNitroPlugin((nitro) => {
                 const stock = await useStorage('stock').getItem(`stock:product-${id}`);
 
                 (body as any).productVariant.product.stock = stock?.[websiteId] || 0
-
+                const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
                 const session = await useSession(event, {
-                    password: 'b013b03ac2231e0b448e9a22ba488dcf',
+                    password: sessionPwd,
                 })
 
                 const pricelistId = session.data?.pricelistId || 4

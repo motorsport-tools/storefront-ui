@@ -68,8 +68,9 @@ async function cartUpdateItem(event: any, body: any) {
 async function addAddress(event: any, body: any) {
   const requestBody = await readBody(event);
   if (requestBody[0]?.mutationName === MutationName.AddAddress) {
+    const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
     const session = await useSession(event, {
-      password: "b013b03ac2231e0b448e9a22ba488dcf",
+      password: sessionPwd,
     });
 
     const keyName = `cache:cart:${session?.id}`;
@@ -91,8 +92,9 @@ async function addAddress(event: any, body: any) {
 async function updateAddress(event: any, body: any) {
   const requestBody = await readBody(event);
   if (requestBody[0]?.mutationName === MutationName.UpdateAddress) {
+    const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
     const session = await useSession(event, {
-      password: "b013b03ac2231e0b448e9a22ba488dcf",
+      password: sessionPwd,
     });
 
     const keyName = `cache:cart:${session?.id}`;
@@ -129,9 +131,9 @@ async function setEasyshipRate(event: any, body: any) {
 async function createUpdatePartner(event: any, body: any) {
   const requestBody = await readBody(event);
   if (requestBody[0]?.mutationName === MutationName.CreateUpdatePartner) {
-
+    const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
     const session = await useSession(event, {
-      password: "b013b03ac2231e0b448e9a22ba488dcf",
+      password: sessionPwd,
     });
 
     const keyName = `cache:cart:session:${session?.id}`
@@ -156,8 +158,9 @@ async function clearCartAfterCreditCardPaymentConfirmation(
     body.paymentConfirmation?.order?.lastTransaction?.state === "Confirmed";
 
   if (requestBody[0]?.queryName === QueryName.GetPaymentConfirmation) {
+    const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
     const session = await useSession(event, {
-      password: "b013b03ac2231e0b448e9a22ba488dcf",
+      password: sessionPwd,
     });
 
     const keyName = `cache:cart:session:${session?.id}`
@@ -178,8 +181,9 @@ async function clearCartAfterGiftCardPaymentConfirmation(
   if (
     requestBody[0]?.mutationName === MutationName.MakeGiftCardPaymentMutation
   ) {
+    const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
     const session = await useSession(event, {
-      password: "b013b03ac2231e0b448e9a22ba488dcf",
+      password: sessionPwd,
     });
 
     const keyName = `cache:cart:session:${session?.id}`

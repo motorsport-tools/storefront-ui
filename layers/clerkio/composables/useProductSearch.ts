@@ -105,7 +105,7 @@ export const useProductSearch = () => {
                 visitor: 'auto',
                 labels: categoryPage ? ['Category page'] : ['Search page'],
                 attributes: ['id', 'name', 'brand', 'image', 'image_slug', 'image_filename', 'price', 'on_sale', 'list_price', 'rating', 'ratingCount', 'sku', 'slug', 'has_stock'],
-                facets: ['price', 'brand', 'categories', 'on_sale', 'has_stock'],
+                facets: ['price', 'brand', 'categories', 'on_sale', 'has_stock', 'fits'],
                 semantic: 0,
                 query: query.value,
                 sort: reqSort,

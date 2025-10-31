@@ -56,7 +56,7 @@ watch(isTabletScreen, (value) => {
 })
 watch(
     () => route.query,
-    newQuery => {
+    async (newQuery) => {
         query.value = newQuery.search?.toString() || ''
         sort.value = newQuery.sort?.toString() || 'default'
         page.value = parseInt(newQuery.page?.toString() || '1')
@@ -69,7 +69,7 @@ watch(
             }
         }
 
-        fetchSearch()
+        await fetchSearch()
     },
     { immediate: true, deep: true }
 )

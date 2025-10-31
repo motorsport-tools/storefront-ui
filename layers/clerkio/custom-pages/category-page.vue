@@ -53,7 +53,7 @@ watch(
     async (newSlug, oldSlug) => {
         if (newSlug && newSlug !== oldSlug) {
             await loadCategory({ slug: String(newSlug) })
-            fetchSearch(category.value.id)
+            //fetchSearch(category.value.id)
         }
     },
     { immediate: true },
@@ -61,7 +61,7 @@ watch(
 
 watch(
     () => route.query,
-    newQuery => {
+    async (newQuery) => {
         //query.value = newQuery.search?.toString() || ''
         sort.value = newQuery.sort?.toString() || 'default'
         page.value = parseInt(newQuery.page?.toString() || '1')
@@ -74,7 +74,7 @@ watch(
             }
         }
 
-        fetchSearch(category.value.id)
+       await fetchSearch(category.value.id)
     },
     { immediate: true, deep: true }
 )

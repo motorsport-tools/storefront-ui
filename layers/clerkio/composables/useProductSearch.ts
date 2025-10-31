@@ -92,7 +92,6 @@ export const useProductSearch = () => {
     //Functions
     const fetchSearch = async (categoryPage: number | boolean = false) => {
         loading.value = true
-
         if (categoryPage) selectedFacets.value['_all_categories'] = [String(categoryPage)]
 
         const reqSort = sort.value == 'default' ? undefined : sort.value
@@ -105,7 +104,7 @@ export const useProductSearch = () => {
                 visitor: 'auto',
                 labels: categoryPage ? ['Category page'] : ['Search page'],
                 attributes: ['id', 'name', 'brand', 'image', 'image_slug', 'image_filename', 'price', 'on_sale', 'list_price', 'rating', 'ratingCount', 'sku', 'slug', 'has_stock'],
-                facets: ['price', 'brand', 'categories', 'on_sale', 'has_stock', 'fits'],
+                facets: ['price', 'fits', 'brand', 'categories', 'on_sale', 'has_stock'],
                 semantic: 0,
                 query: query.value,
                 sort: reqSort,
@@ -176,14 +175,14 @@ export const useProductSearch = () => {
         query.value = q
         page.value = 1
         total.value = 0
-        fetchSearch()
+        //fetchSearch()
         updateRoute()
     }
 
     const setSort = (s: string) => {
         sort.value = s
         page.value = 1
-        fetchSearch()
+        //fetchSearch()
         updateRoute()
     }
 
@@ -215,7 +214,7 @@ export const useProductSearch = () => {
         }
         page.value = 1
         total.value = 0
-        fetchSearch()
+        //fetchSearch()
         updateRoute()
     }
 
@@ -224,7 +223,7 @@ export const useProductSearch = () => {
     const setPage = (p: number) => {
         if (p < 1 || p > totalPages.value) return
         page.value = p
-        fetchSearch()
+        //fetchSearch()
         updateRoute()
     }
 
@@ -232,7 +231,7 @@ export const useProductSearch = () => {
         const newPage = Math.floor(offset.value / l) + 1
         limit.value = l
         page.value = newPage
-        fetchSearch()
+        //fetchSearch()
         updateRoute()
     }
 

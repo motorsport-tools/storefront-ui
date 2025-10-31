@@ -48,17 +48,20 @@ watch(isTabletScreen, (value) => {
   }
 })
 
+const debouncedFetch = useDebounceFn(async (categoryId: number) => {
+    await fetchSearch(categoryId)
+}, 300)
 
 watch(
     [() => route.path, () => route.query],
     async ([newPath, newQuery], [oldPath, oldQuery]) => {
+
         if(newPath && newPath !== oldPath) {
             loading.value = true
             results.value = []
             await loadCategory({ slug: String(newPath) })
         }
 
-        //query.value = newQuery.search?.toString() || ''
         sort.value = newQuery.sort?.toString() || 'default'
         page.value = parseInt(newQuery.page?.toString() || '1')
 
@@ -70,7 +73,7 @@ watch(
             }
         }
         if (category.value?.id) {
-            await fetchSearch(category.value.id)
+            await debouncedFetch(category.value.id)
         }
     },
     { immediate: true, deep: true }
@@ -88,7 +91,6 @@ setMaxVisiblePages(isWideScreen.value)
         data-testid="search-layout"
     >
         <div
-            :key="route.fullPath" 
             class="pb-20"
         >
             <UiBreadcrumb
@@ -169,7 +171,7 @@ setMaxVisiblePages(isWideScreen.value)
                     </div>
                     <div class="flex justify-between items-center mb-6">
                         <span v-if="!loading" class="font-bold font-headings md:text-sm"
-                        >{{ total }} Products
+                        >{{ total }} {{ total === 1 ? 'Product' : 'Products' }}
                         </span>
                         <span v-if="loading" class="font-bold font-headings md:text-sm"
                         >Loading Products
@@ -186,7 +188,7 @@ setMaxVisiblePages(isWideScreen.value)
                         </SfButton>
                     </div>
                     <section
-                        :key="route.hash"
+                        :key="`results-${route.path}-${page}-${sort}`"
                         class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
                     >
                         <ProductCardSkeleton v-if="loading" v-for="i in Number(limit)" :key="i" />

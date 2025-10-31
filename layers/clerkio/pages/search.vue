@@ -54,6 +54,11 @@ watch(isTabletScreen, (value) => {
     close()
   }
 })
+
+const debouncedFetch = useDebounceFn(async () => {
+    await fetchSearch()
+}, 300)
+
 watch(
     () => route.query,
     async (newQuery) => {
@@ -69,7 +74,7 @@ watch(
             }
         }
 
-        await fetchSearch()
+        await debouncedFetch()
     },
     { immediate: true, deep: true }
 )

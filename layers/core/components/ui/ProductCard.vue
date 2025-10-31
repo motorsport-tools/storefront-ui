@@ -8,7 +8,7 @@ import {
 } from '@storefront-ui/vue'
 import type { CustomProductWithStockFromRedis, Product } from '~/graphql'
 
-defineProps({
+const props = defineProps({
   imageUrl: {
     type: String,
     required: true,
@@ -83,6 +83,10 @@ const handleWishListClick = async (firstVariant: CustomProductWithStockFromRedis
 const wishlistButtonTitle = (id: number | undefined) => {
   return isInWishlist(id) ? t('wishlist.removeFromWishlist') : t('wishlist.addToWishlist')
 }
+
+const isStock = computed(() => {
+    return Boolean(props.firstVariant?.stock > 0 || props.firstVariant?.['allow_out_of_stock_order'])
+})
 </script>
 
 <template>
@@ -170,7 +174,7 @@ const wishlistButtonTitle = (id: number | undefined) => {
           type="button"
           class="ottom-2"
           size="sm"
-          :disabled="!firstVariant?.has_stock || (firstVariant.hasOwnProperty('stock') && firstVariant?.stock <= 0)"
+          :disabled="!isStock"
           @click="cartAdd(firstVariant?.id, 1)"
         >
           <template #prefix>

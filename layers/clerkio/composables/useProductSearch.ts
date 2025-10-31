@@ -97,6 +97,8 @@ export const useProductSearch = () => {
         const reqSort = sort.value == 'default' ? undefined : sort.value
         const reqFilters = buildQueryFilters()
 
+        if (categoryPage) delete selectedFacets.value['_all_categories']
+
         const res = await $fetch<ClerkProductSearchResponse>('/api/search/v3/search/products', {
             method: 'POST',
             body: {
@@ -113,8 +115,6 @@ export const useProductSearch = () => {
                 filter: reqFilters,
             }
         })
-
-        if (categoryPage) delete selectedFacets.value['_all_categories']
 
         results.value = res?.result || []
         if (query.value != prevQuery.value) {

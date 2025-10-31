@@ -84,6 +84,10 @@ const categoryIdStr = computed(() => category.value?.id?.toString() || '')
 useHead(generateSeo<SeoEntity>(category.value, 'Category'))
 
 setMaxVisiblePages(isWideScreen.value)
+
+const clearFilters = () => {
+    total.value = 0
+}
 </script>
 <template>
     <main 
@@ -91,6 +95,7 @@ setMaxVisiblePages(isWideScreen.value)
         data-testid="search-layout"
     >
         <div
+            :key="route.fullPath"
             class="pb-20"
         >
             <UiBreadcrumb
@@ -113,6 +118,7 @@ setMaxVisiblePages(isWideScreen.value)
                         :loading="loading"
                         :isCategory="true"
                         :category-id="categoryIdStr"
+                        @close="clearFilters()"
                     />
                 <LazyCategoryMobileSidebar :is-open="isOpen" @close="close">
                     <template #default>
@@ -188,7 +194,7 @@ setMaxVisiblePages(isWideScreen.value)
                         </SfButton>
                     </div>
                     <section
-                        :key="`results-${route.path}-${page}-${sort}`"
+                        :key="`results-${route.hash}`"
                         class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
                     >
                         <ProductCardSkeleton v-if="loading" v-for="i in Number(limit)" :key="i" />

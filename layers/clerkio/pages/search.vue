@@ -78,6 +78,10 @@ watch(
     },
     { immediate: true, deep: true }
 )
+
+const clearFilters = () => {
+    total.value = 0
+}
 </script>
 <template>
     <main 
@@ -106,6 +110,7 @@ watch(
                     :facetStats="facetStats"
                     :filterCount="filterCount"
                     :loading="loading"
+                    @close="clearFilters()"
                 />
                 <LazyCategoryMobileSidebar :is-open="isOpen" @close="close">
                     <template #default>
@@ -163,7 +168,7 @@ watch(
                     </div>
                     <div class="flex justify-between items-center mb-6">
                         <span v-if="!loading" class="font-bold font-headings md:text-sm"
-                        >{{ total }} Products
+                        >{{ total }} {{ total === 1 ? 'Product' : 'Products' }}
                         </span>
                         <span v-if="loading" class="font-bold font-headings md:text-sm"
                         >Loading Products

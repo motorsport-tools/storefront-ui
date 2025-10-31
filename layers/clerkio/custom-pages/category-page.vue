@@ -48,20 +48,16 @@ watch(isTabletScreen, (value) => {
   }
 })
 
-watch(
-    () => route.path,
-    async (newSlug, oldSlug) => {
-        if (newSlug && newSlug !== oldSlug) {
-            await loadCategory({ slug: String(newSlug) })
-            //fetchSearch(category.value.id)
-        }
-    },
-    { immediate: true },
-)
 
 watch(
-    () => route.query,
-    async (newQuery) => {
+    [() => route.path, () => route.query],
+    async ([newPath, newQuery], [oldPath, oldQuery]) => {
+        if(newPath && newPath !== oldPath) {
+            loading.value = true
+            results.value = []
+            await loadCategory({ slug: String(newPath) })
+        }
+
         //query.value = newQuery.search?.toString() || ''
         sort.value = newQuery.sort?.toString() || 'default'
         page.value = parseInt(newQuery.page?.toString() || '1')
@@ -73,8 +69,9 @@ watch(
                 selectedFacets.value[key] = value.split(',')
             }
         }
-
-       await fetchSearch(category.value.id)
+        if (category.value?.id) {
+            await fetchSearch(category.value.id)
+        }
     },
     { immediate: true, deep: true }
 )

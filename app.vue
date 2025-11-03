@@ -5,8 +5,11 @@ const { isAuthenticated, loadUser } = useAuth()
 const { loadCart } = useCart()
 const { loadWishlist } = useWishlist()
 
-nuxtApp.hook("page:finish", () => {
-  window.scrollTo(0, 0)
+const router = useRouter()
+router.afterEach((to, from) => {
+  if (to.path === from.path && to.query.page !== from.query.page) {
+    window.scrollTo(0, 0)
+  }
 })
 
 const { loadCategoriesForMegaMenu, categoriesForMegaMenu } = useMegaMenuCategories()

@@ -101,6 +101,7 @@ export const useProductSearch = () => {
 
         const res = await $fetch<ClerkProductSearchResponse>('/api/search/v3/search/products', {
             method: 'POST',
+            headers: [['Cache-Control', 'no-store']],
             body: {
                 key: config.public.clerkApiKey,
                 visitor: 'auto',
@@ -121,14 +122,14 @@ export const useProductSearch = () => {
             total.value = 0
         }
         if (total.value === 0) {
-            total.value = res.total_count || res.estimated_total_count || 0
+            total.value = res?.total_count || res?.estimated_total_count || 0
             availableFacets.value = {}
         }
 
         if (Object.keys(availableFacets.value).length === 0) {
-            availableFacets.value = res.facets || {}
+            availableFacets.value = res?.facets || {}
         } else {
-            availableFacets.value = mergeFacets(availableFacets.value, res.facets || {})
+            availableFacets.value = mergeFacets(availableFacets.value, res?.facets || {})
         }
 
         facetStats.value = res?.facets_stats || {}

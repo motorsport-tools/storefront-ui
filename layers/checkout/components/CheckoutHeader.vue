@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { SfButton, SfIconArrowBack } from "@storefront-ui/vue";
 
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     default: "Checkout",
@@ -22,11 +22,10 @@ defineProps({
 
 const localePath = useLocalePath();
 const router = useRouter();
-const backToCart = true
 const historyState = router.options.history.state;
 const backUrl = localePath(historyState?.back?.toString() ?? '/');
 const backHref = backUrl === localePath(router.currentRoute.value.path) ? localePath('/') : backUrl;
-const goToPreviousRoute = () => (backToCart ? navigateTo(localePath('/cart')) : navigateTo(localePath(backHref)));
+const goToPreviousRoute = () => (props.backToCart ? navigateTo(localePath('/cart')) : navigateTo(localePath(backHref)));
 
 </script>
 <template>

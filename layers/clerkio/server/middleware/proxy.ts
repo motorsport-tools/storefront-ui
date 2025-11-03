@@ -4,11 +4,8 @@ const DEFAULT_WEBSITE_ID = 1
 const DEFAULT_PRICELIST_ID = 4
 
 export default defineEventHandler(async (event: H3Event) => {
-    const { res } = event.node
     const prefix = '/api/search/'
     if (event.path.startsWith(prefix) && event.method == 'POST') {
-
-        res.setHeader('Cache-Control', 'no-store')
 
         const targetPath = event.path.replace(prefix, '/')
 

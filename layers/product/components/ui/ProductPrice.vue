@@ -16,7 +16,6 @@ const props = defineProps<Props>()
 
 console.log('Regular Price:', props.regularPrice)
 console.log('Special Price:', props.specialPrice)
-console.log('User:', user.value)
 </script>
 <template>
     <div 

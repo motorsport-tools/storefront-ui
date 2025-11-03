@@ -162,8 +162,6 @@ const startVoiceSearch = () => {
 
 watch(isListening, isListening => {
     if(!isListening){
-        console.log('Stopped Listening', result.value)
-        alert('Detected '+ result.value)
         searchInputValue.value = result.value
         omniSearch()
     }

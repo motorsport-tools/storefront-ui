@@ -33,13 +33,13 @@ export const useCart = () => {
     try {
       loading.value = true
 
-      const { data } = await useFetch<{ cart: Cart }>(`/api/odoo/cart-load`)
+      const data = await $fetch<{ cart: Cart }>(`/api/odoo/cart-load`)
 
-      if (!data.value?.cart)
+      if (!data?.cart)
         return
 
-      cart.value = data.value.cart || ({} as Cart)
-      frequentlyTogetherProducts.value = (data.value.cart?.frequentlyBoughtTogether || []).filter((p): p is Product => p !== null)
+      cart.value = data.cart || ({} as Cart)
+      frequentlyTogetherProducts.value = (data.cart?.frequentlyBoughtTogether || []).filter((p): p is Product => p !== null)
     } catch (error: any) {
       return toast.error(error?.data?.message)
     } finally {

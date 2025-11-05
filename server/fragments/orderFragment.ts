@@ -58,6 +58,7 @@ websiteOrderLine {
 reportOrderLine {
   id
   name
+  priceUnit
   priceSubtotal
   product {
     id

@@ -17,19 +17,24 @@ export const useOrders = () => {
 
   const getOrders = async (params: QueryOrdersArgs) => {
     loading.value = true;
-    const data = await $sdk().odoo.query<QueryOrdersArgs, GetOrdersResponse>(
-      { queryName: QueryName.GetOrdersQuery },
-      params
-    );
-    loading.value = false;
-    orders.value = (data?.orders as Orders) || {};
-    totalOrders.value = data?.orders?.totalCount || 0;
+    try {
+      const data = await $sdk().odoo.query<QueryOrdersArgs, GetOrdersResponse>(
+        { queryName: QueryName.GetOrdersQuery },
+        params
+      );
+      orders.value = (data?.orders as Orders) || {};
+      totalOrders.value = data?.orders?.totalCount || 0;
+    } catch {
+
+    } finally {
+      loading.value = false;
+    }
   };
 
   const getOrderById = async (params: QueryOrderArgs) => {
     loading.value = true;
     try {
-      const  data = await $sdk().odoo.query<QueryOrderArgs, GetOrderResponse>(
+      const data = await $sdk().odoo.query<QueryOrderArgs, GetOrderResponse>(
         { queryName: QueryName.GetOrderQuery },
         params
       );

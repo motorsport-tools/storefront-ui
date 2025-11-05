@@ -65,11 +65,11 @@ export default defineEventHandler(async (event: H3Event) => {
         }
     })
 
-    if (pdfRes.status !== 200) {
+    console.log('PDF Res:', pdfRes)
+
+    if (pdfRes.size <= 0) {
         throw createError({ statusCode: pdfRes.status, statusMessage: 'Failed to fetch PDF' })
     }
-
-    console.log('PDF: ', pdfRes)
 
     return pdfRes
 

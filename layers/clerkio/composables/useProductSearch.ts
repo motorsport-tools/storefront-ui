@@ -35,12 +35,15 @@ export const useProductSearch = () => {
     const limit = ref<string>('80')
     const prevQuery = ref<string>('')
     const results = ref<ClerkProductSearchResult[]>([])
-    const availableFacets = ref<ClerkFacets>({})
+    //const availableFacets = ref<ClerkFacets>({})
     const facetStats = ref<Object>({})
     const selectedFacets = ref<Record<string, string[]>>({})
     const filterCount = computed(() => Object.keys(selectedFacets.value).length || 0)
     const total = ref<number>(0)
     const loading = ref<boolean>(false)
+
+    const availableFacets = useState<ClerkFacets>('availableFacets', () => ({}))
+    const totalInit = useState<number>('searchTotal', () => (0))
 
     //Derived
     const offset = computed(() => (page.value - 1) * limit.value)
@@ -98,7 +101,7 @@ export const useProductSearch = () => {
         const reqFilters = buildQueryFilters()
 
         if (categoryPage) delete selectedFacets.value['_all_categories']
-
+        console.log('available facets before search:', availableFacets.value)
         const res = await $fetch<ClerkProductSearchResponse>('/api/search/v3/search/products', {
             method: 'POST',
             headers: [['Cache-Control', 'no-store']],
@@ -118,17 +121,19 @@ export const useProductSearch = () => {
         })
 
         results.value = res?.result || []
+
+        total.value = res?.total_count || res?.estimated_total_count || 0
+
         if (query.value != prevQuery.value) {
-            total.value = 0
-        }
-        if (total.value === 0) {
-            total.value = res?.total_count || res?.estimated_total_count || 0
+            console.log('Setting Init total')
+            totalInit.value = total.value
             availableFacets.value = {}
         }
 
         if (Object.keys(availableFacets.value).length === 0) {
             availableFacets.value = res?.facets || {}
         } else {
+            console.log('Mergin Facets')
             availableFacets.value = mergeFacets(availableFacets.value, res?.facets || {})
         }
 
@@ -218,8 +223,7 @@ export const useProductSearch = () => {
             }
         }
         page.value = 1
-        total.value = 0
-        //fetchSearch()
+
         updateRoute()
     }
 

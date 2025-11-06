@@ -42,6 +42,7 @@
     "@stripe/stripe-js": "^7.0.0",
     "@vue-storefront/sdk": "^2.0.0",
     "@vueuse/nuxt": "^10.9.0",
+    "caniuse-lite": "^1.0.30001754",
     "currency.js": "^2.0.4",
     "graphql": "^16.8.1",
     "nuxt": "^3.16.0",

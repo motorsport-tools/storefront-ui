@@ -129,7 +129,10 @@ export const useProductSearch = () => {
         if (Object.keys(availableFacets.value).length === 0) {
             availableFacets.value = res?.facets || {}
         } else {
+            /*
+            console.log('mergeFacets with availableFavets', availableFacets.value)
             availableFacets.value = mergeFacets(availableFacets.value, res?.facets || {})
+            */
         }
 
         facetStats.value = res?.facets_stats || {}
@@ -143,7 +146,11 @@ export const useProductSearch = () => {
         const filters: string[] = []
 
         for (const [facet, values] of Object.entries(selectedFacets.value)) {
-            filters.push(`${facet} in [${values.map(v => `'${v}'`).join(", ")}]`)
+            if (facet === 'categories') {
+                filters.push(`_all_categories in [${values.map(v => `'${v}'`).join(", ")}]`)
+            } else {
+                filters.push(`${facet} in [${values.map(v => `'${v}'`).join(", ")}]`)
+            }
         }
         return filters
     }

@@ -88,8 +88,7 @@ const clearFilters = () => {
         class="w-full narrow-container bg-white mb-20"
         data-testid="search-layout"
     >
-        <div
-            :key="route.fullPath" 
+        <div 
             class="pb-20"
         >
             <UiBreadcrumb
@@ -214,14 +213,18 @@ const clearFilters = () => {
                             :first-variant="productTemplate as unknown as CustomProductWithStockFromRedis"
                         />
                     </section>
-                    <LazyUiPagination
-                        v-if="totalPages > 1"
-                        class="mt-5"
-                        :current-page="page"
-                        :total-items="total"
-                        :page-size="limit"
-                        :max-visible-pages="maxVisiblePages"   
-                    />
+                    <div
+                        :key="route.fullPath"
+                    >
+                        <LazyUiPagination
+                            v-if="totalPages > 1"
+                            class="mt-5"
+                            :current-page="page"
+                            :total-items="total"
+                            :page-size="limit"
+                            :max-visible-pages="maxVisiblePages"   
+                        />
+                    </div>
                 </div>
             </div>
         </div>

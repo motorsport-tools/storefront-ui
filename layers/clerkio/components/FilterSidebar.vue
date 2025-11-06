@@ -2,6 +2,7 @@
 import type { Category } from '~/graphql'
 import type { Node as menuNode } from '#layers/header/types'
 import { getCategoryLabel, isCategoryOrChildSelected } from '../utils/categories';
+const route = useRoute()
 const router = useRouter()
 const emit = defineEmits(["close"]);
 
@@ -12,7 +13,7 @@ interface Props {
     facetStats: Ref<Record<string, Object[]>>
     filterCount: number
     loading: boolean
-    isCategory: boolean
+    isCategory: boolean //Is Category Page (has different Menu - just links to click)
     categoryId: string
 }
 
@@ -20,7 +21,11 @@ const props = defineProps<Props>()
 
 const clearFilters = () => {
     props.selectedFacets.value = {};
-    router.push({ query: {} });
+    let clearQuery = { query: {} }
+    if(route.query.search) {
+        clearQuery.query.search = route.query.search?.toString()
+    }
+    router.push(clearQuery);
     emit("close");
 }
 
@@ -33,31 +38,98 @@ interface ClerkFacetValue {
     c: number
 }
 
-function mergeFacetCounts(menuNode: menuNode[], facetValues: ClerkFacetValue[]): menuNode {
-    const mergedNode: menuNode = { ...menuNode }
+const rootCategoryCounts = useState('rootCategoryCounts')
 
-    const countEntry = facetValues.find(f => f.v === mergedNode.key)
-
-    if (countEntry) {
-        mergedNode.value.counter = countEntry.c
+function aggregateCategoryFacets(menuNode:menuNode[], clerkFacets:Array<ClerkFacetValue>) {
+  // Create a map of category key to count from Clerk facets
+  const categoryCountMap = new Map();
+  
+  if (clerkFacets && clerkFacets.length > 0) {
+    clerkFacets.forEach(facet => {
+      categoryCountMap.set(String(facet.v), facet.c);
+    });
+  }
+  
+  // Recursive function to calculate total count for a node and its children
+  function calculateTotalCount(node:any) {
+    // Skip root node in count calculation
+    if (node.key === 'root') {
+      let total = 0;
+      if (node.children && node.children.length > 0) {
+        node.children.forEach(child => {
+          total += calculateTotalCount(child);
+        });
+      }
+      return total;
     }
-
-    // Recurse into children if any
-    if (mergedNode.children?.length) {
-        mergedNode.children = mergedNode.children.map(child => mergeFacetCounts(child, facetValues))
+    
+    // Get direct count for this category
+    let totalCount = categoryCountMap.get(node.key) || 0;
+    
+    // Add counts from all children recursively
+    if (node.children && node.children.length > 0) {
+      node.children.forEach(child => {
+        totalCount += calculateTotalCount(child);
+      });
     }
-
-    return mergedNode
+    
+    return totalCount;
+  }
+  
+  // Build the result with aggregated counts in value.counter
+  function buildCategoryWithCounts(node) {
+    const totalCount = calculateTotalCount(node);
+    
+    const result = {
+      key: node.key,
+      value: {
+        ...node.value,
+        counter: totalCount
+      },
+      isLeaf: node.isLeaf
+    };
+    
+    if (node.children && node.children.length > 0) {
+      result.children = node.children.map(buildCategoryWithCounts);
+    }
+    
+    return result;
+  }
+  
+  return buildCategoryWithCounts(menuNode);
 }
 
-const mergedCategories = computed(() => {
-    if (!props.availableFacets) return categories.value
-    const facets = props.availableFacets
-    if (!facets || !facets['categories']) {
-        return categories.value
+watch(
+  [() => categories.value, () => props.availableFacets?.categories],
+  ([cats, facets]) => {
+    if (!cats || !facets) return // wait until both are populated
+    if (!rootCategoryCounts.value) {
+      rootCategoryCounts.value = aggregateCategoryFacets(cats, facets)
     }
-    return mergeFacetCounts(categories.value, facets['categories'])
+  },
+  { immediate: true }
+)
+
+watch(route.query, console.log) 
+
+watch(
+  [() => route.query.search],
+  ([newSearch, oldSearch]) => {
+    if (newSearch !== oldSearch) {
+      // reset root count cache
+      if (rootCategoryCounts.value) {
+        rootCategoryCounts.value = null
+      }
+    }
+  }
+)
+
+const mergedCategories = computed(() => {
+    return rootCategoryCounts.value ?? categories.value
 })
+
+
+
 
 const expandedFacets = reactive<Record<string, boolean>>({})
 const SHOW_LIMIT = 8
@@ -111,7 +183,7 @@ watch(
 )
 </script>
 <template>
-    <aside >
+    <aside>
         <CategorySidebar
             v-if="isCategory && categoryId"
             :categories="categories"

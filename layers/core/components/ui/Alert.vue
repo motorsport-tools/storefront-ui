@@ -15,7 +15,7 @@ const sizeClasses = {
 export interface AlertProps {
   size?: 'sm' | 'base';
   strong?: boolean;
-  variant?: 'primary' | 'secondary' | 'negative' | 'neutral';
+  variant?: 'primary' | 'secondary' | 'negative' | 'neutral' | 'positive';
 }
 
 const props = withDefaults(defineProps<AlertProps>(), {

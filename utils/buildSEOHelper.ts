@@ -50,7 +50,7 @@ const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
     if (!entity) return
 
     validateSEO(entity, href, entityType);
-    
+
     const defaultTitle =
         entity.metaTitle || entity.name || `${entityType} page`;
 
@@ -60,7 +60,7 @@ const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
             {
                 hid: "title",
                 name: "title",
-                content: entity?.metaTitle || `${entity?.name} | ${entity?.id}`,
+                content: entity?.metaTitle || `${entity?.name}`,
             },
             entity?.metaDescription && {
                 hid: "description",

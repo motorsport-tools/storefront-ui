@@ -114,6 +114,7 @@ const NuxtLink = resolveComponent("NuxtLink");
             <UiAlert 
               v-if="order.locked"
               class="font-semibold"
+              variant="neutral"
             >
             <SfIconCheckCircle class="text-positive-700 shrink-0" size="sm" />
             {{ $t("account.myOrders.done") }}
@@ -142,10 +143,10 @@ const NuxtLink = resolveComponent("NuxtLink");
   </div>
   <div v-else-if="orders?.orders?.length === 0" class="col-span-3 text-center mt-8">
     <NuxtImg
-      src="/images/empty-cart.svg"
+      src="/img/basket-empty.png"
       :alt="$t('account.myOrders.noOrdersAltText')"
-      width="192"
-      height="192"
+      width="300"
+      height="300"
       class="mx-auto"
       loading="lazy"
     />

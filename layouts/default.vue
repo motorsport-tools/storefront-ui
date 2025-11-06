@@ -16,6 +16,7 @@ const {
 })
 
 const navigationMenu = computed(() => siteData.value?.headerNavigation || {})
+const footer = useTemplateRef('footerRef')
 </script>
 
 <template>

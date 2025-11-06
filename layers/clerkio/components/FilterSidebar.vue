@@ -110,8 +110,6 @@ watch(
   { immediate: true }
 )
 
-watch(route.query, console.log) 
-
 watch(
   [() => route.query.search],
   ([newSearch, oldSearch]) => {

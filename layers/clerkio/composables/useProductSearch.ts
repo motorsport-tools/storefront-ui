@@ -101,7 +101,7 @@ export const useProductSearch = () => {
         const reqFilters = buildQueryFilters()
 
         if (categoryPage) delete selectedFacets.value['_all_categories']
-        console.log('available facets before search:', availableFacets.value)
+
         const res = await $fetch<ClerkProductSearchResponse>('/api/search/v3/search/products', {
             method: 'POST',
             headers: [['Cache-Control', 'no-store']],
@@ -125,7 +125,6 @@ export const useProductSearch = () => {
         total.value = res?.total_count || res?.estimated_total_count || 0
 
         if (query.value != prevQuery.value) {
-            console.log('Setting Init total')
             totalInit.value = total.value
             availableFacets.value = {}
         }
@@ -133,7 +132,6 @@ export const useProductSearch = () => {
         if (Object.keys(availableFacets.value).length === 0) {
             availableFacets.value = res?.facets || {}
         } else {
-            console.log('Mergin Facets')
             availableFacets.value = mergeFacets(availableFacets.value, res?.facets || {})
         }
 

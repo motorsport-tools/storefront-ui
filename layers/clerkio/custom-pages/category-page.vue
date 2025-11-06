@@ -59,6 +59,7 @@ watch(
         if(newPath && newPath !== oldPath) {
             loading.value = true
             results.value = []
+            availableFacets.value = {}
             await loadCategory({ slug: String(newPath) })
         }
 

@@ -4,31 +4,27 @@ defineProps({
   heading: String
 })
 
+const { isVisualEditingEnabled } = useVisualEditing()
+
 const {
-	siteData,
-	siteError,
-	refresh,
-} = await useSiteGlobals()
+    data: siteData,
+    error: siteError,
+    refresh,
+} = await useFetch('/api/site-data', {
+    key: 'site-data',
+    headers: isVisualEditingEnabled ? { 'x-invalidate': '1' } : {},
+    cache: isVisualEditingEnabled? 'no-cache' : 'default'
+})
 
-const { isVisualEditingEnabled, apply } = useVisualEditing()
-
-const navigation = ref<HTMLElement>()
+const navigationMenu = computed(() => siteData.value?.headerNavigation || {})
 const footer = useTemplateRef('footerRef')
-
-function onNavigationReady(el: HTMLElement) {
-  if(!isVisualEditingEnabled) return
-  navigation.value = el
-  apply({
-    elements: [navigation.value as HTMLElement, footer.value?.footerRef as HTMLElement],
-    onSaved: () => {
-      refresh()
-    },
-  })
-}
 </script>
 
 <template>
-  <SiteHeader @navigationReady="onNavigationReady" />
+  <SiteHeader 
+      :headerNavigation="navigationMenu"
+      :refresh="refresh"
+    />
   <div class="relative z-1">
     <main
       :class="[
@@ -48,11 +44,11 @@ function onNavigationReady(el: HTMLElement) {
   </div>
   <LazyNewsletter />
 
-    <LazySiteFooter 
-      hydrate-on-visible 
-      ref="footerRef"
-      :navigation="siteData?.footerNavigation || []"
-      :globals="siteData?.globals || {}"
-    />
-    <LazyWishlistSidebar />
+  <LazySiteFooter 
+    hydrate-on-visible 
+    ref="footerRef"
+    :navigation="navigationMenu"
+    :globals="siteData?.globals || {}"
+  />
+  <LazyWishlistSidebar />
 </template>

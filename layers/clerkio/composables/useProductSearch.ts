@@ -129,10 +129,7 @@ export const useProductSearch = () => {
         if (Object.keys(availableFacets.value).length === 0) {
             availableFacets.value = res?.facets || {}
         } else {
-            /*
-            console.log('mergeFacets with availableFavets', availableFacets.value)
             availableFacets.value = mergeFacets(availableFacets.value, res?.facets || {})
-            */
         }
 
         facetStats.value = res?.facets_stats || {}

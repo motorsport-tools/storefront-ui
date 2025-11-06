@@ -7,12 +7,16 @@ import {
 } from '@storefront-ui/vue'
 
 const { deliveryMethods, loadDeliveryMethods, loading } = useDeliveryMethod()
-
+/*
 const tomorrow = computed(() => {
   const date = new Date()
   date.setDate(date.getDate() + 1)
   return date.toDateString().slice(0, 10)
 })
+*/
+
+const tomorrow = useNextDeliveryDateUK()
+const collection = useClickAndCollectTime()
 
 onMounted(async () => {
     await loadDeliveryMethods()
@@ -54,14 +58,8 @@ onMounted(async () => {
                 keypath="additionalInfo.pickup"
                 scope="global"
             >
-                <template #checkAvailability>
-                    <SfLink
-                        class="ml-1"
-                        href="#"
-                        variant="secondary"
-                    >
-                        {{ $t("additionalInfo.checkAvailability") }}
-                    </SfLink>
+                <template #collect>
+                    {{ collection }}
                 </template>
             </i18n-t>
         </p>
@@ -86,8 +84,10 @@ onMounted(async () => {
             </template>
         </i18n-t>
     </div>
+    <!--
     <div class="flex mt-4">
         {{ loading }}<br/>
         {{ deliveryMethods }}
     </div>
+    -->
 </template>

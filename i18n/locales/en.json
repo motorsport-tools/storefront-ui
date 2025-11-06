@@ -294,9 +294,9 @@
     "availability": "Only {stock} left"
   },
   "additionalInfo": {
-    "shipping": "Free delivery, arrives by {date}. Want it faster? {addAddress} to see options",
+    "shipping": "UK customers estimated delivery by {date}.",
     "addAddress": "Add an address",
-    "pickup": "Pickup not available at Super center. {checkAvailability}",
+    "pickup": "Free Click and Collect as early as: {collect}",
     "checkAvailability": "Check availability nearby",
     "returns": "Free 30-Day returns. {details}",
     "details": "Details"

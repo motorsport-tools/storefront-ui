@@ -188,6 +188,7 @@ const breadcrumbs = computed(() => {
             </section>
             <section class="grid-in-left-bottom md:mt-8">
             <UiDivider class="mt-10 mb-6" />
+            <!-- // Attribue Stuff - Move to own component
             <div
                 class="lg:px-4"
                 data-testid="product-properties"
@@ -295,21 +296,22 @@ const breadcrumbs = computed(() => {
                 </fieldset>
             </div>
             <UiDivider class="my-4 md:mt-6" />
+        -->
             <div data-testid="product-accordion">
                 <UiAccordionItem
                 v-model="productDetailsOpen"
                 summary-class="md:rounded-md w-full hover:bg-neutral-100 py-2 lg:pl-4 pr-3 flex justify-between items-center"
                 >
-                <template #summary>
-                    <h2
-                    class="font-bold font-headings text-lg leading-6 md:text-2xl"
-                    >
-                    {{ $t("productDetails") }}
-                    </h2>
-                </template>
-                <p>
-                    {{ productVariant?.description }}
-                </p>
+                    <template #summary>
+                        <h2
+                        class="font-bold font-headings text-lg leading-6 md:text-2xl"
+                        >
+                        {{ $t("productDetails") }}
+                        </h2>
+                    </template>
+                    <div v-html="productVariant?.description">
+                
+                    </div>
                 </UiAccordionItem>
                 <UiDivider class="my-4" />
                 <UiAccordionItem
@@ -323,8 +325,7 @@ const breadcrumbs = computed(() => {
                     </h2>
                 </template>
                 <p>
-                    Lightweight • Non slip • Flexible outsole • Easy to wear on and
-                    off
+                    This product has not been reviewed yet
                 </p>
                 </UiAccordionItem>
             </div>

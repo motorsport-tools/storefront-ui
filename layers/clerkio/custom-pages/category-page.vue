@@ -9,6 +9,7 @@ import generateSeo, { type SeoEntity } from '~/utils/buildSEOHelper'
 import ProductCardSkeleton from "~/layers/core/components/ui/ProductCardSkeleton.vue";
 import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
 const route = useRoute()
+const { user } = useAuth()
 const { open, close, isOpen } = useDisclosure()
 const { loadCategory, category } = useCategory()
 const {
@@ -205,6 +206,8 @@ const clearFilters = () => {
                             v-else-if="results.length > 0"
                             v-for="productTemplate in results"
                             :key="productTemplate?.id"
+                            :pid="user.publicPricelist.id"
+                            :isSearch="true"
                             :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product || productTemplate as Product) || '' "
                             :name="productTemplate?.name || ''"
                             :sku="productTemplate?.sku || ''"

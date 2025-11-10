@@ -196,6 +196,7 @@ const clearFilters = () => {
                             v-for="productTemplate in results"
                             :key="productTemplate?.id"
                             :pid="user.publicPricelist.id"
+                            :isSearch="true"
                             :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product || productTemplate as Product) || '' "
                             :name="productTemplate?.name || ''"
                             :sku="productTemplate?.sku || ''"

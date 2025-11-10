@@ -15,12 +15,12 @@ export const usePayment = () => {
   const loadPaymentMethods = async () => {
     try {
       loading.value = true;
-      const { data } = await $sdk().odoo.query<any, PaymentMethodListResponse>({
+      const data = await $sdk().odoo.query<any, PaymentMethodListResponse>({
         queryName: QueryName.GetPaymentMethodsQuery,
       })
-    
-      paymentProviders.value = data.value.paymentProviders || [];
-    } catch(error:any){
+
+      paymentProviders.value = data.paymentProviders || [];
+    } catch (error: any) {
       toast.error(error?.data?.message)
     } finally {
       loading.value = false
@@ -30,15 +30,15 @@ export const usePayment = () => {
   const getPaymentConfirmation = async (accessToken: string) => {
     try {
       loading.value = true
-      const  data  = await $sdk().odoo.queryNoCache<any, any>({
+      const data = await $sdk().odoo.queryNoCache<any, any>({
         queryName: QueryName.GetPaymentConfirmation,
       }, {
         accessToken: accessToken
       })
 
-    
+
       return data?.paymentConfirmation;
-    } catch(error:any) {
+    } catch (error: any) {
       toast.error(error?.data?.message)
     } finally {
       loading.value = false

@@ -1,4 +1,4 @@
-import type { AttributeValue, Cart, OrderLine } from "~/graphql";
+import type { AttributeValue, Cart, EasyshipRate, OrderLine } from "~/graphql";
 
 export const reduceCart = (cartData: Cart) => ({
     order: {
@@ -14,9 +14,9 @@ export const reduceCart = (cartData: Cart) => ({
             name: cartData?.order?.shippingMethod?.name,
             price: cartData?.order?.shippingMethod?.price
         },
-        shippingRate: {
-            serviceId: cartData?.order?.shippingRate?.serviceId
-        },
+        shippingRate: cartData?.order?.shippingRate?.map((rate: EasyshipRate) => ({
+            serviceId: rate.serviceId
+        })),
         coupons: cartData?.order?.coupons,
         giftCards: cartData?.order?.giftCards,
         websiteOrderLine: cartData?.order?.websiteOrderLine?.map((line: OrderLine) => ({
@@ -99,6 +99,5 @@ export async function updateCart(event: any, updateData: any) {
 
     const updatedCart = Object.assign({}, currentCart.cart, updateData);
     const reducedCart = reduceCart(updatedCart as Cart)
-
     useStorage('cart').setItem(keyName, { cart: reducedCart });
 }

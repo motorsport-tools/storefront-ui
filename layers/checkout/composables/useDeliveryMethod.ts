@@ -109,23 +109,20 @@ export const useDeliveryMethod = () => {
   const loadRates = async (params: EasyShipRatesArgs) => {
     ratesLoading.value = true;
     try {
-      const { data } = await useAsyncData("rates", async () => {
-        const { data } = await $sdk().odoo.queryNoCache<
-          EasyShipRatesArgs,
-          EasyShipRatesResponse
-        >({
-          queryName: QueryName.GetEasyShipRatesQuery,
-        }, params);
-        return data.value;
-      });
+      const data = await $sdk().odoo.queryNoCache<
+        EasyShipRatesArgs,
+        EasyShipRatesResponse
+      >({
+        queryName: QueryName.GetEasyShipRatesQuery,
+      }, params);
 
-      if (data.value) {
-        rates.value = data.value?.rates ? data.value?.rates : {}
+      if (data) {
+        rates.value = data.rates || {}
         return true
       }
       return false
     } finally {
-      ratesLoading.value = false;
+      ratesLoading.value = false
     }
 
   }
@@ -133,15 +130,16 @@ export const useDeliveryMethod = () => {
   const setRate = async (params: MutationEasyShipRatesArgs) => {
     loading.value = true;
 
-    const { data, error } = await $sdk().odoo.mutation<
+    const data = await $sdk().odoo.mutation<
       MutationEasyShipRatesArgs,
       SetRateCartResponse
     >({ mutationName: MutationName.CartSetEasyship }, params);
-    if (error.value) {
-      return toast.error(error.value.data.message);
+
+    if (!data.setRate) {
+      return toast.error(data.message);
     }
     toast.success("Shipping Method updated successfully");
-    cart.value = data.value.setRate
+    cart.value = data.setRate
     loading.value = false;
   }
 

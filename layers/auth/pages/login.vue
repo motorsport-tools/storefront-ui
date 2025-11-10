@@ -10,7 +10,7 @@ import LoginForm from "../components/LoginForm.vue";
 
 definePageMeta({
   layout: false,
-  middleware: ["auth-check"],
+  middleware: ["auth-guard"],
 });
 
 

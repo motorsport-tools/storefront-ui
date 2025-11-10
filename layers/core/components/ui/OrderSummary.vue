@@ -1,6 +1,19 @@
 <script setup lang="ts">
 import { SfLoaderCircular } from '@storefront-ui/vue';
 const { cart, totalItemsInCart, cartHasDiscount  } = useCart();
+
+const mergedCoupons = computed(() => {
+  if(cart.value?.order?.orderLines) {
+    const lineCoupons = cart.value?.order?.orderLines
+      .filter(line => line.isRewardLine)
+      .flatMap(line => line.coupon) // flatten all coupon arrays
+    return [...cart.value?.order?.coupons || [], ...lineCoupons]
+  }
+  return []
+})
+
+const noCode = ['next_order_coupons', 'promotion']
+
 </script>
 
 <template>
@@ -49,25 +62,24 @@ const { cart, totalItemsInCart, cartHasDiscount  } = useCart();
 
           <div
             v-if="cartHasDiscount"
-            v-for="discount in cart.order?.orderLines?.filter(l => l.isRewardLine)"
+            v-for="discount in mergedCoupons"
             :key="discount.id"
             class="flex flex-col grow pr-2"
           >
             <div class="flex justify-between mb-2">
               <div class="flex grow pr-2">
                 <p class="text-sm text-gray-500 ml-2">
-                  {{ discount.coupon?.name }}
+                  {{ discount.name }}
                 </p>
-                <p v-if="discount.coupon?.programType && discount.coupon?.programType != 'promotion'" class="flex grow text-sm text-gray-500 ml-2">
-                  {{ discount.coupon?.code }}
+                <p v-if="discount?.programType && !noCode.includes(discount.programType)" class="flex grow text-sm text-gray-500 ml-2">
+                  {{ discount.code }}
                 </p>
               </div>
-              <p class="flex text-right text-sm text-gray-500">
+              <p v-if="discount.priceSubtotal" class="flex text-right text-sm text-gray-500">
                 {{  $currency(Number(discount.priceSubtotal)) }}
               </p>
             </div>
           </div>
-
           <div class="flex flex-row grow pr-2">
             <p class="font-bold grow pr-2">{{ $t("beforeTax")}}</p>
             <p class="flex text-right">{{ $currency( Number(cart?.order?.amountSubtotal || 0) + Number(cart?.order?.shippingMethod?.price || 0) + Number(cart?.order?.amountDiscounts || 0) ) }}</p>

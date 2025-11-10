@@ -85,6 +85,7 @@ const handleGiftCardPayment = async () => {
         </template>
       </i18n-t>
     </p>
+
     <component
       v-if="
         showPaymentModal &&

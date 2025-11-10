@@ -10,6 +10,9 @@ export default `
           publicPricelist {
             id
           }
+          currentPricelist {
+            id
+          }
           name
           street
           street2

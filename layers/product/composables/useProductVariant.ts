@@ -50,7 +50,9 @@ export const useProductVariant = (slugWithCombinationIds: string) => {
       0
   );
   const getSpecialPrice = computed(
-    () => productVariant.value?.combinationInfoVariant?.price || 0
+    () =>
+      productVariant.value?.combinationInfoVariant?.price ||
+      0
   );
 
   return {

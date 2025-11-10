@@ -20,6 +20,7 @@ export default `
           image
           imageFilename
         }
+        combinationInfoVariant
         metaTitle
         metaImage
         metaKeyword

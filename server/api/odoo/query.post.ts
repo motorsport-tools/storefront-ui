@@ -31,24 +31,20 @@ const customCache = cachedFunction(
       const session = await useSession(event, {
         password: sessionPwd,
       })
-      const keyName = `cache:partner:${session?.id}`
 
-      const currentPartnerPricelist
-        = (await useStorage().getItem<Partner>(keyName)) || ({} as Partner)
+      const pricelistId = session.data?.pricelistId || 4
 
       const isoCode = getCookie(event, 'i18n_redirected') || 'en'
 
-      const pricelist = currentPartnerPricelist?.id
-        ? `pricelist:${currentPartnerPricelist?.id}`
-        : ''
+      const pricelist = `pricelist:${pricelistId}`
 
       const hashedParams = hasher(body?.[1] || {})
 
       console.log('hashedParams:', body?.[1])
 
-      console.log(`${body?.[0].queryName}:${hashedParams}:${isoCode}:${pricelist}:content`)
+      console.log(`${body?.[0].queryName}:${hashedParams}:${pricelist}:${isoCode}:content`)
 
-      return `${body?.[0].queryName}:${hashedParams}:${isoCode}:${pricelist}:content`
+      return `${body?.[0].queryName}:${hashedParams}:${pricelist}:${isoCode}:content`
     },
     shouldBypassCache: async (event) => {
       const config = useRuntimeConfig(event)

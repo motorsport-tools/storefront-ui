@@ -59,6 +59,10 @@ const props = defineProps({
     required: false,
     default: 'lazy',
   },
+  pid: {
+    type: Number,
+    default: 4,
+  }
 })
 
 const { t } = useI18n()
@@ -87,6 +91,18 @@ const wishlistButtonTitle = (id: number | undefined) => {
 const isStock = computed(() => {
     return Boolean(props.firstVariant?.stock > 0 || props.firstVariant?.['allow_out_of_stock_order'])
 })
+
+let price = props.specialPrice
+let listPrice = props.regularPrice
+let onSale = !!props.regularPrice
+if(props.firstVariant?.pricelist_ids) {
+  const index = props.firstVariant?.pricelist_ids.indexOf(props.pid)
+  if (index !== -1 && props.pid !== 4) {
+    price = props.firstVariant?.pricelist_prices[index]
+    listPrice = props.firstVariant?.pricelist_list_prices[index]
+    onSale = props.firstVariant?.pricelist_on_sale[index]
+  }
+}
 </script>
 
 <template>
@@ -163,12 +179,12 @@ const isStock = computed(() => {
       <div class="flex justify-between">
         <div class="block">
           <span class="font-bold typography-text-sm">{{
-            $currency(specialPrice)
+            $currency(price)
           }}</span>
           <span
             v-if="regularPrice"
             class="ml-1.5 font-normal typography-text-xs line-through"
-          >{{ $currency(regularPrice) }}</span>
+          >{{ $currency(listPrice) }}</span>
         </div>
         <SfButton
           type="button"

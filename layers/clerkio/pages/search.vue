@@ -9,6 +9,7 @@ import ProductCardSkeleton from "~/layers/core/components/ui/ProductCardSkeleton
 import FilterSidebar from "~/layers/clerkio/components/FilterSidebar.vue";
 import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
 const route = useRoute()
+const { user } = useAuth()
 const { open, close, isOpen } = useDisclosure()
 const {
     query,
@@ -22,6 +23,7 @@ const {
     page,
     limit,
     total,
+    totalInit,
     sort,
     loading,
     sortByOptions,
@@ -31,6 +33,8 @@ const {
     setSort,
     fetchSearch,
 } = useProductSearch()
+
+    watch(() => totalInit, console.log)
 
 const searchTitle = computed( () => {
     if(query.value) return query.value
@@ -184,7 +188,6 @@ const clearFilters = () => {
                         </SfButton>
                     </div>
                    <section
-                        :key="route.hash"
                         class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
                     >
                         <ProductCardSkeleton v-if="loading" v-for="i in Number(limit)" :key="i" />
@@ -192,6 +195,7 @@ const clearFilters = () => {
                             v-else
                             v-for="productTemplate in results"
                             :key="productTemplate?.id"
+                            :pid="user.publicPricelist.id"
                             :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product || productTemplate as Product) || '' "
                             :name="productTemplate?.name || ''"
                             :sku="productTemplate?.sku || ''"
@@ -213,18 +217,14 @@ const clearFilters = () => {
                             :first-variant="productTemplate as unknown as CustomProductWithStockFromRedis"
                         />
                     </section>
-                    <div
-                        :key="route.fullPath"
-                    >
-                        <LazyUiPagination
-                            v-if="totalPages > 1"
-                            class="mt-5"
-                            :current-page="page"
-                            :total-items="total"
-                            :page-size="limit"
-                            :max-visible-pages="maxVisiblePages"   
-                        />
-                    </div>
+                    <LazyUiPagination
+                        v-if="totalPages > 1"
+                        class="mt-5"
+                        :current-page="page"
+                        :total-items="totalInit"
+                        :page-size="Number(limit)"
+                        :max-visible-pages="maxVisiblePages"   
+                    />
                 </div>
             </div>
         </div>

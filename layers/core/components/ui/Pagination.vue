@@ -33,7 +33,6 @@ const pagination = computed<any>(() =>
     }),
   ),
 );
-
 const setParams = (filter: any) => {
   router.push({ query: { ...route.query, ...filter } });
 };

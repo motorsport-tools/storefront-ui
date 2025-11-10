@@ -44,11 +44,10 @@ export const useProductSearch = () => {
 
     const availableFacets = useState<ClerkFacets>('availableFacets', () => ({}))
     const totalInit = useState<number>('searchTotal', () => (0))
-
+    const category = useState<number | boolean>('categorySearch', () => false)
     //Derived
-    const offset = computed(() => (page.value - 1) * limit.value)
-    const totalPages = computed(() => total.value ? Math.ceil(total.value / limit.value) : 0)
-
+    const offset = computed(() => (page.value - 1) * Number(limit.value))
+    const totalPages = computed(() => totalInit.value ? Math.ceil(totalInit.value / Number(limit.value)) : 0)
     //Static
     const nonFacetKeys = [
         'page',
@@ -95,6 +94,9 @@ export const useProductSearch = () => {
     //Functions
     const fetchSearch = async (categoryPage: number | boolean = false) => {
         loading.value = true
+        if (categoryPage && category.value == false) {
+            category.value = categoryPage
+        }
         if (categoryPage) selectedFacets.value['_all_categories'] = [String(categoryPage)]
 
         const reqSort = sort.value == 'default' ? undefined : sort.value
@@ -109,7 +111,8 @@ export const useProductSearch = () => {
                 key: config.public.clerkApiKey,
                 visitor: 'auto',
                 labels: categoryPage ? ['Category page'] : ['Search page'],
-                attributes: ['id', 'name', 'brand', 'image', 'image_slug', 'image_filename', 'price', 'on_sale', 'list_price', 'rating', 'ratingCount', 'sku', 'slug', 'has_stock'],
+                attributes: ['id', 'name', 'brand', 'image', 'image_slug', 'image_filename', 'price', 'on_sale', 'list_price', 'rating', 'ratingCount', 'sku', 'slug', 'has_stock', 'pricelist_ids', 'pricelist_names', 'pricelist_prices', 'pricelist_list_prices', 'pricelist_price_extra', 'pricelist_on_sale', 'pricelist_currencies', 'pricelist_discount_perc',
+                ],
                 facets: ['price', 'fits', 'brand', 'categories', 'on_sale', 'has_stock'],
                 semantic: 0,
                 query: query.value,
@@ -125,8 +128,14 @@ export const useProductSearch = () => {
         total.value = res?.total_count || res?.estimated_total_count || 0
 
         if (query.value != prevQuery.value) {
+            console.log('query change setting total init')
             totalInit.value = total.value
             availableFacets.value = {}
+        }
+        if (category.value != categoryPage) {
+            totalInit.value = total.value
+            availableFacets.value = {}
+            category.value = categoryPage
         }
 
         if (Object.keys(availableFacets.value).length === 0) {
@@ -139,7 +148,6 @@ export const useProductSearch = () => {
 
         prevQuery.value = query.value
         loading.value = false
-
     }
 
     const buildQueryFilters = () => {
@@ -200,13 +208,13 @@ export const useProductSearch = () => {
         switch (typeof value) {
             case 'string':
             case 'number': {
-                if (current.includes(value)) {
+                if (current.includes(String(value))) {
                     selectedFacets.value[name] = current.filter(v => v !== value)
                     if (selectedFacets.value[name].length === 0) {
                         delete selectedFacets.value[name]
                     }
                 } else {
-                    selectedFacets.value[name] = [...current, value]
+                    selectedFacets.value[name] = [...current, String(value)]
                 }
                 break
             }
@@ -226,7 +234,6 @@ export const useProductSearch = () => {
     }
 
     /* Write A Clear Facet Func */
-
     const setPage = (p: number) => {
         if (p < 1 || p > totalPages.value) return
         page.value = p
@@ -236,7 +243,7 @@ export const useProductSearch = () => {
 
     const setLimit = (l: number) => {
         const newPage = Math.floor(offset.value / l) + 1
-        limit.value = l
+        limit.value = String(l)
         page.value = newPage
         //fetchSearch()
         updateRoute()
@@ -278,6 +285,7 @@ export const useProductSearch = () => {
         filterCount,
         total,
         totalPages,
+        totalInit,
         loading,
         sortByOptions,
         limitOptions,

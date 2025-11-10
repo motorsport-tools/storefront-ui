@@ -23,6 +23,7 @@ const {
     page,
     limit,
     total,
+    totalInit,
     sort,
     loading,
     sortByOptions,
@@ -233,7 +234,7 @@ const clearFilters = () => {
                         v-if="totalPages > 1"
                         class="mt-5"
                         :current-page="page"
-                        :total-items="total"
+                        :total-items="totalInit"
                         :page-size="limit"
                         :max-visible-pages="maxVisiblePages"   
                     />

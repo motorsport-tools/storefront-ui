@@ -4,6 +4,9 @@ partner{
     publicPricelist {
       id
     }
+    currentPricelist {
+      id
+    }
     name
     isPublic
     street

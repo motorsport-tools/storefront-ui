@@ -16,17 +16,18 @@ export default defineEventHandler(async (event: H3Event) => {
 
         const response = await $fetch(targetUrl, {
             method: event.method,
-            headers: event.headers,
+            headers: [['Cache-Control', 'no-cache, no-store']],
             body: JSON.stringify(body),
         })
-
+        /*
         if (response?.result) {
             //Enrich
             const enrichedProducts = await enrichProducts(event, response.result)
             response.result = enrichedProducts
         }
-
+        */
         return response
+
     }
 })
 

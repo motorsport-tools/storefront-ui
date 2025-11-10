@@ -7,19 +7,12 @@ import {
 } from '@storefront-ui/vue'
 
 const { deliveryMethods, loadDeliveryMethods, loading } = useDeliveryMethod()
-/*
-const tomorrow = computed(() => {
-  const date = new Date()
-  date.setDate(date.getDate() + 1)
-  return date.toDateString().slice(0, 10)
-})
-*/
 
 const tomorrow = useNextDeliveryDateUK()
 const collection = useClickAndCollectTime()
 
 onMounted(async () => {
-    await loadDeliveryMethods()
+    //await loadDeliveryMethods()
 })
 </script>
 <template>

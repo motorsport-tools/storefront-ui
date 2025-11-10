@@ -94,9 +94,6 @@ export const useProductSearch = () => {
     //Functions
     const fetchSearch = async (categoryPage: number | boolean = false) => {
         loading.value = true
-        if (categoryPage && category.value == false) {
-            category.value = categoryPage
-        }
         if (categoryPage) selectedFacets.value['_all_categories'] = [String(categoryPage)]
 
         const reqSort = sort.value == 'default' ? undefined : sort.value
@@ -128,7 +125,6 @@ export const useProductSearch = () => {
         total.value = res?.total_count || res?.estimated_total_count || 0
 
         if (query.value != prevQuery.value) {
-            console.log('query change setting total init')
             totalInit.value = total.value
             availableFacets.value = {}
         }
@@ -136,6 +132,9 @@ export const useProductSearch = () => {
             totalInit.value = total.value
             availableFacets.value = {}
             category.value = categoryPage
+        }
+        if (totalInit.value == 0) {
+            totalInit.value = total.value
         }
 
         if (Object.keys(availableFacets.value).length === 0) {
@@ -191,6 +190,8 @@ export const useProductSearch = () => {
         query.value = q
         page.value = 1
         total.value = 0
+        totalInit.value = 0
+        category.value = 0
         //fetchSearch()
         updateRoute()
     }
@@ -265,7 +266,7 @@ export const useProductSearch = () => {
                 queryObj[facet] = values.join(',')
             }
         }
-
+        totalInit.value = 0
         router.replace({ query: queryObj })
     }
 

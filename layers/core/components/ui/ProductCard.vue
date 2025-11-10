@@ -62,6 +62,10 @@ const props = defineProps({
   pid: {
     type: Number,
     default: 4,
+  },
+  isSearch: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -89,6 +93,9 @@ const wishlistButtonTitle = (id: number | undefined) => {
 }
 
 const isStock = computed(() => {
+    if(props.isSearch) {
+      return Boolean(props.firstVariant?.has_stock)
+    }
     return Boolean(props.firstVariant?.stock > 0 || props.firstVariant?.['allow_out_of_stock_order'])
 })
 

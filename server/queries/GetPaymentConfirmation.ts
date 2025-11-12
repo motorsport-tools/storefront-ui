@@ -2,8 +2,10 @@ import { orderFragment } from "../fragments";
 export default `
   query($accessToken: String!) {
     paymentConfirmation(accessToken: $accessToken) {
-      id
-      name
+      order {
+        id
+        name
+      }
     }
   }
 `;

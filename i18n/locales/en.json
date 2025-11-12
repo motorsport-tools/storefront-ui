@@ -465,7 +465,9 @@
   },
   "thankYou": {
     "thankYou": "Thank you - your order #{orderNumber} has been received",
-    "text": "We will begin processing your order, you will receive email confirmation shortly"
+    "normal": "Thank you - your order has been received",
+    "text1": "We're finalizing your order. You'll receive a confirmation email shortly.",
+    "text2": "If you want, you can continue shopping or view your orders in your account."
   },
   "error": {
     "404": "Page Not Found",

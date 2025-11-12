@@ -1248,6 +1248,11 @@ export type QueryOrdersArgs = {
 };
 
 
+export type QueryPaymentConfirmationArgs = {
+  accessToken: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type QueryPaymentProviderArgs = {
   id: InputMaybe<Scalars['Int']['input']>;
 };

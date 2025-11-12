@@ -470,5 +470,11 @@
   "error": {
     "404": "Page Not Found",
     "wentWrong": "Something Went Wrong"
+  },
+  "searchPage": {
+    "showMore": {
+      "title": "Click to show more",
+      "label": "Show More Products"
+    }
   }
 }

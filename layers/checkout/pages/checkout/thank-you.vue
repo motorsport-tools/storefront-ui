@@ -8,7 +8,7 @@ const { getPaymentConfirmation } = usePayment();
 const route = useRoute()
 const token = route.query?.token || ''
 
-const { data: orderData, error } = await useAsyncData('orderData', () => getPaymentConfirmation(token))
+const { data: orderData, error } = await useAsyncData(`orderData-${token}`, () => getPaymentConfirmation(token))
 
 onMounted(async () => {
   await loadCart()
@@ -18,6 +18,7 @@ onMounted(async () => {
 
 <template>
     <div
+
       class="w-full min-h-[330px] flex flex-col gap-4 items-center justify-center"
     >
       <Icon

@@ -93,7 +93,7 @@ export async function updateCart(event: any, updateData: any) {
     });
 
     const keyName = `cache:cart:session:${session?.id}`
-    const currentCart = (await useStorage().getItem<{ cart: Cart }>(
+    const currentCart = (await useStorage('cart').getItem<{ cart: Cart }>(
         keyName
     )) || { cart: {} };
 

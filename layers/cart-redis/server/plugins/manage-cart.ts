@@ -75,7 +75,7 @@ async function addAddress(event: any, body: any) {
 
     const keyName = `cache:cart:${session?.id}`;
     const currentCart =
-      (await useStorage().getItem<{ cart: Cart }>(keyName)) || ({} as any);
+      (await useStorage('cart').getItem<{ cart: Cart }>(keyName)) || ({} as any);
     if (requestBody[1].type === "Shipping") {
       currentCart.cart.order.partnerShipping = body.addAddress
       currentCart.cart.order.partner.isPublic = body.addAddress?.isPublic || false

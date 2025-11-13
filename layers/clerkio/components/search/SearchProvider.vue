@@ -36,8 +36,6 @@ const routing = {
 
           },
           routeToState(routeState) {
-            watchEffect(() => console.log('RouteState Changed Query to:',routeState.q))
-
             const state = {
                 [indexName.value]: {
                     query: routeState.q,

@@ -1,7 +1,7 @@
 import { defineNuxtPlugin } from "#app";
 
 export default defineNuxtPlugin(async (nuxtApp) => {
-  const odooUrl = nuxtApp.$config.public.odooBaseImageUrl;
+  const odooUrl = nuxtApp.$config.public.odooBaseImageUrl
   return {
     provide: {
       getImage: (

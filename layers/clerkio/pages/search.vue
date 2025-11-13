@@ -1,45 +1,15 @@
 <script setup lang="ts">
-import {
-    SfButton,
-    SfSelect,
-    SfIconTune,
-    useDisclosure
-} from "@storefront-ui/vue"
-import ProductCardSkeleton from "~/layers/core/components/ui/ProductCardSkeleton.vue";
-import FilterSidebar from "~/layers/clerkio/components/FilterSidebar.vue";
-import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
+import { SfButton, SfIconTune, useDisclosure } from '@storefront-ui/vue'
+const { $i18n } = useNuxtApp()
 const route = useRoute()
 const { user } = useAuth()
 const { open, close, isOpen } = useDisclosure()
-const {
-    query,
-    results,
-    nonFacetKeys,
-    availableFacets,
-    selectedFacets,
-    facetStats,
-    filterCount,
-    totalPages,
-    page,
-    limit,
-    total,
-    totalInit,
-    sort,
-    loading,
-    sortByOptions,
-    limitOptions,
-    setFacet,
-    setLimit,
-    setSort,
-    fetchSearch,
-} = useProductSearch()
-
-    watch(() => totalInit, console.log)
+const query = computed(() => route.query.query ? route.query.query : null)
 
 const searchTitle = computed( () => {
     if(query.value) return query.value
-    if('brand' in selectedFacets.value) return selectedFacets.value['brand'].join(', ')
-    return 'All Products'
+    
+    return $i18n.t('All Products')
 })
 
 const breadcrumbs = [
@@ -48,44 +18,36 @@ const breadcrumbs = [
     { name: `Results "${searchTitle.value}"`}
 ]
 
-const maxVisiblePages = useState("search-page-max-visible", () => 1)
-const setMaxVisiblePages = (isWide: boolean) =>
-  (maxVisiblePages.value = isWide ? 5 : 1)
-
-watch(isWideScreen, (value) => setMaxVisiblePages(value))
 watch(isTabletScreen, (value) => {
   if (value && isOpen.value) {
     close()
   }
 })
 
-const debouncedFetch = useDebounceFn(async () => {
-    await fetchSearch()
-}, 300)
+definePageMeta({
+    layout: 'search'
+})
 
-watch(
-    () => route.query,
-    async (newQuery) => {
-        query.value = newQuery.search?.toString() || ''
-        sort.value = newQuery.sort?.toString() || 'default'
-        page.value = parseInt(newQuery.page?.toString() || '1')
+const sortingOptions = [
+    { value: "products/sort/price:asc", label: "Price: Low to High" },
+    { value: "products/sort/price:desc", label: "Price: High to Low" },
+    { value: "products/sort/name:asc", label: "Name: A to Z" },
+     { value: "products/sort/name:desc", label: "Name: Z to A" },
+    { value: "products/sort/rating:desc", label: "Rating: High to Low" },
+    { value: "products", label: "Most Popular" },
+    { value: "products/sort/created_at:desc", label: "Newest" },
+];
 
-        selectedFacets.value = {}
-        for (const [key, value] of Object.entries(newQuery)) {
-            if (nonFacetKeys.includes(key)) continue
-            if (typeof value === 'string') {
-                selectedFacets.value[key] = value.split(',')
-            }
-        }
-
-        await debouncedFetch()
-    },
-    { immediate: true, deep: true }
-)
-
-const clearFilters = () => {
-    total.value = 0
-}
+const limitOptions = [
+    { value: 80, label: "80", default: true },
+    { value: 60, label: "60" },
+    { value: 40, label: "40" },
+    { value: 20, label: "20" },
+    { value: 16, label: "16" },
+    { value: 12, label: "12" },
+    { value: 8, label: "8" },
+    { value: 4, label: "4" },
+]
 </script>
 <template>
     <main 
@@ -102,137 +64,55 @@ const clearFilters = () => {
             <h1
                 class="font-bold typography-headline-3 md:typography-headline-2 mb-10"
             >
-                Showing results for "{{ searchTitle }}"
+                {{ $t('searchPage.showResults') }} "{{ searchTitle }}"
             </h1>
             <div class="grid grid-cols-12 lg:gap-x-6">
-                <FilterSidebar 
+                <SearchPageSidebar
                     class="hidden lg:block col-span-12 lg:col-span-4 xl:col-span-3"
-                    :availableFacets="availableFacets"
-                    :selectedFacets="selectedFacets"
-                    :setFacet="setFacet"
-                    :facetStats="facetStats"
-                    :filterCount="filterCount"
-                    :loading="loading"
-                    @close="clearFilters()"
                 />
+
                 <LazyCategoryMobileSidebar :is-open="isOpen" @close="close">
                     <template #default>
-                        <FilterSidebar 
-                            class="block lg:hidden"
-                            :availableFacets="availableFacets"
-                            :selectedFacets="selectedFacets"
-                            :setFacet="setFacet"
-                            :facetStats="facetStats"
-                            :filterCount="filterCount"
-                            :loading="loading"
-                            @close="close"
-                        />
+                        <SearchPageSidebar class="px-3"/>
                     </template>
                 </LazyCategoryMobileSidebar>
                 <div class="col-span-12 lg:col-span-8 xl:col-span-9">
-                   <div class="flex justify-start items-center mb-6">
-                        <SfSelect
-                            v-model="sort"
-                            placeholder="Select sorting"
-                            :aria-label="$t('sortBy')"
-                            @update:model-value="setSort"
-                            class="min-w-[300px] mr-4"
-                        >
-                            <option
-                                v-for="{ id, value, attrName } in sortByOptions"
-                                :key="id"
-                                :selected="sort === value"
-                                :value="value"
-                            >
-                                {{$t('sortBy') }}: {{ attrName }}
-                            </option>
-                        </SfSelect>
-                        
-                        <SfSelect
-                            v-model="limit"
-                            aria-label="Select per-page"
-                            placeholder="Per page"
-                            @update:model-value="setLimit"
-                            class="min-w-[120px] mr-2"
-                        >
-                            <option 
-                                v-for="l in limitOptions"
-                                :key="l"
-                                :selected="limit === String(l)"
-                                :value="String(l)"
-                            >
-                                {{$t('show')}}: {{ String(l) }}
-                            </option>
-                        </SfSelect>
-                        <span class="text-[12px]">
-                            {{ $t('productsPerPage') }}
-                        </span>
-                        
+                    <div class="flex justify-start items-center mb-6">
+                        <SearchSortBy 
+                            :options="sortingOptions"
+                            class="mr-4"
+                        />
+                        <SearchLimitPerPage 
+                            :options="limitOptions"
+                            class="min-w-[140px] mr-2"
+                        />
                     </div>
                     <div class="flex justify-between items-center mb-6">
-                        <span v-if="!loading" class="font-bold font-headings md:text-sm"
-                        >{{ total }} {{ total === 1 ? 'Product' : 'Products' }}
-                        </span>
-                        <span v-if="loading" class="font-bold font-headings md:text-sm"
-                        >Loading Products
-                        </span>
+                        <SearchStats class="mb-0"/>
                         <SfButton
-                        variant="tertiary"
-                        class="lg:hidden whitespace-nowrap"
-                        @click="open"
+                            variant="tertiary"
+                            class="lg:hidden whitespace-nowrap"
+                            @click="open"
                         >
-                        <template #prefix>
-                            <SfIconTune />
-                        </template>
-                        Filter
+                            <template #prefix>
+                                <SfIconTune />
+                            </template>
+                            {{ $t('filters') }}
                         </SfButton>
                     </div>
-                   <section
-                        class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
-                    >
-                        <ProductCardSkeleton v-if="loading" v-for="i in Number(limit)" :key="i" />
-                        <LazyUiProductCard
-                            v-else
-                            v-for="productTemplate in results"
-                            :key="productTemplate?.id"
-                            :pid="user.publicPricelist.id"
-                            :isSearch="true"
-                            :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product || productTemplate as Product) || '' "
-                            :name="productTemplate?.name || ''"
-                            :sku="productTemplate?.sku || ''"
-                            :image-url="
-                                $getImage(
-                                `${String(productTemplate.image_slug)}`,
-                                370,
-                                370,
-                                String(productTemplate.imageFilename),
-                                )
-                            "
-                            :brand="productTemplate?.brand"
-                            :image-alt="productTemplate?.name || ''"
-                            :regular-price="productTemplate.on_sale ? productTemplate.list_price : 0"
-                            :special-price="productTemplate.price"
-                            :is-in-wishlist="productTemplate?.isInWishlist || false"
-                            :rating-count="productTemplate.ratingCount || 0"
-                            :rating="productTemplate.rating || 0"
-                            :first-variant="productTemplate as unknown as CustomProductWithStockFromRedis"
+                    <SearchLoadingProvider v-slot="{ isSearchStalled }">
+                        <SearchProductsLoading
+                            v-show="isSearchStalled"
                         />
-                    </section>
-                    <LazyUiPagination
-                        v-if="totalPages > 1"
-                        class="mt-5"
-                        :current-page="page"
-                        :total-items="totalInit"
-                        :page-size="Number(limit)"
-                        :max-visible-pages="maxVisiblePages"   
-                    />
+                        <SearchResults
+                            v-show="!isSearchStalled"
+                            :pid="user?.publicPricelist?.id || 4"
+                        />
+                        
+                    </SearchLoadingProvider>
                 </div>
             </div>
         </div>
-        <svg class="absolute w-0 h-0 select-none pointer-events-none">
-            <symbol id="check-4" viewbox="0 0 12 10">
-                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-            </symbol>
-        </svg>
+        <UiIconCheck/>
     </main>
 </template>

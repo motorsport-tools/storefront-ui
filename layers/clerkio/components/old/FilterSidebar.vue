@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Category } from '~/graphql'
 import type { Node as menuNode } from '#layers/header/types'
-import { getCategoryLabel, isCategoryOrChildSelected } from '../utils/categories';
+import { getCategoryLabel, isCategoryOrChildSelected } from '../../utils/categories';
 const route = useRoute()
 const router = useRouter()
 const emit = defineEmits(["close"]);
@@ -182,7 +182,7 @@ watch(
 </script>
 <template>
     <aside>
-        <CategorySidebar
+        <OldCategorySidebar
             v-if="isCategory && categoryId"
             :categories="categories"
             :categoryId="categoryId"
@@ -225,7 +225,7 @@ watch(
             <div 
                 v-if="mergedCategories && !loading && !isCategory"
             >
-                <FacetCategories
+                <OldFacetCategories
                     :categories="mergedCategories"
                     :showlimit="SHOW_LIMIT"
                     :selectedFacets="selectedFacets"
@@ -239,7 +239,7 @@ watch(
                 v-for="(facet, index) in visibleFacets"
                 :key="index"
             >
-                <FacetDisplay
+                <OldFacetDisplay
                     :facet="facet"
                     :index="index"
                     :showlimit="SHOW_LIMIT"

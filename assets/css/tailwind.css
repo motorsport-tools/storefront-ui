@@ -8,8 +8,9 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  font-display: swap;
+:root {
+  --ashes-600: #e1e0ee;
+  --dodger-blue-500: #1656AD;
 }
 
 @layer base {

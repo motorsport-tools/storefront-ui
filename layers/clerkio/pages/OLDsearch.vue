@@ -5,13 +5,12 @@ import {
     SfIconTune,
     useDisclosure
 } from "@storefront-ui/vue"
-import generateSeo, { type SeoEntity } from '~/utils/buildSEOHelper'
 import ProductCardSkeleton from "~/layers/core/components/ui/ProductCardSkeleton.vue";
+import FilterSidebar from "~/layers/clerkio/components/old/FilterSidebar.vue";
 import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
 const route = useRoute()
 const { user } = useAuth()
 const { open, close, isOpen } = useDisclosure()
-const { loadCategory, category } = useCategory()
 const {
     query,
     results,
@@ -35,11 +34,21 @@ const {
     fetchSearch,
 } = useProductSearch()
 
+    watch(() => totalInit, console.log)
+
 const searchTitle = computed( () => {
-    return `Category: ${category.value.name}`
+    if(query.value) return query.value
+    if('brand' in selectedFacets.value) return selectedFacets.value['brand'].join(', ')
+    return 'All Products'
 })
 
-const maxVisiblePages = useState('category-max-visible-pages', () => 1)
+const breadcrumbs = [
+    { name: "Home", link: "/" },
+    { name: "Search", link: "/" },
+    { name: `Results "${searchTitle.value}"`}
+]
+
+const maxVisiblePages = useState("search-page-max-visible", () => 1)
 const setMaxVisiblePages = (isWide: boolean) =>
   (maxVisiblePages.value = isWide ? 5 : 1)
 
@@ -50,21 +59,14 @@ watch(isTabletScreen, (value) => {
   }
 })
 
-const debouncedFetch = useDebounceFn(async (categoryId: number) => {
-    await fetchSearch(categoryId)
+const debouncedFetch = useDebounceFn(async () => {
+    await fetchSearch()
 }, 300)
 
 watch(
-    [() => route.path, () => route.query],
-    async ([newPath, newQuery], [oldPath, oldQuery]) => {
-
-        if(newPath && newPath !== oldPath) {
-            loading.value = true
-            results.value = []
-            availableFacets.value = {}
-            await loadCategory({ slug: String(newPath) })
-        }
-
+    () => route.query,
+    async (newQuery) => {
+        query.value = newQuery.search?.toString() || ''
         sort.value = newQuery.sort?.toString() || 'default'
         page.value = parseInt(newQuery.page?.toString() || '1')
 
@@ -75,18 +77,11 @@ watch(
                 selectedFacets.value[key] = value.split(',')
             }
         }
-        if (category.value?.id) {
-            await debouncedFetch(category.value.id)
-        }
+
+        await debouncedFetch()
     },
     { immediate: true, deep: true }
 )
-
-const categoryIdStr = computed(() => category.value?.id?.toString() || '')
-
-useHead(generateSeo<SeoEntity>(category.value, 'Category'))
-
-setMaxVisiblePages(isWideScreen.value)
 
 const clearFilters = () => {
     total.value = 0
@@ -97,35 +92,32 @@ const clearFilters = () => {
         class="w-full narrow-container bg-white mb-20"
         data-testid="search-layout"
     >
-        <div
-            :key="route.fullPath"
+        <div 
             class="pb-20"
         >
             <UiBreadcrumb
-                :breadcrumbs="category.breadcrumb"
+                :breadcrumbs="breadcrumbs"
                 class="self-start mt-5 mb-5"
             />
             <h1
                 class="font-bold typography-headline-3 md:typography-headline-2 mb-10"
             >
-                {{ searchTitle }}
+                Showing results for "{{ searchTitle }}"
             </h1>
             <div class="grid grid-cols-12 lg:gap-x-6">
-                    <OldFilterSidebar 
-                        class="hidden lg:block col-span-12 lg:col-span-4 xl:col-span-3"
-                        :availableFacets="availableFacets"
-                        :selectedFacets="selectedFacets"
-                        :setFacet="setFacet"
-                        :facetStats="facetStats"
-                        :filterCount="filterCount"
-                        :loading="loading"
-                        :isCategory="true"
-                        :category-id="categoryIdStr"
-                        @close="clearFilters()"
-                    />
+                <FilterSidebar 
+                    class="hidden lg:block col-span-12 lg:col-span-4 xl:col-span-3"
+                    :availableFacets="availableFacets"
+                    :selectedFacets="selectedFacets"
+                    :setFacet="setFacet"
+                    :facetStats="facetStats"
+                    :filterCount="filterCount"
+                    :loading="loading"
+                    @close="clearFilters()"
+                />
                 <LazyCategoryMobileSidebar :is-open="isOpen" @close="close">
                     <template #default>
-                        <OldFilterSidebar 
+                        <FilterSidebar 
                             class="block lg:hidden"
                             :availableFacets="availableFacets"
                             :selectedFacets="selectedFacets"
@@ -134,13 +126,11 @@ const clearFilters = () => {
                             :filterCount="filterCount"
                             :loading="loading"
                             @close="close"
-                            :isCategory="true"
-                            :category-id="categoryIdStr"
                         />
                     </template>
                 </LazyCategoryMobileSidebar>
                 <div class="col-span-12 lg:col-span-8 xl:col-span-9">
-                    <div class="flex justify-start items-center mb-6">
+                   <div class="flex justify-start items-center mb-6">
                         <SfSelect
                             v-model="sort"
                             placeholder="Select sorting"
@@ -177,6 +167,7 @@ const clearFilters = () => {
                         <span class="text-[12px]">
                             {{ $t('productsPerPage') }}
                         </span>
+                        
                     </div>
                     <div class="flex justify-between items-center mb-6">
                         <span v-if="!loading" class="font-bold font-headings md:text-sm"
@@ -196,14 +187,12 @@ const clearFilters = () => {
                         Filter
                         </SfButton>
                     </div>
-                    <section
-                        :key="`results-${route.hash}`"
+                   <section
                         class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
                     >
                         <ProductCardSkeleton v-if="loading" v-for="i in Number(limit)" :key="i" />
-                
                         <LazyUiProductCard
-                            v-else-if="results.length > 0"
+                            v-else
                             v-for="productTemplate in results"
                             :key="productTemplate?.id"
                             :pid="user.publicPricelist.id"
@@ -228,17 +217,13 @@ const clearFilters = () => {
                             :rating="productTemplate.rating || 0"
                             :first-variant="productTemplate as unknown as CustomProductWithStockFromRedis"
                         />
-                        <CategoryEmptyState
-                            v-else
-                            :page="page"
-                        />
                     </section>
                     <LazyUiPagination
                         v-if="totalPages > 1"
                         class="mt-5"
                         :current-page="page"
                         :total-items="totalInit"
-                        :page-size="limit"
+                        :page-size="Number(limit)"
                         :max-visible-pages="maxVisiblePages"   
                     />
                 </div>

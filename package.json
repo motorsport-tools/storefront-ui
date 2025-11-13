@@ -42,6 +42,7 @@
     "@stripe/stripe-js": "^7.0.0",
     "@vue-storefront/sdk": "^2.0.0",
     "@vueuse/nuxt": "^10.9.0",
+    "algoliasearch": "^5.43.0",
     "caniuse-lite": "^1.0.30001754",
     "currency.js": "^2.0.4",
     "graphql": "^16.8.1",
@@ -55,7 +56,9 @@
     "object-hash": "^3.0.0",
     "typescript": "^5.8.2",
     "vue": "^3.4.27",
+    "vue-instantsearch": "^4.22.2",
     "vue-router": "^4.3.2",
+    "vue-slider-component": "^4.1.0-beta.7",
     "vue-toastification": "next",
     "vue3-carousel-nuxt": "^1.1.6"
   },

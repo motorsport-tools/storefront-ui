@@ -219,7 +219,9 @@ onBeforeUnmount(() => {
                             size="26px"
                         />
                     </UiUserNavButton>
-                    <UiSearchBar @update-overlay="isSearchOverlayVisible = $event"/>
+                    <slot name="search">
+                        <UiSearchBar @update-overlay="isSearchOverlayVisible = $event"/>
+                    </slot>
                 </div>
                 <div
                     class="h-full flex items-center flex-nowrap"

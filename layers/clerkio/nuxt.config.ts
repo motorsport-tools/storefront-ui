@@ -3,8 +3,22 @@ export default defineNuxtConfig({
     app: {
         head: {
             link: [
-                { rel: 'preload', as: 'script', href: '//cdn.clerk.io/clerk.js'},
+                { rel: 'preload', as: 'script', href: '//cdn.clerk.io/clerk.js' },
             ],
+        },
+    },
+    runtimeConfig: {
+        public: {
+            search: {
+                host: 'localhost',
+                searchApiKey: 'xxx',
+                indexName: 'searchIndex',
+                options: {
+                    primaryKey: 'id',
+                    keepZeroFacets: false,
+                    finitePagination: false,
+                },
+            },
         },
     },
 })

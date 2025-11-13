@@ -4,7 +4,7 @@ import {
 } from "@storefront-ui/vue"
 import {
     facetShowToggle
-} from "../utils"
+} from "../../utils"
 const emit = defineEmits(["setFacet"])
 
 interface Props {

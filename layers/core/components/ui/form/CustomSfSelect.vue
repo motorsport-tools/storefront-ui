@@ -32,8 +32,7 @@ const props = defineProps({
     default: false,
   },
   modelValue: {
-    type: Number,
-    default: '',
+    default: null,
   },
   wrapperClassName: {
     type: String,
@@ -42,6 +41,7 @@ const props = defineProps({
 })
 const emit = defineEmits<{
   (event: 'update:modelValue', param: string): void
+  (event: 'change', param: string): void
 }>()
 
 const { isOpen, close, open } = useDisclosure()
@@ -49,7 +49,10 @@ const { isFocusVisible } = useFocusVisible()
 
 const modelProxy = computed({
   get: () => props.modelValue,
-  set: (value: string) => emit('update:modelValue', value),
+  set: (value: string) => { 
+    emit('update:modelValue', value) 
+    emit('change', value) 
+  },
 })
 </script>
 

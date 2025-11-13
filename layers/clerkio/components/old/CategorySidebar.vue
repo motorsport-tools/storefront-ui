@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Node as menuNode } from '#layers/header/types'
-import { findCategoryNode, findParentNode } from '../utils/categories'
+import { findCategoryNode, findParentNode } from '../../utils/categories'
 
 interface Props {
     categories: menuNode[],

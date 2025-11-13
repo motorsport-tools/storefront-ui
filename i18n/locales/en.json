@@ -57,6 +57,7 @@
     "has_stock": "Availability",
     "price": "Price",
     "brand": "Brand",
+    "brandPlural": "Brands",
     "on_sale": "On Sale",
     "fits": "Escort Application",
     "clearFilters": "Clear filters",
@@ -123,7 +124,8 @@
     "priceDown": "Price from high to low",
     "relevance": "Relevance"
   },
-  "numberOfProducts": "1 Product | {count} Products",
+  "numberOfProducts": "1 product | {count} products",
+  "foundIn": "found in",
   "prev": "Previous",
   "next": "Next",
   "emptyStateText": "We no longer have products in this category.",
@@ -132,6 +134,7 @@
   "returnPreviousPage": "Return to previous page",
   "emptyStateAltText": "Image for no products found",
   "resultsFor": "Results for \"{phrase}\"",
+  "noResults": "No results",
   "noResultsFor": "No results found for",
   "tryAnotherSearch": "Try another search.",
   "seeAllProducts": "See all products",
@@ -474,6 +477,7 @@
     "wentWrong": "Something Went Wrong"
   },
   "searchPage": {
+    "showResults": "Showing results for",
     "showMore": {
       "title": "Click to show more",
       "label": "Show More Products"

@@ -4,7 +4,7 @@ const { $i18n } = useNuxtApp()
 const route = useRoute()
 const { user } = useAuth()
 const { open, close, isOpen } = useDisclosure()
-const query = computed(() => route.query.query ? route.query.query : null)
+const query = computed(() => route.query.q ? route.query.q : null)
 
 const searchTitle = computed( () => {
     if(query.value) return query.value

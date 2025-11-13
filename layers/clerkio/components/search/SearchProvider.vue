@@ -1,51 +1,62 @@
 <script lang="ts" setup>
-import { AisInstantSearch } from "vue-instantsearch/vue3/es";
-import { history } from 'instantsearch.js/es/lib/routers';
+import { AisInstantSearch, AisConfigure } from "vue-instantsearch/vue3/es";
 
 const props = defineProps<{
     indexName: string;
 }>();
 
-const { indexName } = toRefs(props);
+const route = useRoute()
 
+const { indexName } = toRefs(props);
 const searchClient = useSearchClient()
 
 const currentHitsPerPage = ref(80)
 provide('hitsPerPage', currentHitsPerPage)
 
 const routing = {
-    router: history({cleanUrlOnDispose: false}),
     stateMapping: {
-        stateToRoute(uiState: any) {
-            const indexUiState = uiState['products'];
-            if(indexUiState.hitsPerPage) {
-                currentHitsPerPage.value = indexUiState.hitsPerPage
+          stateToRoute(uiState) {
+            const indexState = uiState[indexName.value]
+
+            if(indexName.hitsPerPage) {
+                currentHitsPerPage.value = indexName.hitsPerPage
             }
+
             return {
-                query: indexUiState.query,
-                page: indexUiState.page,
-                brands: indexUiState.refinementList?.brand,
-                categories: indexUiState.hierarchicalMenu?._category_lvl0,
-                price: indexUiState.refinementList?.price,
-            };
-        },
-        routeToState(routeState: any) {
-            return {
-                products: {
-                    query: routeState.query,
-                    page: routeState.page,
-                    refinementList: {
-                        brand: routeState.brands,
-                        fits: routeState.fits,
-                        has_stock: routeState.has_stock,
-                        price: routeState.price,
-                        pagination: routeState.page
-                    },
+                q: indexState.query,
+                categories: indexState.hierarchicalMenu && indexState.hierarchicalMenu._category_lvl0,
+                brands: indexState.refinementList && indexState.refinementList.brand,
+                has_stock: indexState.toggle && indexState.toggle.has_stock,
+                on_sale: indexState.toggle && indexState.toggle.on_sale,
+                fits: indexState.refinementList && indexState.refinementList.fits,
+                price: indexState.refinementList && indexState.refinementList.price,
+                page: indexState.page,
+                limit: indexState.hitsPerPage
+            }
+
+          },
+          routeToState(routeState) {
+            watchEffect(() => console.log('RouteState Changed Query to:',routeState.q))
+
+            const state = {
+                [indexName.value]: {
+                    query: routeState.q,
                     hierarchicalMenu: {
-                        _category_lvl0: routeState.categories,
+                        _category_lvl0: routeState.categories || []
                     },
-                },
-            };
+                    refinementList: {
+                        ...(routeState.brand ? { brand: routeState.brand } : {}),
+                        ...(routeState.fits ? { fits: routeState.fits } : {}),
+                        ...(routeState.has_stock ? { has_stock: routeState.has_stock } : {}),
+                        ...(routeState.on_sale ? { on_sale: routeState.on_sale } : {})
+                    }
+                }
+            }
+            if(routeState.page) {
+                state[indexName.value].page = Number(routeState.page)
+            }
+
+            return state
         },
     },
 }
@@ -61,7 +72,8 @@ const routing = {
             preserveSharedStateOnUnmount: true,
             persistHierarchicalRootCount: false,
         }"
-    >
+    >   
+        <SearchHiddenBox/>
         <slot name="default"></slot>
     </AisInstantSearch>
 </template>

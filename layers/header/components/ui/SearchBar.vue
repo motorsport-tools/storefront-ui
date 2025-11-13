@@ -138,7 +138,7 @@ watch(searchInputValue, () => {
 
 watch(() => ({ ...route.query }),
     async (query) => {
-        searchInputValue.value = query.search ? String(query.search) : ''
+        searchInputValue.value = query.q ? String(query.q) : ''
     },
     { immediate: true }
 )

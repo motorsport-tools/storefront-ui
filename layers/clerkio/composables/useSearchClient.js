@@ -57,7 +57,7 @@ export const useSearchClient = (config = {}) => {
          */
         transformRequest(request) {
             const { params } = request;
-
+            console.log('Request Params:', params)
             const apiRequest = {
                 query: params.query || '',
                 limit: params.hitsPerPage || 20,

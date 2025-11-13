@@ -38,7 +38,7 @@ export const useClerkOmniSearch = (formSearchTemplateRef?: any, options = { limi
     const enterPress = () => {
         if (!searchInputValue.value) return
 
-        router.replace({ path: '/search', query: { search: searchInputValue.value } })
+        router.push({ path: '/search', query: { q: searchInputValue.value } }).then(() => { router.go(0) })
     }
 
     const omniSearch = async () => {

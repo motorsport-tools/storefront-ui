@@ -63,6 +63,7 @@ export const useProductTemplate = (slug: string) => {
         loadingProductTemplate.value = false
         productTemplate.value
           = (data.value?.product as CustomProductWithStockFromRedis) || {}
+        productTemplate.value = { ...productTemplate.value }
       }
     })
   }

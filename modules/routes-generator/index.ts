@@ -108,6 +108,9 @@ export default defineNuxtModule({
           name: slug.replace(/^\//, '').replace(/\//g, '-'),
           path: slug,
           file: '~/layers/clerkio/custom-pages/category-page.vue',
+          meta: {
+            layout: 'category',
+          }
         })
       })
 

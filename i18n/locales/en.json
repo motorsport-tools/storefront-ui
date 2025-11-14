@@ -262,7 +262,8 @@
   "addToList": "Add to list",
   "category": "Category",
   "categories": {
-    "heading": "Categories"
+    "heading": "Categories",
+    "parentLinkTitle": "Back to parent: {category}"
   },
   "bottomLinks": {
     "terms": "Terms",

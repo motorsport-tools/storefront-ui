@@ -31,6 +31,7 @@ const connectSearchMetaData =
     })
 
 export default {
+    name: 'LoadingProvider',
     mixins: [
         createWidgetMixin({ connector: connectSearchMetaData }),
     ],

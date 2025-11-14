@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 import { AisInstantSearch, AisConfigure } from "vue-instantsearch/vue3/es";
 
-//= defineAsyncComponent(() => import('../../widgets/HiddenBox.vue'))
-
 const props = defineProps<{
     indexName: string;
+    category: any;
 }>();
 
 const route = useRoute()
 
-const { indexName } = toRefs(props);
+const { indexName, category } = toRefs(props);
 const searchClient = useSearchClient()
 
 const currentHitsPerPage = ref(80)
@@ -26,7 +25,6 @@ const routing = {
 
             return {
                 q: indexState.query,
-                categories: indexState.hierarchicalMenu && indexState.hierarchicalMenu._category_lvl0,
                 brands: indexState.refinementList && indexState.refinementList.brand,
                 has_stock: indexState.toggle && indexState.toggle.has_stock,
                 on_sale: indexState.toggle && indexState.toggle.on_sale,
@@ -52,6 +50,7 @@ const routing = {
                     }
                 }
             }
+            
             if(routeState.page) {
                 state[indexName.value].page = Number(routeState.page)
             }
@@ -60,12 +59,16 @@ const routing = {
         },
     },
 }
+
+const categoryFilter = computed(() => {
+    if (!category.value?.id) return ''
+    return `_all_categories in ['${category.value.id}']`
+})
 </script>
 
 <template>
-    <AisInstantSearch 
-        ref="searchRef"
-        :index-name="indexName"
+    <AisInstantSearch
+        :indexName="indexName"
         :search-client="searchClient "
         :routing="routing"
         :future="{
@@ -73,7 +76,9 @@ const routing = {
             persistHierarchicalRootCount: false,
         }"
     >   
-        <!-- <HiddenBox/> -->
+        <AisConfigure 
+            :filters="categoryFilter"
+        />
         <slot name="default"></slot>
     </AisInstantSearch>
 </template>

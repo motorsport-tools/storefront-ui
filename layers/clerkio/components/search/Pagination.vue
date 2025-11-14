@@ -94,7 +94,7 @@ const props = defineProps({
                             </button>
                         </div>
                     </li>
-                    <li v-if="!pages.includes(nbPages)">
+                    <li v-if="!pages.includes(nbPages -1)">
                         <div
                             :class="[
                                 'flex pt-1 border-t-4 border-transparent',

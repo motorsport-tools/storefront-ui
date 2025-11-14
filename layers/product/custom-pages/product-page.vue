@@ -7,8 +7,8 @@ import generateSeo, { type SeoEntity } from '~/utils/buildSEOHelper'
 
 const route = useRoute()
 
-const cleanPath = computed(() => route?.path?.replace(/\/$/, ''))
-const cleanFullPath = computed(() => route?.fullPath?.replace(/\/$/, ''))
+const cleanPath = computed(() => route?.path?.replace(/\/$/, '').toLowerCase().trim())
+const cleanFullPath = computed(() => route?.fullPath?.replace(/\/$/, '').toLowerCase().trim())
 
 definePageMeta({
   layout: 'default'
@@ -53,9 +53,9 @@ watch(
   () => cleanPath.value,
   async (slug) => {
     if (!slug) {
-        console.log('no slug returning')
         return;
     }
+
     await loadProductTemplate({ slug })
   },
   { immediate: true }
@@ -67,36 +67,33 @@ watch(
   async ([template, query]) => {
     if (!template?.id) {
       return
-    }    
+    }
+    
+    if (import.meta.server) {
+      return
+    }
+
     await loadProductVariant({
       combinationId: Object.values(query)?.map(value =>
         parseInt(value as string)
-      ),
+      ).filter(Boolean),
       productTemplateId: template.id,
     })
     addProductToRecentViews(template.id)
   },
-  { immediate: false, deep: true }
+  { immediate: true, deep: true }
 )
 
-if (import.meta.client) {
-    onMounted(() => {
-        if(productTemplate.value && productTemplate.value.id) {
-            productTemplate.value = { ...productTemplate.value }
-        }
-    })
-}
-
 const isLoadingPage = computed(() => {
-  const hasTemplate = productTemplate.value?.id
-  const hasVariant = productVariant.value?.id
-  const isTemplateLoading = loadingProductTemplate.value
-  const isVariantLoading = loadingProductVariant.value
-  return isTemplateLoading || isVariantLoading || !hasTemplate || !hasVariant
+  if (import.meta.server) {
+    return loadingProductTemplate.value
+  }
+  return loadingProductTemplate.value || loadingProductVariant.value
 })
 
 const hasProductData = computed(() => {
-  return productTemplate.value?.id && productVariant.value?.id
+  return productTemplate.value?.id && 
+         (import.meta.server || productVariant.value?.id)
 })
 
 const breadcrumbs = computed(() => {
@@ -143,6 +140,7 @@ const breadcrumbs = computed(() => {
                     />
                 </section>
                 <section class="col-span-5 grid-in-right md:mb-0">
+                    
                     <ProductInfo
                         :productTemplate
                         :productVariant
@@ -150,6 +148,7 @@ const breadcrumbs = computed(() => {
                         :regularPrice="getRegularPrice"
                         :loadingProductVariant
                     />
+                    
                 
                 </section>
                 <section class="grid-in-left-bottom md:mt-8">

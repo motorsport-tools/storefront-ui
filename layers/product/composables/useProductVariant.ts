@@ -12,6 +12,9 @@ export const useProductVariant = (slugWithCombinationIds: string) => {
   const productVariant = useState<CustomProductWithStockFromRedis>(`product-variant-${slugWithCombinationIds}`, () => ({}) as CustomProductWithStockFromRedis)
 
   const loadProductVariant = async (params: QueryProductVariantArgs) => {
+    if (import.meta.server) {
+      return
+    }
     loadingProductVariant.value = true
     const { data, status } = await useAsyncData(`product-variant-${slugWithCombinationIds}`, () =>
       $sdk().odoo.query<QueryProductVariantArgs, ProductVariantResponse>(

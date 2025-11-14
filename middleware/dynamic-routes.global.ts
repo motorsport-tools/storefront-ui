@@ -35,7 +35,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
             return
         }
 
-        await router.addRoute({
+        router.addRoute({
             path: to.path,
             name: slug.replace(/^\//, '').replace(/\//g, '-'),
             component: component,

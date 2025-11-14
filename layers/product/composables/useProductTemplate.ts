@@ -13,89 +13,64 @@ export const useProductTemplate = (slug: string) => {
   const { $sdk } = useNuxtApp()
 
   const loadingProductTemplate = useState(
-    'loading-product-template',
+    `loading-product-template`,
     () => false,
   )
-  const productTemplate = useState<CustomProductWithStockFromRedis>(`product-${cleanSlug}`,
+  const productTemplate = useState<CustomProductWithStockFromRedis>(`product-template`,
     () => ({} as CustomProductWithStockFromRedis),
   )
 
   const loadProductTemplate = async (params: QueryProductArgs) => {
-    if (productTemplate?.value?.id) {
+    if (productTemplate.value?.id && productTemplate.value?.slug?.replace(/\/$/, '').toLowerCase().trim() === params.slug) {
       return
     }
 
-    const { data, status, error } = await useAsyncData(`product-${cleanSlug}`, () =>
-      $sdk().odoo.query<QueryProductArgs, ProductResponse>(
-        { queryName: QueryName.GetProductTemplateQuery },
-        params,
-        { headers: useRequestHeaders() },
-      ),
-      { server: true, lazy: import.meta.client }
-    )
+    loadingProductTemplate.value = true
 
-    if (data.value?.product) {
-      if (import.meta.server) {
+    try {
+
+      const dataKey = `product-template-${cleanSlug}`
+
+      const { data, status, error } = await useAsyncData(dataKey, () =>
+        $sdk().odoo.query<QueryProductArgs, ProductResponse>(
+          { queryName: QueryName.GetProductTemplateQuery },
+          params,
+          { headers: useRequestHeaders() },
+        ),
+        {
+          server: true, lazy: false, deep: true,
+          getCachedData: (key) => {
+            const nuxtApp = useNuxtApp()
+            return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
+          }
+        }
+      )
+
+      if (error.value) {
+        loadingProductTemplate.value = false
+        throw showError({
+          statusCode: 404,
+          message: 'Product not found'
+        })
+      }
+
+      if (data.value?.product) {
         productTemplate.value = data.value.product as CustomProductWithStockFromRedis || {}
         loadingProductTemplate.value = false
-      }
 
-      if (!productTemplate.value?.id) {
-        showError({
-          status: 404,
-          message: 'Product not found',
-        })
+        if (!productTemplate.value?.id) {
+          showError({
+            status: 404,
+            message: 'Product not found',
+          })
+        }
       }
+    } catch (err) {
+      productTemplate.value = null
+    } finally {
+      loadingProductTemplate.value = false
     }
-
-    watch(status, () => {
-      if (status.value === 'pending') {
-        loadingProductTemplate.value = true
-      }
-      if (status.value === 'error' && !data.value?.product) {
-        loadingProductTemplate.value = false
-        showError({
-          status: 404,
-          message: 'Product not found',
-        })
-      }
-      if (status.value === 'success') {
-        loadingProductTemplate.value = false
-        productTemplate.value
-          = (data.value?.product as CustomProductWithStockFromRedis) || {}
-        productTemplate.value = { ...productTemplate.value }
-      }
-    })
   }
-
-  // const loadAlternativeProducts = async (params: QueryProductArgs) => {
-  //   const { data, error, status } = await useAsyncData(
-  //     `alternative-products-${cleanSlug}`,
-  //     () =>
-  //       $sdk().odoo.query<QueryProductArgs, ProductResponse>(
-  //         { queryName: QueryName.GetProductTemplateAlternativeQuery },
-  //         params,
-  //         { headers: useRequestHeaders() },
-  //       ),
-  //     { lazy: import.meta.client },
-  //   )
-
-  //   if (import.meta.server) {
-  //     productTemplate.value.alternativeProducts
-  //       = data?.value?.product?.alternativeProducts || []
-  //   }
-
-  //   watch(status, () => {
-  //     if (status.value === 'pending') {
-  //       loadingProductTemplate.value = true
-  //     }
-  //     if (status.value === 'success') {
-  //       loadingProductTemplate.value = false
-  //       productTemplate.value.alternativeProducts
-  //         = data?.value?.product?.alternativeProducts || []
-  //     }
-  //   })
-  // }
 
   const specialPrice = computed(() => {
     if (!productTemplate.value?.firstVariant) {

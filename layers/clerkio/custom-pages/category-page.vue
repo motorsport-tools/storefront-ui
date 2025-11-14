@@ -118,7 +118,7 @@ const limitOptions = [
                             <template #prefix>
                                 <SfIconTune />
                             </template>
-                            {{ $t('filters') }}
+                            {{ $t('filters.heading') }}
                         </SfButton>
                     </div>
                     

@@ -22,9 +22,9 @@ const { cart, cartAdd } = useCart()
 const quantitySelectorValue = ref(1)
 
 const handleCartAdd = async () => {
-  let id = productVariant?.value.id
-  if (!productVariant.value.combinationInfoVariant) {
-    id = Number(productVariant?.value?.id)
+  let id = productVariant.value?.id
+  if (!productVariant.value?.combinationInfoVariant) {
+    id = Number(productVariant.value?.id)
   }
   await cartAdd(id, quantitySelectorValue.value)
 }
@@ -33,7 +33,7 @@ const productsInCart = computed(() => {
   return (
     cart.value?.order?.websiteOrderLine?.find(
       (orderLine: OrderLine) =>
-        orderLine.product?.id === productVariant?.value.id,
+        orderLine.product?.id === productVariant.value?.id,
     )?.quantity || 0
   )
 })

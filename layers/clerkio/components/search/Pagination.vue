@@ -115,7 +115,6 @@ const props = defineProps({
                     </li>
 
                 </ul>
-                {{ !pages.includes(nbPages -1) && pages[pages.length -1] > 1}}
                 <SfButton
                     type="button"
                     size="lg"

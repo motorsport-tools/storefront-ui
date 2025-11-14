@@ -14,7 +14,7 @@ const searchTitle = computed( () => {
 
 const breadcrumbs = [
     { name: "Home", link: "/" },
-    { name: "Search", link: "/" },
+    { name: "Search", link: "/search" },
     { name: `Results "${searchTitle.value}"`}
 ]
 

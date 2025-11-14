@@ -10,6 +10,10 @@ const route = useRoute()
 const cleanPath = computed(() => route?.path?.replace(/\/$/, ''))
 const cleanFullPath = computed(() => route?.fullPath?.replace(/\/$/, ''))
 
+definePageMeta({
+  layout: 'default'
+})
+
 useHead({
     script: [
         {

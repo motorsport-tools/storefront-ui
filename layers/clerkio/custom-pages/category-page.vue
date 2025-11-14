@@ -7,6 +7,10 @@ defineProps({
   category: ref<Category>
 })
 
+definePageMeta({
+  layout: 'category'
+})
+
 const { $i18n } = useNuxtApp()
 const { user } = useAuth()
 const { open, close, isOpen } = useDisclosure()

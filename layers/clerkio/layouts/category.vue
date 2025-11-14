@@ -22,8 +22,10 @@ watch(
     async ([newPath], [oldPath]) => {
 
         if(newPath && newPath !== oldPath) {
+            if(route.meta.layout === 'category') {
             await loadCategory({ slug: String(newPath) })
-            console.log('New category Loaded:', category.value.name)
+                console.log('New category Loaded:', category.value.name)
+            }
         }
     },
     { immediate: true, deep: true }

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { AisInstantSearch, AisConfigure } from "vue-instantsearch/vue3/es";
+import { history } from 'instantsearch.js/es/lib/routers';
 
 //= defineAsyncComponent(() => import('../../widgets/HiddenBox.vue'))
 
@@ -16,6 +17,9 @@ const currentHitsPerPage = ref(80)
 provide('hitsPerPage', currentHitsPerPage)
 
 const routing = {
+    router: history({
+        cleanUrlOnDispose: false
+    }),
     stateMapping: {
           stateToRoute(uiState) {
             const indexState = uiState[indexName.value]
@@ -73,7 +77,7 @@ const routing = {
             persistHierarchicalRootCount: false,
         }"
     >   
-        <!-- <HiddenBox/> -->
+        <SearchHiddenBox/>
         <slot name="default"></slot>
     </AisInstantSearch>
 </template>

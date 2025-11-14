@@ -42,7 +42,7 @@ const routing = {
                 [indexName.value]: {
                     query: routeState.q,
                     hierarchicalMenu: {
-                        _category_lvl0: routeState.categories || []
+                        ...(routeState.categories ? { _category_lvl0: routeState.categories } : {} ),
                     },
                     refinementList: {
                         ...(routeState.brands ? { brand: routeState.brands } : {}),

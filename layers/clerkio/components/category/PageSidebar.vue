@@ -42,17 +42,6 @@ const props = defineProps<{
                 </li>
             </ul>
         </div>
-        <!--
-        <SearchHierarchicalFilter
-            :attributes="['_category_lvl0','_category_lvl1','_category_lvl2','_category_lvl3','_category_lvl4', '_category_lvl5', '_category_lvl6']" 
-            initial-sort-by="count" 
-            separator="  >  "
-            :limit="12"
-            class="mb-5" 
-            label="Category"
-            :showParentLevel="true"
-        />
-        -->
         <SearchSidebarHeading>
             {{ $t('filters.heading') }}
             <template #affix>

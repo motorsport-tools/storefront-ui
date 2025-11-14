@@ -45,7 +45,7 @@ const routing = {
                         _category_lvl0: routeState.categories || []
                     },
                     refinementList: {
-                        ...(routeState.brand ? { brand: routeState.brand } : {}),
+                        ...(routeState.brands ? { brand: routeState.brands } : {}),
                         ...(routeState.fits ? { fits: routeState.fits } : {}),
                         ...(routeState.has_stock ? { has_stock: routeState.has_stock } : {}),
                         ...(routeState.on_sale ? { on_sale: routeState.on_sale } : {})

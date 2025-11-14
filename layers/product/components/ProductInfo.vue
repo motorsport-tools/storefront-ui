@@ -39,11 +39,11 @@ const productsInCart = computed(() => {
 })
 
 const isStock = computed(() => {
-    return Boolean(productVariant.value?.stock > 0 || productVariant.value?.combinationInfoVariant['allow_out_of_stock_order'])
+    return Boolean(productVariant.value?.stock > 0 || productVariant.value?.combinationInfoVariant?.allow_out_of_stock_order)
 })
 
 const maxQty = computed(() => {
-    if(productVariant.value?.combinationInfoVariant['allow_out_of_stock_order']) {
+    if(productVariant.value?.combinationInfoVariant?.allow_out_of_stock_order) {
         return 999
     } else {
         return productVariant.value.stock || 0
@@ -90,7 +90,7 @@ const maxQty = computed(() => {
                     :showAvailability="productVariant?.combinationInfoVariant['show_availability']"
                     :availableThreshold="productVariant?.combinationInfoVariant['available_threshold']"
                     :isStock="isStock"
-                    :allowOutOfStockOrder="productVariant?.combinationInfoVariant['allow_out_of_stock_order'] || false"
+                    :allowOutOfStockOrder="productVariant?.combinationInfoVariant?.allow_out_of_stock_order || false"
                 />
             </ClientOnly>
         </div>

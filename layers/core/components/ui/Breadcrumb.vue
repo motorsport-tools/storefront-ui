@@ -41,7 +41,6 @@ const computedBreadcrumbs = computed(() => {
   if (first.name === 'home' && first.link === '/') return arr
   return [{ name: 'home', link: '/' }, ...arr]
 })
-
 </script>
 
 <template>

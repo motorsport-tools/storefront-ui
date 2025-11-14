@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { AisInstantSearch, AisConfigure } from "vue-instantsearch/vue3/es";
+import { history } from 'instantsearch.js/es/lib/routers';
 import type { Category } from "~/graphql";
 const props = defineProps<{
     indexName: string;
@@ -13,6 +14,9 @@ const currentHitsPerPage = ref(80)
 provide('hitsPerPage', currentHitsPerPage)
 
 const routing = {
+    router: history({
+        cleanUrlOnDispose: false
+    }),
     stateMapping: {
           stateToRoute(uiState) {
             const indexState = uiState[indexName.value]

@@ -3,32 +3,42 @@ import { SfButton, SfIconTune, useDisclosure } from '@storefront-ui/vue'
 import generateSeo, { type SeoEntity } from '~/utils/buildSEOHelper'
 import type { Category } from "~/graphql";
 
-defineProps({
-  category: ref<Category>
-})
-
 definePageMeta({
   layout: 'category'
 })
+const emit = defineEmits(['category-loaded']);
 
 const { $i18n } = useNuxtApp()
 const { user } = useAuth()
 const { open, close, isOpen } = useDisclosure()
-const { category } = useCategory()
+const route = useRoute()
+const { loadCategory } = useCategory()
+const { category, setCategory } = useCategoryData()
+
+const { data, refresh } = await useAsyncData(
+  `category-${route.path}`,
+  () => loadCategory({ slug: route.path }),
+  { watch: [() => route.path] }
+)
+
+watch(() => data.value, (val:Category | null) => {
+    setCategory(val)
+    
+},{ immediate: true })
+
 watch(isTabletScreen, (value) => {
   if (value && isOpen.value) {
     close()
   }
 })
 
-useHead(generateSeo<SeoEntity>(category.value, 'Category'))
-
-const categoryIdStr = computed(() => category.value?.id?.toString() || '')
+if(category.value?.id) {
+    useHead(generateSeo<SeoEntity>(category.value, 'Category'))
+}
 
 const searchTitle = computed( () => {
     return $i18n.t('category')+` `+`: ${category.value?.name || ''}`
 })
-
 
 
 const sortingOptions = [
@@ -62,7 +72,7 @@ const limitOptions = [
             class="pb-20"
         >
             <UiBreadcrumb
-                :breadcrumbs="category.breadcrumb"
+                :breadcrumbs="category?.breadcrumb"
                 class="self-start mt-5 mb-5"
             />
             <h1

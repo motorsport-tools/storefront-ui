@@ -13,6 +13,7 @@ export const useSearchClient = (config = {}) => {
         searchableAttributes: ['name', 'brand', 'sku'],
         defaultFacets: ['price', 'fits', 'brand', 'on_sale', 'has_stock'],
         cacheTTL: 120000,
+        isCategoryPage: false,
     }
 
     const mergedConfig = { ...defaultConfig, ...config }

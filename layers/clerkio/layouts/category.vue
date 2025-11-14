@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import type { Category } from "~/graphql";
+const { category } = useCategoryData()
+
+const route =  useRoute()
 const { isVisualEditingEnabled } = useVisualEditing()
 
 const {
@@ -13,29 +17,16 @@ const {
 
 const navigationMenu = computed(() => siteData.value?.headerNavigation || {})
 const footer = useTemplateRef('footerRef')
-
-const { loadCategory, category } = useCategory()
-const route = useRoute()
-
-watch(
-    [() => route.path],
-    async ([newPath], [oldPath]) => {
-
-        if(newPath && newPath !== oldPath) {
-            if(route.meta.layout === 'category') {
-            await loadCategory({ slug: String(newPath) })
-                console.log('New category Loaded:', category.value.name)
-            }
-        }
-    },
-    { immediate: true, deep: true }
-)
 </script>
 <template>
-    <CategoryProvider index-name="categories" :category="category">
+    <CategoryProvider 
+        :key="`category-${category?.id}`"
+        index-name="categories" 
+        :category="category"
+    >
         <SiteHeader 
-        :headerNavigation="navigationMenu"
-        :refresh="refresh"
+            :headerNavigation="navigationMenu"
+            :refresh="refresh"
         >
             <template #search>
 

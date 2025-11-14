@@ -1,7 +1,6 @@
 import type {
   Category,
   CategoryResponse,
-  QueryCategoriesArgs,
   QueryCategoryArgs,
 } from "~/graphql";
 import { QueryName } from "~/server/queries/index";
@@ -9,44 +8,28 @@ import { QueryName } from "~/server/queries/index";
 export const useCategory = () => {
   const { $sdk } = useNuxtApp();
 
-  const loading = useState('category-loading', () => false)
-  const category = useState<Category>('category', () => ({} as Category))
-
   const loadCategory = async (params: { slug: string }) => {
     const cleanParam = {
       slug: params.slug?.endsWith('/')
         ? params.slug?.slice(0, -1)
         : params.slug,
     }
-    const { data, status } = await useAsyncData(`category-${cleanParam.slug}`,
-      () =>
-        $sdk().odoo.query<QueryCategoryArgs, CategoryResponse>(
-          { queryName: QueryName.GetCategoryQuery },
-          cleanParam as QueryCategoryArgs,
-          { headers: useRequestHeaders() },
-        ),
+
+    const data = await $sdk().odoo.query<QueryCategoryArgs, CategoryResponse>(
+      { queryName: QueryName.GetCategoryQuery },
+      cleanParam as QueryCategoryArgs,
+      { headers: useRequestHeaders() }
     )
 
-    if (data.value?.category?.id === 0) {
-      showError({
+    if (data?.category?.id === 0) {
+      createError({
         status: 404,
       })
     }
-    category.value = data.value?.category || ({} as Category)
-
-    watch(status, () => {
-      if (status.value === 'pending') {
-        loading.value = true
-      }
-      if (status.value === 'success' || status.value === 'error') {
-        loading.value = false
-      }
-    }) 
+    return data?.category || ({} as Category)
   }
 
   return {
-    loading,
-    category,
     loadCategory,
   };
 };

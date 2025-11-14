@@ -1,15 +1,13 @@
 <script lang="ts" setup>
 import { AisInstantSearch, AisConfigure } from "vue-instantsearch/vue3/es";
-
+import type { Category } from "~/graphql";
 const props = defineProps<{
     indexName: string;
-    category: any;
+    category?: object | any;
 }>();
 
-const route = useRoute()
-
-const { indexName, category } = toRefs(props);
-const searchClient = useSearchClient()
+const { indexName } = toRefs(props);
+const searchClient = useSearchClient({ isCategoryPage: true })
 
 const currentHitsPerPage = ref(80)
 provide('hitsPerPage', currentHitsPerPage)
@@ -19,8 +17,8 @@ const routing = {
           stateToRoute(uiState) {
             const indexState = uiState[indexName.value]
 
-            if(indexName.hitsPerPage) {
-                currentHitsPerPage.value = indexName.hitsPerPage
+            if(indexState.hitsPerPage) {
+                currentHitsPerPage.value = indexState.hitsPerPage
             }
 
             return {
@@ -59,15 +57,22 @@ const routing = {
         },
     },
 }
-
-const categoryFilter = computed(() => {
-    if (!category.value?.id) return ''
-    return `_all_categories in ['${category.value.id}']`
-})
+const categoryFilter = ref('')
+watch(
+  () => props.category?.id,
+  (id) => {
+    if (id) {
+      categoryFilter.value = `_all_categories in ['${id}']`
+    } else {
+      categoryFilter.value = ''
+    }
+  },{immediate: true}
+)
 </script>
 
 <template>
     <AisInstantSearch
+        :key="`category-${props.category?.id}`"
         :indexName="indexName"
         :search-client="searchClient "
         :routing="routing"
@@ -76,7 +81,8 @@ const categoryFilter = computed(() => {
             persistHierarchicalRootCount: false,
         }"
     >   
-        <AisConfigure 
+        <AisConfigure
+            :key="`category-${props.category?.id}`"
             :filters="categoryFilter"
         />
         <slot name="default"></slot>

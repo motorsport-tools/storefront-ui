@@ -94,7 +94,7 @@ const props = defineProps({
                             </button>
                         </div>
                     </li>
-                    <li v-if="!pages.includes(nbPages -1)">
+                    <li v-if="!pages.includes(nbPages -1) && pages[pages.length -1] > 1">
                         <div
                             :class="[
                                 'flex pt-1 border-t-4 border-transparent',
@@ -115,6 +115,7 @@ const props = defineProps({
                     </li>
 
                 </ul>
+                {{ !pages.includes(nbPages -1) && pages[pages.length -1] > 1}}
                 <SfButton
                     type="button"
                     size="lg"

@@ -13,15 +13,7 @@ const searchTitle = computed( () => {
     } else {
         title = $i18n.t('All Products')+' '
     }
-    if(route.query) {
-        title += $i18n.t('filters.brand')+': '
-
-        const brands = Object.keys(route.query)
-        .filter(key => key.startsWith('brands['))
-        .map(key => route.query[key]);
-        
-        title += brands.join(', ')
-    }
+    
     return title
 })
 

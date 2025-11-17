@@ -22,7 +22,7 @@ const toValue = (currentValue: Range, boundaries: Range): [number, number] => {
 </script>
 
 <template>
-  <AisPanel>
+  <AisPanel class="!border-0 !mb-0">
     <template #default="{ hasRefinements }">
       <AisRangeInput
         v-if="hasRefinements" 

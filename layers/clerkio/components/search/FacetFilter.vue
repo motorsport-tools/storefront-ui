@@ -44,7 +44,7 @@ const filterOutEmptyFacets = (items: any) => {
 </script>
 
 <template>
-    <AisPanel>
+    <AisPanel class="!border-0 !mb-0">
         <template #default="{ hasRefinements }">
             <div 
                 v-if="hasRefinements"

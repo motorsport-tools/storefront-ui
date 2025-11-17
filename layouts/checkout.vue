@@ -10,16 +10,6 @@ const {
 })
 const navigationMenu = computed(() => siteData.value?.headerNavigation || {})
 const { cart, loading } = useCart();
-
-useHead({
-    script: [
-        {
-            src: 'https://js.stripe.com/v3/',
-            type: 'text/javascript',
-            async: true,
-        },
-    ]
-})
 </script>
 
 <template>

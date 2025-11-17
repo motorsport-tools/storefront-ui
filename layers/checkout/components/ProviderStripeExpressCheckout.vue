@@ -287,7 +287,7 @@
           applePay: 'always',
           googlePay: 'always',
           paypal: 'auto',
-          link: 'auto'
+          link: 'never',
         },
         buttonType: {
           googlePay: 'checkout',
@@ -450,7 +450,13 @@
   };
   
   // Initialize component
-  onMounted(initStripeExpressCheckout);
+  onMounted( async () => {
+    const { proxy, onLoaded } = useScript('https://js.stripe.com/v3/')
+    onLoaded(() => {
+      initStripeExpressCheckout()
+    })
+  })
+
   
   // Clean up on unmount
   onBeforeUnmount(() => {

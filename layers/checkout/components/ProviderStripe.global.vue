@@ -45,7 +45,7 @@ const emit = defineEmits([
     'paymentLoading',
 ]);
 
-onMounted( async () => {
+const initStripeCheckout = async () => {
     if (!window.Stripe) {
         console.error('Failed to initialize Stripe')
         return
@@ -89,6 +89,9 @@ onMounted( async () => {
         defaultValues: {
             billingDetails: inlineFormValues['billing_details'],
         },
+        paymentMethods: {
+            link: 'never',
+        }
     }
 
     stripeDropin.value = stripeElement.value.create(
@@ -142,7 +145,14 @@ onMounted( async () => {
     stripeDropin.value?.mount('#dropin-container')
 
     loading.value = false
-    emit('providerPaymentHandler', stripeDropin.value.submit);
+    emit('providerPaymentHandler', stripeDropin.value?.submit);
+}
+
+onMounted( async () => {
+    const { proxy, onLoaded } = useScript('https://js.stripe.com/v3/')
+    onLoaded(() => {
+        initStripeCheckout()
+    })
 })
 
 onBeforeUnmount(() => {

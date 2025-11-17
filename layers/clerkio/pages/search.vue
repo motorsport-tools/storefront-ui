@@ -7,15 +7,28 @@ const { open, close, isOpen } = useDisclosure()
 const query = computed(() => route.query.q ? route.query.q : null)
 
 const searchTitle = computed( () => {
-    if(query.value) return query.value
-    
-    return $i18n.t('All Products')
+    let title = null
+    if(route.query.q) {
+        title = '"'+route.query.q+'"'
+    } else {
+        title = $i18n.t('All Products')+' '
+    }
+    if(route.query) {
+        title += $i18n.t('filters.brand')+': '
+
+        const brands = Object.keys(route.query)
+        .filter(key => key.startsWith('brands['))
+        .map(key => route.query[key]);
+        
+        title += brands.join(', ')
+    }
+    return title
 })
 
 const breadcrumbs = [
     { name: "Home", link: "/" },
     { name: "Search", link: "/search" },
-    { name: `Results "${searchTitle.value}"`}
+    { name: `Results ${searchTitle.value}`}
 ]
 
 watch(isTabletScreen, (value) => {
@@ -61,7 +74,7 @@ const limitOptions = [
         <h1
             class="font-bold typography-headline-3 md:typography-headline-2 mb-10"
         >
-            {{ $t('searchPage.showResults') }} "{{ searchTitle }}"
+            {{ $t('searchPage.showResults') }} {{ searchTitle }}
         </h1>
         <div class="grid grid-cols-12 lg:gap-x-6">
             <SearchPageSidebar

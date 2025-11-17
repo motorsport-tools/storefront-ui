@@ -2,14 +2,9 @@
 import { AisInstantSearch, AisConfigure } from "vue-instantsearch/vue3/es";
 import { history } from 'instantsearch.js/es/lib/routers';
 
-//= defineAsyncComponent(() => import('../../widgets/HiddenBox.vue'))
-
 const props = defineProps<{
     indexName: string;
 }>();
-
-const route = useRoute()
-
 const { indexName } = toRefs(props);
 const searchClient = useSearchClient()
 
@@ -23,7 +18,6 @@ const routing = {
     stateMapping: {
           stateToRoute(uiState) {
             const indexState = uiState[indexName.value]
-
             if(indexName.hitsPerPage) {
                 currentHitsPerPage.value = indexName.hitsPerPage
             }
@@ -51,6 +45,8 @@ const routing = {
                     refinementList: {
                         ...(routeState.brands ? { brand: routeState.brands } : {}),
                         ...(routeState.fits ? { fits: routeState.fits } : {}),
+                    },
+                    toggle: {
                         ...(routeState.has_stock ? { has_stock: routeState.has_stock } : {}),
                         ...(routeState.on_sale ? { on_sale: routeState.on_sale } : {})
                     }
@@ -67,14 +63,14 @@ const routing = {
 </script>
 
 <template>
-    <AisInstantSearch 
+    <AisInstantSearch
         ref="searchRef"
         :index-name="indexName"
         :search-client="searchClient "
         :routing="routing"
         :future="{
             preserveSharedStateOnUnmount: true,
-            persistHierarchicalRootCount: false,
+            persistHierarchicalRootCount: true,
         }"
     >   
         <SearchHiddenBox/>

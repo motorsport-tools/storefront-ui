@@ -12,6 +12,7 @@ export const useSearchClient = (config = {}) => {
         ],
         searchableAttributes: ['name', 'brand', 'sku'],
         defaultFacets: ['price', 'fits', 'brand', 'on_sale', 'has_stock'],
+        disjunctiveFacets: ['on_sale', 'has_stock', 'price', 'fits'],
         cacheTTL: 120000,
         isCategoryPage: false,
     }
@@ -40,6 +41,7 @@ export const useSearchClient = (config = {}) => {
             this.retrievableAttributes = config.retrievableAttributes || []; // Your 'attributes' parameter
             this.primaryKey = config.primaryKey || 'id';
             this.defaultFacets = config.defaultFacets || []; // Default facets to always include
+            this.disjunctiveFacets = config.disjunctiveFacets || []
             this.maxCategoryDepth = config.maxCategoryDepth || 6;
             this.cache = new Map();
             this.cacheTTL = config.cacheTTL || 60000; // 1 minute default
@@ -69,8 +71,10 @@ export const useSearchClient = (config = {}) => {
             if (this.retrievableAttributes && this.retrievableAttributes.length > 0) {
                 apiRequest.attributes = this.retrievableAttributes;
             }
-
-            let facets = [...this.defaultFacets];
+            let facets = []
+            if (params.hitsPerPage > 0) {
+                facets = [...this.defaultFacets]
+            }
 
             if (params.facets && params.facets.length > 0) {
                 if (typeof params.facets === 'string') {
@@ -399,7 +403,9 @@ export const useSearchClient = (config = {}) => {
         async search(requests) {
             try {
                 const responses = await Promise.all(
-                    requests.map(request => this.searchSingle(request))
+                    requests.map(request => {
+                        return this.searchSingle(request)
+                    })
                 );
 
                 return { results: responses };

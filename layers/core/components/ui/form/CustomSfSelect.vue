@@ -58,7 +58,7 @@ const modelProxy = computed({
 
 <template>
   <span
-    :class="['relative flex flex-col rounded-md', {
+    :class="['relative flex flex-col rounded-md grow', {
                'focus-within:outline focus-within:outline-offset': isFocusVisible,
              },
              wrapperClassName,

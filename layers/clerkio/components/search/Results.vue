@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
-import { AisHits, AisPagination} from "vue-instantsearch/vue3/es";
+import { AisHits} from "vue-instantsearch/vue3/es";
 
 const { Pid } = useAuth()
 </script>

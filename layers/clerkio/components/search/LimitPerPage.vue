@@ -21,6 +21,7 @@ const { options } = toRefs(props);
             <UiFormCustomSfSelect
                 :model-value="items.find(i => i.isRefined)?.value ?? null"
                 @update:modelValue="refine"
+                class="min-w-[140px]"
             >
                 <option
                     v-for="option in items"
@@ -31,9 +32,9 @@ const { options } = toRefs(props);
                     {{$t('show') }}: {{ option.label }}
                 </option>
             </UiFormCustomSfSelect>
+            <span class="ml-2 text-[12px]">
+                {{ $t('productsPerPage') }}
+            </span>
         </template>
     </AisHitsPerPage>
-    <span class="text-[12px]">
-        {{ $t('productsPerPage') }}
-    </span>
 </template>

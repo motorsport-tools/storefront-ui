@@ -84,7 +84,7 @@ const limitOptions = [
                         />
                         <SearchLimitPerPage 
                             :options="limitOptions"
-                            class="min-w-[140px] mr-2"
+                            class="mr-2 flex flex-row items-center"
                         />
                     </div>
                     <div class="flex justify-between items-center mb-6">

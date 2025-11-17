@@ -187,6 +187,10 @@ export const useAuth = () => {
     return Boolean(userCookie.value)
   });
 
+  const Pid = computed(() => {
+    return user.value?.publicPricelist?.id || 4
+  })
+
   return {
     signup,
     logout,
@@ -196,6 +200,7 @@ export const useAuth = () => {
     changeForgottenPassword,
     user,
     loading,
+    Pid,
     successResetEmail,
     updatePassword,
     loadUser,

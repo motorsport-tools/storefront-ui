@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
 import { AisHits, AisPagination} from "vue-instantsearch/vue3/es";
+
+const { Pid } = useAuth()
 </script>
 
 <template>
@@ -12,7 +14,7 @@ import { AisHits, AisPagination} from "vue-instantsearch/vue3/es";
                 <LazyUiProductCard
                     v-for="product in items"
                     :key="product?.id"
-                    :pid="pid"
+                    :pid="Pid"
                     :isSearch="true"
                     :slug=" mountUrlSlugForProductVariant(product.firstVariant as Product || product as Product) || '' "
                     :name="product?.name || ''"

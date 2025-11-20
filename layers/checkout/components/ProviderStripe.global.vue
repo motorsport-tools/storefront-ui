@@ -46,6 +46,7 @@ const emit = defineEmits([
 ]);
 
 const initStripeCheckout = async () => {
+    emit('paymentLoading', true);
     if (!window.Stripe) {
         console.error('Failed to initialize Stripe')
         return
@@ -111,6 +112,16 @@ const initStripeCheckout = async () => {
         emit('paymentLoading', false);
     })
     
+    stripeDropin.value?.on('change', event => {
+         emit('paymentLoading', true);
+        if(event.complete) {
+            emit('isPaymentReady', true);
+        } else {
+            emit('isPaymentReady', false);
+        }
+         emit('paymentLoading', false);
+    })
+
     stripeDropin.value.submit = async (event: Event) => {
         emit('isPaymentReady', false);
         emit('paymentLoading', true);

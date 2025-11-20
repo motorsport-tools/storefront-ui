@@ -60,7 +60,6 @@ onMounted(() => {
                 @update="updateStepData"
                 @click="goToStep(step.id)"
             />
-            
             <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
         </div>
     </div>

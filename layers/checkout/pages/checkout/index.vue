@@ -50,7 +50,7 @@ const checkoutSteps = [
         addressType: AddressEnum.Shipping,
         condition: () => {
             const billingData = getStepData('billing-address')
-            if(billingData?.useDelivery || !billingData) {
+            if(billingData.value?.useDelivery || !billingData.value) {
                 return false
             }
             return true

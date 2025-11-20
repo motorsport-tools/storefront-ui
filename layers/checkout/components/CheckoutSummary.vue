@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SfButton, SfLink } from "@storefront-ui/vue";
+import { SfButton, SfLink, SfLoaderCircular } from "@storefront-ui/vue";
 import type { PaymentMethod } from "~/graphql";
 
 const props = defineProps<{
@@ -8,41 +8,33 @@ const props = defineProps<{
 }>();
 
 const { cart } = useCart();
-const router = useRouter();
 const { makeGiftCardPayment, loading: discountLoading } = useDiscount();
-const { paymentProviders } = usePayment();
 
 const isPaymentWithCardReady = ref(false);
 const providerPaymentHandler = ref();
 const selectedMethod = ref<PaymentMethod | null>(null);
 const loading = ref(false);
-const showPaymentModal = ref(false);
+
 const giftCards = ref(cart.value?.order?.giftCards);
 
 const hasFullPaymentWithGiftCard = computed(() =>
   giftCards.value?.length > 0 && cart.value?.order?.amountTotal === 0,
 )
 
-
-onMounted(async () => {
-  if (paymentProviders.value.length > 0) {
-    showPaymentModal.value = true;
-  }
-});
-
-
 const handleGiftCardPayment = async () => {
   await makeGiftCardPayment();
 }
 
 //const paymentData = getStepData('payment')
-const paymentData = computed(() => props.getStepData('payment'))
+const paymentData = props.getStepData('payment')
 
 const readyToPay = computed(() => {
-  
   selectedMethod.value = paymentData.value?.paymentMethod || null
 
-  return paymentData.value?.paymentMethod && isPaymentWithCardReady.value && !loading.value && props.allStepsCompleted
+  if(paymentData.value?.paymentMethod?.id && isPaymentWithCardReady.value && !loading.value && props.allStepsCompleted) return true
+
+  return false
+  
 })
 </script>
 
@@ -62,10 +54,19 @@ const readyToPay = computed(() => {
       v-else
       size="lg"
       class="w-full mb-4 md:mb-0"
-      :disabled="!readyToPay"
+      :disabled="!readyToPay || loading"
       @click="providerPaymentHandler"
     >
+      <span v-if="loading">
+        <SfLoaderCircular
+          v-if="loading"
+          class="ml-2 text-white"
+          size="sm"
+        />
+      </span>
+      <span v-else>
       {{ $t("placeOrder") }}
+      </span>
     </SfButton>
 
     <p class="text-sm text-center mt-4 pb-4 md:pb-0">
@@ -91,7 +92,6 @@ const readyToPay = computed(() => {
 
     <component
       v-if="
-        showPaymentModal &&
         !!selectedMethod?.providerCode &&
         !hasFullPaymentWithGiftCard
       "

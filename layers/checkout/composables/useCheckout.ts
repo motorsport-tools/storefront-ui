@@ -146,9 +146,10 @@ export const useCheckout = () => {
 
     // Get data from a specific step
     const getStepData = (stepId: string) => {
-        const step = steps.value.find(s => s.id === stepId)
-        if (!step) return ref({}) as any
-        return step.data as any
+        return computed(() => {
+            const step = steps.value.find(s => s.id === stepId)
+            return step?.data || {} as any
+        })
     }
 
     // Get all checkout data
@@ -168,7 +169,7 @@ export const useCheckout = () => {
         return currentInApplicable === applicable.length - 1
     })
     const allStepsCompleted = computed(() => {
-        return applicableSteps.value.every(s => s.completed)
+        return applicableSteps.value.filter(step => !step.condition || step.condition()).every(s => s.completed)
     })
 
 

@@ -13,7 +13,7 @@ const { makeGiftCardPayment, loading: discountLoading } = useDiscount();
 const isPaymentWithCardReady = ref(false);
 const providerPaymentHandler = ref();
 const selectedMethod = ref<PaymentMethod | null>(null);
-const loading = ref(false);
+const loading = ref(true);
 
 const giftCards = ref(cart.value?.order?.giftCards);
 
@@ -49,7 +49,6 @@ const readyToPay = computed(() => {
     >
       {{ $t("placeOrder") }}
     </SfButton>
-
     <SfButton
       v-else
       size="lg"
@@ -59,13 +58,12 @@ const readyToPay = computed(() => {
     >
       <span v-if="loading">
         <SfLoaderCircular
-          v-if="loading"
           class="ml-2 text-white"
           size="sm"
         />
       </span>
       <span v-else>
-      {{ $t("placeOrder") }}
+        {{ $t("placeOrder") }}
       </span>
     </SfButton>
 

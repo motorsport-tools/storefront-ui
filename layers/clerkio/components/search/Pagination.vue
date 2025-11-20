@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import { AisPagination } from "vue-instantsearch/vue3/es";
-import { SfIconChevronRight, SfIconChevronLeft, SfButton } from '@storefront-ui/vue';
+import { SfIconChevronRight, SfIconChevronLeft, SfButton, Scrollable } from '@storefront-ui/vue';
 const props = defineProps({
     maxVisiblePages: {
         type: Number,
         default: 5
     }
 })
+
+const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 </script>
 <template>
-    <AisPagination>
+    <AisPagination
+    >
         <template #default="{currentRefinement, nbPages, pages, isFirstPage, isLastPage, refine, createURL}">
             <nav class="flex justify-between items-end border-t border-neutral-200" role="navigation" aria-label="pagination">
                 <SfButton
@@ -19,7 +24,7 @@ const props = defineProps({
                     aria-label="Go to previous page"
                     :disabled="isFirstPage"
                     variant="tertiary"
-                    @click.prevent="createURL(currentRefinement - 1)"
+                    @click.prevent="createURL(currentRefinement - 1); scrollToTop();"
                 >
                     <template #prefix>
                         <SfIconChevronLeft />
@@ -40,7 +45,7 @@ const props = defineProps({
                                     type="button"
                                     class="px-4 py-3 md:w-12 rounded-md text-neutral-500 hover:bg-primary-100 hover:text-primary-800 active:bg-primary-200 active:text-primary-900"
                                     :aria-current="currentRefinement === 0"
-                                    @click.prevent="refine(0); createURL(0);"
+                                    @click.prevent="refine(0); createURL(0); scrollToTop();"
                                 >
                                     1
                                 </button>
@@ -76,7 +81,7 @@ const props = defineProps({
                                 },
                                 ]"
                                 :aria-current="currentRefinement === page"
-                                @click.prevent="refine(page); createURL(page);"
+                                @click.prevent="refine(page); createURL(page); scrollToTop();"
                             >
                                 {{ page + 1 }}
                             </button>
@@ -107,7 +112,7 @@ const props = defineProps({
                                 type="button"
                                 class="px-4 py-3 md:w-12 rounded-md text-neutral-500 hover:bg-primary-100 hover:text-primary-800 active:bg-primary-200 active:text-primary-900"
                                 :aria-current="currentRefinement === 0"
-                                @click.prevent="refine(nbPages); createURL(nbPages);"
+                                @click.prevent="refine(nbPages); createURL(nbPages); scrollToTop();"
                             >
                                 {{ nbPages }}
                             </button>
@@ -122,7 +127,7 @@ const props = defineProps({
                     aria-label="Go to next page"
                     :disabled="isLastPage"
                     variant="tertiary"
-                    @click.prevent="createURL(currentRefinement + 1)"
+                    @click.prevent="createURL(currentRefinement + 1); scrollToTop();"
                 >
                     <span class="hidden sm:inline-flex">Next</span>
                     <template #suffix>

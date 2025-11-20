@@ -144,6 +144,22 @@ export const useCheckout = () => {
         }
     }
 
+    // Reset Delivery Onwards
+    const resetCheckoutFromStep = (stepId: string) => {
+        const targetIndex = steps.value.findIndex(s => s.id === stepId)
+        if (targetIndex === -1) return
+        const targetStep = steps.value.find(s => s.id === stepId)
+        if (!targetStep) return
+
+        steps.value.slice(targetIndex).forEach(step => {
+            step.completed = false
+            step.data = {}
+        })
+
+        currentStepId.value = targetStep.id
+        saveToStorage()
+    }
+
     // Get data from a specific step
     const getStepData = (stepId: string) => {
         return computed(() => {
@@ -196,6 +212,7 @@ export const useCheckout = () => {
         updateStepData,
         resetCheckout,
         getStepData,
-        getAllData
+        getAllData,
+        resetCheckoutFromStep
     }
 }

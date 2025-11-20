@@ -112,7 +112,6 @@ const initStripeCheckout = async () => {
     })
     
     stripeDropin.value?.on('change', event => {
-        console.log('Event:', event)
         emit('paymentLoading', true);
         if(event.complete) {
             emit('isPaymentReady', true);

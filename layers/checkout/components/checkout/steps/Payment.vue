@@ -2,6 +2,7 @@
 const props = defineProps<{
     stepData?: Record<string, any>
     active: Boolean
+    steps: Array<any>
 }>()
 
 watch(
@@ -47,6 +48,9 @@ onMounted(async () => {
     if (props.stepData) {
         Object.assign(form, props.stepData)
     }
+    if(props.steps?.find(s => s.id == 'payment').completed) {
+        await loadPaymentMethods()
+    }
 })
 
 const handleSubmit = async (e:number) => {
@@ -59,7 +63,6 @@ const handleSubmit = async (e:number) => {
 
     form.paymentMethod = toRaw(selectedMethod)
     
-    //Adding this breaks it nothing changes, and it the above fires like 4 times per click, instead of 1 time.
     emit('complete', { 
         ...form
     })
@@ -84,7 +87,7 @@ const handleSubmit = async (e:number) => {
                 <div v-if="allPaymentMethods.length > 0">
                     <label
                         v-for="method in allPaymentMethods"
-                        class="relative"
+                        class="relative mb-2"
                     >
                         <input
                             v-model="form.paymentMethodId"

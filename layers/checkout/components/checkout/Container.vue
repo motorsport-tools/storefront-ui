@@ -5,6 +5,7 @@ const props = defineProps<{
     completeStep?: Function
     goToStep?: Function
     updateStepData?: Function
+    steps?: Array<any>
 }>()
 
 onMounted(() => {
@@ -56,6 +57,7 @@ onMounted(() => {
                 :step-data="step.data"
                 :exData="step.exData"
                 :addressType="step.addressType || null"
+                :steps="steps"
                 @complete="completeStep"
                 @update="updateStepData"
                 @click="goToStep(step.id)"

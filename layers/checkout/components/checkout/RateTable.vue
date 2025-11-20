@@ -5,6 +5,7 @@ import { SfRadio } from "@storefront-ui/vue"
 const props = defineProps<{
     rates: EasyshipRate[],
     modelValue: string | number | null
+    summary?: Boolean
 }>()
 
 const { modelValue } = toRefs(props)
@@ -18,11 +19,12 @@ const handleSelectRate = async (serviceId: string) => {
 }
 </script>
 <template>
+    <p>Summary: {{ summary }}</p>
     <table class="hidden md:block text-left typography-text-sm">
         <caption class="hidden">
             {{ $t("shippingMethod.rates.caption") }}
         </caption>
-        <thead class="border-b-2 border-neutral-200">
+        <thead v-show="!summary" class="border-b-2 border-neutral-200">
                 <tr>
                     <th class="py-4 px-4 font-medium"></th>
                     <th></th>
@@ -33,7 +35,8 @@ const handleSelectRate = async (serviceId: string) => {
         <tbody>
             <tr 
                 v-for="rate in rates" 
-                :key="rate.serviceId" 
+                :key="rate.serviceId"
+                v-show="!summary || (summary && modelValue === String(rate.serviceId))"
                 class="border-b border-neutral-200 last:border-transparent cursor-pointer hover:bg-neutral-100 group"
                 :class="{ 'bg-neutral-200': modelValue === String(rate.serviceId) }"
                 @click="handleSelectRate(rate.serviceId)"
@@ -43,6 +46,7 @@ const handleSelectRate = async (serviceId: string) => {
                         v-model="modelValue" 
                         :value="String(rate.serviceId)" 
                         class="items-center"
+                        :disabled="summary"
                     />
                 </td>
                 <td class="py-4 px-4">

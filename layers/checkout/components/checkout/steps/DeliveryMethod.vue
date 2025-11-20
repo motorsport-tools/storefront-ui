@@ -7,6 +7,7 @@ const props = defineProps<{
     showSummary?: Boolean
     exData?: ShippingMethod
     active: Boolean
+    steps: Array<any>
 }>()
 
 watch(
@@ -45,6 +46,9 @@ const getShippingIcon = (methodName: String) => {
 onMounted(async () => {
     if (props.stepData) {
         Object.assign(form, props.stepData)
+    }
+    if(props.steps?.find(s => s.id == 'delivery-method').completed) {
+        await loadDeliveryMethods()
     }
 })
 

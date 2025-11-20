@@ -8,13 +8,13 @@ const props = defineProps<{
     showSummary?: Boolean
     exData?: ShippingMethod
     active: Boolean
+    steps: Array<any>
 }>()
 
 watch(
   () => props.active,
   async (active) => {
     if (active) {
-      console.log('Delivery Rates Active - Loading rates available')
       await loadRates({ carrierId: cart.value?.order?.shippingMethod?.id, orderId: cart.value?.order?.id})
     }
   },
@@ -36,6 +36,9 @@ onMounted(async () => {
     if (props.stepData) {
         Object.assign(form, props.stepData)
     }
+    if(props.steps?.find(s => s.id == 'delivery-rates').completed) {
+        await loadRates({ carrierId: cart.value?.order?.shippingMethod?.id, orderId: cart.value?.order?.id})
+    }
 })
 
 const handleSubmit = async () => {
@@ -55,9 +58,11 @@ const handleSubmit = async () => {
             {{ $t("shippingMethod.rates.heading") }}
         </h2>
         <div name="summary" v-show="showSummary">
-            <div class="mt-2 md:w-[520px]">
-                
-            </div>
+            <RateTable
+                :rates="rates"
+                v-model="form.deliveryRate"
+                :summary="true"
+            />
         </div>
         <div v-show="!showSummary">
             <form 
@@ -79,6 +84,7 @@ const handleSubmit = async () => {
                     <RateTable
                         :rates="rates"
                         v-model="form.deliveryRate"
+                        :summary="false"
                     />
                 </div>
                 <div 

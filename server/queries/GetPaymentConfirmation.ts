@@ -5,6 +5,9 @@ export default `
       order {
         id
         name
+        lastTransaction{
+          state
+        } 
       }
     }
   }

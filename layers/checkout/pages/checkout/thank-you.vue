@@ -6,6 +6,7 @@ const { loadCart } = useCart()
 const { getPaymentConfirmation } = usePayment();
 
 const route = useRoute()
+const router = useRouter()
 const token = route.query?.token || '' as string || ''
 
 const orderData = ref<any>(null)
@@ -19,11 +20,16 @@ onMounted(async () => {
   }
 
   try {
-    orderData.value = await getPaymentConfirmation(token)
+    orderData.value = await getPaymentConfirmation(token as string);
   } catch (err) {
     error.value = err as Error
   } finally {
     loading.value = false
+    if(orderData.value && orderData.value.order?.lastTransaction?.status === 'Authorized' || 'Confirmed') {
+      // Clear checkout progress from localStorage
+      const STORAGE_KEY = 'checkout_progress'
+      localStorage.removeItem(STORAGE_KEY)
+    }
   }
   await loadCart()
 })

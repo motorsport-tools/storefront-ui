@@ -12291,6 +12291,17 @@ undici-types@~7.8.0:
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.8.0.tgz#de00b85b710c54122e44fbfd911f8d70174cd294"
   integrity sha512-9UJ2xGDvQ43tYyVMpuHlsgApydB8ZKfVYTsLDhXkFL/6gfkp+U8xTGdh8pMJv1SpZna0zxG1DwsKZsreLbXBxw==
 
+unenv@^1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/unenv/-/unenv-1.10.0.tgz#c3394a6c6e4cfe68d699f87af456fe3f0db39571"
+  integrity sha512-wY5bskBQFL9n3Eca5XnhH6KbUo/tfvkwm9OpcdCvLaeA7piBNbavbOKJySEwQ1V0RH6HvNlSAFRTpvTqgKRQXQ==
+  dependencies:
+    consola "^3.2.3"
+    defu "^6.1.4"
+    mime "^3.0.0"
+    node-fetch-native "^1.6.4"
+    pathe "^1.1.2"
+
 unenv@^2.0.0-rc.17:
   version "2.0.0-rc.17"
   resolved "https://registry.yarnpkg.com/unenv/-/unenv-2.0.0-rc.17.tgz#fa9b80d30e16f73e2d4a0be568ca97c0fb76bdac"

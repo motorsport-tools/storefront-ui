@@ -55,6 +55,7 @@
     "nuxt-viewport": "^2.2.0",
     "object-hash": "^3.0.0",
     "typescript": "^5.8.2",
+    "unenv": "^1.10.0",
     "vue": "^3.4.27",
     "vue-instantsearch": "^4.22.2",
     "vue-router": "^4.3.2",

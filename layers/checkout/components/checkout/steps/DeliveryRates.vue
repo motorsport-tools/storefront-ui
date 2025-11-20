@@ -53,7 +53,6 @@ const handleSubmit = async () => {
         data-testid="checkout-rates"
         class="md:px-4 py-6"
     >
-        
         <h2 class="text-neutral-900 text-lg font-bold mb-4">
             {{ $t("shippingMethod.rates.heading") }}
         </h2>

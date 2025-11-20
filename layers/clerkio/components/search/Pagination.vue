@@ -24,7 +24,7 @@ const scrollToTop = () => {
                     aria-label="Go to previous page"
                     :disabled="isFirstPage"
                     variant="tertiary"
-                    @click.prevent="createURL(currentRefinement - 1); scrollToTop();"
+                    @click.prevent="refine(currentRefinement - 1); createURL(currentRefinement - 1); scrollToTop();"
                 >
                     <template #prefix>
                         <SfIconChevronLeft />
@@ -127,7 +127,7 @@ const scrollToTop = () => {
                     aria-label="Go to next page"
                     :disabled="isLastPage"
                     variant="tertiary"
-                    @click.prevent="createURL(currentRefinement + 1); scrollToTop();"
+                    @click.prevent="refine(currentRefinement + 1); createURL(currentRefinement + 1); scrollToTop();"
                 >
                     <span class="hidden sm:inline-flex">Next</span>
                     <template #suffix>

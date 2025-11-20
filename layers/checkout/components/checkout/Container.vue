@@ -49,6 +49,7 @@ onMounted(() => {
         >
             <component
                 v-show="step.id === currentStepId || step.completed"
+                :active="step.id === currentStepId"
                 :key="step.id"
                 :is="step.component" 
                 :showSummary="step.completed && step.id !== currentStepId"

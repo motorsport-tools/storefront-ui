@@ -1,7 +1,19 @@
 <script setup lang="ts">
 const props = defineProps<{
     stepData?: Record<string, any>
+    active: Boolean
 }>()
+
+watch(
+  () => props.active,
+  async (active) => {
+    if (active) {
+      console.log('Payment Active - Loading methods available')
+      await loadPaymentMethods()
+    }
+  },
+  { immediate: false }
+)
 
 const emit = defineEmits<{
     complete: [data: Record<string, any>]
@@ -35,7 +47,6 @@ onMounted(async () => {
     if (props.stepData) {
         Object.assign(form, props.stepData)
     }
-    await loadPaymentMethods()
 })
 
 const handleSubmit = async (e:number) => {

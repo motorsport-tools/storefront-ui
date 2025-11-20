@@ -6,14 +6,26 @@ const props = defineProps<{
     stepData?: Record<string, any>
     showSummary?: Boolean
     exData?: ShippingMethod
+    active: Boolean
 }>()
+
+watch(
+  () => props.active,
+  async (active) => {
+    if (active) {
+      console.log('Delivery Methods Active - Loading methods available')
+      await loadDeliveryMethods()
+    }
+  },
+  { immediate: false }
+)
 
 const emit = defineEmits<{
     complete: [data: Record<string, any>]
     update: [data: Record<string, any>]
 }>()
 
-const { deliveryMethods, loadDeliveryMethods, setDeliveryMethod, loadRates, setRate, ratesLoading, rates } = useDeliveryMethod()
+const { deliveryMethods, loadDeliveryMethods, setDeliveryMethod } = useDeliveryMethod()
 const { isCollectEligible } = useCart();
 
 const form = reactive({
@@ -34,8 +46,6 @@ onMounted(async () => {
     if (props.stepData) {
         Object.assign(form, props.stepData)
     }
-    
-    await loadDeliveryMethods()
 })
 
 const handleSubmit = async () => {

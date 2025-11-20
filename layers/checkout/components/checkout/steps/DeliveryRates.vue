@@ -7,7 +7,19 @@ const props = defineProps<{
     stepData?: Record<string, any>
     showSummary?: Boolean
     exData?: ShippingMethod
+    active: Boolean
 }>()
+
+watch(
+  () => props.active,
+  async (active) => {
+    if (active) {
+      console.log('Delivery Rates Active - Loading rates available')
+      await loadRates({ carrierId: cart.value?.order?.shippingMethod?.id, orderId: cart.value?.order?.id})
+    }
+  },
+  { immediate: false }
+)
 
 const emit = defineEmits<{
     complete: [data: Record<string, any>]
@@ -21,11 +33,9 @@ const form = reactive({
 })
 
 onMounted(async () => {
-    console.log('Rates Mounted')
     if (props.stepData) {
         Object.assign(form, props.stepData)
     }
-    await loadRates({ carrierId: cart.value?.order?.shippingMethod?.id, orderId: cart.value?.order?.id})
 })
 
 const handleSubmit = async () => {

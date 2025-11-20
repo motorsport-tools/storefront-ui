@@ -11,10 +11,13 @@ import type {
   MutationCartUpdateMultipleItemsArgs,
   MutationUpdateCartAddressArgs,
   AddressInput,
+  AddressEnum,
+  ExpressAddressInput,
 } from "~/graphql"
 import { MutationName } from "~/server/mutations"
 import { useToast } from "vue-toastification"
 import { CartToast } from "#components"
+import ShippingMethod from "~/server/mutations/ShippingMethod";
 
 
 
@@ -127,7 +130,7 @@ export const useCart = () => {
     }
   }
 
-  const updateCartAddress = async (type: 'delivery' | 'billing', address: AddressInput, sameAddress: boolean = false) => {
+  const updateCartAddress = async (type: AddressEnum, address: ExpressAddressInput, sameAddress: boolean = false) => {
 
     const params: MutationUpdateCartAddressArgs = {
       addressType: type,
@@ -160,6 +163,15 @@ export const useCart = () => {
 
   const cartHasDiscount = computed(() => cart.value.order?.coupons?.length || false);
 
+  const shippingMethod = computed(() => cart.value?.order?.shippingMethod?.id || 0)
+
+  const isCollectEligible = computed(() => {
+    if (!cart.value?.order?.orderLines)
+      return false
+
+    return cart.value?.order?.orderLines?.filter((l) => !l.coupon && !l.isDelivery && !l.isRewardLine).every(line => line?.product?.isInStock)
+  })
+
   return {
     loading,
     loadCart,
@@ -171,6 +183,8 @@ export const useCart = () => {
     totalItemsInCart,
     cartIsEmpty,
     cartHasDiscount,
+    shippingMethod,
+    isCollectEligible,
     updateCartAddress,
   };
 };

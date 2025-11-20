@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import { SfListItem, SfRadio, SfIconBlock, SfIconLocalShipping, SfIconWarehouse, SfLoaderCircular } from "@storefront-ui/vue";
 
-const { cart, loadCart } = useCart();
+const { cart, isCollectEligible, loadCart } = useCart();
 
 const { deliveryMethods, loadDeliveryMethods, setDeliveryMethod, loadRates, setRate, ratesLoading, rates } = useDeliveryMethod()
 
@@ -22,7 +22,8 @@ onMounted(async () => {
     if(showRates.value) {
       await loadRates({ carrierId: radioModel.value, orderId: cart.value?.order?.id })
     }
-    ratesModel.value = cart.value?.order?.shippingRate[0]?.serviceId || ''
+
+    ratesModel.value = cart.value?.order?.shippingRate?.serviceId || ''
   }
 });
 
@@ -78,6 +79,7 @@ const getShippingIcon = (methodName: String) => {
       >
         <SfListItem
           v-for="{ id, name, estimatedDelivery } in deliveryMethods"
+          v-show="(isCollectEligible && name?.includes('Collect')) || !name?.includes('Collect')"
           :key="id"
           tag="label"
           class="border rounded-md items-start"

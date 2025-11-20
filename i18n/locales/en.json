@@ -17,6 +17,8 @@
     "addButton": "Add delivery address"
   },
   "form": {
+    "loadingOptions": "Loading options...",
+    "errorOptions": "Error loading options",
     "searchAddress": "Search For Your Address",
     "startTypingAddress": "Start typing your address",
     "billingSameAsDelivery": "Billing address is the same as delivery",
@@ -33,9 +35,9 @@
     "streetNumberLabel": "Apt#, Suite, etc",
     "streetNumberHelp": "Optional",
     "cityLabel": "City",
-    "stateLabel": "State",
+    "stateLabel": "County",
     "postalCodeLabel": "Postcode",
-    "useAsShippingLabel": "Use as delivery address",
+    "useAsShippingLabel": "Use billing address as delivery address",
     "selectPlaceholder": "-- Select --",
     "emailLabel": "Email",
     "emailPlaceholder": "Enter your email",
@@ -187,9 +189,9 @@
     "heading": "Payment method"
   },
   "shippingMethod": {
-    "heading": "Delivery details",
+    "heading": "Delivery Method",
     "description": "No methods available until a delivery address is provided.",
-    "subHeading": "Would you like your order delivered or when your order is ready and you've been notified, you can come to our shop to collect.",
+    "subHeading": "How would you like to receive your order?",
     "deliveryTime": {
       "estimate": "Est:",
       "hour": "1 hour",
@@ -201,6 +203,8 @@
       "palletWorld": "2-3 weeks"
     },
     "rates": {
+      "heading": "Delivery Rates",
+      "description": "Select a delivery rate for your order.",
       "none": "Sorry, no delivery rates could be found for your order.",
       "caption": "Select a delivery carrier",
       "service": "Service",

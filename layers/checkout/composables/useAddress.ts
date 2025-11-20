@@ -57,7 +57,7 @@ export const useAddresses = () => {
       } else {
         shippingAddresses.value = data.value.addresses
       }
-    } catch( error:any ) {
+    } catch (error: any) {
       toast.error(error?.data?.message)
     } finally {
       loading.value = false
@@ -67,7 +67,7 @@ export const useAddresses = () => {
   const addAddress = async (address: AddAddressInput, type: AddressEnum) => {
     try {
       loading.value = true
-      await $sdk().odoo.mutation<
+      const data = await $sdk().odoo.mutation<
         MutationAddAddressArgs,
         AddAddressResponse
       >(
@@ -77,8 +77,9 @@ export const useAddresses = () => {
 
       await loadAddresses(type)
       toast.success('Address has been successfully saved')
+      return data
 
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error?.data?.message)
     } finally {
       loading.value = false
@@ -92,9 +93,9 @@ export const useAddresses = () => {
         MutationDeleteAddressArgs,
         DeleteAddressResponse
       >({ mutationName: MutationName.DeleteAddress }, { address })
-    
+
       toast.success("Address has been successfully removed")
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error?.data?.message)
     } finally {
       loading.value = false
@@ -112,7 +113,7 @@ export const useAddresses = () => {
         MutationUpdateAddressArgs,
         SelectCurrentAddressResponse
       >({ mutationName: MutationName.UpdateAddress }, { address })
-      
+
       if (type === AddressEnum.Billing) {
         const address = data?.updateAddress;
         const index = billingAddresses.value.findIndex(
@@ -127,7 +128,7 @@ export const useAddresses = () => {
         shippingAddresses.value[index] = address;
       }
       toast.success("Address has been successfully updated")
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error?.data?.message)
     } finally {
       loading.value = false
@@ -148,7 +149,7 @@ export const useAddresses = () => {
 
       await loadAddresses(type)
       toast.success(`Current ${type} address saved successfully`)
-    } catch(error:any){
+    } catch (error: any) {
       toast.error(error?.data?.message)
     } finally {
       loading.value = false

@@ -38,6 +38,8 @@ orderLines {
     image
     imageFilename
     displayName
+    allowOutOfStock
+    isInStock
     combinationInfo
     slug
     variantAttributeValues{

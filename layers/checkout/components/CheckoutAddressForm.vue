@@ -1,21 +1,16 @@
 <script lang="ts" setup>
 import {
-  SfButton,
   SfCheckbox,
   SfInput,
-  SfLoaderCircular,
-  SfModal,
   SfSelect,
-  useDisclosure,
 } from "@storefront-ui/vue";
 import type { PropType } from "vue";
 import {
   AddressEnum,
-  type AddAddressInput,
+  type ExpressAddressInput,
   type Country,
   type Partner,
   type State,
-  type UpdateAddressInput,
 } from "~/graphql";
 
 import { useCountryList } from "~/layers/core/composable/useCountryList";
@@ -23,7 +18,6 @@ import { useCountryList } from "~/layers/core/composable/useCountryList";
 const props = defineProps({
   heading: String,
   description: String,
-  buttonText: String,
   type: {
     type: String as PropType<AddressEnum>,
     required: true,
@@ -32,15 +26,22 @@ const props = defineProps({
     type: Object as PropType<Partner>,
     default: () => { },
   },
+  useBillingForDelivery: {
+    type: Boolean,
+    default: true
+  },
 });
 
 /**
  * @TODO extract this form behaviour, undo, commit, validate, etc. to a separate form composable
  */
 
-const { city, country, name, state, street, phone, zip } = toRefs(
+const { city, country, name, state, street, street2, zip } = toRefs(
   props.savedAddress
 );
+
+const { useBillingForDelivery } = toRefs(props)
+
 name.value = name.value === "Public user" ? "" : name.value;
 
 const countryId = toRef(country.value?.id);
@@ -52,39 +53,29 @@ const { commit: commitCountry, undo: undoCountry } =
 const { commit: commitName, undo: undoName } = useManualRefHistory(name);
 const { commit: commitState, undo: undoState } = useManualRefHistory(stateId);
 const { commit: commitStreet, undo: undoStreet } = useManualRefHistory(street);
-const { commit: commitPhone, undo: undoPhone } = useManualRefHistory(phone);
+const { commit: commitStreet2, undo: undoStreet2 } = useManualRefHistory(street2);
 const { commit: commitZip, undo: undoZip } = useManualRefHistory(zip);
+const { commit: commitSame, undo: undoSame } = useManualRefHistory(useBillingForDelivery)
 
-const { isOpen, open, close } = useDisclosure();
 //const { addAddress, updateAddress } = useAddresses();
-const { updateCartAddress } = useCart()
+const { cart, updateCartAddress } = useCart()
 
 const { countries } = useCountryList();
 
-const isCartUpdateLoading = false;
-
 const handleSaveAddress = async () => {
-  const data: UpdateAddressInput = {
-    name: name.value,
-    street: street.value?.split(" ")?.[0] || "",
-    street2: street.value?.split(" ")?.[1] || "",
+  const data: ExpressAddressInput = {
+    name: props.type == AddressEnum.Billing ? cart.value?.order?.partner?.name : name.value || null,
+    street: street.value || "",
+    street2: street2.value || "",
     city: city.value,
     zip: zip.value,
-    phone: phone.value,
     countryId: Number(countryId.value),
     stateId: Number(stateId.value),
   };
 
-  if (props.savedAddress?.id && props.savedAddress.id !== 4) {
-    data.id = props.savedAddress.id;
-    await updateAddress(data, props.type);
-    commitAll();
-    return close();
-  }
-
-  await addAddress(data as unknown as AddAddressInput, props.type);
+  
+  await updateCartAddress(props.type, data, props.type == AddressEnum.Billing ? useBillingForDelivery.value : false );
   commitAll();
-  close();
 };
 
 const selectedCountry = computed<Country>(
@@ -103,230 +94,148 @@ const selectedState = computed<State>(
 
 const states = computed(() => selectedCountry.value?.states || []);
 
+const autocompletePrefix = computed(() => props.type == AddressEnum.Billing ? 'billing' : 'shipping')
+
 const commitAll = () => {
   commitCity();
   commitCountry();
-  commitName();
   commitState();
   commitStreet();
+  commitStreet2();
   commitZip();
-  commitPhone();
-};
-
-const handleOpenModal = () => {
-  commitAll();
-  open();
-};
-
-const handleCloseModal = () => {
-  close();
-  undoCity();
-  undoCountry();
-  undoName();
-  undoState();
-  undoStreet();
-  undoZip();
-  undoPhone();
+  commitSame();
 };
 </script>
 
 <template>
+  Use Billing: {{ useBillingForDelivery }}<br/>
+  {{ savedAddress }}<br/>
   <div data-testid="checkout-address" class="md:px-4 py-6">
     <div class="flex justify-between items-center">
       <h2 class="text-neutral-900 text-lg font-bold mb-4">
         {{ props.heading }}
       </h2>
-
-      <SfButton size="sm" variant="tertiary" @click="handleOpenModal">
-        {{ savedAddress.id ? $t("contactInfo.edit") : $t("contactInfo.add") }}
-      </SfButton>
     </div>
 
-    <div v-if="savedAddress.id" class="mt-2 md:w-[520px]">
-      <p>{{ `${name}` }}</p>
-      <p>{{ `${street || ""}` }}</p>
-      <p>{{ `${city || "" }` }}</p>
-      <p>{{ selectedState?.name || "" }}</p>
-      <p>{{ selectedCountry?.name || "" }}</p>
-      <p>{{ `${zip || ""}` }}</p>
-      <p>{{ phone }}</p>
-    </div>
-
-    <div v-if="!savedAddress" class="w-full md:max-w-[520px]">
+    <div class="w-full md:max-w-[520px]">
       <p>{{ props.description }}</p>
-      <SfButton class="mt-4 w-full md:w-auto" variant="secondary" @click="open">
-        {{ props.buttonText }}
-      </SfButton>
-    </div>
-
-    <transition
-      enter-active-class="transition duration-200 ease-out"
-      leave-active-class="transition duration-200 ease-out"
-      enter-from-class="opacity-0 translate-y-10"
-      enter-to-class="opacity-100 translate-y-0"
-      leave-from-class="opacity-100 translate-y-0"
-      leave-to-class="opacity-0 translate-y-10"
-    >
-      <SfModal
-        v-model="isOpen"
-        tag="section"
-        role="dialog"
-        class="h-full w-full overflow-auto md:w-[600px] md:h-fit z-50"
-        aria-labelledby="address-modal-title"
+      
+      <form
+        class="grid grid-cols-1 md:grid-cols-[50%_1fr_120px] gap-4"
+        data-testid="address-form"
+        @submit.prevent="handleSaveAddress"
       >
-        <header>
-          <SfButton
-            square
-            variant="tertiary"
-            class="absolute right-2 top-2"
-            @click="handleCloseModal"
+        <label class="md:col-span-3">
+          <UiFormLabel>{{ $t("form.countryLabel") }}</UiFormLabel>
+          <SfSelect
+            v-model="countryId"
+            name="country"
+            :autocomplete="autocompletePrefix+' country-name'"
+            required
           >
-            <icon name="ion:close" size="20px" />
-          </SfButton>
-          <h3
-            id="address-modal-title"
-            class="text-neutral-900 text-lg md:text-2xl font-bold mb-4"
-          >
-            {{ heading }}
-          </h3>
-        </header>
-        <form
-          class="grid grid-cols-1 md:grid-cols-[50%_1fr_120px] gap-4"
-          data-testid="address-form"
-          @submit.prevent="handleSaveAddress"
-        >
-          <label class="md:col-span-3">
-            <UiFormLabel>{{ $t("form.NameLabel") }}</UiFormLabel>
-            <SfInput
-              v-model="name"
-              name="name"
-              autocomplete="given-name"
-              required
-              :placeholder="$t('form.NameLabel')"
-            />
-          </label>
-          <label class="md:col-span-3">
-            <UiFormLabel>{{ $t("form.streetNameLabel") }}</UiFormLabel>
-            <SfInput
-              v-model="street"
-              name="streetName"
-              autocomplete="family-name"
-              required
-              :placeholder="$t('form.streetNameLabel')"
-            />
-          </label>
-          <label class="md:col-span-3">
-            <UiFormLabel>{{ $t("form.cityLabel") }}</UiFormLabel>
-            <SfInput
-              v-model="city"
-              name="city"
-              autocomplete="address-level2"
-              required
-              :placeholder="$t('form.cityLabel')"
-            />
-          </label>
-          <label class="md:col-span-3">
-            <UiFormLabel>{{ $t("form.stateLabel") }}</UiFormLabel>
-            <SfSelect
-              v-model="stateId"
-              name="state"
-              autocomplete="state-name"
-              :disabled="!states.length"
-              required
+            <option key="placeholder" :value="null">
+              {{ $t("form.selectPlaceholder") }}
+            </option>
+            <option
+              v-for="countryOption in countries.countries"
+              :key="countryOption?.id"
+              :value="countryOption?.id"
             >
-              <option key="placeholder" :value="null">
-                {{ $t("form.selectPlaceholder") }}
-              </option>
-              <option 
-                v-for="stateOption in states"
-                :key="stateOption.id"
-                :value="stateOption.id"
-              >
-                {{ stateOption.name }}
-              </option>
-            </SfSelect>
-          </label>
-          <label class="md:col-span-3">
-            <UiFormLabel>{{ $t("form.countryLabel") }}</UiFormLabel>
-            <SfSelect
-              v-model="countryId"
-              name="country"
-              autocomplete="country-name"
-              required
-            >
-              <option key="placeholder" :value="null">
-                {{ $t("form.selectPlaceholder") }}
-              </option>
-              <option
-                v-for="countryOption in countries.countries"
-                :key="countryOption?.id"
-                :value="countryOption?.id"
-              >
-                {{ countryOption?.name }}
-              </option>
-            </SfSelect>
-          </label>
-          <label>
-            <UiFormLabel>{{ $t("form.postalCodeLabel") }}</UiFormLabel>
-            <SfInput
-              v-model="zip"
-              name="postalCode"
-              autocomplete="postal-code"
-              required
-              :placeholder="$t('form.postalCodeLabel')"
-            />
-          </label>
-          <label class="md:col-span-3">
-            <UiFormLabel>{{ $t("form.phoneLabel") }}</UiFormLabel>
-            <SfInput
-              v-model="phone"
-              name="phone"
-              type="tel"
-              autocomplete="tel"
-              required
-              :placeholder="$t('form.phoneLabel')"
-            />
-          </label>
-          <label
-            v-if="props.type === 'billingAddress'"
-            class="md:col-span-3 flex items-center gap-2"
-          >
-            <SfCheckbox name="useAsShipping" />
-            {{ $t("form.useAsShippingLabel") }}
-          </label>
+              {{ countryOption?.name }}
+            </option>
+          </SfSelect>
+        </label>
 
-          <div
-            class="md:col-span-3 flex flex-col-reverse md:flex-row justify-end mt-6 gap-4"
+        <label
+          v-if="type == AddressEnum.Delivery && !useBillingForDelivery"
+          class="md:col-span-3"
+        >
+          <UiFormLabel>{{ $t("form.NameLabel") }}</UiFormLabel>
+          <SfInput 
+            v-model="name" 
+            name="name"
+            :autocomplete="autocompletePrefix+' name'"
+            required
+            :placeholder="$t('form.NameLabel')" />
+        </label>
+
+        <label class="md:col-span-3">
+          <UiFormLabel>{{ $t("form.streetNameLabel") }}</UiFormLabel>
+          <SfInput
+            v-model="street"
+            name="streetName"
+            :autocomplete="autocompletePrefix+' address-line1'"
+            required
+            :placeholder="$t('form.streetNameLabel')"
+          />
+        </label>
+
+        <label class="md:col-span-3">
+          <UiFormLabel>{{ $t("form.streetNameLabel2") }}</UiFormLabel>
+          <SfInput
+            v-model="street2"
+            name="streetName2"
+            :autocomplete="autocompletePrefix+' address-line2'"
+            required
+            :placeholder="$t('form.streetNameLabel2')"
+          />
+        </label>
+
+        <label class="md:col-span-3">
+          <UiFormLabel>{{ $t("form.cityLabel") }}</UiFormLabel>
+          <SfInput
+            v-model="city"
+            name="city"
+            :autocomplete="autocompletePrefix+' address-level2'"
+            required
+            :placeholder="$t('form.cityLabel')"
+          />
+        </label>
+
+        <label class="md:col-span-3">
+          <UiFormLabel>{{ $t("form.stateLabel") }}</UiFormLabel>
+          <SfSelect
+            v-model="stateId"
+            name="state"
+            :autocomplete="autocompletePrefix+' address-level1'"
+            :disabled="!states.length"
+            :placeholder="$t('form.selectPlaceholder')"
+            required
           >
-            <SfButton
-              type="reset"
-              class=""
-              variant="secondary"
-              @click="handleCloseModal"
+            <option 
+              v-for="stateOption in states"
+              :key="stateOption.id"
+              :value="stateOption.id"
             >
-              {{ $t("contactInfo.cancel") }}
-            </SfButton>
-            <SfButton
-              type="submit"
-              class="min-w-[120px]"
-              :disabled="isCartUpdateLoading"
-            >
-              <SfLoaderCircular
-                v-if="isCartUpdateLoading"
-                class="flex justify-center items-center"
-                size="sm"
-              />
-              <span v-else>
-                {{ $t("contactInfo.save") }}
-              </span>
-            </SfButton>
-          </div>
-        </form>
-      </SfModal>
-    </transition>
-    <div
-      v-if="isOpen"
-      class="fixed !w-screen !h-screen inset-0 bg-neutral-500 bg-opacity-50 transition-opacity duration-1000 top-index"
-    />
+              {{ stateOption.name }}
+            </option>
+          </SfSelect>
+        </label>
+
+        <label>
+          <UiFormLabel>{{ $t("form.postalCodeLabel") }}</UiFormLabel>
+          <SfInput
+            v-model="zip"
+            name="postalCode"
+            :autocomplete="autocompletePrefix+' postal-code'"
+            required
+            :placeholder="$t('form.postalCodeLabel')"
+            @blur="handleSaveAddress"
+          />
+        </label>
+
+        <label
+          v-if="props.type === AddressEnum.Billing"
+          class="md:col-span-3 flex items-center gap-2"
+        >
+          <SfCheckbox
+            v-model="useBillingForDelivery"
+            name="useAsShipping" 
+          />
+          {{ $t("form.useAsShippingLabel") }}
+        </label>
+
+      </form>
+    </div>
   </div>
 </template>

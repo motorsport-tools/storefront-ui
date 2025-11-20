@@ -39,6 +39,8 @@ export const reduceCart = (cartData: Cart) => ({
                 name: line?.product?.name,
                 image: line?.product?.image,
                 imageFilename: line?.product?.imageFilename,
+                allowOutOfStock: line?.product?.allowOutOfStock,
+                isInStock: line?.product?.isInStock,
                 qty: line?.product?.qty,
                 slug: line?.product?.slug,
                 variantAttributeValues: line?.product?.variantAttributeValues?.map((attr: AttributeValue) => ({
@@ -66,21 +68,21 @@ export const reduceCart = (cartData: Cart) => ({
         partnerShipping: {
             id: cartData?.order?.partnerShipping?.id,
             city: cartData?.order?.partnerShipping?.city,
-            country: { id: cartData?.order?.partnerShipping?.country?.id },
+            country: { id: cartData?.order?.partnerShipping?.country?.id || 231 },
             name: cartData?.order?.partnerShipping?.name,
             state: { id: cartData?.order?.partnerShipping?.state?.id },
             street: cartData?.order?.partnerShipping?.street,
-            phone: cartData?.order?.partnerShipping?.phone,
+            street2: cartData?.order?.partnerShipping?.street2,
             zip: cartData?.order?.partnerShipping?.zip,
         },
         partnerInvoice: {
             id: cartData?.order?.partnerInvoice?.id,
             city: cartData?.order?.partnerInvoice?.city,
-            country: { id: cartData?.order?.partnerInvoice?.country?.id },
+            country: { id: cartData?.order?.partnerInvoice?.country?.id || 231 },
             name: cartData?.order?.partnerInvoice?.name,
             state: { id: cartData?.order?.partnerInvoice?.state?.id },
             street: cartData?.order?.partnerInvoice?.street,
-            phone: cartData?.order?.partnerInvoice?.phone,
+            street2: cartData?.order?.partnerInvoice?.street2,
             zip: cartData?.order?.partnerInvoice?.zip,
         }
     }

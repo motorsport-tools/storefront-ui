@@ -1,25 +1,20 @@
 <script setup lang="ts">
 import { SfButton, SfLink } from "@storefront-ui/vue";
-
 import type { PaymentMethod } from "~/graphql";
 
-// Props
-const props = defineProps({
-  selectedMethod: {
-    type: Object as () => PaymentMethod | null,
-    required: false,
-    default: () => null, 
-  },
-});
+const props = defineProps<{
+  getStepData: (stepId: string) => Record<string, any>;
+  allStepsCompleted: boolean;
+}>();
 
 const { cart } = useCart();
 const router = useRouter();
 const { makeGiftCardPayment, loading: discountLoading } = useDiscount();
-const { loadPaymentMethods, paymentProviders } = usePayment();
+const { paymentProviders } = usePayment();
 
-//const selectedProvider = ref<PaymentProvider | null>(null);
 const isPaymentWithCardReady = ref(false);
 const providerPaymentHandler = ref();
+const selectedMethod = ref<PaymentMethod | null>(null);
 const loading = ref(false);
 const showPaymentModal = ref(false);
 const giftCards = ref(cart.value?.order?.giftCards);
@@ -30,17 +25,25 @@ const hasFullPaymentWithGiftCard = computed(() =>
 
 
 onMounted(async () => {
-  await loadPaymentMethods();
   if (paymentProviders.value.length > 0) {
     showPaymentModal.value = true;
-    //selectedProvider.value = paymentProviders.value[0];
   }
 });
 
 
 const handleGiftCardPayment = async () => {
   await makeGiftCardPayment();
-};
+}
+
+//const paymentData = getStepData('payment')
+const paymentData = computed(() => props.getStepData('payment'))
+
+const readyToPay = computed(() => {
+  
+  selectedMethod.value = paymentData.value?.paymentMethod || null
+
+  return paymentData.value?.paymentMethod && isPaymentWithCardReady.value && !loading.value && props.allStepsCompleted
+})
 </script>
 
 <template>
@@ -59,7 +62,7 @@ const handleGiftCardPayment = async () => {
       v-else
       size="lg"
       class="w-full mb-4 md:mb-0"
-      :disabled="!props.selectedMethod || !isPaymentWithCardReady || loading"
+      :disabled="!readyToPay"
       @click="providerPaymentHandler"
     >
       {{ $t("placeOrder") }}
@@ -89,12 +92,12 @@ const handleGiftCardPayment = async () => {
     <component
       v-if="
         showPaymentModal &&
-        !!props.selectedMethod?.providerCode &&
+        !!selectedMethod?.providerCode &&
         !hasFullPaymentWithGiftCard
       "
-      :is="getPaymentProviderComponentName(props.selectedMethod?.providerCode)"
-      :key="props.selectedMethod?.id"
-      :method="props.selectedMethod"
+      :is="getPaymentProviderComponentName(selectedMethod?.providerCode)"
+      :key="selectedMethod?.id"
+      :method="selectedMethod"
       :cart="cart"
       @is-payment-ready="($event: any) => (isPaymentWithCardReady = $event)"
       @provider-payment-handler="

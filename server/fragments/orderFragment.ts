@@ -100,6 +100,8 @@ orderLines {
     image
     imageFilename
     displayName
+    allowOutOfStock
+    isInStock
     combinationInfo
     slug
     variantAttributeValues{
@@ -117,6 +119,7 @@ partnerInvoice {
   id
   name
   street
+  street2
   city
   phone
   zip
@@ -134,6 +137,7 @@ partnerShipping {
   id
   name
   street
+  street2
   city
   phone
   zip

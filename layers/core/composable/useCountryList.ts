@@ -1,15 +1,19 @@
-import { useToast } from 'vue-toastification'
-import { QueryName } from "~/server/queries"
+import { QueryName } from '~/server/queries'
 
-import { type Countries, type CountriesResponse } from "~/graphql"
+import type { Countries, CountriesResponse } from '~/graphql'
 
 export const useCountryList = () => {
   const { $sdk } = useNuxtApp()
-  const countries = useState("countries", () => ({}) as Countries)
-  const toast = useToast()
+  const countries = useState('countries', () => ({}) as Countries)
+  const error = ref(null)
+  const pending = ref(false)
 
   const loadCountries = async () => {
+    if (import.meta.client && countries.value?.countries?.length) {
+      return
+    }
     try {
+      pending.value = true
       const { data } = await useAsyncData(
         'countries',
         async () => await $sdk().odoo.query<null, CountriesResponse>({
@@ -18,12 +22,16 @@ export const useCountryList = () => {
       )
       countries.value = data.value?.countries || ({} as Countries)
     } catch (error: any) {
-      toast.error(error?.data?.message)
+      error.value = error?.data?.message
+    } finally {
+      pending.value = false
     }
   }
 
   return {
     loadCountries,
     countries,
-  };
-};
+    pending,
+    error
+  }
+}

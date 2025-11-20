@@ -15,7 +15,7 @@ const props = defineProps({
     default: "Back",
   },
   icon: {
-    type: defineComponent,
+    type: [Object, Function],
     default: null
   }
 });

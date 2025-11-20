@@ -1,104 +1,133 @@
 <script setup lang="ts">
+import { SfLoaderCircular, SfIconLock } from "@storefront-ui/vue"
+import { type PaymentMethod, type Partner, type ShippingMethod, AddressEnum } from "~/graphql"
 import { useCountryList } from "~/layers/core/composable/useCountryList";
-import { AddressEnum, type Partner, type PaymentMethod } from "~/graphql";
-import { SfLoaderCircular, SfIconLock } from "@storefront-ui/vue";
 
 definePageMeta({
-  layout: 'checkout',
+    layout: 'checkout',
 })
-
-const { cart, totalItemsInCart, cartIsEmpty, loading: cartLoading, loadCart } = useCart()
-const { loadCountries } = useCountryList()
-const { loadUser, isAuthenticated } = useAuth()
+const { cartIsEmpty, loading: cartLoading, loadCart } = useCart()
 const { loading: deliveryLoading } = useDeliveryMethod()
-const router = useRouter()
+const { loadUser, isAuthenticated } = useAuth()
+const { loadCountries } = useCountryList()
+const isLoading = computed(() => cartLoading.value || deliveryLoading.value);
+const selectedProvider = ref(<PaymentMethod | null>(null))
 
-const selectedProvider = ref<PaymentMethod | null>(null);
+await loadCountries()
+
+const { $i18n } = useNuxtApp()
+const { cart } = useCart()
+
+const { visibleSteps, isLastStep, currentStepId, allStepsCompleted, registerSteps, completeStep, goToStep, updateStepData, getAllData, getStepData, resetCheckout } = useCheckout()
+
+import CustomerInfo from "./../../components/checkout/steps/CustomerInfo.vue"
+import Address from "./../../components/checkout/steps/Address.vue"
+import DeliveryMethod from "./../../components/checkout/steps/DeliveryMethod.vue"
+import DeliveryRates from "./../../components/checkout/steps/DeliveryRates.vue"
+import Payment from "./../../components/checkout/steps/Payment.vue"
+
+const checkoutSteps = [
+    {
+        id: 'customer',
+        component: CustomerInfo,
+        title: `${$i18n.t('contactInfo.heading')}`,
+        exData: (cart.value?.order?.partner as Partner),
+        condition: () => true,
+    },
+    {
+        id:'billing-address',
+        component: Address,
+        title: `${$i18n.t('billing.heading')}`,
+        exData: (cart.value?.order?.partnerInvoice as Partner),
+        addressType: AddressEnum.Billing,
+        condition: () => true,
+    },
+    {
+        id:'delivery-address',
+        component: Address,
+        title: `${$i18n.t('shipping.heading')}`,
+        exData: (cart.value?.order?.partnerShipping as Partner),
+        addressType: AddressEnum.Shipping,
+        condition: () => {
+            const billingData = getStepData('billing-address')
+            if(billingData?.useDelivery || !billingData) {
+                return false
+            }
+            return true
+        }
+    },
+    {
+        id: 'delivery-method',
+        component: DeliveryMethod,
+        title: `${$i18n.t('shippingMethod.heading')}`,
+        exData: (cart.value?.order?.shippingMethod as ShippingMethod),
+        condition: () => true
+    },
+    {
+        id: 'delivery-rates',
+        component: DeliveryRates,
+        title: `${$i18n.t('shippingMethod.rates.heading')}`,
+        exData: (cart.value?.order?.shippingRate),
+        condition: () => {
+            const methodData = getStepData('delivery-method')
+            if(methodData?.deliveryMethod !== 5) {
+                return true
+            }
+            return false
+        }
+    },
+    {
+        id:'payment',
+        component: Payment,
+        title: `${$i18n.t('checkoutPayment.heading')}`,
+        condition: () => true
+    }
+]
 
 onMounted(async () => {
-  if(isAuthenticated.value) {
-    await Promise.all([loadUser(true), loadCart(), loadCountries()]);
-  } else {
-    await Promise.all([loadCart(), loadCountries()])
-  }
+    if(isAuthenticated.value) {
+        await Promise.all([loadUser(true), loadCart()]);
+    } else {
+        await Promise.all([loadCart()])
+    }
+    registerSteps(checkoutSteps)
 })
-
-const isLoading = computed(() => cartLoading.value || deliveryLoading.value);
-
-if (!isLoading.value && cartIsEmpty && totalItemsInCart.value === 0) {
-    await navigateTo("/cart")
-  }
-
-function handleSelectedProviderUpdate(newProvider: Number) {
-  selectedProvider.value = newProvider;
-}
-
 </script>
 <template>
-  <main 
-    class="w-full narrow-container mb-20"
-    data-testid="checkout-layout"
-  >
-    <CheckoutHeader
-        :title="$t('secureCheckout')"
-        :backText="$t('backToCart')"
-        :icon="SfIconLock"
-    />
-    <div v-if="!cartIsEmpty">
-      <div class="lg:grid lg:grid-cols-12 md:gap-x-6">
-        <div class="col-span-7 mb-10 md:mb-0">
-          <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
-          <LazyCheckoutContactInformation
-            v-if="cart?.order?.partner"
-            :heading="$t('contactInfo.heading')"
-            :partner-data="cart?.order?.partner as Partner"
-          />
-
-          <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
-          <LazyCheckoutAddressForm
-            :heading="$t('shipping.heading')"
-            :description="$t('shipping.description')"
-            :button-text="$t('shipping.addButton')"
-            :type="AddressEnum.Shipping"
-            :saved-address="cart.order?.partnerShipping as Partner"
-          />
-          <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
-          <LazyCheckoutAddressForm
-            :heading="$t('billing.heading')"
-            :description="$t('billing.description')"
-            :button-text="$t('billing.addButton')"
-            :type="AddressEnum.Billing"
-            :saved-address="cart.order?.partnerInvoice as Partner"
-          />
-
-          <UiDivider class-name="w-screen md:w-auto -mx-4 md:mx-0" />
-
-          <LazyCheckoutShippingMethod/>
-
-          <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0" />
-
-          <LazyCheckoutPayment 
-            v-if="cart?.order?.shippingMethod?.id"
-            :selected-provider="selectedProvider"
-            @update:active-payment="handleSelectedProviderUpdate"
-          />
-
-          <UiDivider class="w-screen md:w-auto -mx-4 md:mx-0 mb-10" />
+    <main 
+        class="w-full narrow-container mb-20"
+        data-testid="checkout-layout"
+    >
+        <CheckoutHeader
+            :title="$t('secureCheckout')"
+            :backText="$t('backToCart')"
+            :icon="SfIconLock"
+        />
+        <div v-if="!cartIsEmpty">
+            <div class="lg:grid lg:grid-cols-12 md:gap-x-6">
+                <div class="col-span-7 mb-10 md:mb-0">
+                    <CheckoutContainer
+                        :visibleSteps="visibleSteps"
+                        :currentStepId="currentStepId"
+                        :completeStep="completeStep"
+                        :goToStep="goToStep"
+                        :updateStepData="updateStepData"
+                    />
+                </div>
+                <div class="col-span-5 md:sticky md:top-20 h-fit">
+                    <SfLoaderCircular v-if="isLoading" class="absolute top-[130px] right-0 left-0 m-auto z-[999] opacity-100!" size="2xl" />
+                    <div :class="{ 'pointer-events-none opacity-50': isLoading }">
+                        <CheckoutSummary
+                            :getStepData="getStepData"
+                            :allStepsCompleted="allStepsCompleted"
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-span-5 md:sticky md:top-20 h-fit">
-          <SfLoaderCircular v-if="isLoading" class="absolute top-[130px] right-0 left-0 m-auto z-[999] opacity-100!" size="2xl" />
-          <div :class="{ 'pointer-events-none opacity-50': isLoading }">
-            <CheckoutSummary 
-              :selected-method="selectedProvider"
-            />
-          </div>
+        <div v-else class="text-center py-10">
+            <SfLoaderCircular size="xl" class="mt-[160px] mb-[10px]" />
+            <p>Loading checkout details...</p>
         </div>
-      </div>
-    </div>
-    <!-- Loading State -->
-    <div v-else class="text-center py-10">
-      <SfLoaderCircular size="xl" class="mt-[160px] mb-[10px]" />
-      <p>Loading checkout details...</p>
-    </div>
-  </main>
+    </main>
 </template>

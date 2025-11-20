@@ -75,7 +75,6 @@ const handleSubmit = async (e:number) => {
                         v-for="method in allPaymentMethods"
                         class="relative"
                     >
-                        <p>{{ typeof(method.id) }}</p>
                         <input
                             v-model="form.paymentMethodId"
                             type="radio"
@@ -84,7 +83,6 @@ const handleSubmit = async (e:number) => {
                             :value="method.id"
                             @change="handleSubmit(method.id)"
                         />
-                        {{ method.id }} - {{ method.name }}
                         <span
                             class="block h-20 flex flex-col items-center justify-center py-4 px-4 cursor-pointer rounded-md border border-neutral-200 -outline-offset-2 hover:border-primary-200 hover:bg-primary-100 peer-focus:border-primary-200 peer-focus:bg-primary-100 active:border-primary-300 active:bg-primary-200 peer-checked:outline peer-checked:outline-2 peer-checked:outline-primary-700 peer-disabled:opacity-50 peer-disabled:bg-neutral-100 peer-disabled:border-neutral-200 peer-disabled:cursor-not-allowed peer-disabled:[&_img]:grayscale"
                         >

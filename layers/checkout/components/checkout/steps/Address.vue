@@ -175,7 +175,6 @@ const handleSubmit = async () => {
                         v-model="form.street2"
                         name="streetName2"
                         :autocomplete="autocompletePrefix+' address-line2'"
-                        required
                         :placeholder="$t('form.streetNameLabel2')"
                     />
                 </label>

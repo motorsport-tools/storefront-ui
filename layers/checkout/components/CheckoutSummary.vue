@@ -5,6 +5,7 @@ import type { PaymentMethod } from "~/graphql";
 const props = defineProps<{
   getStepData: (stepId: string) => Record<string, any>;
   allStepsCompleted: boolean;
+  isLastStep: boolean;
 }>();
 
 const { cart } = useCart();
@@ -31,7 +32,7 @@ const paymentData = props.getStepData('payment')
 const readyToPay = computed(() => {
   selectedMethod.value = paymentData.value?.paymentMethod || null
 
-  if(paymentData.value?.paymentMethod?.id && isPaymentWithCardReady.value && !loading.value && props.allStepsCompleted) return true
+  if(paymentData.value?.paymentMethod?.id && isPaymentWithCardReady.value && props.isLastStep && !loading.value && props.allStepsCompleted) return true
 
   return false
   

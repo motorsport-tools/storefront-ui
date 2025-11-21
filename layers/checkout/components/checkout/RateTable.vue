@@ -19,7 +19,6 @@ const handleSelectRate = async (serviceId: string) => {
 }
 </script>
 <template>
-    <p>Summary: {{ summary }}</p>
     <table class="hidden md:block text-left typography-text-sm">
         <caption class="hidden">
             {{ $t("shippingMethod.rates.caption") }}

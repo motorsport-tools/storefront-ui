@@ -13,12 +13,18 @@ const { user } = useAuth()
 const { open, close, isOpen } = useDisclosure()
 const route = useRoute()
 const { loadCategory } = useCategory()
+const { setCategory } = useCategoryData()
+
 
 const { data: category } = await useAsyncData(
   `category-${route.path}`,
   () => loadCategory({ slug: route.path }),
   { 
-    watch: [() => route.path]
+    watch: [() => route.path],
+    transform: (data) => {
+      setCategory(data)
+      return data
+    }
   }
 )
 

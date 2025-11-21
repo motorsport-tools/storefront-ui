@@ -145,18 +145,35 @@ export const useCheckout = () => {
 
     // Reset Delivery Onwards
     const resetCheckoutFromStep = (stepId: string) => {
-        const targetIndex = steps.value.findIndex(s => s.id === stepId)
-        if (targetIndex === -1) return
-        const targetStep = steps.value.find(s => s.id === stepId)
-        if (!targetStep) return
+        if (import.meta.client) {
+            const saved = localStorage.getItem(STORAGE_KEY)
+            if (saved) {
+                try {
+                    const { stepStates, currentId } = JSON.parse(saved)
+                    currentStepId.value = currentId
+                    if (currentStepId.value === stepId) return
 
-        steps.value.slice(targetIndex).forEach(step => {
-            step.completed = false
-            step.data = {}
-        })
+                    const keys = Object.keys(stepStates)
+                    const targetIndex = keys.indexOf(stepId)
 
-        currentStepId.value = targetStep.id
-        saveToStorage()
+                    if (targetIndex === -1) return
+
+                    for (let i = targetIndex; i < keys.length; i++) {
+                        stepStates[keys[i]] = { completed: false, data: {} };
+                    }
+
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                        stepStates,
+                        currentId: stepId
+                    }))
+
+                    return
+
+                } catch (e) {
+                    console.error('Failed to restore checkout state:', e)
+                }
+            }
+        }
     }
 
     // Get data from a specific step

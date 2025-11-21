@@ -73,6 +73,7 @@ const { t } = useI18n()
 const { cartAdd } = useCart()
 const { isAuthenticated } = useAuth()
 const { wishlistAddItem, isInWishlist, wishlistRemoveItem } = useWishlist()
+const { resetCheckoutFromStep } = useCheckout()
 
 const handleWishlistAddItem = async (firstVariant: CustomProductWithStockFromRedis) => {
   await wishlistAddItem(firstVariant.id)
@@ -90,6 +91,13 @@ const handleWishListClick = async (firstVariant: CustomProductWithStockFromRedis
 
 const wishlistButtonTitle = (id: number | undefined) => {
   return isInWishlist(id) ? t('wishlist.removeFromWishlist') : t('wishlist.addToWishlist')
+}
+
+const handleAddToCart = async (variantId: number | undefined, quantity: number) => {
+  if(variantId) {
+    await cartAdd(variantId, quantity)
+    resetCheckoutFromStep('delivery-method')
+  }
 }
 
 const isStock = computed(() => {
@@ -198,7 +206,7 @@ if(props.firstVariant?.pricelist_ids) {
           class="ottom-2"
           size="sm"
           :disabled="!isStock"
-          @click="cartAdd(firstVariant?.id, 1)"
+          @click="handleAddToCart(firstVariant?.id, 1)"
         >
           <template #prefix>
             <SfIconShoppingCart size="sm" />

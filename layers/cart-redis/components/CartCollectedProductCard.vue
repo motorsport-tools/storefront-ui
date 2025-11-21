@@ -14,7 +14,8 @@ defineProps({
   },
 });
 
-const { updateItemQuantity, removeItemFromCart } = useCart();
+const { updateItemQuantity, removeItemFromCart } = useCart()
+const { resetCheckoutFromStep } = useCheckout()
 </script>
 
 <template>
@@ -64,7 +65,7 @@ const { updateItemQuantity, removeItemFromCart } = useCart();
         </SfLink>
         <SfIconRemoveShoppingCart
           class="cursor-pointer"
-          @click="removeItemFromCart(orderLine.id)"
+          @click="resetCheckoutFromStep('delivery-method'); removeItemFromCart(orderLine.id)"
         />
       </div>
       <div class="my-2 sm:mb-0">
@@ -109,7 +110,7 @@ const { updateItemQuantity, removeItemFromCart } = useCart();
           :max-value="Number(orderLine.product?.stock)"
           :value="Number(orderLine.quantity)"
           class="mt-4 sm:mt-0"
-          @update:model-value="updateItemQuantity(orderLine.id, $event)"
+          @update:model-value="resetCheckoutFromStep('delivery-method'); updateItemQuantity(orderLine.id, $event);"
         />
       </div>
     </div>

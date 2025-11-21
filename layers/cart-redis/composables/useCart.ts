@@ -139,19 +139,19 @@ export const useCart = () => {
     }
 
     loading.value = true;
-    const { data, error } = await $sdk().odoo.mutation<
+    const data = await $sdk().odoo.mutation<
       MutationUpdateCartAddressArgs,
       UpdateCartAddressResponse
     >({ mutationName: MutationName.UpdateCartAddress }, params);
     loading.value = false;
 
-    if (data.value.updateCartAddress.success) {
-      cart.value = data.value?.updateCartAddress?.cart || ({} as Cart)
+    if (data?.updateCartAddress?.success) {
+      cart.value = data?.updateCartAddress?.cart || ({} as Cart)
       return true
     }
 
     if (error.value) {
-      return toast.error(data.value.updateCartAddress.error || 'Failed to update address');
+      return toast.error(data?.updateCartAddress?.error || 'Failed to update address');
     }
   }
 

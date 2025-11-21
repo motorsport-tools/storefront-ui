@@ -10,7 +10,7 @@
   
   <script setup lang="ts">
   import { ref, onMounted, onBeforeUnmount } from 'vue';
-  import type { PaymentMethod } from '~/graphql';
+  import type { AddressEnum, PaymentMethod } from '~/graphql';
   import { useCountryList } from '~/layers/core/composable/useCountryList';
   
   const props = defineProps({
@@ -110,7 +110,7 @@
   /**
    * Synchronize address from Stripe to cart
    */
-  const syncAddressToCart = async (type: 'delivery' | 'billing', stripeAddress: any) => {
+  const syncAddressToCart = async (type: AddressEnum, stripeAddress: any) => {
     try {
       console.log(`Syncing ${type} address from Stripe`, stripeAddress);
       

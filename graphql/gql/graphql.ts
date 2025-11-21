@@ -34,8 +34,8 @@ export type AddAddressInput = {
 };
 
 export enum AddressEnum {
-  Billing = 'Billing',
-  Shipping = 'Shipping'
+  Billing = 'invoice',
+  Shipping = 'delivery',
 }
 
 export type AddressFilterInput = {

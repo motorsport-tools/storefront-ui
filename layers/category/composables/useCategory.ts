@@ -22,8 +22,9 @@ export const useCategory = () => {
     )
 
     if (data?.category?.id === 0) {
-      createError({
+      throw createError({
         status: 404,
+        statusMessage: 'Category not found',
       })
     }
     return data?.category || ({} as Category)

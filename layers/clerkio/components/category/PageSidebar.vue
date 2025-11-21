@@ -2,7 +2,7 @@
 import { SfIconChevronLeft } from "@storefront-ui/vue";
 import type { Category} from "~/graphql";
 const props = defineProps<{
-    category: Category;
+    category: Category | null;
 }>();
 </script>
 <template>

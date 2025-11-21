@@ -1,8 +1,10 @@
 // composables/categoryState.ts
-export const useCategoryData = () => {
-    const category = useState(`category-data`)
+import { type Category } from "~/graphql"
 
-    const setCategory = (value) => {
+export const useCategoryData = () => {
+    const category = useState<Category | null>('category-data', () => null)
+
+    const setCategory = (value: Category | null) => {
         category.value = value
     }
     return {

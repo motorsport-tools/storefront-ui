@@ -13,18 +13,14 @@ const { user } = useAuth()
 const { open, close, isOpen } = useDisclosure()
 const route = useRoute()
 const { loadCategory } = useCategory()
-const { category, setCategory } = useCategoryData()
 
-const { data, refresh } = await useAsyncData(
+const { data: category } = await useAsyncData(
   `category-${route.path}`,
   () => loadCategory({ slug: route.path }),
-  { watch: [() => route.path] }
+  { 
+    watch: [() => route.path]
+  }
 )
-
-watch(() => data.value, (val:Category | null) => {
-    setCategory(val)
-    
-},{ immediate: true })
 
 watch(isTabletScreen, (value) => {
   if (value && isOpen.value) {

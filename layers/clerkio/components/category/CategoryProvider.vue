@@ -26,7 +26,7 @@ const routing = {
             }
 
             return {
-                q: indexState.query,
+                //q: indexState.query,
                 brands: indexState.refinementList && indexState.refinementList.brand,
                 has_stock: indexState.toggle && indexState.toggle.has_stock,
                 on_sale: indexState.toggle && indexState.toggle.on_sale,
@@ -40,10 +40,10 @@ const routing = {
           routeToState(routeState) {
             const state = {
                 [indexName.value]: {
-                    query: routeState.q,
-                    hierarchicalMenu: {
-                        _category_lvl0: routeState.categories || []
-                    },
+                    //query: routeState.q,
+                    //hierarchicalMenu: {
+                    //    _category_lvl0: routeState.categories || []
+                    //},
                     refinementList: {
                         ...(routeState.brands ? { brand: routeState.brands } : {}),
                         ...(routeState.fits ? { fits: routeState.fits } : {}),
@@ -55,6 +55,10 @@ const routing = {
             
             if(routeState.page) {
                 state[indexName.value].page = Number(routeState.page)
+            }
+
+            if(routeState.limit) {
+                state[indexName.value].hitsPerPage = Number(routeState.limit)
             }
 
             return state
@@ -89,6 +93,8 @@ watch(
             :key="`category-${props.category?.id}`"
             :filters="categoryFilter"
         />
-        <slot name="default"></slot>
+
+        <slot></slot>
+
     </AisInstantSearch>
 </template>

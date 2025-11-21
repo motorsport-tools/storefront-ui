@@ -6,6 +6,9 @@ export default {
     name: 'HiddenBox', 
     mixins: [
         createWidgetMixin({ connector: connectSearchBox }) 
-    ], 
+    ],
+    render() {
+        return null;
+    }
 }
 </script>

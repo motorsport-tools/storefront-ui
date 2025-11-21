@@ -17,7 +17,6 @@ const { options } = toRefs(props);
     :class="$attrs.class"
 >
     <template #default="{ items, currentRefinement, refine }">
-        <component :is="HitsPerPageTracker"/>
         <UiFormCustomSfSelect
             :modelValue="currentRefinement"
             @update:modelValue="refine"

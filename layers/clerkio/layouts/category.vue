@@ -19,23 +19,17 @@ const navigationMenu = computed(() => siteData.value?.headerNavigation || {})
 const footer = useTemplateRef('footerRef')
 </script>
 <template>
-    <CategoryProvider 
-        :key="`category-${category?.id}`"
-        index-name="categories" 
-        :category="category"
+    <SiteHeader 
+        :headerNavigation="navigationMenu"
+        :refresh="refresh"
     >
-        <SiteHeader 
-            :headerNavigation="navigationMenu"
-            :refresh="refresh"
-        >
-            <template #search>
+        <template #search>
 
-            </template>
-        </SiteHeader>
-        <div class="relative z-1">
-            <slot></slot>
-        </div>
-    </CategoryProvider>
+        </template>
+    </SiteHeader>
+    <div class="relative z-1">
+        <slot></slot>
+    </div>
     <LazyNewsletter />
 
     <LazySiteFooter 

@@ -13,11 +13,15 @@ export default defineNuxtRouteMiddleware(async (to) => {
             params: {
                 slug,
             },
+            key: `route-${slug}`,
         })
 
         if (!routeData?.value?.data) {
             console.warn('[dynamic-routes] Route does not exist or invalid:', slug)
-            return
+            return abortNavigation(createError({
+                statusCode: 404,
+                statusMessage: 'Page not found'
+            }))
         }
 
         const routeComponents = {
@@ -32,7 +36,10 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
         if (!component) {
             console.warn('[dynamic-routes] Invalid route type:', routeType)
-            return
+            return abortNavigation(createError({
+                statusCode: 404,
+                statusMessage: 'Invalid route type'
+            }))
         }
 
         router.addRoute({
@@ -41,10 +48,12 @@ export default defineNuxtRouteMiddleware(async (to) => {
             component: component,
         })
 
-        // Trigger the route replacement
-        return to.fullPath
+        return { ...to, matched: router.resolve(to.path).matched }
     } catch (error) {
         console.error('[dynamic-routes] Error in dynamic route middleware:', error)
-        return
+        return abortNavigation(createError({
+            statusCode: 500,
+            statusMessage: 'Failed to resolve route'
+        }))
     }
 })

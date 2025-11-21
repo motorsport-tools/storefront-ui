@@ -114,6 +114,9 @@ const limitOptions = [
                                 :options="limitOptions"
                                 class="mr-2 flex flex-row items-center"
                             />
+                            <SearchPageOfPage
+                                class="ml-auto text-sm"
+                            />
                         </div>
                         <div class="flex justify-between items-center mb-6">
                             <SearchStats class="mb-0"/>

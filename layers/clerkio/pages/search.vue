@@ -110,7 +110,9 @@ const limitOptions = [
                         v-show="!isSearchStalled"
                         :pid="user?.publicPricelist?.id || 4"
                     />
-                    
+                    <SearchPageOfPage
+                        class="ml-auto text-sm"
+                    />
                 </SearchLoadingProvider>
             </div>
         </div>

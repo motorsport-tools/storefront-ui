@@ -79,6 +79,7 @@
       "to": "to"
     }
   },
+  "pageOfPage": "Page {current} of {total}",
   "productInfo": {
     "was": "was",
     "save": "Save",

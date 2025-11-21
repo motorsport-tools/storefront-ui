@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type Partner, type UpdateAddressInput, type AddAddressInput, AddressEnum, type Country, type State, type AddAddressResponse } from "~/graphql"
-import { SfInput, SfSwitch, SfSelect, SfCheckbox } from "@storefront-ui/vue"
+import { SfInput, SfSwitch, SfSelect, SfCheckbox, SfIconCheckBox } from "@storefront-ui/vue"
 import { useCountryList } from "~/layers/core/composable/useCountryList"
 
 const props = defineProps<{
@@ -89,161 +89,153 @@ const handleSubmit = async () => {
 
 </script>
 <template>
-    <div
-        data-testid="checkout-contact"
-        class="md:px-4 py-6"
-    >
-        <h2 class="text-neutral-900 text-lg font-bold mb-4">
-            {{ $t(`${autocompletePrefix}.heading`) }}
-        </h2>
-
-        <div name="summary" v-show="showSummary">
-            <div class="mt-2 md:w-[520px]">
-                <p v-if="autocompletePrefix == 'shipping'"><strong>{{ $t("form.NameLabel") }}</strong>: {{ form.name }}</p>
-                <p><strong>{{ $t("form.countryLabel") }}</strong>: {{ selectedCountry.name }}</p>
-                <p><strong>{{ $t("form.streetNameLabel") }}</strong>: {{ form.street }}</p>
-                <p><strong>{{ $t("form.streetNameLabel2") }}</strong>: {{ form.street2 }}</p>
-                <p><strong>{{ $t("form.cityLabel") }}</strong>: {{ form.city }}</p>
-                <p><strong>{{ $t("form.stateLabel") }}</strong>: {{ selectedState.name }}</p>
-                <p><strong>{{ $t("form.postalCodeLabel") }}</strong>: {{ form.zip }}</p>
-            </div>
+    <div name="summary" v-show="showSummary">
+        <div class="mt-2 md:w-[520px]">
+            <p v-if="autocompletePrefix == 'shipping'">{{ form.name }}</p>
+            <p>{{ form.street }}</p>
+            <p v-if="form.street2">{{ form.street2 }}</p>
+            <p>{{ form.city }}</p>
+            <p v-if="selectedState">{{ selectedState.name }}</p>
+            <p>{{ form.zip }}</p>
+            <p>{{ selectedCountry.name }}</p>
+            <p v-if="form.useDelivery" class="flex flex-row items-center   mt-2"><SfIconCheckBox class="text-green-700" size="sm"/> <strong class="ml-2">{{ $t('form.useAddressForDelivery') }}</strong></p>
         </div>
-        <div v-show="!showSummary">
-            <form 
-                data-testid="contact-information-form"
-                @submit.prevent="handleSubmit"
-                class="space-y-4 md:w-[520px]"
-            >
+    </div>
+    <div v-show="!showSummary">
+        <form 
+            data-testid="contact-information-form"
+            @submit.prevent="handleSubmit"
+            class="space-y-4 md:w-[520px]"
+        >
 
-                <label class="md:col-span-3">
-                    <UiFormLabel>{{ $t("form.countryLabel") }}</UiFormLabel>
-                    <SfSelect
-                        v-model="form.countryId"
-                        name="country"
-                        :autocomplete="autocompletePrefix+' country-name'"
-                        :placeholder="`${$t('form.selectPlaceholder')}`"
-                        required
-                        :disabled="pending || !!error"
-                    >
-                        <option v-if="pending">
-                            {{ $t("form.loadingOptions") }}
-                        </option>
-                        <option v-if="error" disabled>
-                            {{ $t('form.errorOptions') }}
-                        </option>
-                        <option
-                            v-else
-                            v-for="countryOption in countries.countries"
-                            :key="countryOption?.id"
-                            :value="countryOption?.id"
-                        >
-                            {{ countryOption?.name }}
-                        </option>
-                    </SfSelect>
-                </label>
-                <div class="mt-4" />
-
-                <label
-                    v-if="autocompletePrefix == 'shipping'"
-                    class="md:col-span-3"
-                >
-                    <UiFormLabel>{{ $t("form.NameLabel") }}</UiFormLabel>
-                    <SfInput 
-                        v-model="form.name" 
-                        name="name"
-                        :autocomplete="autocompletePrefix+' name'"
-                        required
-                        :placeholder="$t('form.NameLabel')" />
-                </label>
-                <div v-if="autocompletePrefix == 'shipping'" class="mt-4" />
-
-                <label class="md:col-span-3">
-                    <UiFormLabel>{{ $t("form.streetNameLabel") }}</UiFormLabel>
-                    <SfInput
-                        v-model="form.street"
-                        name="streetName"
-                        :autocomplete="autocompletePrefix+' address-line1'"
-                        required
-                        :placeholder="$t('form.streetNameLabel')"
-                    />
-                </label>
-                <div class="mt-4" />
-
-                <label class="md:col-span-3">
-                    <UiFormLabel>{{ $t("form.streetNameLabel2") }}</UiFormLabel>
-                    <SfInput
-                        v-model="form.street2"
-                        name="streetName2"
-                        :autocomplete="autocompletePrefix+' address-line2'"
-                        :placeholder="$t('form.streetNameLabel2')"
-                    />
-                </label>
-                <div class="mt-4" />
-
-                <label class="md:col-span-3">
-                    <UiFormLabel>{{ $t("form.cityLabel") }}</UiFormLabel>
-                    <SfInput
-                    v-model="form.city"
-                    name="city"
-                    :autocomplete="autocompletePrefix+' address-level2'"
+            <label class="md:col-span-3">
+                <UiFormLabel>{{ $t("form.countryLabel") }}</UiFormLabel>
+                <SfSelect
+                    v-model="form.countryId"
+                    name="country"
+                    :autocomplete="autocompletePrefix+' country-name'"
+                    :placeholder="`${$t('form.selectPlaceholder')}`"
                     required
-                    :placeholder="$t('form.cityLabel')"
-                    />
-                </label>
-                <div class="mt-4" />
-
-                <label class="md:col-span-3">
-                    <UiFormLabel>{{ $t("form.stateLabel") }}</UiFormLabel>
-                    <SfSelect
-                        v-model="form.stateId"
-                        name="state"
-                        :autocomplete="autocompletePrefix+' address-level1'"
-                        :disabled="!states.length"
-                        :placeholder="$t('form.selectPlaceholder')"
-                        required
+                    :disabled="pending || !!error"
+                >
+                    <option v-if="pending">
+                        {{ $t("form.loadingOptions") }}
+                    </option>
+                    <option v-if="error" disabled>
+                        {{ $t('form.errorOptions') }}
+                    </option>
+                    <option
+                        v-else
+                        v-for="countryOption in countries.countries"
+                        :key="countryOption?.id"
+                        :value="countryOption?.id"
                     >
-                        <option 
-                            v-for="stateOption in states"
-                            :key="stateOption.id"
-                            :value="stateOption.id"
-                        >
-                            {{ stateOption.name }}
-                        </option>
-                    </SfSelect>
-                </label>
-                <div class="mt-4" />
+                        {{ countryOption?.name }}
+                    </option>
+                </SfSelect>
+            </label>
+            <div class="mt-4" />
 
-                <label>
-                    <UiFormLabel>{{ $t("form.postalCodeLabel") }}</UiFormLabel>
-                    <SfInput
-                        v-model="form.zip"
-                        name="postalCode"
-                        :autocomplete="autocompletePrefix+' postal-code'"
-                        required
-                        :placeholder="$t('form.postalCodeLabel')"
-                    />
-                </label>
+            <label
+                v-if="autocompletePrefix == 'shipping'"
+                class="md:col-span-3"
+            >
+                <UiFormLabel>{{ $t("form.NameLabel") }}</UiFormLabel>
+                <SfInput 
+                    v-model="form.name" 
+                    name="name"
+                    :autocomplete="autocompletePrefix+' name'"
+                    required
+                    :placeholder="$t('form.NameLabel')" />
+            </label>
+            <div v-if="autocompletePrefix == 'shipping'" class="mt-4" />
 
-                <div v-if="autocompletePrefix == 'billing'" class="mt-4" />
+            <label class="md:col-span-3">
+                <UiFormLabel>{{ $t("form.streetNameLabel") }}</UiFormLabel>
+                <SfInput
+                    v-model="form.street"
+                    name="streetName"
+                    :autocomplete="autocompletePrefix+' address-line1'"
+                    required
+                    :placeholder="$t('form.streetNameLabel')"
+                />
+            </label>
+            <div class="mt-4" />
 
-                <label
-                    v-if="autocompletePrefix === 'billing'"
-                    class="md:col-span-3 flex items-center gap-2"
+            <label class="md:col-span-3">
+                <UiFormLabel>{{ $t("form.streetNameLabel2") }}</UiFormLabel>
+                <SfInput
+                    v-model="form.street2"
+                    name="streetName2"
+                    :autocomplete="autocompletePrefix+' address-line2'"
+                    :placeholder="$t('form.streetNameLabel2')"
+                />
+            </label>
+            <div class="mt-4" />
+
+            <label class="md:col-span-3">
+                <UiFormLabel>{{ $t("form.cityLabel") }}</UiFormLabel>
+                <SfInput
+                v-model="form.city"
+                name="city"
+                :autocomplete="autocompletePrefix+' address-level2'"
+                required
+                :placeholder="$t('form.cityLabel')"
+                />
+            </label>
+            <div class="mt-4" />
+
+            <label class="md:col-span-3">
+                <UiFormLabel>{{ $t("form.stateLabel") }}</UiFormLabel>
+                <SfSelect
+                    v-model="form.stateId"
+                    name="state"
+                    :autocomplete="autocompletePrefix+' address-level1'"
+                    :disabled="!states.length"
+                    :placeholder="$t('form.selectPlaceholder')"
+                    required
                 >
-                    <SfCheckbox
-                        v-model="form.useDelivery"
-                        name="useAsShipping" 
-                    />
-                    {{ $t("form.useAsShippingLabel") }}
-                </label>
+                    <option 
+                        v-for="stateOption in states"
+                        :key="stateOption.id"
+                        :value="stateOption.id"
+                    >
+                        {{ stateOption.name }}
+                    </option>
+                </SfSelect>
+            </label>
+            <div class="mt-4" />
 
-                <button 
-                    type="submit"
-                    class="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
-                >
-                    Continue
-                </button>
-            </form>
-        </div>
+            <label>
+                <UiFormLabel>{{ $t("form.postalCodeLabel") }}</UiFormLabel>
+                <SfInput
+                    v-model="form.zip"
+                    name="postalCode"
+                    :autocomplete="autocompletePrefix+' postal-code'"
+                    required
+                    :placeholder="$t('form.postalCodeLabel')"
+                />
+            </label>
+
+            <div v-if="autocompletePrefix == 'billing'" class="mt-4" />
+
+            <label
+                v-if="autocompletePrefix === 'billing'"
+                class="md:col-span-3 flex items-center gap-2"
+            >
+                <SfCheckbox
+                    v-model="form.useDelivery"
+                    name="useAsShipping" 
+                />
+                {{ $t("form.useAsShippingLabel") }}
+            </label>
+
+            <button 
+                type="submit"
+                class="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
+            >
+                Continue
+            </button>
+        </form>
     </div>
 </template>

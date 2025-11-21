@@ -18,7 +18,7 @@ await loadCountries()
 const { $i18n } = useNuxtApp()
 const { cart } = useCart()
 
-const { steps, visibleSteps, isLastStep, currentStepId, allStepsCompleted, registerSteps, completeStep, goToStep, updateStepData, getAllData, getStepData, resetCheckout } = useCheckout()
+const { steps, visibleSteps, isLastStep, currentStepId, currentStepIndex, allStepsCompleted, registerSteps, completeStep, goToStep, updateStepData, getAllData, getStepData, resetCheckout } = useCheckout()
 
 import CustomerInfo from "./../../components/checkout/steps/CustomerInfo.vue"
 import Address from "./../../components/checkout/steps/Address.vue"
@@ -60,6 +60,7 @@ const checkoutSteps = [
         id: 'delivery-method',
         component: DeliveryMethod,
         title: `${$i18n.t('shippingMethod.heading')}`,
+        subHeading: `${$i18n.t('shippingMethod.subHeading')}`,
         exData: (cart.value?.order?.shippingMethod as ShippingMethod),
         condition: () => true
     },
@@ -109,6 +110,7 @@ onMounted(async () => {
                     <CheckoutContainer
                         :visibleSteps="visibleSteps"
                         :currentStepId="currentStepId"
+                        :currentStepIndex="currentStepIndex"
                         :completeStep="completeStep"
                         :goToStep="goToStep"
                         :updateStepData="updateStepData"

@@ -5,6 +5,7 @@ export interface CheckoutStep {
     id: string
     component: any
     title: string
+    subHeading?: string
     completed: boolean
     data?: Record<string, any>
     exData?: Record<string, any>
@@ -17,8 +18,6 @@ const STORAGE_KEY = 'checkout_progress'
 export const useCheckout = () => {
     const steps = ref<CheckoutStep[]>([])
     const currentStepId = ref<string>('')
-
-    console.log('Checkout composable initialized', steps.value)
 
     // Initialize from localStorage
     const initFromStorage = () => {
@@ -199,6 +198,10 @@ export const useCheckout = () => {
         })
     })
 
+    const currentStepIndex = computed(() => {
+        const index = steps.value.findIndex(s => s.id === currentStepId.value)
+        return index
+    })
 
     return {
         steps: readonly(steps),
@@ -206,6 +209,7 @@ export const useCheckout = () => {
         currentStepId: readonly(currentStepId),
         isLastStep,
         allStepsCompleted,
+        currentStepIndex,
         registerSteps,
         completeStep,
         goToStep,

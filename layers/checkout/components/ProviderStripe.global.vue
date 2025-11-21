@@ -18,8 +18,6 @@ const props = defineProps({
     },
 })
 
-console.log('Selected Method: ', props.method)
-
 const stripeRef = ref<any>(null)
 const stripeDropin = ref<StripeDropinType | null>(null)
 const dropinDivElement = ref(null)

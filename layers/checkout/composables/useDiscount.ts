@@ -12,7 +12,7 @@ export const useDiscount = () => {
   const toast = useToast()
 
   const loading = ref(false);
-
+  /*
   const applyGiftCard: ApplyDiscountsResponse | any = async (promo: MutationApplyGiftCardArgs) => {
     return $sdk().odoo.mutation<
       MutationApplyGiftCardArgs,
@@ -41,7 +41,7 @@ export const useDiscount = () => {
       loading.value = false
     }
   }
-
+  */
   const makeGiftCardPayment = async () => {
     try {
       const data: MakeGiftCardPaymentResponse | any = await $sdk().odoo.mutation<
@@ -63,7 +63,7 @@ export const useDiscount = () => {
 
   return {
     loading,
-    applyDiscount,
+    //applyDiscount,
     makeGiftCardPayment,
   };
 };

@@ -13,6 +13,9 @@ import type {
   AddressInput,
   AddressEnum,
   ExpressAddressInput,
+  ApplyDiscountsResponse,
+  MutationApplyGiftCardArgs,
+  MutationApplyCouponArgs,
 } from "~/graphql"
 import { MutationName } from "~/server/mutations"
 import { useToast } from "vue-toastification"
@@ -172,6 +175,38 @@ export const useCart = () => {
     return cart.value?.order?.orderLines?.filter((l) => !l.coupon && !l.isDelivery && !l.isRewardLine).every(line => line?.product?.isInStock)
   })
 
+  const applyDiscount = async (promoCode: string) => {
+
+    loading.value = true
+
+    const params: MutationApplyGiftCardArgs = {
+      promo: promoCode
+    }
+    let data = null
+    data = await $sdk().odoo.mutation<
+      MutationApplyGiftCardArgs,
+      ApplyDiscountsResponse
+    >({ mutationName: MutationName.ApplyGiftCardMutation }, params)
+
+    if (data?.applyGiftCard) {
+
+      cart.value = data.applyGiftCard
+
+    } else if (!data?.applyGiftCard) {
+
+      data = await $sdk().odoo.mutation<
+        MutationApplyCouponArgs,
+        ApplyDiscountsResponse
+      >({ mutationName: MutationName.ApplyCouponMutation }, params);
+
+      if (data?.applyCoupon) {
+        cart.value = data.applyCoupon
+      }
+    }
+
+    loading.value = false
+  }
+
   return {
     loading,
     loadCart,
@@ -186,5 +221,6 @@ export const useCart = () => {
     shippingMethod,
     isCollectEligible,
     updateCartAddress,
+    applyDiscount,
   };
 };

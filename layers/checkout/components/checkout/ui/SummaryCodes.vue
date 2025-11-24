@@ -11,7 +11,6 @@ const removeLine = (id:number) => {
 }
 </script>
 <template>
-    {{ discount }}
     <div class="flex justify-between mb-2">
         <div class="flex grow pr-2">
             <p class="text-sm text-gray-500 ml-2">

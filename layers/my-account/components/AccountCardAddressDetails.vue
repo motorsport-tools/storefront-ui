@@ -57,15 +57,17 @@ const handleCloseAfterSaveAddress = async () => {
     :key="address.id"
   >
     <AccountAddressData
-      @on-click="handleOpenFormForEditAddress(address)"
-      :header="address.name || ''"
+      @click="handleOpenFormForEditAddress(address)"
+      :header="address.name || address.street || ''"
       :button-text="$t('account.accountSettings.personalData.edit')"
     >
-      <p>{{ `${address.name}, ${address.street}` }}</p>
-      <p>{{ address.phone }}</p>
-      <p>{{ `${address.country?.name}` }}</p>
+      <p v-if="address.name">{{ `${address.name}` }}</p>
+      <p>{{ `${address.street}` }}</p>
+      <p v-if="address.street2">{{ `${address.street2}` }}</p>
+      <p>{{ `${address.city}` }}</p>
       <p>{{ `${address?.state?.name || ""}` }}</p>
-      <p>{{ `${address.city} ${address.zip}` }}</p>
+      <p>{{ `${address.country?.name}` }}</p>
+      <p>{{ `${address.zip}` }}</p>
       <template v-slot:footer>
         <SfButton
           variant="secondary"

@@ -36,8 +36,12 @@ export const useAddresses = () => {
   const shippingAddresses = useState<Partner[]>("shipping-addresses", () => []);
 
   const loadAddresses = async (addressType: AddressEnum) => {
+    const jsToGraphQL = {
+      [AddressEnum.Billing]: 'Billing',
+      [AddressEnum.Shipping]: 'Shipping',
+    };
     const params: QueryAddressesArgs = {
-      filter: { addressType: [addressType] },
+      filter: { addressType: jsToGraphQL[addressType] },
     }
     try {
       loading.value = true

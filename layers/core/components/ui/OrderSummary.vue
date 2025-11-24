@@ -6,7 +6,17 @@ const mergedCoupons = computed(() => {
   if(cart.value?.order?.orderLines) {
     const lineCoupons = cart.value?.order?.orderLines
       .filter(line => line.isRewardLine)
-      .flatMap(line => line.coupon) // flatten all coupon arrays
+      .flatMap(line => {
+        if (line.coupon && line.coupon.length > 0) {
+          return line.coupon
+        } else {
+          return {
+            name: line.name,
+          }
+        }
+      }) 
+
+      console.log(lineCoupons)
     return [...cart.value?.order?.coupons || [], ...lineCoupons]
   }
   return []
@@ -55,7 +65,7 @@ const noCode = ['next_order_coupons', 'promotion']
               {{ $t('deliveryAtCheckout') }}
             </p>
           </div>
-
+          
           <div v-if="cartHasDiscount" class="flex flex-row grow pr-2 pb-2 border-b border-neutral-200">
             <p class="font-bold grow pr-2">{{ $t("discounts", { count: cartHasDiscount }) }}</p>
           </div>

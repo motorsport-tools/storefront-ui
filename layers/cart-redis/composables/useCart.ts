@@ -161,7 +161,7 @@ export const useCart = () => {
 
   const cartIsEmpty = computed(() => !cart.value.order?.orderLines?.filter((l) => !l.coupon && !l.isDelivery && !l.isRewardLine).length);
 
-  const cartHasDiscount = computed(() => cart.value.order?.coupons?.length || false);
+  const cartHasDiscount = computed(() => cart.value.order?.coupons?.length || cart.value.order?.orderLines?.filter((l) => l.isRewardLine || l.coupon).length || false);
 
   const shippingMethod = computed(() => cart.value?.order?.shippingMethod?.id || 0)
 

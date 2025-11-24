@@ -91,7 +91,7 @@ export const useProductTemplate = (slug: string) => {
       ?.filter((item: AttributeValue) => item?.attribute?.name === 'Amount')
       ?.map((item: AttributeValue) => ({
         value: item.id,
-        label: `£${item.name} Gift Card ${item.priceExtra ? '+ £' + item.priceExtra + ' extra' : ''}`,
+        label: `${item.name} Gift Card ${item.priceExtra ? '+ £' + item.priceExtra + ' extra' : ''}`,
       }))
   })
 

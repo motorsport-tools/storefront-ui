@@ -99,7 +99,7 @@ onMounted(() => {
             class="font-bold typography-headline-2 break-word !normal-case"
             data-testid="product-name"
         >
-            {{ productVariant?.name }}
+            {{ productVariant?.displayName || productVariant?.name }}
         </h1>
             
         <span class="block text-sm my-1">

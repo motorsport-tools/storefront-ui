@@ -30,10 +30,11 @@ export default defineEventHandler(async (event: H3Event) => {
             'accept': 'application/json',
             'content-type': 'application/json',
             'REAL-IP': getRequestIP(event) || '',
-            'request-host': config.public.middlewareUrl || getRequestHost(event),
             'Cookie': `session_id=${getCookie(event, 'session_id')}`,
+
         },
         body: JSON.stringify({ query: Queries[QueryName.GetOrderQuery], variables: { id } }),
+        credentials: 'include',
     })
 
     const order = (response?.data?.order as Order) || {}

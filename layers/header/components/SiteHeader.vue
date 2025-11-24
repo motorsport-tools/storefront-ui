@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useMegaMenuCategories } from '~/layers/core/composable/useMegaMenuCategories'
-import { SfIconMenu } from '@storefront-ui/vue'
+import { SfIconMenu, SfIconClose, SfButton, useDisclosure, useTrapFocus } from '@storefront-ui/vue'
 
 const { $viewport } = useNuxtApp()
 
@@ -129,6 +129,11 @@ onBeforeUnmount(() => {
     window.removeEventListener('resize', onResize)
     clearTimeout(resizeTimeout)
 })
+
+const { open, close, isOpen } = useDisclosure()
+const mobileSearch = ref<HTMLDivElement>()
+
+useTrapFocus(mobileSearch)
 </script>
 
 <template>
@@ -213,21 +218,56 @@ onBeforeUnmount(() => {
                     <UiUserNavButton
                         title="Search"
                         class="md:hidden"
+                        @click.prevent="open"
                     >
                         <Icon
                             name="weui:search-filled"
                             size="26px"
                         />
+                        
                     </UiUserNavButton>
                     <slot name="search">
-                        <UiSearchBar @update-overlay="isSearchOverlayVisible = $event"/>
+                        <UiSearchBar
+                            class="hidden md:flex"
+                            @update-overlay="isSearchOverlayVisible = $event"
+                        />
                     </slot>
                 </div>
                 <div
                     class="h-full flex items-center flex-nowrap"
                 >
                     <UiUserNav/>
-                </div>    
+                </div>
+                <Transition
+                    enter-active-class="transition-transform duration-200 ease-out"
+                    enter-from-class="scale-x-0 origin-right opacity-0"
+                    enter-to-class="scale-x-100 origin-right opacity-1"
+                    leave-active-class="transition-transform duration-200 ease-in"
+                    leave-from-class="scale-x-100 origin-right opacity-1"
+                    leave-to-class="scale-x-0 origin-right opacity-0"
+                >
+                    <div
+                        ref="mobileSearch"
+                        class="lg:hidden absolute w-full h-full bg-neutral-200 left-0 top-0 px-2"
+                        v-if="isOpen"
+                    >
+                        <div class="h-full flex-grow flex justify-end md:items-center md:justify-center py-2">
+                            <UiSearchBar 
+                                @update-overlay="isSearchOverlayVisible = $event"
+                            />
+                            <SfButton 
+                                variant="tertiary"
+                                square 
+                                aria-label="Close menu" 
+                                class="hover:!bg-transparent active:!bg-transparent z-20 cursor-pointer !text-black"
+                                title="Close menu" 
+                                @click="close()"
+                            >
+                                <SfIconClose class="text-black" size="lg" />
+                            </SfButton>
+                        </div>
+                    </div>
+                </Transition>    
             </div>
 
             <div 
@@ -240,6 +280,7 @@ onBeforeUnmount(() => {
                 />
             </div>
         </div>
+
     </header>
     <UiCategoryMenuMobile
         ref="categoryMenuRef"

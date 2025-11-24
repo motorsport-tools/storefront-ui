@@ -178,7 +178,7 @@ watch(result, result => {
     <form
         ref="formSearchTemplateRef"
         role="search"
-        class="hidden md:flex flex-[100%] box-border mx-6 relative w-full max-w-lg z-[10]"
+        class="flex-[100%] box-border mx-6 relative w-full max-w-lg z-[10]"
         @submit.prevent
     >
         <UiFormCustomSfInput

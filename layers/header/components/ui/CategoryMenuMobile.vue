@@ -57,6 +57,9 @@ watch(isOpen, (open) => {
 onUnmounted(() => {
     document.body.classList.remove('overflow-hidden')
 })
+
+const { isAuthenticated, user, logout } = useAuth()
+const NuxtLink = resolveComponent("NuxtLink")
 </script>
 <template>
     <Overlay :isOpen="isOpen" class="lg:hidden !z-[100] !h-full"/>
@@ -90,6 +93,12 @@ onUnmounted(() => {
                 </div>
                 <div class="h-full overflow-y-auto">
                     <ul class="mb-6 text-neutral-900">
+                        <li
+                            v-if="activeMenu.key == 'root'"
+                            class="font-bold border-b p-4 text-lg"
+                        >
+                            {{ $t('categories.heading') }}
+                        </li>
                         <li v-if="activeMenu.key !== 'root'">
                             <SfListItem
                                 size="lg"
@@ -140,6 +149,77 @@ onUnmounted(() => {
                                 </SfListItem>
                             </li>
                         </template>
+                        <li
+                            v-if="activeMenu.key == 'root'"
+                            class="font-bold border-b p-4 text-lg"
+                        >
+                            {{ $t('account.navHeading') }}
+                        </li>
+                        <li
+                            v-if="!isAuthenticated"
+                        >
+                            <SfListItem 
+                                to="/login"
+                                :tag="NuxtLink"
+                            >
+                                {{ $t('account.login') }}
+                            </SfListItem>
+                        </li>
+                        <li 
+                            v-else
+                            class="px-4 py-4"
+                        >
+                            <p class="text-sm">
+                                {{ $t('welcome') }}
+                            </p>
+                            <p class="font-bold text-primary-700 mb-0">
+                                {{ user.name }}
+                            </p>
+                        </li>
+                        <li
+                            v-if="isAuthenticated"
+                        >
+                            <SfListItem
+                                to="/my-account/my-orders"
+                                class="px-4 py-4"
+                                :tag="NuxtLink"
+                                @click="close()"
+                            >    
+                                {{ $t('account.myOrders.myOrders') }}
+                            </SfListItem>
+                            <SfListItem
+                                to="/my-account/personal-data"
+                                class="px-4 py-4"
+                                :tag="NuxtLink"
+                                @click="close()"
+                            >    
+                                {{ $t('account.accountSettings.section.personalData') }}
+                            </SfListItem>
+                            <SfListItem
+                                to="/my-account/billing-details"
+                                class="px-4 py-4"
+                                :tag="NuxtLink"
+                                @click="close()"
+                            >    
+                                {{ $t('account.accountSettings.section.billingDetails') }}
+                            </SfListItem>
+                            <SfListItem
+                                to="/my-account/shipping-details"
+                                class="px-4 py-4"
+                                :tag="NuxtLink"
+                                @click="close()"
+                            >    
+                                {{ $t('account.accountSettings.section.shippingDetails') }}
+                            </SfListItem>
+                            <SfListItem
+                                to="/"
+                                class="px-4 py-4"
+                                :tag="NuxtLink"
+                                @click="() => { logout(), close() }"
+                            >
+                                {{ $t('account.logout') }}
+                            </SfListItem>
+                        </li>
                     </ul>
                 </div>
             </nav>

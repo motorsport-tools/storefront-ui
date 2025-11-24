@@ -328,6 +328,9 @@
     "reportAbuse": "Report Abuse",
     "verifiedPurchase": "Verified purchase"
   },
+  "login": "Login",
+  "newCustomer": "New customer?",
+  "welcome": "Welcome back",
   "account": {
     "heading": "My Account",
     "navHeading": "Your Account",

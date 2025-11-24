@@ -61,13 +61,13 @@ onMounted( () => {
                         class="py-2"
                         @click="toggle()"
                     >
-                        Login
+                        {{ $t('login') }}
                     </SfButton>
-                    <p class="text-xs text-center py-2">New customer? <NuxtLink to="/signup" class="underline text-blue-600 ">Create an account</NuxtLink></p>
+                    <p class="text-xs text-center py-2">{{ $t('newCustomer') }} <NuxtLink to="/signup" class="underline text-blue-600 ">Create an account</NuxtLink></p>
                 </div>
                 <div v-else class="flex flex-col px-4 py-2 border-b">
                     <p class="text-xs">
-                        Welcome back
+                        {{ $t('welcome') }}
                     </p>
                     <p class="text-sm font-bold text-primary-700">
                         {{ user.name }}

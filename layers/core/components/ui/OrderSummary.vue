@@ -11,7 +11,10 @@ const mergedCoupons = computed(() => {
           return line.coupon
         } else {
           return {
-            name: line.name,
+            id: line.id,
+            name: line?.product?.name,
+            priceSubtotal: line.priceSubtotal,
+            isLine: true,
           }
         }
       }) 
@@ -22,7 +25,13 @@ const mergedCoupons = computed(() => {
   return []
 })
 
-const noCode = ['next_order_coupons', 'promotion']
+const amountDiscounts = computed(() => {
+  if(cart.value?.order?.orderLines) {
+    return cart.value?.order?.orderLines.filter(l => l.isRewardLine)
+    .reduce((sum, line) => sum + (line.priceSubtotal || 0), 0)
+  }
+  return 0
+})
 
 </script>
 
@@ -72,27 +81,17 @@ const noCode = ['next_order_coupons', 'promotion']
 
           <div
             v-if="cartHasDiscount"
-            v-for="discount in mergedCoupons"
-            :key="discount.id"
+            v-for="discount, index in mergedCoupons"
+            :key="index"
             class="flex flex-col grow pr-2"
           >
-            <div class="flex justify-between mb-2">
-              <div class="flex grow pr-2">
-                <p class="text-sm text-gray-500 ml-2">
-                  {{ discount.name }}
-                </p>
-                <p v-if="discount?.programType && !noCode.includes(discount.programType)" class="flex grow text-sm text-gray-500 ml-2">
-                  {{ discount.code }}
-                </p>
-              </div>
-              <p v-if="discount.priceSubtotal" class="flex text-right text-sm text-gray-500">
-                {{  $currency(Number(discount.priceSubtotal)) }}
-              </p>
-            </div>
+            <CheckoutUiSummaryCodes
+              :discount="discount"
+            />
           </div>
           <div class="flex flex-row grow pr-2">
             <p class="font-bold grow pr-2">{{ $t("beforeTax")}}</p>
-            <p class="flex text-right">{{ $currency( Number(cart?.order?.amountSubtotal || 0) + Number(cart?.order?.shippingMethod?.price || 0) + Number(cart?.order?.amountDiscounts || 0) ) }}</p>
+            <p class="flex text-right">{{ $currency( Number(cart?.order?.amountSubtotal || 0) + Number(cart?.order?.shippingMethod?.price || 0) + Number(amountDiscounts || 0) ) }}</p>
           </div>
 
           <div class="flex flex-row grow pr-2">

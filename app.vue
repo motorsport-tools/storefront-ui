@@ -39,7 +39,7 @@ onMounted(async () => {
       color="repeating-linear-gradient(to right, #008ebd 0%,#80dfff 50%,#e0f7ff 100%)"
     />
     <NuxtLayout :key="`${$route.meta.layout}-${$route.fullPath}`">
-      <NuxtPage :page-key="(route) => route.fullPath" />
+      <NuxtPage :page-key="(route) => route.path" />
     </NuxtLayout>
   </div>
 </template>

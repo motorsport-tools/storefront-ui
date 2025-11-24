@@ -86,6 +86,16 @@ export const useProductTemplate = (slug: string) => {
     return getRegularPrice(productTemplate.value?.firstVariant)
   })
 
+  const getAllAmounts = computed(() => {
+    return productTemplate.value?.attributeValues
+      ?.filter((item: AttributeValue) => item?.attribute?.name === 'Amount')
+      ?.map((item: AttributeValue) => ({
+        value: item.id,
+        label: `£${item.name} Gift Card ${item.priceExtra ? '+ £' + item.priceExtra + ' extra' : ''}`,
+      }))
+  })
+
+
   const getAllSizes = computed(() => {
     return productTemplate?.value?.attributeValues
       ?.filter((item: AttributeValue) => item?.attribute?.name === 'Size')
@@ -119,6 +129,7 @@ export const useProductTemplate = (slug: string) => {
     productTemplate,
     regularPrice,
     specialPrice,
+    getAllAmounts,
     getAllSizes,
     getAllColors,
     getAllMaterials,

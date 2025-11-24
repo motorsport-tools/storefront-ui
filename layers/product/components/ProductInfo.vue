@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { Product, CustomProductWithStockFromRedis, OrderLine } from '~/graphql'
+import type { LocationQueryRaw } from 'vue-router'
 import {
     SfButton,
+    SfSelect,
     SfIconShoppingCart,
     SfIconShoppingCartCheckout,
 } from '@storefront-ui/vue'
@@ -12,6 +14,7 @@ interface Props {
     specialPrice: number,
     regularPrice: number,
     loadingProductVariant: boolean,
+    getAllAmounts: any
 }
 const props = defineProps<Props>()
 
@@ -48,6 +51,32 @@ const maxQty = computed(() => {
     } else {
         return productVariant.value.stock || 0
     }
+})
+
+const route = useRoute()
+const router = useRouter()
+
+const selectedAmount = ref(undefined)
+
+const updateFilter = async (value:any) => {
+    const query: LocationQueryRaw = {}
+    const filter: LocationQueryRaw | undefined = { ['Amount']: value }
+
+    if(selectedAmount.value && selectedAmount.value !== 0) {
+        query.Amount = selectedAmount.value
+    }
+
+    if (filter) {
+        Object.entries(filter).forEach(([key, value]) => {
+        query[encodeURIComponent(key)] = value
+        })
+    }
+
+    router.push({ query: query, replace: true })
+}
+
+onMounted(() => {
+    selectedAmount.value = route.query.Amount ? Number(route.query.Amount) : props.getAllAmounts?.[0]?.value
 })
 </script>
 <template>
@@ -93,6 +122,21 @@ const maxQty = computed(() => {
                     :allowOutOfStockOrder="productVariant?.combinationInfoVariant?.allow_out_of_stock_order || false"
                 />
             </ClientOnly>
+        </div>
+        <div v-if="getAllAmounts && getAllAmounts.length">
+            <SfSelect 
+                size="base"
+                v-model="selectedAmount"
+                @update:model-value="updateFilter"
+            >
+                <option 
+                    v-for="{ value, label } in getAllAmounts" 
+                    :key="value" 
+                    :value="value"
+                >
+                    {{ label }}
+                </option>
+            </SfSelect>
         </div>
         <div class="py-4 my-4 border-gray-200 border-y">
             <div class="flex items-center justify-between mb-4">

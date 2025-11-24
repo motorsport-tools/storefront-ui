@@ -28,6 +28,7 @@ const {
   loadProductTemplate,
   productTemplate,
   loadingProductTemplate,
+  getAllAmounts,
   getAllColors,
   getAllMaterials,
   getAllSizes,
@@ -147,9 +148,8 @@ const breadcrumbs = computed(() => {
                         :specialPrice="getSpecialPrice"
                         :regularPrice="getRegularPrice"
                         :loadingProductVariant
+                        :getAllAmounts
                     />
-                    
-                
                 </section>
                 <section class="grid-in-left-bottom md:mt-8">
                     <UiDivider class="mt-10 mb-6" />

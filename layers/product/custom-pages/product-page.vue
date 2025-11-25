@@ -67,20 +67,21 @@ watch(
   [productTemplate, () => route.query],
   async ([template, query]) => {
     if (!template?.id) {
-      return
+        return
     }
     
     if (import.meta.server) {
-      return
+        return
     }
-
+    
     await loadProductVariant({
-      combinationId: Object.values(query)?.map(value =>
-        parseInt(value as string)
-      ).filter(Boolean),
-      productTemplateId: template.id,
+        combinationId: Object.values(query)?.map(value =>
+            parseInt(value as string)
+        ).filter(Boolean),
+        productTemplateId: template.id,
     })
     addProductToRecentViews(template.id)
+
   },
   { immediate: true, deep: true }
 )
@@ -93,8 +94,7 @@ const isLoadingPage = computed(() => {
 })
 
 const hasProductData = computed(() => {
-  return productTemplate.value?.id && 
-         (import.meta.server || productVariant.value?.id)
+    return productTemplate.value?.id && (import.meta.server || productVariant.value?.id)
 })
 
 const breadcrumbs = computed(() => {
@@ -111,100 +111,104 @@ const breadcrumbs = computed(() => {
         data-testid="product-page"
     >
         <NuxtErrorBoundary>
-        <div>
-            <div class="flex md:flex-row mt-5 mb-10">
-                <UiBreadcrumb
-                    v-if="breadcrumbs.length"
-                    :breadcrumbs="breadcrumbs"
-                    class="grow self-start"
-                />
-                <LazyUiProductWishlistButton
-                    :productVariant="productVariant"
-                />
-            </div>
-            <div
-                v-if="isLoadingPage"
-                class="w-full flex flex-col items-center justify-center min-h-[60vh]"
-            >
-                <SfLoaderCircular
-                    size="xl"
-                    class="my-32"
-                />
-            </div>
-            <div
-                v-else-if="hasProductData"
-                class="md:grid grid-areas-product-page grid-cols-product-page gap-x-6"
-            >
-                <section class="grid-in-left-top md:h-full xl:max-h-[700px]">
-                    <LazyUiGallery
-                        :thumbs="thumbs"
+            <div>
+                <div class="flex md:flex-row mt-5 mb-10">
+                    <UiBreadcrumb
+                        v-if="breadcrumbs.length"
+                        :breadcrumbs="breadcrumbs"
+                        class="grow self-start"
                     />
-                </section>
-                <section class="col-span-5 grid-in-right md:mb-0">
+                    <LazyUiProductWishlistButton
+                        :productVariant="productVariant"
+                    />
+                </div>
+                <div
+                    v-if="isLoadingPage"
+                    class="w-full flex flex-col items-center justify-center min-h-[60vh]"
+                >
+                    <SfLoaderCircular
+                        size="xl"
+                        class="my-32"
+                    />
+                </div>
+                <div
+                    v-else-if="hasProductData"
+                    class="md:grid grid-areas-product-page grid-cols-product-page gap-x-6"
+                >
+                    <section class="grid-in-left-top md:h-full xl:max-h-[700px]">
+                        <LazyUiGallery
+                            :thumbs="thumbs"
+                        />
+                    </section>
+                    <section class="col-span-5 grid-in-right md:mb-0">
+                        
+                        <ProductInfo
+                            :productTemplate
+                            :productVariant
+                            :specialPrice="getSpecialPrice"
+                            :regularPrice="getRegularPrice"
+                            :loadingProductVariant
+                            :getAllAmounts
+                        />
+                    </section>
+                    <section class="grid-in-left-bottom md:mt-8">
+                        <UiDivider class="mt-10 mb-6" />
                     
-                    <ProductInfo
-                        :productTemplate
-                        :productVariant
-                        :specialPrice="getSpecialPrice"
-                        :regularPrice="getRegularPrice"
-                        :loadingProductVariant
-                        :getAllAmounts
-                    />
-                </section>
-                <section class="grid-in-left-bottom md:mt-8">
-                    <UiDivider class="mt-10 mb-6" />
-                
-                    <div data-testid="product-accordion">
-                        <UiAccordionItem
-                            v-model="productDetailsOpen"
-                            summary-class="md:rounded-md w-full hover:bg-neutral-100 py-2 lg:pl-4 pr-3 flex justify-between items-center"
-                        >
-                            <template #summary>
-                                <h2
-                                    class="font-bold font-headings text-lg leading-6 md:text-2xl"
-                                >
-                                    {{ $t("productDetails") }}
-                                </h2>
-                            </template>
-                            <div v-html="productVariant?.description">
-                            </div>
-                        </UiAccordionItem>
-                        <UiDivider class="my-4" />
-                        <UiAccordionItem
-                            summary-class="md:rounded-md w-full hover:bg-neutral-100 py-2 lg:pl-4 pr-3 flex justify-between items-center"
-                        >
-                            <template #summary>
-                                <h2
-                                    class="font-bold font-headings text-lg leading-6 md:text-2xl"
-                                >
-                                    {{ $t("customerReviews") }}
-                                </h2>
-                            </template>
-                            <p>
-                                This product has not been reviewed yet
-                            </p>
-                        </UiAccordionItem>
-                    </div>
-                </section>
-                <UiDivider class="mt-4 mb-2" />
+                        <div data-testid="product-accordion">
+                            <UiAccordionItem
+                                v-model="productDetailsOpen"
+                                summary-class="md:rounded-md w-full hover:bg-neutral-100 py-2 lg:pl-4 pr-3 flex justify-between items-center"
+                            >
+                                <template #summary>
+                                    <h2
+                                        class="font-bold font-headings text-lg leading-6 md:text-2xl"
+                                    >
+                                        {{ $t("productDetails") }}
+                                    </h2>
+                                </template>
+                                <div v-html="productVariant?.description">
+                                </div>
+                            </UiAccordionItem>
+                            <UiDivider class="my-4" />
+                            <UiAccordionItem
+                                summary-class="md:rounded-md w-full hover:bg-neutral-100 py-2 lg:pl-4 pr-3 flex justify-between items-center"
+                            >
+                                <template #summary>
+                                    <h2
+                                        class="font-bold font-headings text-lg leading-6 md:text-2xl"
+                                    >
+                                        {{ $t("customerReviews") }}
+                                    </h2>
+                                </template>
+                                <p>
+                                    This product has not been reviewed yet
+                                </p>
+                            </UiAccordionItem>
+                        </div>
+                    </section>
+                    <UiDivider class="mt-4 mb-2" />
+                </div>
+                <div v-else>
+                    Claims no data......
+                    <br/>{{ hasProductData }}
+                </div>
+            
+                <LazyProductFrequentlyBought
+                    :fbt="productTemplate?.frequentlyBoughtTogether"
+                    :loading="loadingProductTemplate"
+                />
+                <LazyProductAlternatives
+                    :alt="productTemplate?.alternativeProducts"
+                    :loading="loadingProductTemplate"
+                />
+                <LazyProductRecentlyViewed
+                    :loading="loadingProductTemplate"
+                />
             </div>
-        
-            <LazyProductFrequentlyBought
-                :fbt="productTemplate?.frequentlyBoughtTogether"
-                :loading="loadingProductTemplate"
-            />
-            <LazyProductAlternatives
-                :alt="productTemplate?.alternativeProducts"
-                :loading="loadingProductTemplate"
-            />
-            <LazyProductRecentlyViewed
-                :loading="loadingProductTemplate"
-            />
-        </div>
-        <template #error="{ error }">
-            {{ error }}
-            <ErrorDisplay :msg="$t('error.404')"/>
-        </template>
-    </NuxtErrorBoundary>
+            <template #error="{ error }">
+                {{ error }}
+                <ErrorDisplay :msg="$t('error.404')"/>
+            </template>
+        </NuxtErrorBoundary>
     </main>
 </template>

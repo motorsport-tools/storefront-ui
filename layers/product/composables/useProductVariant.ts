@@ -47,10 +47,9 @@ export const useProductVariant = (slugWithCombinationIds: string) => {
         loadingProductVariant.value = false
         productVariant.value
           = (data?.value?.productVariant?.product as CustomProductWithStockFromRedis) || {}
-        console.log(data.value)
 
         if (data.value?.productVariant?.displayName) {
-          productVariant.value.name = data.value?.productVariant?.displayName
+          productVariant.value.name = data.value?.productVariant?.displayName.replace(/\[[^\]]*\]/g, '').trim()
         }
 
       }

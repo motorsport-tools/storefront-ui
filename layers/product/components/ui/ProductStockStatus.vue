@@ -43,7 +43,10 @@ const subscribeStock = async () => {
 }
 </script>
 <template>
-    <div class="flex flex-row align-center justify-between">
+    <div 
+        class="flex flex-row align-center justify-between"
+        :class="$attrs.class"
+    >
         <div 
             class="flex flex-row items-center text-sm uppercase font-bold py-1"
             :class="{'text-green-500': isStock, 'text-red-500': !isStock}"

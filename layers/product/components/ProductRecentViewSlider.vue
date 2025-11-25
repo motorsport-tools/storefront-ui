@@ -5,11 +5,6 @@ const props = defineProps({
     default: '',
     required: false,
   },
-  text: {
-    type: String,
-    default: '',
-    required: false,
-  },
 })
 
 const { loadProductTemplateList, productTemplateList }
@@ -22,7 +17,6 @@ await loadProductTemplateList()
   <section v-if="productTemplateList?.length > 0">
     <LazyProductSlider
       :heading="props.heading"
-      :text="props.text"
       :product-template-list="productTemplateList"
     />
   </section>

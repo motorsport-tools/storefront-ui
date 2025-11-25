@@ -18,16 +18,16 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const { productTemplate, productVariant } = toRefs(props)
+//const { productTemplate, productVariant } = toRefs(props)
 
 const { cart, cartAdd } = useCart()
 
 const quantitySelectorValue = ref(1)
 
 const handleCartAdd = async () => {
-  let id = productVariant.value?.id
-  if (!productVariant.value?.combinationInfoVariant) {
-    id = Number(productVariant.value?.id)
+  let id = props.productVariant?.id
+  if (!props.productVariant?.combinationInfoVariant) {
+    id = Number(props.productVariant?.id)
   }
   await cartAdd(id, quantitySelectorValue.value)
 }
@@ -36,20 +36,20 @@ const productsInCart = computed(() => {
   return (
     cart.value?.order?.websiteOrderLine?.find(
       (orderLine: OrderLine) =>
-        orderLine.product?.id === productVariant.value?.id,
+        orderLine.product?.id === props.productVariant?.id,
     )?.quantity || 0
   )
 })
 
 const isStock = computed(() => {
-    return Boolean(productVariant.value?.stock > 0 || productVariant.value?.combinationInfoVariant?.allow_out_of_stock_order)
+    return Boolean(props.productVariant.stock > 0 || props.productVariant.combinationInfoVariant?.allow_out_of_stock_order)
 })
 
 const maxQty = computed(() => {
-    if(productVariant.value?.combinationInfoVariant?.allow_out_of_stock_order) {
+    if(props.productVariant.combinationInfoVariant?.allow_out_of_stock_order) {
         return 999
     } else {
-        return productVariant.value.stock || 0
+        return props.productVariant?.stock || 0
     }
 })
 
@@ -99,7 +99,7 @@ onMounted(() => {
             class="font-bold typography-headline-2 break-word !normal-case"
             data-testid="product-name"
         >
-            {{ productVariant?.displayName || productVariant?.name }}
+            {{ productVariant?.name }}
         </h1>
             
         <span class="block text-sm my-1">

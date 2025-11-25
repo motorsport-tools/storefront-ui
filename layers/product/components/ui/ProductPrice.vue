@@ -13,9 +13,6 @@ Regular Price = list_price (this is Sales Price On Product)
 Special Price = PriceList price (Calculated)
 */
 const props = defineProps<Props>()
-
-console.log('Regular Price:', props.regularPrice)
-console.log('Special Price:', props.specialPrice)
 </script>
 <template>
     <div 

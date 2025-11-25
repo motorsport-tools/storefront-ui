@@ -39,7 +39,7 @@ const {
   productVariant,
   getRegularPrice,
   getSpecialPrice,
-} = useProductVariant(cleanFullPath)
+} = useProductVariant(cleanFullPath.value)
 const { addProductToRecentViews } = useRecentViewProducts()
 
 useHead(generateSeo<SeoEntity>(productVariant.value, 'Product'))
@@ -49,19 +49,18 @@ const productDetailsOpen = ref(true)
 const { getThumbs } = useProductGetters(productVariant as Ref< CustomProductWithStockFromRedis>)
 const thumbs = computed(() => getThumbs(78, 78))
 
-
 watch(
   () => cleanPath.value,
   async (slug) => {
     if (!slug) {
         return;
     }
-
+    
     await loadProductTemplate({ slug })
+    
   },
   { immediate: true }
 )
-
 
 watch(
   [productTemplate, () => route.query],
@@ -80,6 +79,7 @@ watch(
         ).filter(Boolean),
         productTemplateId: template.id,
     })
+   
     addProductToRecentViews(template.id)
 
   },

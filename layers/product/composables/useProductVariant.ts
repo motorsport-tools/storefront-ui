@@ -5,55 +5,44 @@ import type {
 } from "~/graphql";
 import { QueryName } from "~/server/queries";
 
-export const useProductVariant = (slugWithCombinationIds: Ref<string>) => {
+export const useProductVariant = (slugWithCombinationIds: string) => {
   const { $sdk } = useNuxtApp();
 
   const loadingProductVariant = ref(false);
   const productVariant = useState<CustomProductWithStockFromRedis>(`product-variant-${slugWithCombinationIds}`, () => ({}) as CustomProductWithStockFromRedis)
 
+
   const loadProductVariant = async (params: QueryProductVariantArgs) => {
+
     if (import.meta.server) {
       return
     }
+
     loadingProductVariant.value = true
-    const { data, status } = await useAsyncData(`product-variant-${slugWithCombinationIds}`, () =>
-      $sdk().odoo.query<QueryProductVariantArgs, ProductVariantResponse>(
-        { queryName: QueryName.GetProductVariantQuery }, params),
-      { server: true, lazy: import.meta.client }
-    )
 
-    if (data.value?.productVariant?.product) {
-      productVariant.value = (data?.value?.productVariant?.product) || {} as CustomProductWithStockFromRedis
+    const dataKey = `product-variant-${params.productTemplateId}-${params.combinationId?.join('-') || 'none'}`
 
-      if (data.value?.productVariant?.displayName) {
-        productVariant.value.name = data.value?.productVariant?.displayName.replace(/\[[^\]]*\]/g, '').trim()
-      }
+    try {
 
-      loadingProductVariant.value = false
-    }
+      const data = await $sdk().odoo.query<QueryProductVariantArgs, ProductVariantResponse>(
+        { queryName: QueryName.GetProductVariantQuery },
+        params
+      )
 
-    watch(status, () => {
-      if (status.value === 'pending') {
-        loadingProductVariant.value = true
-      }
-      if (status.value === 'error' && !data.value?.productVariant.product) {
-        loadingProductVariant.value = false
-        showError({
-          status: 404,
-          message: 'Product not found - Variant Error',
-        })
-      }
-      if (status.value === 'success') {
-        loadingProductVariant.value = false
-        productVariant.value
-          = (data?.value?.productVariant?.product as CustomProductWithStockFromRedis) || {}
+      if (data?.productVariant) {
 
-        if (data.value?.productVariant?.displayName) {
-          productVariant.value.name = data.value?.productVariant?.displayName.replace(/\[[^\]]*\]/g, '').trim()
+        if (data?.productVariant?.product?.displayName) {
+          data.productVariant.product.name = data.productVariant.product.displayName.replace(/\[[^\]]*\]/g, '').trim()
         }
 
+        productVariant.value = data.productVariant.product || {} as CustomProductWithStockFromRedis
+
       }
-    })
+    } catch (err) {
+      productVariant.value = null
+    } finally {
+      loadingProductVariant.value = false
+    }
   }
 
   const getRegularPrice = computed(

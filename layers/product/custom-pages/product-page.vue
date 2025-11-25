@@ -39,7 +39,7 @@ const {
   productVariant,
   getRegularPrice,
   getSpecialPrice,
-} = useProductVariant(cleanFullPath.value)
+} = useProductVariant(cleanFullPath)
 const { addProductToRecentViews } = useRecentViewProducts()
 
 useHead(generateSeo<SeoEntity>(productVariant.value, 'Product'))
@@ -109,6 +109,7 @@ const breadcrumbs = computed(() => {
     <main 
         class="w-full narrow-container mb-20 pt-6"
         data-testid="product-page"
+        :key="productVariant?.id"
     >
         <NuxtErrorBoundary>
             <div>

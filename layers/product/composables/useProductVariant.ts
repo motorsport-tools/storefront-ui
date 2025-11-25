@@ -5,7 +5,7 @@ import type {
 } from "~/graphql";
 import { QueryName } from "~/server/queries";
 
-export const useProductVariant = (slugWithCombinationIds: string) => {
+export const useProductVariant = (slugWithCombinationIds: Ref<string>) => {
   const { $sdk } = useNuxtApp();
 
   const loadingProductVariant = ref(false);
@@ -26,7 +26,7 @@ export const useProductVariant = (slugWithCombinationIds: string) => {
       productVariant.value = (data?.value?.productVariant?.product) || {} as CustomProductWithStockFromRedis
 
       if (data.value?.productVariant?.displayName) {
-        productVariant.value.name = data.value?.productVariant?.displayName
+        productVariant.value.name = data.value?.productVariant?.displayName.replace(/\[[^\]]*\]/g, '').trim()
       }
 
       loadingProductVariant.value = false

@@ -74,11 +74,11 @@ const updateFilter = async (value:any) => {
 
     router.push({ query: query, replace: true })
 }
-/*
+
 onMounted(() => {
     selectedAmount.value = route.query.Amount ? Number(route.query.Amount) : props.getAllAmounts?.[0]?.value
 })
-*/
+
 </script>
 <template>
     <div

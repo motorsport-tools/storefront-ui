@@ -123,22 +123,24 @@ onMounted(() => {
                 />
             </ClientOnly>
         </div>
-        <div v-if="getAllAmounts && getAllAmounts.length">
-            <SfSelect 
-                size="base"
-                v-model="selectedAmount"
-                @update:model-value="updateFilter"
-            >
-                <option 
-                    v-for="{ value, label } in getAllAmounts" 
-                    :key="value" 
-                    :value="value"
-                >
-                    {{ label }}
-                </option>
-            </SfSelect>
-        </div>
         <div class="py-4 my-4 border-gray-200 border-y">
+            <div v-if="getAllAmounts && getAllAmounts.length"
+                class="mb-4"
+            >
+                <SfSelect 
+                    size="base"
+                    v-model="selectedAmount"
+                    @update:model-value="updateFilter"
+                >
+                    <option 
+                        v-for="{ value, label } in getAllAmounts" 
+                        :key="value" 
+                        :value="value"
+                    >
+                        {{ label }}
+                    </option>
+                </SfSelect>
+            </div>
             <div class="flex items-center justify-between mb-4">
                 <UiProductPrice
                     :regularPrice

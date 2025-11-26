@@ -34,8 +34,8 @@ export type AddAddressInput = {
 };
 
 export enum AddressEnum {
-  Billing = 'invoice',
-  Shipping = 'delivery',
+  Billing = 'Billing',
+  Shipping = 'Shipping'
 }
 
 export type AddressFilterInput = {
@@ -204,6 +204,15 @@ export type CategoryList = Categories & {
 
 export type CategorySortInput = {
   id: InputMaybe<SortEnum>;
+};
+
+export type CheckAccess = {
+  access: Maybe<Scalars['Boolean']['output']>;
+};
+
+export type CheckAccessResult = CheckAccess & {
+  __typename?: 'CheckAccessResult';
+  access: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type CheckoutRedirectOutput = {
@@ -785,6 +794,7 @@ export type Order = {
   lastTransaction: Maybe<PaymentTransaction>;
   locked: Maybe<Scalars['Boolean']['output']>;
   name: Maybe<Scalars['String']['output']>;
+  onlyServices: Maybe<Scalars['Boolean']['output']>;
   orderLines: Maybe<Array<OrderLine>>;
   orderUrl: Maybe<Scalars['String']['output']>;
   partner: Maybe<Partner>;
@@ -1108,6 +1118,7 @@ export type Products = {
 
 export type Query = {
   __typename?: 'Query';
+  access: CheckAccess;
   addresses: Maybe<Array<Partner>>;
   attribute: Attribute;
   blogPost: BlogPost;
@@ -1119,6 +1130,7 @@ export type Query = {
   countries: Maybe<Countries>;
   country: Country;
   deliveryMethods: Maybe<Array<ShippingMethod>>;
+  guestOrder: Order;
   invoice: Invoice;
   invoices: Maybe<Invoices>;
   mailingContacts: Maybe<MailingContacts>;
@@ -1142,6 +1154,14 @@ export type Query = {
   websitePage: Maybe<WebsitePage>;
   websitePages: Maybe<WebsitePages>;
   wishlistItems: Maybe<WishlistData>;
+};
+
+
+export type QueryAccessArgs = {
+  accessToken: InputMaybe<Scalars['String']['input']>;
+  model: InputMaybe<Scalars['String']['input']>;
+  pid: InputMaybe<Scalars['Int']['input']>;
+  resId: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1197,6 +1217,14 @@ export type QueryCountriesArgs = {
 export type QueryCountryArgs = {
   code: InputMaybe<Scalars['String']['input']>;
   id: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryGuestOrderArgs = {
+  accessToken: InputMaybe<Scalars['String']['input']>;
+  model: InputMaybe<Scalars['String']['input']>;
+  pid: InputMaybe<Scalars['Int']['input']>;
+  resId: InputMaybe<Scalars['Int']['input']>;
 };
 
 

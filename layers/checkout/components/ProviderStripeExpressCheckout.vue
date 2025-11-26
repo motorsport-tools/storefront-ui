@@ -150,9 +150,9 @@
       console.log('Preparing shipping rates from delivery methods:', 
       deliveryMethods.value.map(m => m.name));
       
-      // Handle shipping methods with rates
+      // We don't want non easy ship
       const shippingMethods = deliveryMethods.value.filter(
-        method => !method.name?.toLowerCase().includes('collect')
+        method => method.id == 10 || method.id == 11
       );
       
       for (const method of shippingMethods) {

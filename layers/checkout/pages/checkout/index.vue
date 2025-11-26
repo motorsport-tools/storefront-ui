@@ -62,7 +62,9 @@ const checkoutSteps = [
         title: `${$i18n.t('shippingMethod.heading')}`,
         subHeading: `${$i18n.t('shippingMethod.subHeading')}`,
         exData: (cart.value?.order?.shippingMethod as ShippingMethod),
-        condition: () => true
+        condition: () => {
+            return !cart.value.order?.onlyServices
+        }
     },
     {
         id: 'delivery-rates',
@@ -71,7 +73,7 @@ const checkoutSteps = [
         exData: (cart.value?.order?.shippingRate),
         condition: () => {
             const methodData = getStepData('delivery-method')
-            if(methodData?.deliveryMethod !== 5) {
+            if(methodData?.deliveryMethod === 10 || methodData?.deliveryMethod === 11) {
                 return true
             }
             return false

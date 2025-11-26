@@ -6,6 +6,7 @@ amountDelivery
 amountSubtotal
 amountDiscounts
 amountGiftCards
+onlyServices
 coupons {
   id
   code

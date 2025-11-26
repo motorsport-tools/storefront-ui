@@ -17,6 +17,7 @@ export const reduceCart = (cartData: Cart) => ({
         shippingRate: cartData?.order?.shippingRate?.map((rate: EasyshipRate) => ({
             serviceId: rate.serviceId
         })),
+        onlyServices: cartData?.order?.onlyServices,
         coupons: cartData?.order?.coupons,
         giftCards: cartData?.order?.giftCards,
         websiteOrderLine: cartData?.order?.websiteOrderLine?.map((line: OrderLine) => ({

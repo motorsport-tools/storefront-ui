@@ -4,6 +4,7 @@ import { SfButton, SfDropdown, SfListItem, SfLoaderCircular, useDisclosure } fro
 const NuxtLink = resolveComponent("NuxtLink");
 
 const { user, isAuthenticated, logout, loading } = useAuth();
+const { resetCheckoutFromStep } = useCheckout()
 
 const loginLink = ref<String>('/login')
 const loginButtonClass = ref<String>('ion:person-outline')
@@ -92,7 +93,7 @@ onMounted( () => {
             </span>
           </SfListItem>
 
-          <SfListItem v-if="isAuthenticated" size="sm" to="/" @click="logout()" :tag="NuxtLink">
+          <SfListItem v-if="isAuthenticated" size="sm" to="/" @click="resetCheckoutFromStep('customer'); logout()" :tag="NuxtLink">
             <div class="break-words font-bold font-heading uppercase">{{ $t('account.logout') }}</div>
           </SfListItem>
           

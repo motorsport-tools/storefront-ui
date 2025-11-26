@@ -15,6 +15,7 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const { logout } = useAuth();
+const { resetCheckoutFromStep } = useCheckout()
 
 defineProps({
   error: Object
@@ -122,6 +123,7 @@ const breadcrumbs = computed(() => {
 });
 
 const handleLogout = async () => {
+  resetCheckoutFromStep('customer')
   await logout();
   router.push("/");
 };

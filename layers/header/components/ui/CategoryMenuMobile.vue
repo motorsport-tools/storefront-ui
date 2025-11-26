@@ -59,6 +59,7 @@ onUnmounted(() => {
 })
 
 const { isAuthenticated, user, logout } = useAuth()
+const { resetCheckoutFromStep } = useCheckout()
 const NuxtLink = resolveComponent("NuxtLink")
 </script>
 <template>
@@ -215,7 +216,7 @@ const NuxtLink = resolveComponent("NuxtLink")
                                 to="/"
                                 class="px-4 py-4"
                                 :tag="NuxtLink"
-                                @click="() => { logout(), close() }"
+                                @click="() => { resetCheckoutFromStep('customer'); logout(); close() }"
                             >
                                 {{ $t('account.logout') }}
                             </SfListItem>

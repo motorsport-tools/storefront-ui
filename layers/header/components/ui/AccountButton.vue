@@ -2,6 +2,7 @@
 import { SfButton, SfDropdown, SfListItem, SfLoaderCircular, useDisclosure } from "@storefront-ui/vue"
 import Overlay from './Overlay.vue'
 const { user, isAuthenticated, logout, loading } = useAuth()
+const { resetCheckoutFromStep } = useCheckout()
 const loginLink = ref<String>('/login')
 const { isOpen, toggle } = useDisclosure()
 
@@ -98,7 +99,7 @@ onMounted( () => {
                         {{ $t('account.accountSettings.shippingDetails.menuDescription') }}  
                         </span>
                     </SfListItem>
-                    <SfListItem v-if="isAuthenticated" size="sm" to="/" @click="() => { logout(), toggle()}" :tag="NuxtLink">
+                    <SfListItem v-if="isAuthenticated" size="sm" to="/" @click="() => { resetCheckoutFromStep('customer'); logout(); toggle()}" :tag="NuxtLink">
                         <div class="break-words font-bold font-heading uppercase">{{ $t('account.logout') }}</div>
                     </SfListItem>
                 </div>

@@ -8,6 +8,7 @@ import {
 } from "@storefront-ui/vue";
 
 const { login, loading } = useAuth();
+const { resetCheckoutFromStep } = useCheckout();
 const email = ref("");
 const password = ref("");
 const rememberMe = ref<boolean>();
@@ -30,6 +31,7 @@ if(!props.redirectTo && queryRedirect) {
 }
 
 const handleLogin = async () => {
+    resetCheckoutFromStep('customer')
     await login({ email: email.value, password: password.value }, redirectUrl );
 };
 

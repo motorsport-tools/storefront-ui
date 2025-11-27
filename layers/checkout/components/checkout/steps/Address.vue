@@ -15,9 +15,11 @@ const emit = defineEmits<{
     update: [data: Record<string, any>]
 }>()
 
+
+
 const form = reactive({
     id: props.exData?.id || 4,
-    name: props.exData?.name || null,
+    name: props.exData?.name && props.exData.name !== 'Public user' ? props.exData.name : null,
     street: props.exData?.street || "",
     street2: props.exData?.street2 || "",
     city: props.exData?.city,

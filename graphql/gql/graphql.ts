@@ -559,7 +559,7 @@ export type Mutation = {
   /** Subscribe to newsletter. */
   newsletterSubscribe: Maybe<NewsletterSubscribe>;
   /** Register a new user with email, name and password. - Returns user and cart */
-  register: Maybe<RegisterOutput>;
+  register: Maybe<User>;
   /** Send change password url to user's email. */
   resetPassword: Maybe<User>;
   /** Select a billing or shipping address to be used on the shopping cart. */
@@ -1346,12 +1346,6 @@ export type QueryWebsitePagesArgs = {
   pageSize?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
   sort?: InputMaybe<WebsitePageSortInput>;
-};
-
-export type RegisterOutput = {
-  __typename?: 'RegisterOutput';
-  cart: Maybe<Order>;
-  user: Maybe<User>;
 };
 
 export type Ribbon = {

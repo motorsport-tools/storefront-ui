@@ -93,7 +93,7 @@ export const useAuth = () => {
         },
         { ...params },
       )
-      user.value = data.register.user.partner
+      user.value = data.register.partner
       await login({ email: params.email, password: params.password })
       router.push('/my-account/personal-data')
 

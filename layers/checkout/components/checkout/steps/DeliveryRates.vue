@@ -36,7 +36,8 @@ onMounted(async () => {
     if (props.stepData) {
         Object.assign(form, props.stepData)
     }
-    if(props.steps?.find(s => s.id == 'delivery-rates').completed) {
+    const data = props.steps?.find( s => s.id == 'delivery-rates')
+    if(data.completed) {
         await loadRates({ carrierId: cart.value?.order?.shippingMethod?.id, orderId: cart.value?.order?.id})
     }
 })

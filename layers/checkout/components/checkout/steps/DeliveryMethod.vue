@@ -26,7 +26,8 @@ const emit = defineEmits<{
 }>()
 
 const { deliveryMethods, loadDeliveryMethods, setDeliveryMethod } = useDeliveryMethod()
-const { isCollectEligible } = useCart();
+const { isCollectEligible } = useCart()
+const { getStepData } = useCheckout()
 
 const form = reactive({
     deliveryMethod: props.exData?.id || null
@@ -46,9 +47,12 @@ onMounted(async () => {
     if (props.stepData) {
         Object.assign(form, props.stepData)
     }
-    if(props.steps?.find(s => s.id == 'delivery-method').completed) {
+    const data = props.steps?.find( s => s.id == 'delivery-method')
+    
+    if(data.completed) {
         await loadDeliveryMethods()
     }
+    
 })
 
 const handleSubmit = async () => {

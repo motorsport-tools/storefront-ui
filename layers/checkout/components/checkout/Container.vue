@@ -9,6 +9,8 @@ const props = defineProps<{
     steps?: Array<any>
 }>()
 
+console.log('Steps', props.steps)
+
 </script>
 <template>
     <div class="flex gap-4 mb-8 overflow-x-auto pb-4">

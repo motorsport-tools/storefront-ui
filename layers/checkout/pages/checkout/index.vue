@@ -116,6 +116,7 @@ onMounted(async () => {
                         :completeStep="completeStep"
                         :goToStep="goToStep"
                         :updateStepData="updateStepData"
+                        :steps="steps"
                     />
                 </div>
                 <div class="col-span-5 md:sticky md:top-20 h-fit">

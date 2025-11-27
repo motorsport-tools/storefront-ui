@@ -971,9 +971,7 @@ export type Product = {
   brand: Maybe<Scalars['String']['output']>;
   breadcrumb: Maybe<Scalars['GenericScalar']['output']>;
   categories: Maybe<Array<Category>>;
-  /** Specific to Product Template */
   combinationInfo: Maybe<Scalars['GenericScalar']['output']>;
-  /** Specific to Product Variant */
   combinationInfoVariant: Maybe<Scalars['GenericScalar']['output']>;
   currency: Maybe<Currency>;
   description: Maybe<Scalars['String']['output']>;

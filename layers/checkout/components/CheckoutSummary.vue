@@ -14,7 +14,7 @@ const { makeGiftCardPayment, loading: discountLoading } = useDiscount();
 const isPaymentWithCardReady = ref(false);
 const providerPaymentHandler = ref();
 const selectedMethod = ref<PaymentMethod | null>(null);
-const loading = ref(true);
+const loading = ref(false);
 
 const giftCards = ref(cart.value?.order?.giftCards);
 

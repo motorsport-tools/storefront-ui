@@ -170,16 +170,20 @@ export type LoginResponse = AsyncData<
 
 export type SignUpUserResponse = {
   register: {
-    id: number
-    name: string
-    email: string
-    partner: Partner
+    user: {
+      id: number
+      name: string
+      email: string
+      partner: Partner
+    },
+    cart: Cart
   }
 }
 
 export type SignInUserResponse = {
   login: {
-    user: User
+    user: User,
+    cart: Cart,
   }
 }
 

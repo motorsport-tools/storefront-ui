@@ -93,7 +93,7 @@ export const useAuth = () => {
         },
         { ...params },
       )
-      user.value = data.register.partner
+      user.value = data.register.user.partner
       await login({ email: params.email, password: params.password })
       router.push('/my-account/personal-data')
 
@@ -116,7 +116,7 @@ export const useAuth = () => {
 
       userCookie.value = data?.login?.user?.partner;
       user.value = data?.login?.user?.partner as Partner
-      cart.value.order = data?.cart || {} as Cart
+      cart.value.order = data?.login?.cart || {} as Cart
       if (!redirectTo) {
         redirectTo = "/my-account/personal-data"
       }

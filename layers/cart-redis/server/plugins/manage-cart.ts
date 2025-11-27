@@ -23,6 +23,8 @@ export default defineNitroPlugin((nitro) => {
       await applyGiftCard(event, body)
       await clearCartAfterCreditCardPaymentConfirmation(event, body)
       await clearCartAfterGiftCardPaymentConfirmation(event, body)
+      await userRegister(event, body)
+      await userLogin(event, body)
     }
   });
 });
@@ -190,5 +192,19 @@ async function clearCartAfterGiftCardPaymentConfirmation(
     if (paymentSuccess) {
       await useStorage('cart').removeItem(keyName)
     }
+  }
+}
+
+async function userRegister(event: any, body: any) {
+  const requestBody = await readBody(event);
+  if (requestBody[0]?.mutationName === MutationName.RegisterUserMutation) {
+    updateCart(event, { order: body.register.cart })
+  }
+}
+
+async function userLogin(event: any, body: any) {
+  const requestBody = await readBody(event);
+  if (requestBody[0]?.mutationName === MutationName.LoginMutation) {
+    updateCart(event, { order: body.login.cart })
   }
 }

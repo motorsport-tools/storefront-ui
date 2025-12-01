@@ -19,7 +19,7 @@ const emit = defineEmits<{
 
 const form = reactive({
     id: props.exData?.id || 4,
-    name: props.exData?.name && props.exData.name !== 'Public user' ? props.exData.name : null,
+    name: props.exData?.name && props.exData.name !== 'Public user' ? props.exData.name : '',
     street: props.exData?.street || "",
     street2: props.exData?.street2 || "",
     city: props.exData?.city,

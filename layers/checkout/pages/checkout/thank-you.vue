@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { SfButton, SfLoaderCircular } from '@storefront-ui/vue';
 import { useRoute } from 'vue-router'
+import type { Cart } from "~/graphql"
 
 const { loadCart } = useCart()
 const { getPaymentConfirmation } = usePayment();
@@ -31,7 +32,7 @@ onMounted(async () => {
       // Clear checkout progress from localStorage
       const STORAGE_KEY = 'checkout_progress'
       localStorage.removeItem(STORAGE_KEY)
-      cart.value.data = {}
+      cart.value = {} as Cart
     }
   }
 })

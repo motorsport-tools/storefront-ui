@@ -87,7 +87,7 @@ export const useCart = () => {
     };
 
     try {
-      loading.value = true;
+      //loading.value = true;
 
       const data = await $sdk().odoo.mutation<MutationCartUpdateMultipleItemsArgs, CartUpdateItemResponse>(
         { mutationName: MutationName.CartUpdateQuantity }, params,
@@ -104,7 +104,7 @@ export const useCart = () => {
     } catch (error: any) {
       return toast.error(error?.data?.message)
     } finally {
-      loading.value = false
+      //loading.value = false
     }
   }
 

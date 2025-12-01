@@ -1,4 +1,5 @@
 import { QueryName } from '~/server/queries/'
+import { MutationName } from '~/server/mutations'
 
 /**
  * This plugin is responsible for managing the product response.
@@ -18,24 +19,18 @@ export default defineNitroPlugin((nitro) => {
 
                 (body as any).productVariant.product.stock = stock?.[websiteId] || 0
 
-                /*
-                const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
-                const session = await useSession(event, {
-                    password: sessionPwd,
-                })
+            }
 
-                const pricelistId = session.data?.pricelistId || 4
+            if (requestBody[0]?.mutationName === MutationName.CartUpdateQuantity) {
+                if ((body as any).cartUpdateMultipleItems?.order?.orderLines.length > 0) {
 
-                const priceInfo = await useStorage('price').getItem(`price:${id}:pricelist:${pricelistId}:website:${websiteId}`);
-
-                console.log(`price:${id}:pricelist:${pricelistId}:website:${websiteId}`);
-
-                console.log('Price Info:', priceInfo);
-
-                if (priceInfo) {
-                    (body as any).productVariant.product['combinationInfoVariant'] = priceInfo || {}
+                    for (const line of (body as any).cartUpdateMultipleItems?.order?.orderLines) {
+                        const id = line.product?.id
+                        const stock = await useStorage('stock').getItem(`stock:product-${id}`)
+                        line.product.stock = stock?.[websiteId] || 0
+                    }
                 }
-                */
+
             }
         }
     })

@@ -3,11 +3,12 @@ import {
   SfIconRemoveShoppingCart,
   SfIconSell,
   SfLink,
+  SfLoaderCircular,
 } from "@storefront-ui/vue";
 import type { CustomOrderLineWithStockFromRedis, OrderLine, Product } from '~/graphql'
 const NuxtLink = resolveComponent("NuxtLink");
 
-defineProps({
+const props = defineProps({
   orderLine: {
     type: Object as PropType<CustomOrderLineWithStockFromRedis>,
     required: true,
@@ -16,6 +17,17 @@ defineProps({
 
 const { updateItemQuantity, removeItemFromCart } = useCart()
 const { resetCheckoutFromStep } = useCheckout()
+const itemLoading = ref<Boolean>(false)
+const updateQty = async (id:number, qty:number) => {
+  if (qty == null) return
+
+  itemLoading.value = true
+  try {
+    await updateItemQuantity(id, qty)
+  } finally {
+    itemLoading.value = false
+  }
+}
 </script>
 
 <template>
@@ -23,9 +35,19 @@ const { resetCheckoutFromStep } = useCheckout()
     class="relative flex first:border-t border-b-[1px] border-neutral-200 hover:shadow-lg min-w-[320px] p-4 last:mb-0"
     data-testid="cart-product-card"
   >
+    <div 
+      v-if="itemLoading"
+      class="absolute top-0 left-0 w-full h-full inset-0 bg-[#222222] backdrop-blur-xl bg-opacity-10 flex flex-col items-center justify-center z-10"
+    >
+      <SfLoaderCircular
+        class="ml-2 text-primary-700"
+        size="sm"
+      />
+    </div>
     <div class="relative overflow-hidden w-[100px] sm:w-[176px]">
       <SfLink
         :to="mountUrlSlugForProductVariant(orderLine.product as Product)"
+        :title="orderLine?.product?.name || orderLine?.name"
         :tag="NuxtLink"
         class="product__img"
       >
@@ -46,12 +68,11 @@ const { resetCheckoutFromStep } = useCheckout()
           format="webp"
         />
       </SfLink>
-      <div
-        class="absolute top-0 left-0 text-white bg-secondary-800 py-1 pl-1.5 pr-2 text-xs font-medium"
-      >
-        <SfIconSell size="xs" class="mr-1" />
-        {{ $t("sale") }}
-      </div>
+      <UiProductCardRibbon
+        :isOnSale="orderLine?.product?.combinationInfo?.has_discounted_price || false"
+        size="xs"
+        class="absolute top-0 left-0 p-2"
+      />
     </div>
     <div class="flex flex-col pl-4 min-w-[180px] flex-1">
       <div class="flex justify-between">
@@ -86,7 +107,7 @@ const { resetCheckoutFromStep } = useCheckout()
       >
         <span
           v-if="orderLine.priceSubtotal"
-          class="text-secondary-700 sm:order-1 font-bold typography-text-sm sm:typography-text-lg sm:ml-auto"
+          class="text-black sm:order-2 font-bold typography-text-sm sm:typography-text-lg sm:ml-auto"
         >
           {{ $currency(orderLine.priceSubtotal) }}
           <span
@@ -108,9 +129,10 @@ const { resetCheckoutFromStep } = useCheckout()
           v-model="orderLine.quantity"
           :min-value="1"
           :max-value="Number(orderLine.product?.stock)"
+          :maxQty="Number(orderLine.product?.stock)"
           :value="Number(orderLine.quantity)"
           class="mt-4 sm:mt-0"
-          @update:model-value="resetCheckoutFromStep('delivery-method'); updateItemQuantity(orderLine.id, $event);"
+          @update:model-value="resetCheckoutFromStep('delivery-method'); updateQty(orderLine.id, $event);"
         />
       </div>
     </div>

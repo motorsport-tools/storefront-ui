@@ -55,6 +55,7 @@ export const reduceCart = (cartData: Cart) => ({
                 combinationInfo: {
                     price: line?.product?.combinationInfo?.price,
                     list_price: line?.product?.combinationInfo?.list_price,
+                    has_discounted_price: line?.product?.combinationInfo?.has_discounted_price,
                 }
 
             }

@@ -27,8 +27,10 @@ const decrement = () => {
 };
 
 const handleUpdate = (event: Event) => {
-  if (props.modelValue < props.maxQty && props.modelValue > 1) {
-    emit('update:modelValue', (event?.target as any)?.value);
+  if (props.modelValue <= props.maxQty && props.modelValue > 1) {
+    emit('update:modelValue', parseInt((event?.target as any)?.value));
+  } else {
+    emit('update:modelValue', props.maxQty)
   }
 };
 </script>
@@ -53,14 +55,14 @@ const handleUpdate = (event: Event) => {
         :value="props.modelValue"
         type="number"
         role="spinbutton"
-        :disabled="props.modelValue >= props.maxQty"
         data-testid="quantity-selector-input"
         aria-label="Quantity Selector"
-        @input="handleUpdate"
+        @change="handleUpdate"
       >
       <SfButton
         type="button"
         variant="tertiary"
+        :disabled="props.modelValue >= props.maxQty"
         square
         class="rounded-l-none"
         aria-label="Increase value"

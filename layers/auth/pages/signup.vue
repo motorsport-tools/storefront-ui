@@ -23,12 +23,14 @@ const NuxtLink = resolveComponent("NuxtLink");
 const { isOpen, open } = useDisclosure();
 const { signup, loading } = useAuth();
 const router = useRouter();
-
+const { resetCheckoutFromStep } = useCheckout()
 const fullName = computed(
   () => `${firstNameModel.value} ${lastNameModel.value}`
 );
 
 const handleSignup = async () => {
+  resetCheckoutFromStep('customer')
+  
   await signup({
     email: emailModel.value,
     name: fullName.value,

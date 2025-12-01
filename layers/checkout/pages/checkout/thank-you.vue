@@ -21,6 +21,7 @@ onMounted(async () => {
 
   try {
     orderData.value = await getPaymentConfirmation(token as string);
+    await loadCart()
   } catch (err) {
     error.value = err as Error
   } finally {
@@ -31,7 +32,6 @@ onMounted(async () => {
       localStorage.removeItem(STORAGE_KEY)
     }
   }
-  await loadCart()
 })
 </script>
 

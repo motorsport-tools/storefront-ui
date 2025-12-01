@@ -26,12 +26,10 @@ const handleGiftCardPayment = async () => {
   await makeGiftCardPayment();
 }
 
-//const paymentData = getStepData('payment')
 const paymentData = props.getStepData('payment')
 
 const readyToPay = computed(() => {
   selectedMethod.value = paymentData.value?.paymentMethod || null
-
   if(paymentData.value?.paymentMethod?.id && isPaymentWithCardReady.value && props.isLastStep && !loading.value && props.allStepsCompleted) return true
 
   return false

@@ -7,6 +7,7 @@ const { getPaymentConfirmation } = usePayment();
 
 const route = useRoute()
 const router = useRouter()
+const { cart } = useCart() 
 const token = route.query?.token || '' as string || ''
 
 const orderData = ref<any>(null)
@@ -21,7 +22,7 @@ onMounted(async () => {
 
   try {
     orderData.value = await getPaymentConfirmation(token as string);
-    await loadCart()
+    
   } catch (err) {
     error.value = err as Error
   } finally {
@@ -30,6 +31,7 @@ onMounted(async () => {
       // Clear checkout progress from localStorage
       const STORAGE_KEY = 'checkout_progress'
       localStorage.removeItem(STORAGE_KEY)
+      cart.value.data = {}
     }
   }
 })

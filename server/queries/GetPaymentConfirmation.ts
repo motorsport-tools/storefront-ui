@@ -7,7 +7,19 @@ export default `
         name
         lastTransaction{
           state
+        }
+        partner {
+          id
+          email
         } 
+        orderLines {
+          id
+          quantity
+          product {
+            id
+            price
+          }
+        }
       }
     }
   }

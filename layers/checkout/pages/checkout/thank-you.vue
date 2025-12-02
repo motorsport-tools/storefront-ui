@@ -15,6 +15,8 @@ const orderData = ref<any>(null)
 const error = ref<Error | null>(null)
 const loading = ref(true)
 
+let products: any = []
+
 onMounted(async () => {
   if (!token) {
     router.replace('/')
@@ -33,6 +35,13 @@ onMounted(async () => {
       const STORAGE_KEY = 'checkout_progress'
       localStorage.removeItem(STORAGE_KEY)
       cart.value = {} as Cart
+
+      products = orderData.value.order?.orderLines.map(line => ({
+        id: line.product.id,
+        quantity: line.quantity,
+        price: line.product.price
+      }))
+
     }
   }
 })
@@ -77,6 +86,15 @@ onMounted(async () => {
         <SfButton @click="navigateTo('/')" size="lg" variant="secondary">
           {{ $t('continueShopping') }}
         </SfButton>
+        <span
+          class="clerk"
+          data-api="log/sale"
+          :data-sale="orderData.order?.id"
+          :data-email="orderData.order?.partner?.email"
+          :data-customer="orderData.order?.partner?.id"
+          :data-products="products">
+        </span>
+      <pre>{{ orderData }}</pre>
       </template>
     </div>
 </template>

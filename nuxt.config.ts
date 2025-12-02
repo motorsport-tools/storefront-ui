@@ -20,6 +20,10 @@ export default defineNuxtConfig({
     '@nuxtjs/critters',
     '@nuxtjs/partytown',
   ],
+  routeRules: {
+    '/mail/**': { cache: false },
+    '/my/orders/**': { cache: false }
+  },
   $production: {
     routeRules: {
       '/': { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },

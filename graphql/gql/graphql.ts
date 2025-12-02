@@ -1128,7 +1128,7 @@ export type Query = {
   countries: Maybe<Countries>;
   country: Country;
   deliveryMethods: Maybe<Array<ShippingMethod>>;
-  guestOrder: Order;
+  guestOrder: Maybe<Order>;
   invoice: Invoice;
   invoices: Maybe<Invoices>;
   mailingContacts: Maybe<MailingContacts>;

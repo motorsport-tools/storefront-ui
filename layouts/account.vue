@@ -144,7 +144,7 @@ const handleLogout = async () => {
             class="grow self-start" 
           />
         </div>
-        <div ata-testid="account-layout">
+        <div data-testid="account-layout">
           <h1 v-if="isRoot"
             class="mb-10 md:mb-10 md:mx-0 font-bold typography-headline-3 md:typography-headline-2"
           >

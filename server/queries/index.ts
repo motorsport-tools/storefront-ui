@@ -11,6 +11,7 @@ import GetProductTemplateQuery from './GetProductTemplateQuery';
 import GetProductVariantQuery from './GetProductVariantQuery';
 import GetOrdersQuery from './GetOrdersQuery';
 import GetOrderQuery from './GetOrderQuery';
+import GetGuestOrderQuery from './GetGuestOrderQuery';
 import GetInvoiceQuery from './GetInvoiceQuery';
 import LoadCartQuery from './LoadCartQuery';
 import LoadUserQuery from './LoadUserQuery';
@@ -19,6 +20,7 @@ import WishlistLoadQuery from './WishlistLoadQuery';
 import GetWebsiteHomepageQuery from './GetWebsiteHomepageQuery';
 import GetEasyShipRatesQuery from './GetEasyShipRatesQuery';
 import GetProductTemplateListQueryForRecentViews from './GetProductTemplateListQueryForRecentViews'
+import AccessQuery from './AccessQuery';
 
 enum QueryName {
   GetProductVariantQuery = 'GetProductVariantQuery',
@@ -39,10 +41,12 @@ enum QueryName {
   GetPaymentConfirmation = 'GetPaymentConfirmation',
   GetOrdersQuery = 'GetOrdersQuery',
   GetOrderQuery = 'GetOrderQuery',
+  GetGuestOrderQuery = 'GetGuestOrderQuery',
   GetProductTemplateListQueryForRecentViews = 'GetProductTemplateListQueryForRecentViews',
   GetWebsiteHomepageQuery = 'GetWebsiteHomepageQuery',
   GetInvoiceQuery = 'GetInvoiceQuery',
-  GetEasyShipRatesQuery = 'GetEasyShipRatesQuery'
+  GetEasyShipRatesQuery = 'GetEasyShipRatesQuery',
+  AccessQuery = 'AccessQuery',
 }
 
 const Queries: Record<QueryName, string> = {
@@ -63,10 +67,12 @@ const Queries: Record<QueryName, string> = {
   GetProductTemplateListQueryForRecentViews,
   GetOrdersQuery,
   GetOrderQuery,
+  GetGuestOrderQuery,
   GetInvoiceQuery,
   GetStatesQuery,
   GetWebsiteHomepageQuery,
   GetEasyShipRatesQuery,
+  AccessQuery,
 };
 
 const QueriesToByPassCache: string[] = [

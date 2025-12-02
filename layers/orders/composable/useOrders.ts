@@ -44,10 +44,30 @@ export const useOrders = () => {
     }
   };
 
+  const getGuestOrder = async (res_id: number | null = null, pid: number | null = null, model: string | null = null, access_token: string | null = null) => {
+    loading.value = true
+    try {
+      const data = await $sdk().odoo.queryNoCache(
+        { queryName: QueryName.GetGuestOrderQuery },
+        {
+          res_id: Number(res_id),
+          pid: Number(pid),
+          model,
+          access_token: access_token
+        }
+      )
+      order.value = data?.guestOrder as Order || ({} as Order);
+
+    } finally {
+      loading.value = false
+    }
+  }
+
   return {
     loading,
     getOrders,
     getOrderById,
+    getGuestOrder,
     orders,
     order,
     totalOrders

@@ -9,7 +9,7 @@ if (error) {
 <template>
   <NuxtLayout>
     <main 
-      class="w-full narrow-container bg-white mb-20"
+      class="w-full narrow-container bg-white mb-20 h-full"
       data-testid="error-page"
     >
       <div
@@ -23,9 +23,6 @@ if (error) {
         <pre class="mt-6 p-4 bg-red-100 text-sm rounded text-red-800 overflow-x-auto">
           Error Message: {{ error?.message }}
           Status Code: {{ error?.statusCode }}
-          Error Name: {{ error?.name }}
-          Cause: {{ error?.cause }}
-          Stack: {{ error?.stack }}
         </pre>
         <div class="my-10">
           <SfButton

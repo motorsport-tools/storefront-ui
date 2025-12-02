@@ -21,7 +21,8 @@ export default defineNuxtConfig({
     '@nuxtjs/partytown',
   ],
   routeRules: {
-    '/mail/**': { cache: false },
+    '/payment/**': { cache: false, ssr: false },
+    '/mail/**': { cache: false, ssr: false },
     '/my/orders/**': { cache: false }
   },
   $production: {

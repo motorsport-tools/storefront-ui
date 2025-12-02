@@ -94,7 +94,6 @@ onMounted(async () => {
           :data-customer="orderData.order?.partner?.id"
           :data-products="products">
         </span>
-      <pre>{{ orderData }}</pre>
       </template>
     </div>
 </template>

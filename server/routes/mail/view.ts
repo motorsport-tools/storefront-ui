@@ -1,9 +1,3 @@
-import { joinURL } from 'ufo'
-import { QueryName } from "~/server/queries";
-import { Queries } from '~/server/queries'
-import type {
-    Order,
-} from "~/graphql";
 import type { H3Event } from 'h3'
 
 export default defineEventHandler(async (event: H3Event) => {

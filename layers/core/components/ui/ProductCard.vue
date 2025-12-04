@@ -96,7 +96,7 @@ const wishlistButtonTitle = (id: number | undefined) => {
 const handleAddToCart = async (variantId: number | undefined, quantity: number) => {
   if(variantId) {
     await cartAdd(variantId, quantity)
-    resetCheckoutFromStep('delivery-method')
+    resetCheckoutFromStep('customer')
   }
 }
 

@@ -17,5 +17,4 @@ export default defineEventHandler(async (event: H3Event) => {
         return sendRedirect(event, `/order/${Number(res_id)}?access_token=${encodeURIComponent(access_token)}&model=${encodeURIComponent(model)}&pid=${Number(pid)}`)
 
     }
-
 })

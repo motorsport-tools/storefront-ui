@@ -13,16 +13,19 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(['update:modelValue']);
+const { resetCheckoutFromStep } = useCheckout()
 
 const increment = () => {
   if (props.modelValue < props.maxQty) {
     emit('update:modelValue', props.modelValue + 1);
+    resetCheckoutFromStep('customer')
   }
 };
 
 const decrement = () => {
   if (props.modelValue > 1) {
     emit('update:modelValue', props.modelValue - 1);
+    resetCheckoutFromStep('customer')
   }
 };
 
@@ -32,6 +35,7 @@ const handleUpdate = (event: Event) => {
   } else {
     emit('update:modelValue', props.maxQty)
   }
+  resetCheckoutFromStep('customer')
 };
 </script>
 <template>

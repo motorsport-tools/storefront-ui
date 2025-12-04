@@ -906,6 +906,16 @@ export type Payment = {
   paymentReference: Maybe<Scalars['String']['output']>;
 };
 
+/** Result of payment link validation */
+export type PaymentLinkValidation = {
+  __typename?: 'PaymentLinkValidation';
+  errorMessage: Maybe<Scalars['String']['output']>;
+  isValid: Scalars['Boolean']['output'];
+  requiresLogin: Scalars['Boolean']['output'];
+  saleOrder: Maybe<SaleOrderSummary>;
+  transaction: Maybe<TransactionSummary>;
+};
+
 export type PaymentMethod = {
   __typename?: 'PaymentMethod';
   active: Maybe<Scalars['Boolean']['output']>;
@@ -1145,6 +1155,7 @@ export type Query = {
   productVariant: ProductVariant;
   products: Maybe<Products>;
   rates: Maybe<Array<Maybe<EasyshipRate>>>;
+  validate: Maybe<PaymentLinkValidation>;
   websiteFooter: Maybe<Array<WebsiteMenu>>;
   websiteHomepage: Maybe<Homepage>;
   websiteMegaMenu: Maybe<Array<WebsiteMenu>>;
@@ -1319,6 +1330,13 @@ export type QueryRatesArgs = {
 };
 
 
+export type QueryValidateArgs = {
+  accessToken: InputMaybe<Scalars['String']['input']>;
+  amount: InputMaybe<Scalars['Float']['input']>;
+  saleOrderId: InputMaybe<Scalars['Int']['input']>;
+};
+
+
 export type QueryWebsiteFooterArgs = {
   noParent: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -1356,6 +1374,17 @@ export type Ribbon = {
   htmlClass: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   textColor: Maybe<Scalars['String']['output']>;
+};
+
+/** Summary of sale order for payment link validation */
+export type SaleOrderSummary = {
+  __typename?: 'SaleOrderSummary';
+  amountTotal: Scalars['Float']['output'];
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  partnerId: Scalars['Int']['output'];
+  partnerName: Scalars['String']['output'];
+  state: Scalars['String']['output'];
 };
 
 export type SelectAddressInput = {
@@ -1400,6 +1429,16 @@ export type StripeProviderInfoResult = {
 export type StripeTransactionResult = {
   __typename?: 'StripeTransactionResult';
   transaction: Maybe<Scalars['GenericScalar']['output']>;
+};
+
+/** Summary of payment transaction */
+export type TransactionSummary = {
+  __typename?: 'TransactionSummary';
+  amount: Scalars['Float']['output'];
+  id: Scalars['Int']['output'];
+  providerId: Scalars['Int']['output'];
+  reference: Scalars['String']['output'];
+  state: Scalars['String']['output'];
 };
 
 export type TwoFactorOutput = {

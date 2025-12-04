@@ -86,7 +86,7 @@ const updateQty = async (id:number, qty:number) => {
         </SfLink>
         <SfIconRemoveShoppingCart
           class="cursor-pointer"
-          @click="resetCheckoutFromStep('delivery-method'); removeItemFromCart(orderLine.id)"
+          @click="resetCheckoutFromStep('customer'); removeItemFromCart(orderLine.id)"
         />
       </div>
       <div class="my-2 sm:mb-0">
@@ -132,7 +132,7 @@ const updateQty = async (id:number, qty:number) => {
           :maxQty="Number(orderLine.product?.stock)"
           :value="Number(orderLine.quantity)"
           class="mt-4 sm:mt-0"
-          @update:model-value="resetCheckoutFromStep('delivery-method'); updateQty(orderLine.id, $event);"
+          @update:model-value="resetCheckoutFromStep('customer'); updateQty(orderLine.id, $event);"
         />
       </div>
     </div>

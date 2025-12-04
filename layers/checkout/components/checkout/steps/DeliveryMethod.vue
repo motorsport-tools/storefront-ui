@@ -25,9 +25,8 @@ const emit = defineEmits<{
     update: [data: Record<string, any>]
 }>()
 
-const { deliveryMethods, loadDeliveryMethods, setDeliveryMethod } = useDeliveryMethod()
+const { deliveryMethods, loadDeliveryMethods, setDeliveryMethod, loading } = useDeliveryMethod()
 const { isCollectEligible } = useCart()
-const { getStepData } = useCheckout()
 
 const form = reactive({
     deliveryMethod: props.exData?.id || null
@@ -58,6 +57,7 @@ onMounted(async () => {
 const handleSubmit = async () => {
     if(form.deliveryMethod) {
         await setDeliveryMethod(form.deliveryMethod)
+        nextTick()
         emit('complete', { ...form })
     }
 }
@@ -157,6 +157,7 @@ const handleSubmit = async () => {
             </div>
 
             <button 
+                :disabled="loading"
                 type="submit"
                 class="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
             >

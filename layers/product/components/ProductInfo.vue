@@ -21,6 +21,7 @@ const props = defineProps<Props>()
 const { productTemplate, productVariant } = toRefs(props)
 
 const { cart, cartAdd } = useCart()
+const { resetCheckoutFromStep } = useCheckout()
 
 const quantitySelectorValue = ref(1)
 
@@ -30,6 +31,7 @@ const handleCartAdd = async () => {
     id = Number(productVariant.value?.id)
   }
   await cartAdd(id, quantitySelectorValue.value)
+  resetCheckoutFromStep('customer')
 }
 
 const productsInCart = computed(() => {

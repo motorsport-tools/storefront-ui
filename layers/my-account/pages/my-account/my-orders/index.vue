@@ -18,7 +18,7 @@ definePageMeta({
 const { getOrders, orders, loading, totalOrders } = useOrders();
 const route = useRoute();
 const router = useRouter();
-
+const viewport = useViewport()
 
 //pagination states
 const currentPage = ref(1);
@@ -78,6 +78,50 @@ const NuxtLink = resolveComponent("NuxtLink");
         <span class="font-medium">{{ Math.min(currentPage * perPage, totalOrders) }}</span> of <span class="font-medium">{{ totalOrders }}</span>
       </div>
     </div>
+    <template v-if="viewport.isLessThan('md')">
+      {{ orders?.order }}
+      <ul v-for="(order, index) in orders?.orders" :key="index" class="my-4 last-of-type:mb-0">
+        <li>
+          <p class="block typography-text-sm font-medium">{{ $t('account.myOrders.orderId') }}</p>
+          <span class="block typography-text-sm mb-2">{{ order?.name }}</span>
+        </li>
+        <li>
+          <p class="block typography-text-sm font-medium">
+            {{ $t("account.myOrders.orderDate") }}
+          </p>
+          <span class="block typography-text-sm mb-2">{{ order?.dateOrder }}</span>
+        </li>
+        <li>
+          <p class="block typography-text-sm font-medium">{{ $t("account.myOrders.amount") }}</p>
+          <span class="block typography-text-sm mb-2">{{ $currency(order?.amountTotal ? order?.amountTotal : 0) }}</span>
+        </li>
+        <!--
+        <li v-if="orderGetters.getShippingDate(order, locale)">
+          <p class="block typography-text-sm font-medium">{{ t('account.ordersAndReturns.shippingDate') }}</p>
+          <span class="block typography-text-sm mb-2">{{ orderGetters.getShippingDate(order, locale) }}</span>
+        </li>
+        -->
+        <li class="flex flex-wrap items-center mb-2">
+          <UiAlert 
+              v-if="order.locked"
+              class="font-semibold mr-4"
+              variant="neutral"
+            >
+            <SfIconCheckCircle class="text-positive-700 shrink-0" size="sm" />
+            {{ $t("account.myOrders.done") }}
+          </UiAlert>
+          <SfButton
+            :tag="NuxtLink"
+            size="sm"
+            variant="tertiary"
+            :to="`/my-account/my-orders/${order.id}`"
+          >
+            {{ $t("account.myOrders.details") }}
+          </SfButton>
+        </li>
+        <UiDivider class="col-span-3 -mx-4 !w-auto md:mx-0" />
+      </ul>
+    </template>
     <table class="hidden md:block text-left typography-text-sm mx-4">
       <caption class="hidden">
         List of orders

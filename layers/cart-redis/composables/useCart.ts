@@ -207,6 +207,10 @@ export const useCart = () => {
     loading.value = false
   }
 
+  const clearCart = async () => {
+    cart.value = {} as Cart
+  }
+
   return {
     loading,
     loadCart,
@@ -222,5 +226,6 @@ export const useCart = () => {
     isCollectEligible,
     updateCartAddress,
     applyDiscount,
+    clearCart
   };
 };

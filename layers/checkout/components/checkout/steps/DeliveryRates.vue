@@ -11,16 +11,6 @@ const props = defineProps<{
     steps: Array<any>
 }>()
 
-watch(
-  () => props.active,
-  async (active) => {
-    if (active) {
-      await loadRates({ carrierId: cart.value?.order?.shippingMethod?.id, orderId: cart.value?.order?.id})
-    }
-  },
-  { immediate: false }
-)
-
 const emit = defineEmits<{
     complete: [data: Record<string, any>]
     update: [data: Record<string, any>]
@@ -31,6 +21,16 @@ const { cart } = useCart();
 const form = reactive({
     deliveryRate: props.exData?.id || null
 })
+
+watch(
+  () => props.active,
+  async (active) => {
+    if (active) {
+        await loadRates({ carrierId: cart.value?.order?.shippingMethod?.id, orderId: cart.value?.order?.id})
+    }
+  },
+  { immediate: true }
+)
 
 onMounted(async () => {
     if (props.stepData) {

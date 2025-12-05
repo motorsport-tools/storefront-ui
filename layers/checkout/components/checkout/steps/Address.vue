@@ -37,6 +37,8 @@ onMounted(async () => {
 
 const { addAddress, updateAddress } = useAddresses()
 const { countries, pending, error } = useCountryList()
+const { updateCartAddress } = useCart();
+
 
 const selectedCountry = computed<Country>(
   () =>
@@ -58,6 +60,7 @@ const autocompletePrefix = computed(() => props.addressType == AddressEnum.Billi
 
 const handleSubmit = async () => {
     if(form.street && form.city && form.zip && form.countryId) {
+        /*
         const data:UpdateAddressInput = {
             id: form.id,
             name:  form.name,
@@ -83,6 +86,20 @@ const handleSubmit = async () => {
         if(res?.addAddress?.id) {
             form.id = res.id
         }
+        */
+
+        const data:UpdateAddressInput = {
+            name:  form.name,
+            street: form.street,
+            street2: form.street2,
+            city: form.city,
+            zip: form.zip,
+            countryId: Number(form.countryId),
+            stateId: Number(form.stateId),
+            phone: '',
+        };
+
+        await updateCartAddress(props.addressType, data, props.addressType == 'Billing' ? form.useDelivery : false )
 
         emit('complete', { ...form })
         return

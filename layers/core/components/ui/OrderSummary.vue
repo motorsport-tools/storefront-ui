@@ -34,7 +34,7 @@ const amountDiscounts = computed(() => {
 })
 
 const amountSubtotal = computed(() => {
-  return Number(cart.value?.order?.amountSubtotal || 0) + Number(cart.value?.order?.shippingMethod?.price || 0) + Number(amountDiscounts || 0)
+  return Number(cart.value?.order?.amountSubtotal || 0) + Number(cart.value?.order?.shippingMethod?.price || 0) + Number(amountDiscounts.value || 0)
 })
 
 </script>

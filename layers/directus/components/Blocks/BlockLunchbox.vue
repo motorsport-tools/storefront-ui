@@ -55,16 +55,16 @@ const item4Class = computed( () => {
 </script>
 <template>
     <div class="w-full h-full min-h-80 md:min-h-[46rem] relative grid grid-cols-2 md:grid-cols-4  grid-rows-3 md:grid-rows-2 gap-3">
-        <div :class="item1Class" class="overflow-hidden">
+        <div :class="item1Class" class="overflow-hidden transition-all duration-100 ease-out hover:scale-[1.02] hover:shadow-xl">
             <BlocksLunchboxContent :data="blockData?.section_content[0]?.item" block="1" :layout="blockData.layout"/>
         </div>
-        <div :class="item2Class" class="overflow-hidden">
+        <div :class="item2Class" class="overflow-hidden transition-all duration-100 ease-out hover:scale-[1.02] hover:shadow-xl">
             <BlocksLunchboxContent :data="blockData?.section_content[1]?.item" block="2" :layout="blockData.layout"/>
         </div>
-        <div :class="item3Class" class="overflow-hidden">
+        <div :class="item3Class" class="overflow-hidden transition-all duration-100 ease-out hover:scale-[1.02] hover:shadow-xl">
             <BlocksLunchboxContent :data="blockData?.section_content[2]?.item" block="3" :layout="blockData.layout"/>
         </div>
-        <div :class="item4Class" class="overflow-hidden">
+        <div :class="item4Class" class="overflow-hidden transition-all duration-100 ease-out hover:scale-[1.02] hover:shadow-xl">
             <BlocksLunchboxContent :data="blockData?.section_content[3]?.item" block="4" :layout="blockData.layout"/>
         </div>
     </div>

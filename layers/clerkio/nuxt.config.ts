@@ -8,6 +8,7 @@ export default defineNuxtConfig({
         },
     },
     runtimeConfig: {
+        clerkKey: process.env.NUXT_CLERK_KEY || '',
         public: {
             search: {
                 host: 'localhost',

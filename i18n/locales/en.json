@@ -122,6 +122,7 @@
   "sortBy": "Sort by",
   "show": "Show",
   "productsPerPage": "Products per page",
+  "recentViews": "Recent Views",
   "sortType": {
     "latest": "Latest",
     "priceUp": "Price from low to high",

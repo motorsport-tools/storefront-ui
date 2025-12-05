@@ -5,12 +5,12 @@ const DEFAULT_PRICELIST_ID = 4
 
 export default defineEventHandler(async (event: H3Event) => {
     const prefix = '/api/search/'
+
+    const targetPath = event.path.replace(prefix, '/')
+
+    const targetUrl = `https://api.clerk.io${targetPath}`
+
     if (event.path.startsWith(prefix) && event.method == 'POST') {
-
-        const targetPath = event.path.replace(prefix, '/')
-
-        const targetUrl = `https://api.clerk.io${targetPath}`
-
         // Get the request body
         const body = await readBody(event)
 
@@ -27,7 +27,19 @@ export default defineEventHandler(async (event: H3Event) => {
         }
         */
         return response
+    } else if (event.path.startsWith(prefix + 'v2/products') && event.method == 'GET') {
+        const config = useRuntimeConfig()
 
+        const query = getQuery(event)
+
+        query.private_key = config.clerkKey
+
+        const response = await $fetch(targetUrl, {
+            method: event.method,
+            query: query
+        })
+
+        return response
     }
 })
 

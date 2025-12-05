@@ -40,7 +40,7 @@ const {
   getRegularPrice,
   getSpecialPrice,
 } = useProductVariant(cleanFullPath.value)
-const { addProductToRecentViews } = useRecentViewProducts()
+const { addProductToRecentViews } = useRecentViews()
 
 useHead(generateSeo<SeoEntity>(productVariant.value, 'Product'))
 
@@ -80,7 +80,7 @@ watch(
         productTemplateId: template.id,
     })
    
-    addProductToRecentViews(template.id)
+    addProductToRecentViews(productVariant.value.id)
 
   },
   { immediate: true, deep: true }

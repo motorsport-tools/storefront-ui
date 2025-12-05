@@ -33,6 +33,10 @@ const amountDiscounts = computed(() => {
   return 0
 })
 
+const amountSubtotal = computed(() => {
+  return Number(cart.value?.order?.amountSubtotal || 0) + Number(cart.value?.order?.shippingMethod?.price || 0) + Number(amountDiscounts || 0)
+})
+
 </script>
 
 <template>
@@ -91,7 +95,7 @@ const amountDiscounts = computed(() => {
           </div>
           <div class="flex flex-row grow pr-2">
             <p class="font-bold grow pr-2">{{ $t("beforeTax")}}</p>
-            <p class="flex text-right">{{ $currency( Number(cart?.order?.amountSubtotal || 0) + Number(cart?.order?.shippingMethod?.price || 0) + Number(amountDiscounts || 0) ) }}</p>
+            <p class="flex text-right">{{ $currency( amountSubtotal ) }}</p>
           </div>
 
           <div class="flex flex-row grow pr-2">

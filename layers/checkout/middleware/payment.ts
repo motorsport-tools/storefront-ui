@@ -13,9 +13,4 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         statusCode: 500,
         statusMessage: 'Forbidden',
     })
-    /*
-    amount=17.1
-    access_token=7aff2035b71708c1552461b7ea2ee77683627893d089c6a5339d1c0fe8a4792c
-    sale_order_id=471612
-    */
 })

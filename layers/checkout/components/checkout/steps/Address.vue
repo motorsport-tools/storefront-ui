@@ -195,7 +195,6 @@ const handleSubmit = async () => {
                     :autocomplete="autocompletePrefix+' address-level1'"
                     :disabled="!states.length"
                     :placeholder="$t('form.selectPlaceholder')"
-                    required
                 >
                     <option 
                         v-for="stateOption in states"

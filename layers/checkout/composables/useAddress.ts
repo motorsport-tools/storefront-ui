@@ -16,6 +16,8 @@ import {
   type MutationDeleteAddressArgs,
   type DeleteAddressResponse,
   type responseAddresses,
+  type MutationUpdatePartnerCheckoutAddressArgs,
+  type UpdatePartnerCheckoutAddressResponse,
 } from "~/graphql";
 import { MutationName } from "~/server/mutations";
 import { QueryName } from "~/server/queries";
@@ -160,6 +162,22 @@ export const useAddresses = () => {
     }
   }
 
+  const updatePartnerCheckoutAddress = async (
+    params: MutationUpdatePartnerCheckoutAddressArgs
+  ) => {
+    loading.value = true
+    try {
+      const data = await $sdk().odoo.mutation<
+        MutationUpdatePartnerCheckoutAddressArgs,
+        UpdatePartnerCheckoutAddressResponse
+      >({ mutationName: MutationName.UpdatePartnerCheckoutAddress }, params)
+    } catch (error: any) {
+      console.warn(`[ERROR] ${error}`)
+    } finally {
+      loading.value = false
+    }
+  }
+
   return {
     loadAddresses,
     billingAddresses,
@@ -169,5 +187,6 @@ export const useAddresses = () => {
     updateAddress,
     deleteAddress,
     loading,
+    updatePartnerCheckoutAddress,
   };
 };

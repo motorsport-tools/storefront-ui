@@ -252,6 +252,14 @@ export type CreateUpdatePartnerResponse = AsyncData<
   H3Error
 >;
 
+export type UpdatePartnerCheckoutAddressResponse = AsyncData<
+  {
+    order: Cart;
+    frequentlyBoughtTogether: Product[]
+  },
+  H3Error
+>;
+
 export type UpdateAddressResponse = AsyncData<
   {
     updateAddress: Partner;

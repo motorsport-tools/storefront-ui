@@ -189,10 +189,6 @@ const breadcrumbs = computed(() => {
                     </section>
                     <UiDivider class="mt-4 mb-2" />
                 </div>
-                <div v-else>
-                    Claims no data......
-                    <br/>{{ hasProductData }}
-                </div>
             
                 <LazyProductFrequentlyBought
                     :fbt="productTemplate?.frequentlyBoughtTogether"

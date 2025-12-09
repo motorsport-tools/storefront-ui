@@ -35,9 +35,8 @@ onMounted(async () => {
     }
 })
 
-const { addAddress, updateAddress } = useAddresses()
+const { updatePartnerCheckoutAddress } = useAddresses()
 const { countries, pending, error } = useCountryList()
-const { updateCartAddress } = useCart();
 
 
 const selectedCountry = computed<Country>(
@@ -60,46 +59,22 @@ const autocompletePrefix = computed(() => props.addressType == AddressEnum.Billi
 
 const handleSubmit = async () => {
     if(form.street && form.city && form.zip && form.countryId) {
-        /*
-        const data:UpdateAddressInput = {
-            id: form.id,
-            name:  form.name,
+        const data = {
+            name:  form.name || '',
             street: form.street,
             street2: form.street2,
             city: form.city,
             zip: form.zip,
             countryId: Number(form.countryId),
             stateId: Number(form.stateId),
-            phone: '',
+            useDelivery: Boolean(form?.useDelivery || false)
         };
 
-        if(form?.id && form?.id !== 4) {
-            await updateAddress(data, props.addressType)
-            emit('complete', { ...form })
-            return
+        if(props.addressType === AddressEnum.Billing) {
+            delete data.name
         }
-        
-        if(data?.id) {
-            delete data.id
-        }
-        const res = await addAddress(data as unknown as AddAddressInput, props.addressType)
-        if(res?.addAddress?.id) {
-            form.id = res.id
-        }
-        */
 
-        const data:UpdateAddressInput = {
-            name:  form.name,
-            street: form.street,
-            street2: form.street2,
-            city: form.city,
-            zip: form.zip,
-            countryId: Number(form.countryId),
-            stateId: Number(form.stateId),
-            phone: '',
-        };
-
-        await updateCartAddress(props.addressType, data, props.addressType == 'Billing' ? form.useDelivery : false )
+        await updatePartnerCheckoutAddress( { type: props.addressType, address: data })
 
         emit('complete', { ...form })
         return

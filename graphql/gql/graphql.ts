@@ -215,6 +215,17 @@ export type CheckAccessResult = CheckAccess & {
   access: Maybe<Scalars['Boolean']['output']>;
 };
 
+export type CheckoutAddressInput = {
+  city: InputMaybe<Scalars['String']['input']>;
+  countryId: InputMaybe<Scalars['Int']['input']>;
+  name: InputMaybe<Scalars['String']['input']>;
+  stateId: InputMaybe<Scalars['Int']['input']>;
+  street: InputMaybe<Scalars['String']['input']>;
+  street2: InputMaybe<Scalars['String']['input']>;
+  useDelivery: InputMaybe<Scalars['Boolean']['input']>;
+  zip: InputMaybe<Scalars['String']['input']>;
+};
+
 export type CheckoutRedirectOutput = {
   __typename?: 'CheckoutRedirectOutput';
   accessToken: Maybe<Scalars['String']['output']>;
@@ -584,6 +595,8 @@ export type Mutation = {
   updateCartAddress: Maybe<UpdateCartAddress>;
   /** Update MyAccount */
   updateMyAccount: Maybe<Partner>;
+  /** Create/Update partner checkout addresses with type and address object */
+  updatePartnerCheckoutAddress: Maybe<CartData>;
   /** Update user password. */
   updatePassword: Maybe<User>;
   /** Create or Update Multiple Mailing Contact information */
@@ -742,6 +755,12 @@ export type MutationUpdateCartAddressArgs = {
 
 export type MutationUpdateMyAccountArgs = {
   myaccount: InputMaybe<UpdateMyAccountParams>;
+};
+
+
+export type MutationUpdatePartnerCheckoutAddressArgs = {
+  address: CheckoutAddressInput;
+  type: AddressEnum;
 };
 
 

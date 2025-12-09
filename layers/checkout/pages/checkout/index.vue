@@ -132,7 +132,10 @@ onMounted(async () => {
             </div>
         </div>
         <div v-else class="text-center py-10">
-            <SfLoaderCircular size="xl" class="mt-[160px] mb-[10px]" />
+            <UiMSTLoader 
+                :size="60"
+                class="mt-[160px] mb-[10px]"
+            />
             <p>Loading checkout details...</p>
         </div>
     </main>

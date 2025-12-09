@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Cart, ShippingMethod } from '~/graphql';
-import { SfIconWarehouse, SfIconLocalShipping, SfIconBlock, SfListItem, SfRadio } from "@storefront-ui/vue"
+import { SfIconWarehouse, SfIconLocalShipping, SfLoaderCircular, SfIconBlock, SfListItem, SfRadio } from "@storefront-ui/vue"
 
 const props = defineProps<{
     stepData?: Record<string, any>
@@ -108,7 +108,16 @@ const handleSubmit = async () => {
         </div>
     </div>
     <div v-show="!showSummary">
-        <form 
+        <div 
+            v-if="loading"
+            class="w-full text-center"
+        >
+            <UiMSTLoader 
+                :size="40"
+            />
+        </div>
+        <form
+            v-else 
             data-testid="delivery-method-form"
             @submit.prevent="handleSubmit"
             class="space-y-4 md:w-[520px]"

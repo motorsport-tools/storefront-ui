@@ -68,7 +68,9 @@ const handleSubmit = async () => {
                 v-if="ratesLoading"
                 class="w-full text-center"
             >
-                <SfLoaderCircular size="base" />
+                <UiMSTLoader 
+                    :size="40"
+                />
                 <p class="mb-2">Please wait... gathering shipment information</p>
             </div>
 

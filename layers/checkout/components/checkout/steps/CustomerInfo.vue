@@ -35,7 +35,7 @@ watch(
   { immediate: true }
 )
 
-const { updatePartner } = useAuth()
+const { updatePartner, loading } = useAuth()
 
 const handleSubmit = async () => {
     if(form.name && form.email && form.phone) {
@@ -47,7 +47,7 @@ const handleSubmit = async () => {
         };
     
         await updatePartner(data)
-
+        nextTick()
         emit('complete', { ...form })
     }
 }
@@ -108,7 +108,8 @@ const handleSubmit = async () => {
                 </label>
             </div>
 
-            <button 
+            <button
+                :disabled="loading"
                 type="submit"
                 class="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
             >

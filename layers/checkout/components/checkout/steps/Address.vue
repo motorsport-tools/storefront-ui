@@ -35,7 +35,7 @@ onMounted(async () => {
     }
 })
 
-const { updatePartnerCheckoutAddress } = useAddresses()
+const { updatePartnerCheckoutAddress, loading } = useAddresses()
 const { countries, pending, error } = useCountryList()
 
 
@@ -75,7 +75,7 @@ const handleSubmit = async () => {
         }
 
         await updatePartnerCheckoutAddress( { type: props.addressType, address: data })
-
+        nextTick()
         emit('complete', { ...form })
         return
     }
@@ -223,7 +223,8 @@ const handleSubmit = async () => {
                 {{ $t("form.useAsShippingLabel") }}
             </label>
 
-            <button 
+            <button
+                :disabled="loading"
                 type="submit"
                 class="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
             >

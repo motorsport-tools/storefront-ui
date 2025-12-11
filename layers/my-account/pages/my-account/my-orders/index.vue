@@ -161,7 +161,7 @@ const NuxtLink = resolveComponent("NuxtLink");
               variant="neutral"
             >
             <SfIconCheckCircle class="text-positive-700 shrink-0" size="sm" />
-            {{ $t("account.myOrders.done") }}
+            {{ $t("account.myOrders.confirmed") }}
             </UiAlert>
           </td>
           <td class="py-1.5 pl-4 text-right w-full">

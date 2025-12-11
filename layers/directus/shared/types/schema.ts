@@ -161,6 +161,7 @@ export interface BlockSliderSlide {
 	date_updated?: string | null;
 	slider?: BlockSlider | string | null;
 	background_image?: DirectusFile | string | null;
+	background_video?: DirectusFile | string | null;
 }
 
 export interface Globals {

@@ -388,6 +388,7 @@
       "status": "Status",
       "details": "Details",
       "done": "Done",
+      "confirmed": "confirmed",
       "myOrders": "My orders",
       "noOrders": "You haven’t shopped with us yet",
       "continue": "Continue shopping",

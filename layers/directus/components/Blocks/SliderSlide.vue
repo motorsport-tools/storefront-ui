@@ -27,7 +27,7 @@ const { getBlockComponent } = useBlockRegistry()
             provider="directus"
             :alt="slide?.background_image.title? slide?.background_image.title : `Promotional image slide ${itemKey}`"
         />
-        <div class="relative z-1 p-6">
+        <div class="h-full relative z-1 px-20 pb-14 flex flex-col items-center justify-end">
             <component
                 v-if="slide?.block_content"
                 v-for="block in slide?.block_content"
@@ -50,6 +50,7 @@ const { getBlockComponent } = useBlockRegistry()
     :deep(h6) {
         font-weight: 700;
         color: #fff;
+        font-family: "Figtree"
     }
     :deep(h2) {
         font-size: 28px;

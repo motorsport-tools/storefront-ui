@@ -5,8 +5,9 @@ import { useCountryList } from "~/layers/core/composable/useCountryList";
 
 definePageMeta({
     layout: 'checkout',
+    middleware: ['checkout-guard']
 })
-const { cartIsEmpty, loading: cartLoading, loadCart } = useCart()
+const { cart, cartIsEmpty, loading: cartLoading, loadCart } = useCart()
 const { loading: deliveryLoading } = useDeliveryMethod()
 const { loadUser, isAuthenticated } = useAuth()
 const { loadCountries } = useCountryList()
@@ -16,7 +17,6 @@ const selectedProvider = ref(<PaymentMethod | null>(null))
 await loadCountries()
 
 const { $i18n } = useNuxtApp()
-const { cart } = useCart()
 
 const { steps, visibleSteps, isLastStep, currentStepId, currentStepIndex, allStepsCompleted, registerSteps, completeStep, goToStep, updateStepData, getAllData, getStepData, resetCheckout } = useCheckout()
 
@@ -106,7 +106,7 @@ onMounted(async () => {
             :backText="$t('backToCart')"
             :icon="SfIconLock"
         />
-        <div v-if="!cartIsEmpty">
+        <div v-if="!cartIsEmpty && !cartLoading">
             <div class="lg:grid lg:grid-cols-12 md:gap-x-6">
                 <div class="col-span-7 mb-10 md:mb-0">
                     <CheckoutContainer
@@ -131,7 +131,7 @@ onMounted(async () => {
                 </div>
             </div>
         </div>
-        <div v-else class="text-center py-10">
+        <div v-else-if="cartLoading" class="text-center py-10">
             <UiMSTLoader 
                 :size="60"
                 class="mt-[160px] mb-[10px]"

@@ -6,7 +6,7 @@ export const useSearchClient = (config = {}) => {
         primaryKey: 'id',
         retrievableAttributes: [
             'id', 'name', 'brand', 'image', 'price', 'on_sale',
-            'list_price', 'rating', 'ratingCount', 'sku', 'slug', 'has_stock',
+            'list_price', 'rating', 'ratingCount', 'sku', 'slug', 'has_stock', 'fits',
             'image_slug', 'image_filename',
             'pricelist_ids', 'pricelist_names', 'pricelist_prices', 'pricelist_list_prices', 'pricelist_price_extra', 'pricelist_on_sale', 'pricelist_currencies', 'pricelist_discount_perc',
         ],

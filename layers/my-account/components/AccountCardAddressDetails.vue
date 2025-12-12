@@ -36,6 +36,7 @@ const handleOpenFormForEditAddress = (
 };
 
 const handleOpenFormToAddAddress = () => {
+  console.log('Click')
   edit.value = false;
   open();
 };
@@ -84,37 +85,36 @@ const handleCloseAfterSaveAddress = async () => {
       >Add new address</SfButton
     >
   </div>
-  <UiOverlay v-if="isOpen" :visible="isOpen">
-    <UiModal
-      :model-value="isOpen"
-      tag="section"
-      role="dialog"
-      class="h-full w-full overflow-auto md:w-[600px] md:h-fit z-50"
-      aria-labelledby="address-modal-title"
-    >
-      <header>
-        <SfButton
-          square
-          variant="tertiary"
-          class="absolute right-2 top-2"
-          @click="close"
-        >
-          <SfIconClose />
-        </SfButton>
-        <h3
-          id="address-modal-title"
-          class="text-neutral-900 text-lg md:text-2xl font-bold mb-4"
-        >
-          {{ header }}
-        </h3>
-      </header>
-      <AccountFormAddress
-        :is-edit-form="edit"
-        :address="addressForEdit"
-        :type="type"
-        @on-save="handleCloseAfterSaveAddress"
-        @on-close="close"
-      />
-    </UiModal>
-  </UiOverlay>
+  <UiOverlay :isOpen="isOpen" :visible="isOpen" class="z-[92]"/>
+  <UiModal
+    :model-value="isOpen"
+    tag="section"
+    role="dialog"
+    class="h-full w-full overflow-auto md:w-[600px] md:h-fit z-100"
+    aria-labelledby="address-modal-title"
+  >
+    <header>
+      <SfButton
+        square
+        variant="tertiary"
+        class="absolute right-2 top-2"
+        @click="close"
+      >
+        <SfIconClose />
+      </SfButton>
+      <h3
+        id="address-modal-title"
+        class="text-neutral-900 text-lg md:text-2xl font-bold mb-4"
+      >
+        {{ header }}
+      </h3>
+    </header>
+    <AccountFormAddress
+      :is-edit-form="edit"
+      :address="addressForEdit"
+      :type="type"
+      @on-save="handleCloseAfterSaveAddress"
+      @on-close="close"
+    />
+  </UiModal>
 </template>

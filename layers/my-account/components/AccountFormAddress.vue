@@ -36,9 +36,7 @@ const props = defineProps({
 const addressFormFieldsInput = ref<AddressFormFieldsInputExtendedFields>({
   id: 0,
   name: "",
-  phone: "",
   city: "",
-  email: "",
   countryId: 0,
   stateId: 0,
   street: "",
@@ -48,13 +46,12 @@ const addressFormFieldsInput = ref<AddressFormFieldsInputExtendedFields>({
 
 if (props.isEditForm) {
   addressFormFieldsInput.value.name = props.address?.name ?? ""
-  addressFormFieldsInput.value.phone = props.address?.phone ?? ""
-  addressFormFieldsInput.value.city = props.address?.city ?? ""
-  addressFormFieldsInput.value.countryId = props.address?.country.id ?? 0
-  addressFormFieldsInput.value.stateId = props.address?.state.id ?? 0
-  addressFormFieldsInput.value.city = props.address?.city ?? ""
-  addressFormFieldsInput.value.zip = props.address?.zip ?? ""
   addressFormFieldsInput.value.street = props.address?.street ?? ""
+  addressFormFieldsInput.value.street2 = props.address?.street2 ?? ""
+  addressFormFieldsInput.value.city = props.address?.city ?? ""
+  addressFormFieldsInput.value.countryId = props.address?.country?.id || 0
+  addressFormFieldsInput.value.stateId = props.address?.state?.id || 0
+  addressFormFieldsInput.value.zip = props.address?.zip ?? ""
 }
 
 const billingAddresIsTheSameAsShipping = ref(false);
@@ -102,29 +99,27 @@ const handleSubmit = async () => {
         :placeholder="$t('form.NameLabel')"
       />
     </label>
+    <UiFormSelectCountries v-model="addressFormFieldsInput.countryId" />
     <label class="md:col-span-2">
       <UiFormLabel>{{ $t("form.streetNameLabel") }}</UiFormLabel>
       <SfInput
         v-model="addressFormFieldsInput.street"
         name="streetName"
-        autocomplete="family-name"
+        autocomplete="street"
         required
         :placeholder="$t('form.streetNameLabel')"
       />
     </label>
-    <label class="md:col-span-3">
-      <UiFormLabel>{{ $t("form.phoneLabel") }}</UiFormLabel>
+    <label class="md:col-span-2">
+      <UiFormLabel>{{ $t("form.streetNameLabel2") }}</UiFormLabel>
       <SfInput
-        v-model="addressFormFieldsInput.phone"
-        name="phone"
-        type="tel"
-        autocomplete="tel"
+        v-model="addressFormFieldsInput.street2"
+        name="streetName2"
+        autocomplete="street2"
         required
-        :placeholder="$t('form.phoneLabel')"
+        :placeholder="$t('form.streetNameLabel2')"
       />
     </label>
-
-    <UiFormSelectCountries v-model="addressFormFieldsInput.countryId" />
     <UiFormSelectStates
       v-if="addressFormFieldsInput?.countryId != 0"
       v-model="addressFormFieldsInput.stateId"

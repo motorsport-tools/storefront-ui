@@ -7,8 +7,8 @@ const props = defineProps<Props>()
 </script>
 <template>
     <div 
-        class="w-full"
-        :v-html="blockData?.content"
+        class="w-full h-auto"
+        v-html="blockData?.content"
     >
     </div>
 </template>

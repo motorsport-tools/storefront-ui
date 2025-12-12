@@ -197,7 +197,7 @@ const NuxtLink = resolveComponent("NuxtLink");
     <h3 class="typography-headline-3 font-bold mb-4 mt-6">
       {{ $t("account.myOrders.noOrders") }}
     </h3>
-    <SfButton variant="secondary" class="!ring-neutral-200">
+    <SfButton variant="secondary" class="!ring-neutral-200" :tag="NuxtLink" :to="`/search`">
       {{ $t("account.myOrders.continue") }}</SfButton
     >
   </div>

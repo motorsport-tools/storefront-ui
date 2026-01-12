@@ -7,7 +7,8 @@ definePageMeta({
     layout: 'checkout',
     middleware: ['checkout-guard']
 })
-const { cart, cartIsEmpty, loading: cartLoading, loadCart } = useCart()
+console.log('CHECKOUT PAGE LOADING')
+const { cart, cartIsEmpty, loading: cartLoading } = useCart()
 const { loading: deliveryLoading } = useDeliveryMethod()
 const { loadUser, isAuthenticated } = useAuth()
 const { loadCountries } = useCountryList()
@@ -89,10 +90,8 @@ const checkoutSteps = [
 
 onMounted(async () => {
     if(isAuthenticated.value) {
-        await Promise.all([loadUser(true), loadCart()]);
-    } else {
-        await Promise.all([loadCart()])
-    }
+        await Promise.all([loadUser(true)]);
+    } 
     registerSteps(checkoutSteps)
 })
 </script>

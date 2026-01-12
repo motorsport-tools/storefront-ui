@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import { SfListItem, SfRadio, SfIconBlock, SfIconLocalShipping, SfIconWarehouse, SfLoaderCircular } from "@storefront-ui/vue";
 
-const { cart, isCollectEligible, loadCart } = useCart();
+const { cart, isCollectEligible } = useCart();
 
 const { deliveryMethods, loadDeliveryMethods, setDeliveryMethod, loadRates, setRate, ratesLoading, rates } = useDeliveryMethod()
 

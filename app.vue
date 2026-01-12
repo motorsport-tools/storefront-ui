@@ -2,7 +2,7 @@
 import { useMegaMenuCategories } from "~/layers/core/composable/useMegaMenuCategories"
 const nuxtApp = useNuxtApp();
 const { isAuthenticated, loadUser } = useAuth()
-const { loadCart } = useCart()
+
 const { loadWishlist } = useWishlist()
 
 const router = useRouter()
@@ -28,7 +28,6 @@ onMounted(async () => {
       await loadUser(true)
       await loadWishlist()
     }
-    await loadCart()
   }
 })
 </script>

@@ -12,6 +12,20 @@ export interface ExtensionSeoMetadata {
     no_follow?: boolean;
 }
 
+export interface BlockButton {
+	/** @primaryKey */
+	id: number;
+	sort?: number | null;
+	user_created?: string | null;
+	date_created?: string | null;
+	user_updated?: string | null;
+	date_updated?: string | null;
+	link?: string | null;
+	/** @required */
+	target: '_self' | '_blank';
+	title?: string | null;
+}
+
 export interface BlockGrid {
 	/** @primaryKey */
 	id: number;
@@ -162,6 +176,16 @@ export interface BlockSliderSlide {
 	slider?: BlockSlider | string | null;
 	background_image?: DirectusFile | string | null;
 	background_video?: DirectusFile | string | null;
+	block_content?: BlockSliderSlidesBlockContent[] | string[];
+}
+
+export interface BlockSliderSlidesBlockContent {
+	/** @primaryKey */
+	id: number;
+	block_slider_slides_id?: BlockSliderSlide | string | null;
+	item?: BlockRichtext | BlockButton | string | null;
+	collection?: string | null;
+	sort?: number | null;
 }
 
 export interface Globals {
@@ -366,6 +390,7 @@ export interface DirectusTranslation {
 }
 
 export interface Schema {
+	block_button: BlockButton[];
 	block_grid: BlockGrid[];
 	block_grid_items: BlockGridItem[];
 	block_image: BlockImage[];
@@ -376,6 +401,7 @@ export interface Schema {
 	block_richtext: BlockRichtext[];
 	block_slider: BlockSlider[];
 	block_slider_slides: BlockSliderSlide[];
+	block_slider_slides_block_content: BlockSliderSlidesBlockContent[];
 	globals: Globals;
 	navigation: Navigation[];
 	navigation_items: NavigationItem[];
@@ -391,6 +417,7 @@ export interface Schema {
 }
 
 export enum CollectionNames {
+	block_button = 'block_button',
 	block_grid = 'block_grid',
 	block_grid_items = 'block_grid_items',
 	block_image = 'block_image',
@@ -401,6 +428,7 @@ export enum CollectionNames {
 	block_richtext = 'block_richtext',
 	block_slider = 'block_slider',
 	block_slider_slides = 'block_slider_slides',
+	block_slider_slides_block_content = 'block_slider_slides_block_content',
 	globals = 'globals',
 	navigation = 'navigation',
 	navigation_items = 'navigation_items',

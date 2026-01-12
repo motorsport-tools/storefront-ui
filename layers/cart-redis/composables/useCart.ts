@@ -31,9 +31,7 @@ export const useCart = () => {
   const cart = useState<Cart>("cart", () => ({}) as Cart)
   const frequentlyTogetherProducts = useState<Product[]>('frequently-together-products', () => [])
 
-  const loading = useState<Object>('cartLoading', () => ({
-    loading: false,
-  }))
+  const loading = useState<boolean>('cartLoading', () => false)
 
   const loadCart = async () => {
     try {

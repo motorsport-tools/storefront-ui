@@ -2,7 +2,7 @@
 import { SfButton, SfLoaderCircular } from '@storefront-ui/vue';
 
 const NuxtLink = resolveComponent('NuxtLink');
-const { cart, loadCart, cartIsEmpty, loading, frequentlyTogetherProducts } = useCart();
+const { cart, cartIsEmpty, loading, frequentlyTogetherProducts } = useCart();
 const { isAuthenticated } = useAuth()
 const { loading: deliveryLoading } = useDeliveryMethod()
 const localePath = useLocalePath();
@@ -10,7 +10,6 @@ const goToCheckout = () => (isAuthenticated.value ? localePath('/checkout') : lo
 
 const isLoading = computed(() => loading.value || deliveryLoading.value);
 
-await loadCart()
 </script>
 
 <template>
@@ -37,7 +36,6 @@ await loadCart()
         class="lg:grid lg:grid-cols-12 md:gap-x-6"
         data-testid="cart-page-content"
     >
-
       <div class="col-span-7 mb-10 lg:mb-0">
         <ClientOnly>
           <div v-for="(orderLine, index) in cart.order?.orderLines?.filter(line => line.isRewardLine === false && line.isDelivery === false)" :key="orderLine?.id">

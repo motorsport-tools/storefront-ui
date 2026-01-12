@@ -16,6 +16,7 @@ const { user, updatePartner, updatePassword } = useAuth()
 const lastActiveElement = ref()
 const modalElement = ref()
 const openedForm = ref("")
+const errorMessage = ref("")
 const openModal = async (modalName: string) => {
   openedForm.value = modalName;
   lastActiveElement.value = document.activeElement;
@@ -39,13 +40,28 @@ const saveNewContactInfo = async (userData: any) => {
   closeModal();
 }
 
+const hasNumberAndSymbol = (value: string) =>
+  /^(?=.*\d)(?=.*[^a-zA-Z0-9]).+$/.test(value)
+
+const isValidPassword = (value: string) =>
+  value.length >= 8 && hasNumberAndSymbol(value)
+
 const saveNewPassword = async (passwords: any) => {
+  errorMessage.value = ""
+
   if (passwords.firstNewPassword === passwords.secondNewPassword) {
+    if (!isValidPassword(passwords.firstNewPassword)) {
+      errorMessage.value =
+        "Password must be at least 8 characters long and include at least one number and one special character."
+      return
+    }
     await updatePassword({
       currentPassword: passwords.oldPassword,
       newPassword: passwords.firstNewPassword,
     })
     closeModal()
+  } else {
+    errorMessage.value = "New passwords do not match."
   }
 }
 </script>
@@ -96,6 +112,13 @@ const saveNewPassword = async (passwords: any) => {
           {{ $t(`account.accountSettings.personalData.${openedForm}`) }}
         </h3>
       </header>
+      <div
+        v-if="errorMessage && errorMessage.length > 0"
+        class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
+        role="alert"
+      >
+        {{ errorMessage }}
+      </div>
       <AccountContactInformation
         v-if="openedForm === 'contactInformation'"
         :full-name="user?.name"

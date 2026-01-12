@@ -45,8 +45,8 @@ const allImages = computed(() => [
           provider="odooProvider"
           :alt="alt"
           class="object-cover"
-          width="78"
-          height="78"
+          width="100"
+          height="100"
           :src="imageThumbSrc"
         />
       </button>
@@ -67,7 +67,7 @@ const allImages = computed(() => [
       >
         <NuxtImg
           provider="odooProvider"
-          :width="380"
+          :width="505"
           :height="505"
           :aria-label="alt"
           :aria-hidden="activeIndex !== index"

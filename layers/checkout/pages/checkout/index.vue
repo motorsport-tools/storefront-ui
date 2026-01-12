@@ -7,7 +7,7 @@ definePageMeta({
     layout: 'checkout',
     middleware: ['checkout-guard']
 })
-console.log('CHECKOUT PAGE LOADING')
+
 const { cart, cartIsEmpty, loading: cartLoading } = useCart()
 const { loading: deliveryLoading } = useDeliveryMethod()
 const { loadUser, isAuthenticated } = useAuth()

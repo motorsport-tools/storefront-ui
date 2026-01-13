@@ -92,8 +92,8 @@ const initStripeCheckout = async () => {
             link: 'never',
         },
         wallets: {
-            googlePay: 'always',
-            applePay: 'always',
+            googlePay: 'auto',
+            applePay: 'auto',
         }
     }
 

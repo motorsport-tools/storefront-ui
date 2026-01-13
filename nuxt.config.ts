@@ -18,7 +18,6 @@ export default defineNuxtConfig({
     'nuxt-viewport',
     '@nuxtjs/sitemap',
     '@nuxtjs/critters',
-    '@nuxtjs/partytown',
   ],
   routeRules: {
     '/payment/**': { cache: false },

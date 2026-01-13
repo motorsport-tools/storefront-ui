@@ -115,7 +115,7 @@ const breadcrumbs = computed(() => {
             <div>
                 <div class="flex md:flex-row mt-5 mb-10">
                     <UiBreadcrumb
-                        v-if="breadcrumbs.length"
+                        v-if="breadcrumbs && breadcrumbs.length"
                         :breadcrumbs="breadcrumbs"
                         class="grow self-start"
                     />

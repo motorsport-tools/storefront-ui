@@ -21,17 +21,13 @@ async function resetPasswordWithRetry(email: string, max = 3) {
     } catch (e: any) {
       const msg: string =
         e?.response?._data?.message || e?.message || ''
-
-      // erro de concorrência do Postgres (serialize)
       if (
         msg.toLowerCase().includes('could not serialize access due to concurrent update') &&
         i < max - 1
       ) {
-        // pequeno backoff e tenta de novo
         await new Promise(r => setTimeout(r, 300 + i * 200))
         continue
       }
-
       throw e
     }
   }

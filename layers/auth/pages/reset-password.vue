@@ -64,6 +64,13 @@ async function resetPasswordHandler() {
         <p class="mb-6">
           {{ $t("auth.resetPassword.info") }}
         </p>
+        <div
+          v-if="errorMessage && errorMessage.length > 0"
+          class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
+          role="alert"
+        >
+          {{ errorMessage }}
+        </div>
         <label>
           <FormLabel>{{ $t("auth.resetPassword.email") }}</FormLabel>
           <SfInput v-model="customerEmail" name="email" type="email" required />

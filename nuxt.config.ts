@@ -230,9 +230,6 @@ export default defineNuxtConfig({
   tailwindcss: {
     viewer: false,
   },
-  partytown: {
-    debug: false,
-  },
   device: {
     refreshOnResize: true,
   },

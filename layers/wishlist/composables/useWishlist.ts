@@ -1,4 +1,4 @@
- 
+
 import type {
   MutationWishlistAddItemArgs,
   MutationWishlistRemoveItemArgs,
@@ -6,6 +6,7 @@ import type {
   WishlistData,
   WishlistLoadResponse,
   WishlistRemoveItemResponse,
+  WishlistItems,
 } from "~/graphql";
 import { MutationName } from "~/server/mutations";
 import { QueryName } from "~/server/queries";
@@ -14,42 +15,48 @@ import { useToast } from 'vue-toastification'
 export const useWishlist = () => {
   const { $sdk } = useNuxtApp()
   const loading = ref(false)
-  const wishlist = useState<WishlistData>(
-    "wishlist",
-    () => ({} as WishlistData)
-  )
-
   const toast = useToast()
+  const wishlist = useState<WishlistData>('wishlist', () => ({ wishlistItems: [], totalCount: 0 } as unknown as WishlistData))
+  const fetchedOnce = useState<boolean>('wishlist-fetched-once', () => false)
+  let inflight: Promise<void> | null = null
 
   const loadWishlist = async () => {
-    try {
-      loading.value = true
-      const data = await $sdk().odoo.query<
-        MutationWishlistAddItemArgs,
-        WishlistLoadResponse
-      >({
-        queryName: QueryName.WishlistLoadQuery,
+    if (import.meta.server) return
+    if (fetchedOnce.value) return
+    if (inflight) return await inflight
+
+    loading.value = true
+
+    inflight = $sdk().odoo
+      .query({ queryName: QueryName.WishlistLoadQuery })
+      .then((raw: unknown) => {
+        const data = raw as WishlistLoadResponse
+        const safe: WishlistItems = data?.wishlistItems ?? { totalCount: 0, wishlistItems: [] }
+        wishlist.value = safe
+        fetchedOnce.value = true
       })
-      wishlist.value = data?.wishlistItems || []
-    }
-    catch (error: any) {
-      toast.error(error.data?.message)
-    }
-    finally {
-      loading.value = false
-    }
+      .catch((err: any) => {
+        toast.error(err?.data?.message ?? 'Failed to load Wishlist.')
+      })
+      .finally(() => {
+        loading.value = false
+        inflight = null
+      })
+
+    await inflight
+
   }
 
   const wishlistAddItem = async (productId: number) => {
     try {
       loading.value = true
-      const  data = await $sdk().odoo.mutation<
+      const data = await $sdk().odoo.mutation<
         MutationWishlistAddItemArgs,
         WishlistAddItemResponse
       >({ mutationName: MutationName.WishlistAddItem }, { productId })
 
       wishlist.value = data?.wishlistAddItem
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error.data?.message)
     } finally {
       loading.value = false
@@ -80,7 +87,7 @@ export const useWishlist = () => {
       )
 
       wishlist.value = data?.wishlistRemoveItem
-    } catch(error:any) {
+    } catch (error: any) {
       toast.error(error.data?.message)
     } finally {
       loading.value = false
@@ -92,7 +99,7 @@ export const useWishlist = () => {
   });
 
   const isInWishlist = (productId: number) => {
-    if(!wishlist.value || !productId) return false
+    if (!wishlist.value || !productId) return false
 
     return (
       wishlist.value?.wishlistItems?.some(

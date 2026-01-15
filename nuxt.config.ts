@@ -29,7 +29,8 @@ export default defineNuxtConfig({
     routeRules: {
       '/': { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
       '/product/**': { swr: 300 }, //5 min
-      '/my/orders/**': { cache: false }
+      '/my/orders/**': { cache: false },
+      '/payment/**': { cache: false },
     },
 
   },
@@ -69,6 +70,7 @@ export default defineNuxtConfig({
       "GetAddressesQuery",
       "GetOrdersQuery",
       "LoadUserQuery",
+      "PaymentPayQuery",
     ],
     public: {
       odooBaseImageUrl: "",

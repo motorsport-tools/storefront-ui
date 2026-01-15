@@ -1,6 +1,6 @@
 export default `
-  query {
-    paymentProviders {
+  query ( $orderId: Int ) {
+    paymentProviders(orderId: $orderId) {
       id
       name
       code

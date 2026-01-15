@@ -717,6 +717,7 @@ export type MutationStockNotificationArgs = {
 
 
 export type MutationStripeGetInlineFormValuesArgs = {
+  orderId: InputMaybe<Scalars['Int']['input']>;
   pmCode: InputMaybe<Scalars['String']['input']>;
   providerId: Scalars['Int']['input'];
 };
@@ -729,6 +730,7 @@ export type MutationStripeProviderInfoArgs = {
 
 export type MutationStripeTransactionArgs = {
   isExpress?: InputMaybe<Scalars['Boolean']['input']>;
+  orderId: InputMaybe<Scalars['Int']['input']>;
   providerId: Scalars['Int']['input'];
   tokenizationRequested?: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -1311,6 +1313,11 @@ export type QueryPaymentConfirmationArgs = {
 
 export type QueryPaymentProviderArgs = {
   id: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type QueryPaymentProvidersArgs = {
+  orderId: InputMaybe<Scalars['Int']['input']>;
 };
 
 

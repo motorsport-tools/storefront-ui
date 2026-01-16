@@ -74,9 +74,9 @@ onMounted(async () => {
       <p>One moment please.<br/>Validating payment link</p>
     </div>
     <div v-else-if="validationError" class="error-state">
-        <h2>Payment Link Error</h2>
-        <p>{{ validationError }}</p>
-        <button @click="router.push('/')">Return to Home</button>
+        <PaymentLinkError
+          :validation-error="validationError"
+        />
     </div>
     <div v-else-if="isValidated && orderData" class="payment-form max-w-2xl mx-auto py-6">
       <h1 class="text-2xl font-semibold text-gray-900 mb-6">Complete Your Payment</h1>

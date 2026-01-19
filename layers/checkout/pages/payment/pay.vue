@@ -54,6 +54,7 @@ async function validate() {
   // Success - show payment form
   isValidated.value = true
   orderData.value = result.data
+  console.log(orderData.value)
 }
 
 onMounted(async () => {
@@ -66,12 +67,12 @@ onMounted(async () => {
     class="narrow-container"
   >
   <ClientOnly>
-    <div v-if="loading" class="flex flex-col items-center justify-center">
+    <div v-if="loading && !isValidated" class="flex flex-col items-center justify-center">
       <UiMSTLoader 
         :size="60"
         class="mt-[160px] mb-[10px]"
       />
-      <p>One moment please.<br/>Validating payment link</p>
+      <p class="mb-6">One moment please.<br/>Validating payment link</p>
     </div>
     <div v-else-if="validationError" class="error-state">
         <PaymentLinkError
@@ -80,7 +81,6 @@ onMounted(async () => {
     </div>
     <div v-else-if="isValidated && orderData" class="payment-form max-w-2xl mx-auto py-6">
       <h1 class="text-2xl font-semibold text-gray-900 mb-6">Complete Your Payment</h1>
-        
       <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6 w-full mb-8">
         <h2 class="text-xl font-semibold text-gray-900 mb-6">Order Summary</h2>
         

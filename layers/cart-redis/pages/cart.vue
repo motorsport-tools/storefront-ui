@@ -8,7 +8,11 @@ const { loading: deliveryLoading } = useDeliveryMethod()
 const localePath = useLocalePath();
 const goToCheckout = () => (isAuthenticated.value ? localePath('/checkout') : localePath('/guest/login'));
 
+const route = useRoute()
+
 const isLoading = computed(() => loading.value || deliveryLoading.value);
+
+const accessToken = route.query.access_token as string
 
 </script>
 
@@ -22,6 +26,16 @@ const isLoading = computed(() => loading.value || deliveryLoading.value);
       :backText="$t('back')"
       :backToCart="false"
     />
+    <div
+      v-if="accessToken && !loading"
+    >
+      <div class="bg-blue-100 text-blue-800 rounded-lg shadow-sm p-6 w-full my-4 max-w-2xl mx-auto">
+        <h2 class="font-medium text-xl">This is your current cart</h2>
+        <p class="my-2">You have followed a link to restore a previous cart.</p>
+        <p class="my-2"><NuxtLink class="text-red-800 font-bold" title="Replace exisiting cart with previous cart" :to="`/shop/cart?access_token=${encodeURIComponent(accessToken)}&revive=squash`">Click Here</NuxtLink> to restore the previous cart. Your current cart will be replaced with the previous cart.</p>
+        <p v-if="!cartIsEmpty" class="my-2"><NuxtLink class="text-red-800 font-bold" title="Merge previous cart with existing cart" :to="`/shop/cart?access_token=${encodeURIComponent(accessToken)}&revive=merge`">Click Here</NuxtLink> if you want to merge your previous cart with your current cart.</p>
+      </div>
+    </div>
     <div
       v-if="loading"
       class="w-full flex flex-col items-center justify-center min-h-[60vh]"

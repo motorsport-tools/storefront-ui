@@ -24,7 +24,7 @@ const {
     getStripeInlineFormValues,
     openStripeTransaction,
 } = useStripeDirectPayment(
-    props.orderData.transaction.providerId, 
+    props.orderData?.transaction?.providerId || 14, 
     props.orderData.saleOrder.id,   
     'card'
 )

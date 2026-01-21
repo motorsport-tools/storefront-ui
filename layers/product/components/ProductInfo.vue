@@ -90,7 +90,7 @@ onMounted(() => {
         <span 
             class="clerk"
             data-api="log/product"
-            :data-product="productTemplate.id">
+            :data-product="productVariant.id">
         </span>
         <UiProductCardRibbon
             :isOnSale="productVariant

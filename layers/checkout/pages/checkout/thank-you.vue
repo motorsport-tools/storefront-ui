@@ -43,6 +43,8 @@ onMounted(async () => {
         price: line.product.price
       }))
 
+      console.log('products', products)
+
     }
   }
 })

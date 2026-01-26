@@ -12,7 +12,7 @@ const customCache = cachedFunction(
       headers: {
         'accept': 'application/json',
         'content-type': 'application/json',
-        'REAL-IP': getRequestIP(event) || '',
+        'REAL-IP': getRequestIP(event, { xForwardedFor: true }) || '',
         'request-host': config.public.middlewareUrl || getRequestHost(event),
         'Cookie': `session_id=${getCookie(event, 'session_id')}`,
       },

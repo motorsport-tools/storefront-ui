@@ -5,12 +5,13 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
   try {
+    const xff = event.req.headers['x-forwarded-for'] || '';
     const response: any = await $fetch.raw(`${config.public.odooBaseUrl}graphql/vsf`, {
       method: 'POST',
       headers: {
         'accept': 'application/json',
         'content-type': 'application/json',
-        'REAL-IP': getRequestIP(event) || '',
+        'REAL-IP': getRequestIP(event, { xForwardedFor: true }) || '',
         'request-host': config.public.middlewareUrl || getRequestHost(event),
         'Cookie': `session_id=${getCookie(event, 'session_id')}`,
       },

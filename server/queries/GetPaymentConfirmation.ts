@@ -15,10 +15,12 @@ export default `
         orderLines {
           id
           quantity
+          isDelivery
+          isRewardLine
           product {
             id
-            price
           }
+          priceTotal
         }
       }
     }

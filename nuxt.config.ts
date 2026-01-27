@@ -61,7 +61,15 @@ export default defineNuxtConfig({
     url: '',
     name: 'Motorspor-Tools',
     defaultLocale: 'en',
+    indexable: false,
   },
+  robots: {
+    /*
+    allow: ['/*', '/product/*'],
+    disallow: ['/cart', '/checkout/*', '/my-account/*', '/forgot-password', '/search?'],
+    */
+    disallow: ['/*'],
+  }
 
   runtimeConfig: {
     shouldByPassCacheQueryNames: [
@@ -223,10 +231,6 @@ export default defineNuxtConfig({
       password: process.env.NUXT_STORAGE_PASSWORD,
       ttl: 3600000,
     }
-  },
-  robots: {
-    allow: ['/*', '/product/*'],
-    disallow: ['/cart', '/checkout/*', '/my-account/*', '/forgot-password', '/search?'],
   },
   tailwindcss: {
     viewer: false,

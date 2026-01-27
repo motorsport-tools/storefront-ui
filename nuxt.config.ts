@@ -61,14 +61,10 @@ export default defineNuxtConfig({
     url: '',
     name: 'Motorspor-Tools',
     defaultLocale: 'en',
-    indexable: false,
   },
   robots: {
-    /*
     allow: ['/*', '/product/*'],
     disallow: ['/cart', '/checkout/*', '/my-account/*', '/forgot-password', '/search?'],
-    */
-    disallow: ['/*'],
   },
 
   runtimeConfig: {

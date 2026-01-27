@@ -47,6 +47,15 @@ onMounted(async () => {
 
       console.log('products', products.value)
 
+      if (typeof window !== 'undefined' && window.Clerk) {
+        window.Clerk('call', 'log/sale', {
+          sale: orderData.value.order?.id,
+          email: orderData.value.order?.partner?.email,
+          customer: orderData.value.order?.partner?.id,
+          products: products.value
+        })
+      }
+
     }
   }
 })

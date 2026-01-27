@@ -83,6 +83,12 @@ onMounted(() => {
     selectedAmount.value = route.query.Amount ? Number(route.query.Amount) : props.getAllAmounts?.[0]?.value
 })
 
+watch(() => productVariant.value?.id, (newId) => {
+    if (newId && typeof window !== 'undefined' && window.Clerk) {
+        window.Clerk('call', 'log/product', { product: newId })
+    }
+}, { immediate: true })
+
 </script>
 <template>
     <div

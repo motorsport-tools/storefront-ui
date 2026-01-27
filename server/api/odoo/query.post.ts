@@ -26,6 +26,18 @@ const customCache = cachedFunction(
     staleMaxAge: Number(process.env?.NUXT_SWR_CACHE_TIME || 3600),
     getKey: async (event) => {
       const body = await readBody(event)
+      const queryName = body?.[0]?.queryName
+
+      const globalQueryWhitelist = ['GetCategoriesQuery', 'GetProductTemplateQuery']
+      const isGlobalQuery = globalQueryWhitelist.includes(queryName)
+
+      const isoCode = getCookie(event, 'i18n_redirected') || 'en'
+      const lang = isoCode.split('-')[0].toLowerCase() // Use base lang for keys
+
+      if (isGlobalQuery) {
+        const hashedParams = hasher(body?.[1] || {})
+        return `${queryName}:${hashedParams}:${lang}:content`
+      }
 
       const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
       const session = await useSession(event, {
@@ -33,18 +45,10 @@ const customCache = cachedFunction(
       })
 
       const pricelistId = session.data?.pricelistId || 4
-
-      const isoCode = getCookie(event, 'i18n_redirected') || 'en'
-
       const pricelist = `pricelist:${pricelistId}`
-
       const hashedParams = hasher(body?.[1] || {})
 
-      console.log('hashedParams:', body?.[1])
-
-      console.log(`${body?.[0].queryName}:${hashedParams}:${pricelist}:${isoCode}:content`)
-
-      return `${body?.[0].queryName}:${hashedParams}:${pricelist}:${isoCode}:content`
+      return `${queryName}:${hashedParams}:${pricelist}:${lang}:content`
     },
     shouldBypassCache: async (event) => {
       const config = useRuntimeConfig(event)

@@ -60,43 +60,12 @@ export const reduceCart = (cartData: Cart) => ({
 
             }
         })),
-        partner: {
-            id: cartData?.order?.partner?.id,
-            name: cartData?.order?.partner?.name,
-            email: cartData?.order?.partner?.email,
-            phone: cartData?.order?.partner?.phone,
-            isPublic: cartData?.order?.partner?.isPublic,
-        },
-        partnerShipping: {
-            id: cartData?.order?.partnerShipping?.id,
-            city: cartData?.order?.partnerShipping?.city,
-            country: { id: cartData?.order?.partnerShipping?.country?.id || 231 },
-            name: cartData?.order?.partnerShipping?.name,
-            state: { id: cartData?.order?.partnerShipping?.state?.id },
-            street: cartData?.order?.partnerShipping?.street,
-            street2: cartData?.order?.partnerShipping?.street2,
-            zip: cartData?.order?.partnerShipping?.zip,
-        },
-        partnerInvoice: {
-            id: cartData?.order?.partnerInvoice?.id,
-            city: cartData?.order?.partnerInvoice?.city,
-            country: { id: cartData?.order?.partnerInvoice?.country?.id || 231 },
-            name: cartData?.order?.partnerInvoice?.name,
-            state: { id: cartData?.order?.partnerInvoice?.state?.id },
-            street: cartData?.order?.partnerInvoice?.street,
-            street2: cartData?.order?.partnerInvoice?.street2,
-            zip: cartData?.order?.partnerInvoice?.zip,
-        }
     }
 })
 
 export async function updateCart(event: any, updateData: any) {
-    const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
-    const session = await useSession(event, {
-        password: sessionPwd,
-    });
-
-    const keyName = `cache:cart:session:${session?.id}`
+    const sessionId = getCookie(event, 'session_id');
+    const keyName = `cache:cart:session:${sessionId}`
     const currentCart = (await useStorage('cart').getItem<{ cart: Cart }>(
         keyName
     )) || { cart: {} };

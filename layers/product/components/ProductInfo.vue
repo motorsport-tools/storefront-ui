@@ -51,7 +51,7 @@ const maxQty = computed(() => {
     if(productVariant.value?.combinationInfoVariant?.allow_out_of_stock_order) {
         return 999
     } else {
-        return productVariant.value.stock || 0
+        return productVariant.value?.stock || 0
     }
 })
 
@@ -77,7 +77,9 @@ const updateFilter = async (value:any) => {
     router.push({ query: query, replace: true })
 }
 
+const isMounted = ref(false)
 onMounted(() => {
+    isMounted.value = true
     selectedAmount.value = route.query.Amount ? Number(route.query.Amount) : props.getAllAmounts?.[0]?.value
 })
 
@@ -87,14 +89,18 @@ onMounted(() => {
         class="p-6 xl:p-6 md:border md:border-neutral-100 md:shadow-lg md:rounded-md md:sticky md:top-20"
         data-testid="purchase-card"
     >
-        <span 
-            class="clerk"
-            data-api="log/product"
-            :data-product="productVariant.id">
-        </span>
+        <ClientOnly>
+            <span 
+                v-if="productVariant?.id"
+                class="clerk"
+                data-api="log/product"
+                :data-product="productVariant.id">
+            </span>
+        </ClientOnly>
         <UiProductCardRibbon
-            :isOnSale="productVariant
-            && productVariant?.combinationInfoVariant?.has_discounted_price"
+            :isOnSale="isMounted && productVariant?.id
+            ? productVariant?.combinationInfoVariant?.has_discounted_price
+            : productTemplate?.firstVariant?.combinationInfoVariant?.has_discounted_price"
             size="sm"
             class="grow"
         />
@@ -102,11 +108,11 @@ onMounted(() => {
             class="font-bold typography-headline-2 break-word !normal-case"
             data-testid="product-name"
         >
-            {{ productVariant?.name }}
+            {{ (isMounted && productVariant?.name) || productTemplate?.name }}
         </h1>
             
         <span class="block text-sm my-1">
-            {{ productVariant?.sku }}
+            {{ (isMounted && productVariant?.sku) || productTemplate?.sku }}
         </span>
         <UiProductRating
             class="block"
@@ -119,8 +125,8 @@ onMounted(() => {
                     class="mb-4"
                     :stock="productVariant?.stock"
                     :productId="productVariant?.id"
-                    :showAvailability="productVariant?.combinationInfoVariant['show_availability']"
-                    :availableThreshold="productVariant?.combinationInfoVariant['available_threshold']"
+                    :showAvailability="productVariant?.combinationInfoVariant?.show_availability"
+                    :availableThreshold="productVariant?.combinationInfoVariant?.available_threshold"
                     :isStock="isStock"
                     :allowOutOfStockOrder="productVariant?.combinationInfoVariant?.allow_out_of_stock_order || false"
                 />
@@ -148,8 +154,12 @@ onMounted(() => {
                 <UiProductPrice
                     :regularPrice
                     :specialPrice
-                    :hasDiscountedPrice="productVariant?.combinationInfoVariant?.has_discounted_price || false"
-                    :discPercentage="productVariant?.combinationInfoVariant?.discount_perc || 0"
+                    :hasDiscountedPrice="isMounted && productVariant?.id 
+                        ? productVariant?.combinationInfoVariant?.has_discounted_price 
+                        : productTemplate?.firstVariant?.combinationInfoVariant?.has_discounted_price || false"
+                    :discPercentage="isMounted && productVariant?.id 
+                        ? productVariant?.combinationInfoVariant?.discount_perc 
+                        : productTemplate?.firstVariant?.combinationInfoVariant?.discount_perc || 0"
                 />
                 <UiQuantitySelector
                     v-model="quantitySelectorValue"
@@ -166,7 +176,7 @@ onMounted(() => {
                 />
             </ClientOnly>
             <div
-                v-show="productsInCart"
+                v-if="isMounted && productsInCart"
                 class="w-full mb-4 bg-green-200 p-2 rounded-md text-center text-neutral-700"
             >
                 <SfIconShoppingCartCheckout />

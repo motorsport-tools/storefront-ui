@@ -14,6 +14,8 @@ definePageMeta({
   layout: 'default'
 })
 
+
+
 useHead({
     script: [
         {
@@ -37,17 +39,28 @@ const {
   loadProductVariant,
   loadingProductVariant,
   productVariant,
-  getRegularPrice,
-  getSpecialPrice,
 } = useProductVariant(cleanFullPath.value)
+
+const specialPrice = computed(() => {
+    if (!isMounted.value) return productTemplate.value?.firstVariant?.combinationInfoVariant?.price || 0
+    return productVariant.value?.combinationInfoVariant?.price || productTemplate.value?.firstVariant?.combinationInfoVariant?.price || 0
+})
+
+const regularPrice = computed(() => {
+    if (!isMounted.value) return productTemplate.value?.firstVariant?.combinationInfoVariant?.list_price || 0
+    return productVariant.value?.combinationInfoVariant?.list_price || productTemplate.value?.firstVariant?.combinationInfoVariant?.list_price || 0
+})
 const { addProductToRecentViews } = useRecentViews()
 
-useHead(generateSeo<SeoEntity>(productVariant.value, 'Product'))
-
-const productDetailsOpen = ref(true)
+useHead(computed(() => {
+    const entity = productVariant.value?.id ? productVariant.value : productTemplate.value
+    return generateSeo<SeoEntity>(entity as any, 'Product')
+}))
 
 const { getThumbs } = useProductGetters(productVariant as Ref< CustomProductWithStockFromRedis>)
 const thumbs = computed(() => getThumbs(78, 78))
+
+const lastLoadedVariantKey = ref('')
 
 watch(
   () => cleanPath.value,
@@ -62,39 +75,47 @@ watch(
   { immediate: true }
 )
 
+const productDetailsOpen = ref(true)
 watch(
-  [productTemplate, () => route.query],
-  async ([template, query]) => {
-    if (!template?.id) {
+  [() => productTemplate.value?.id, () => route.query],
+  async ([templateId, query]) => {
+    if (!templateId) {
         return
     }
     
-    if (import.meta.server) {
+    // Identity Guard: Ensure the template we are using belongs to the current URL
+    const templateSlug = productTemplate.value?.slug?.replace(/\/$/, '').toLowerCase().trim()
+    if (templateSlug && templateSlug !== cleanPath.value) {
         return
     }
-    
+
+    const key = `${templateId}-${JSON.stringify(query)}`
+    if (lastLoadedVariantKey.value === key) return
+    lastLoadedVariantKey.value = key
+
     await loadProductVariant({
         combinationId: Object.values(query)?.map(value =>
             parseInt(value as string)
         ).filter(Boolean),
-        productTemplateId: template.id,
+        productTemplateId: templateId,
     })
    
-    addProductToRecentViews(productVariant.value.id)
-
+    if (productVariant.value?.id) {
+      addProductToRecentViews(productVariant.value.id)
+    }
   },
-  { immediate: true, deep: true }
+  { deep: true, immediate: true }
 )
 
-const isLoadingPage = computed(() => {
-  if (import.meta.server) {
-    return loadingProductTemplate.value
-  }
-  return loadingProductTemplate.value || loadingProductVariant.value
-})
+const isLoadingPage = computed(() => loadingProductTemplate.value)
 
 const hasProductData = computed(() => {
-    return productTemplate.value?.id && (import.meta.server || productVariant.value?.id)
+    return !!productTemplate.value?.id
+})
+
+const isMounted = ref(false)
+onMounted(() => {
+    isMounted.value = true
 })
 
 const breadcrumbs = computed(() => {
@@ -109,7 +130,6 @@ const breadcrumbs = computed(() => {
     <main 
         class="w-full narrow-container mb-20 pt-6"
         data-testid="product-page"
-        :key="productVariant?.id"
     >
         <NuxtErrorBoundary>
             <div>
@@ -146,8 +166,8 @@ const breadcrumbs = computed(() => {
                         <ProductInfo
                             :productTemplate
                             :productVariant
-                            :specialPrice="getSpecialPrice"
-                            :regularPrice="getRegularPrice"
+                            :specialPrice
+                            :regularPrice
                             :loadingProductVariant
                             :getAllAmounts
                         />
@@ -167,7 +187,7 @@ const breadcrumbs = computed(() => {
                                         {{ $t("productDetails") }}
                                     </h2>
                                 </template>
-                                <div v-html="productVariant?.description">
+                                <div v-html="(isMounted && productVariant?.description) || productTemplate?.description">
                                 </div>
                             </UiAccordionItem>
                             <UiDivider class="my-4" />

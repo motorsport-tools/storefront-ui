@@ -33,9 +33,12 @@ watch(isTabletScreen, (value) => {
   }
 })
 
-if(category.value?.id) {
-    useHead(generateSeo<SeoEntity>(category.value, 'Category'))
-}
+useHead(computed(() => {
+    if (category.value?.id) {
+        return generateSeo<SeoEntity>(category.value, 'Category')
+    }
+    return {}
+}))
 
 const searchTitle = computed( () => {
     return $i18n.t('category')+` `+`: ${category.value?.name || ''}`

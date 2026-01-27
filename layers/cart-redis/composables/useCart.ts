@@ -5,12 +5,10 @@ import type {
   CartResponse,
   Product,
   CartUpdateItemResponse,
-  UpdateCartAddressResponse,
   MutationCartAddMultipleItemsArgs,
   MutationCartRemoveMultipleItemsArgs,
   MutationCartUpdateMultipleItemsArgs,
   MutationUpdateCartAddressArgs,
-  AddressInput,
   AddressEnum,
   ExpressAddressInput,
   ApplyDiscountsResponse,
@@ -33,11 +31,14 @@ export const useCart = () => {
 
   const loading = useState<boolean>('cartLoading', () => false)
 
-  const loadCart = async () => {
+  const loadCart = async (full: boolean = false) => {
     try {
       loading.value = true
 
-      const data = await $fetch<{ cart: Cart }>(`/api/odoo/cart-load`)
+      const data = await $fetch<{ cart: Cart }>(`/api/odoo/cart-load`, {
+        method: 'POST',
+        body: { fullSync: full }
+      })
 
       if (!data?.cart)
         return
@@ -131,7 +132,7 @@ export const useCart = () => {
     }
   }
 
-  const updateCartAddress = async (type: AddressEnum, address: ExpressAddressInput, sameAddress: boolean = false) => {
+  const updateCartAddress = async (type: AddressEnum, address: any, sameAddress: boolean = false) => {
 
     const params: MutationUpdateCartAddressArgs = {
       addressType: type,
@@ -140,9 +141,9 @@ export const useCart = () => {
     }
 
     loading.value = true;
-    const data = await $sdk().odoo.mutation<
+    const data: any = await $sdk().odoo.mutation<
       MutationUpdateCartAddressArgs,
-      UpdateCartAddressResponse
+      any
     >({ mutationName: MutationName.UpdateCartAddress }, params);
     loading.value = false;
 
@@ -151,13 +152,13 @@ export const useCart = () => {
       return true
     }
 
-    if (error.value) {
+    if (data?.updateCartAddress?.error) {
       return toast.error(data?.updateCartAddress?.error || 'Failed to update address');
     }
   }
 
   const totalItemsInCart = computed(() =>
-    cart.value?.order?.orderLines?.filter((l) => !l.coupon && !l.isDelivery && !l.isRewardLine).reduce((total, line) => total + line.quantity, 0) || 0
+    cart.value?.order?.orderLines?.filter((l) => !l.coupon && !l.isDelivery && !l.isRewardLine).reduce((total, line) => total + (line.quantity || 0), 0) || 0
   )
 
   const cartIsEmpty = computed(() => !cart.value.order?.orderLines?.filter((l) => !l.coupon && !l.isDelivery && !l.isRewardLine).length);
@@ -180,25 +181,21 @@ export const useCart = () => {
     const params: MutationApplyGiftCardArgs = {
       promo: promoCode
     }
-    let data = null
-    data = await $sdk().odoo.mutation<
+    let result: any = await $sdk().odoo.mutation<
       MutationApplyGiftCardArgs,
       ApplyDiscountsResponse
     >({ mutationName: MutationName.ApplyGiftCardMutation }, params)
 
-    if (data?.applyGiftCard) {
-
-      cart.value = data.applyGiftCard
-
-    } else if (!data?.applyGiftCard) {
-
-      data = await $sdk().odoo.mutation<
+    if (result?.applyGiftCard) {
+      cart.value = result.applyGiftCard
+    } else {
+      result = await $sdk().odoo.mutation<
         MutationApplyCouponArgs,
         ApplyDiscountsResponse
       >({ mutationName: MutationName.ApplyCouponMutation }, params);
 
-      if (data?.applyCoupon) {
-        cart.value = data.applyCoupon
+      if (result?.applyCoupon) {
+        cart.value = result.applyCoupon
       }
     }
 

@@ -1,58 +1,68 @@
 import type { Cart } from '~/graphql'
-//import { isCartStale, transformCart } from '../../utils/cartHelpers';
+import { reduceCart } from '../../utils/cartHelpers'
 import { QueryName } from '~/server/queries'
 import { Queries } from '~/server/queries'
 export default defineEventHandler(async (event: any) => {
   const config = useRuntimeConfig(event)
-  const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
-  const session = await useSession(event, {
-    password: sessionPwd,
-  });
+  const sessionId = getCookie(event, 'session_id');
 
-  if (!session.id) {
-    throw createError({
-      statusCode: 400,
-      message: 'Invalid session - please refresh your browser and try again',
-    })
-  }
+  const body = await readBody<{ forceSync?: boolean, fullSync?: boolean }>(event).catch(() => ({} as { forceSync?: boolean, fullSync?: boolean }));
+  const forceSync = body?.forceSync || false;
+  const fullSync = body?.fullSync || false;
 
-  const { forceSync } = await readBody<{ forceSync?: boolean }>(event);
-  const keyName = `cache:cart:session:${session?.id}`
   try {
-    // 1. Redis
-    if (!forceSync) {
+    // 1. Redis lookup (only if we have a sessionId and not force/full sync)
+    if (sessionId && !forceSync && !fullSync) {
+      const keyName = `cache:cart:session:${sessionId}`
       const cacheCart = await useStorage('cart').getItem(keyName) as any
 
-      if (cacheCart && !isCartStale(cacheCart)) {
-        console.log('cart from cache: ', cacheCart.cart)
+      if (cacheCart && cacheCart.cart) {
         return { success: true, cart: cacheCart.cart }
       }
-      console.log('No Cache Cart')
     }
 
-    // 2. Odoo
-    const odooData: any = await $fetch(`${config.public.odooBaseUrl}graphql/vsf`, {
+    // 2. Odoo Sync
+    const response: any = await $fetch.raw(`${config.public.odooBaseUrl}graphql/vsf`, {
       method: 'POST',
       headers: {
         'accept': 'application/json',
         'content-type': 'application/json',
-        'REAL-IP': getRequestIP(event) || '',
-        'request-host': config.public.middlewareUrl || getRequestHost(event),
-        'Cookie': `session_id=${getCookie(event, 'session_id')}`,
+        'REAL-IP': getRequestIP(event, { xForwardedFor: true }) || '',
+        'request-host': (config.public.middlewareUrl || getRequestHost(event)) as string,
+        'Cookie': sessionId ? `session_id=${sessionId}` : '',
       },
-      body: JSON.stringify({ query: Queries[QueryName.LoadCartQuery] }),
+      body: JSON.stringify({ query: Queries[fullSync ? QueryName.LoadCartQuery : QueryName.LoadCartLiteQuery] }),
+    })
+
+    const odooData = response?._data;
+
+    // Proxy cookies back to client and extract session_id
+    const cookies: string[] = response?.headers?.getSetCookie()
+    let odooSessionId = sessionId;
+
+    cookies?.forEach((cookie: string) => {
+      appendResponseHeader(event, 'set-cookie', cookie)
+      if (cookie.includes('session_id=')) {
+        const match = cookie.match(/session_id=([^;]+)/);
+        if (match) odooSessionId = match[1];
+      }
     })
 
     if (!odooData?.data?.cart?.order) {
-      console.log('have no odoo cart')
       return { success: true, cart: {} as Cart }
     }
 
-    // 3. Transform
-    const redisCart = transformCart(odooData.data.cart, session.id)
-    useStorage('cart').setItem(keyName, { cart: redisCart })
+    // 3. Transform & Cache
+    const redisCart = reduceCart(odooData.data.cart)
+    if (odooSessionId && !fullSync) {
+      await useStorage('cart').setItem(`cache:cart:session:${odooSessionId}`, { cart: redisCart })
+    }
 
-    return { success: true, cart: redisCart }
+    // Return full data if requested, otherwise reduced
+    return {
+      success: true,
+      cart: fullSync ? odooData.data.cart : redisCart
+    }
 
   } catch (error) {
     console.error('Load cart error:', error)

@@ -2,7 +2,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     if (import.meta.server) return
     const { cartIsEmpty, loadCart } = useCart()
 
-    await loadCart()
+    await loadCart(true)
 
     if (!cartIsEmpty.value) return
 

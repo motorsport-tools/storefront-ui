@@ -13,10 +13,10 @@ export const useProductTemplate = (slug: string) => {
   const { $sdk } = useNuxtApp()
 
   const loadingProductTemplate = useState(
-    `loading-product-template`,
+    `loading-product-template-${cleanSlug}`,
     () => false,
   )
-  const productTemplate = useState<CustomProductWithStockFromRedis>(`product-template`,
+  const productTemplate = useState<CustomProductWithStockFromRedis>(`product-template-${cleanSlug}`,
     () => ({} as CustomProductWithStockFromRedis),
   )
 
@@ -66,7 +66,7 @@ export const useProductTemplate = (slug: string) => {
         }
       }
     } catch (err) {
-      productTemplate.value = null
+      productTemplate.value = {} as any
     } finally {
       loadingProductTemplate.value = false
     }

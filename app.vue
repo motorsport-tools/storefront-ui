@@ -1,33 +1,20 @@
 <script setup>
-import { useMegaMenuCategories } from "~/layers/core/composable/useMegaMenuCategories"
-const nuxtApp = useNuxtApp();
-const { isAuthenticated, loadUser } = useAuth()
-
-const { loadWishlist } = useWishlist()
-
-const router = useRouter()
-const route = useRoute()
-router.afterEach((to, from) => {
-  if (to.path === from.path && to.query.page !== from.query.page) {
-    window.scrollTo(0, 0)
-  }
-})
-
-const { loadCategoriesForMegaMenu, categoriesForMegaMenu } = useMegaMenuCategories()
+import { useSiteSetup } from "~/layers/core/composable/useSiteSetup"
+const { setup, categoriesForMegaMenu } = useSiteSetup()
 
 provide(
   "categoriesForMegaMenu",
   categoriesForMegaMenu
 );
 
-await loadCategoriesForMegaMenu({ filter: { parent: true }, pageSize: 4 })
+// Initial setup
+await setup()
 
-onMounted(async () => {
-  if(import.meta.client) {
-    if ( isAuthenticated.value ) {  
-      await loadUser(true)
-      await loadWishlist()
-    }
+const router = useRouter()
+const route = useRoute()
+router.afterEach((to, from) => {
+  if (to.path === from.path && to.query.page !== from.query.page) {
+    window.scrollTo(0, 0)
   }
 })
 </script>

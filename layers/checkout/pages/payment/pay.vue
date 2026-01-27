@@ -9,6 +9,7 @@ const route = useRoute()
 const router = useRouter()
 
 const { validatePaymentLink, loading: paymentLinkLoading, error } = usePaymentLink()
+const { loadCart } = useCart()
 
 const accessToken = route.query.access_token as string
 const saleOrderId = parseInt(route.query.sale_order_id as string)
@@ -58,7 +59,10 @@ async function validate() {
 }
 
 onMounted(async () => {
-  await validate()
+  await Promise.all([
+    validate(),
+    loadCart(true)
+  ])
 })
 
 </script>

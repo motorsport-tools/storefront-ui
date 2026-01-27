@@ -14,6 +14,7 @@ import GetOrderQuery from './GetOrderQuery';
 import GetGuestOrderQuery from './GetGuestOrderQuery';
 import GetInvoiceQuery from './GetInvoiceQuery';
 import LoadCartQuery from './LoadCartQuery';
+import LoadCartLiteQuery from './LoadCartLiteQuery';
 import LoadUserQuery from './LoadUserQuery';
 import StockLotsQuery from './StockLotsQuery';
 import WishlistLoadQuery from './WishlistLoadQuery';
@@ -33,6 +34,7 @@ enum QueryName {
   GetProductTemplateQuery = 'GetProductTemplateQuery',
   //GetWishlist = 'GetWishlist',
   LoadCartQuery = 'LoadCartQuery',
+  LoadCartLiteQuery = 'LoadCartLiteQuery',
   GetAddressesQuery = 'GetAddressesQuery',
   WishlistLoadQuery = 'WishlistLoadQuery',
   GetCountriesQuery = 'GetCountriesQuery',
@@ -61,6 +63,7 @@ const Queries: Record<QueryName, string> = {
   GetProductTemplateQuery,
   WishlistLoadQuery,
   LoadCartQuery,
+  LoadCartLiteQuery,
   GetAddressesQuery,
   GetCountriesQuery,
   GetDeliveryMethodsQuery,
@@ -82,6 +85,7 @@ const QueriesToByPassCache: string[] = [
   QueryName.LoadUserQuery,
   QueryName.WishlistLoadQuery,
   QueryName.LoadCartQuery,
+  QueryName.LoadCartLiteQuery,
 ];
 
 export { Queries, QueryName, QueriesToByPassCache };

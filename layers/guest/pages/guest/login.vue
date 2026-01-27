@@ -11,7 +11,11 @@ const showMethods = true
 
 const NuxtLink = resolveComponent('NuxtLink');
 
-const { cart } = useCart()
+const { cart, loadCart } = useCart()
+
+onMounted(async () => {
+    await loadCart(true)
+})
 </script>
 
 <template>

@@ -9,7 +9,7 @@ export const useProductVariant = (slugWithCombinationIds: string) => {
   const { $sdk } = useNuxtApp();
 
   const loadingProductVariant = ref(false);
-  const productVariant = useState<CustomProductWithStockFromRedis>(`product-variant-${slugWithCombinationIds}`, () => ({}) as CustomProductWithStockFromRedis)
+  const productVariant = useState<CustomProductWithStockFromRedis>(`product-variant-${slugWithCombinationIds.replace(/[^a-zA-Z0-9]/g, '-')}`, () => ({}) as CustomProductWithStockFromRedis)
 
 
   const loadProductVariant = async (params: QueryProductVariantArgs) => {
@@ -39,7 +39,7 @@ export const useProductVariant = (slugWithCombinationIds: string) => {
 
       }
     } catch (err) {
-      productVariant.value = null
+      productVariant.value = {} as any
     } finally {
       loadingProductVariant.value = false
     }

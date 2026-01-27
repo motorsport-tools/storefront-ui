@@ -70,12 +70,9 @@ async function cartUpdateItem(event: any, body: any) {
 async function addAddress(event: any, body: any) {
   const requestBody = await readBody(event);
   if (requestBody[0]?.mutationName === MutationName.AddAddress) {
-    const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
-    const session = await useSession(event, {
-      password: sessionPwd,
-    });
+    const sessionId = getCookie(event, 'session_id');
 
-    const keyName = `cache:cart:${session?.id}`;
+    const keyName = `cache:cart:session:${sessionId}`;
     const currentCart =
       (await useStorage('cart').getItem<{ cart: Cart }>(keyName)) || ({} as any);
     if (requestBody[1].type === "Shipping") {
@@ -94,12 +91,9 @@ async function addAddress(event: any, body: any) {
 async function updateAddress(event: any, body: any) {
   const requestBody = await readBody(event);
   if (requestBody[0]?.mutationName === MutationName.UpdateAddress) {
-    const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
-    const session = await useSession(event, {
-      password: sessionPwd,
-    });
+    const sessionId = getCookie(event, 'session_id');
 
-    const keyName = `cache:cart:${session?.id}`;
+    const keyName = `cache:cart:session:${sessionId}`;
     const currentCart =
       (await useStorage('cart').getItem<{ cart: Cart }>(keyName)) || ({} as any);
 
@@ -133,12 +127,9 @@ async function setEasyshipRate(event: any, body: any) {
 async function createUpdatePartner(event: any, body: any) {
   const requestBody = await readBody(event);
   if (requestBody[0]?.mutationName === MutationName.CreateUpdatePartner) {
-    const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
-    const session = await useSession(event, {
-      password: sessionPwd,
-    });
+    const sessionId = getCookie(event, 'session_id');
 
-    const keyName = `cache:cart:session:${session?.id}`
+    const keyName = `cache:cart:session:${sessionId}`
     const currentCart =
       (await useStorage('cart').getItem<{ cart: Cart }>(keyName)) || ({} as any);
     currentCart.cart.order.partner = body.createUpdatePartner;
@@ -160,12 +151,9 @@ async function clearCartAfterCreditCardPaymentConfirmation(
     body.paymentConfirmation?.order?.lastTransaction?.state === "Confirmed";
 
   if (requestBody[0]?.queryName === QueryName.GetPaymentConfirmation) {
-    const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
-    const session = await useSession(event, {
-      password: sessionPwd,
-    });
+    const sessionId = getCookie(event, 'session_id');
 
-    const keyName = `cache:cart:session:${session?.id}`
+    const keyName = `cache:cart:session:${sessionId}`
     if (paymentSuccess) {
       await useStorage('cart').removeItem(keyName)
     }
@@ -183,12 +171,9 @@ async function clearCartAfterGiftCardPaymentConfirmation(
   if (
     requestBody[0]?.mutationName === MutationName.MakeGiftCardPaymentMutation
   ) {
-    const sessionPwd = process.env.NUXT_SESSION_SECRET || ""
-    const session = await useSession(event, {
-      password: sessionPwd,
-    });
+    const sessionId = getCookie(event, 'session_id');
 
-    const keyName = `cache:cart:session:${session?.id}`
+    const keyName = `cache:cart:session:${sessionId}`
     if (paymentSuccess) {
       await useStorage('cart').removeItem(keyName)
     }

@@ -69,7 +69,7 @@ export default defineNuxtConfig({
     disallow: ['/cart', '/checkout/*', '/my-account/*', '/forgot-password', '/search?'],
     */
     disallow: ['/*'],
-  }
+  },
 
   runtimeConfig: {
     shouldByPassCacheQueryNames: [

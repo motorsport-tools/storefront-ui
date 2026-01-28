@@ -24,7 +24,7 @@ router.afterEach((to, from) => {
       :height="4"
       color="repeating-linear-gradient(to right, #008ebd 0%,#80dfff 50%,#e0f7ff 100%)"
     />
-    <NuxtLayout :key="`${$route.meta.layout}-${$route.fullPath}`">
+    <NuxtLayout :key="$route.meta.layout">
       <NuxtPage :page-key="(route) => route.path" />
     </NuxtLayout>
   </div>

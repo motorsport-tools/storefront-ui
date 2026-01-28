@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useCountryList } from "~/layers/core/composable/useCountryList";
-const { loadCountries, countries } = useCountryList();
-await loadCountries();
+const { countries } = useCountryList();
 
 const model = defineModel({ default: 0 });
 </script>

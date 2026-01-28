@@ -245,7 +245,6 @@
       
       // Load initial data
       await Promise.all([
-        loadCountries(),
         getStripeAcquirerInfo(),
         loadDeliveryMethods()
       ]);

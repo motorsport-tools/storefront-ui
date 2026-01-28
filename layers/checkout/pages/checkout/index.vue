@@ -11,11 +11,8 @@ definePageMeta({
 const { cart, cartIsEmpty, loading: cartLoading } = useCart()
 const { loading: deliveryLoading } = useDeliveryMethod()
 const { loadUser, isAuthenticated } = useAuth()
-const { loadCountries } = useCountryList()
 const isLoading = computed(() => cartLoading.value || deliveryLoading.value);
 const selectedProvider = ref(<PaymentMethod | null>(null))
-
-await loadCountries()
 
 const { $i18n } = useNuxtApp()
 

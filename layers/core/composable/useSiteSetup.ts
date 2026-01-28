@@ -37,7 +37,7 @@ export const useSiteSetup = () => {
             }
         }
 
-        initClient() // Fire and forget on client to keep hydration lightning fast
+        initClient()
     }
 
     return {

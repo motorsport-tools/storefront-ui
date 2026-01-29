@@ -12,8 +12,8 @@ const img = useImage()
     fetchpriority="high"
     alt="Motorsport-Tools"
     preload
-    width="242"
-    height="47"
+    width="262"
+    height="57"
     :placeholder="img(`/img/motorsport-tools-logo.svg`)"
   />
 </template>

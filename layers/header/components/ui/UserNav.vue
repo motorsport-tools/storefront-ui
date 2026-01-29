@@ -27,7 +27,7 @@ const handleOpenWishListSidebar = async () => {
         <SfBadge
             :content="wishlistTotalItems"
             placement="top-right"
-            class="outline outline-primary-700 bg-white !text-neutral-900 group-hover:outline-primary-800 group-active:outline-primary-900 flex justify-center top-1"
+            class="outline outline-primary-700 bg-white !text-neutral-900 group-hover:outline-primary-800 group-active:outline-primary-900 flex justify-center top-[0.6rem]"
             data-testid="wishlist-badge"
         />
     </UiUserNavButton>
@@ -45,7 +45,7 @@ const handleOpenWishListSidebar = async () => {
         <SfBadge
             :content="totalItemsInCart"
             placement="top-right"
-            class="outline outline-primary-700 bg-white !text-neutral-900 group-hover:outline-primary-800 group-active:outline-primary-900 flex justify-center top-1"
+            class="outline outline-primary-700 bg-white !text-neutral-900 group-hover:outline-primary-800 group-active:outline-primary-900 flex justify-center top-[0.6rem]"
             data-testid="cart-badge"
         />
     </UiUserNavButton>

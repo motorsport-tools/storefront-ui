@@ -196,7 +196,7 @@ useTrapFocus(mobileSearch)
             ]"
         >
             <div 
-                class="h-[48px] max-h-[48px] bg-white border-black-500/50 border-b flex flex-row justify-between items-center flex-nowrap px-2 lg:px-4 relative z-[20]"
+                class="h-[58px] max-h-[58px] bg-white border-black-500/50 border-b flex flex-row justify-between items-center flex-nowrap px-2 lg:px-4 relative z-[20]"
                 
             >
                 <button
@@ -210,7 +210,7 @@ useTrapFocus(mobileSearch)
                 <NuxtLink 
                     to="/"
                     aria-label="Motorsport-Tools Homepage"
-                    class="h-full block w-[250px] flex align-center pr-2"
+                    class="h-full block w-[262px] flex align-center pr-2 box-content"
                 >
                     <Logo />
                 </NuxtLink>

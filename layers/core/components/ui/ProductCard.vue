@@ -192,8 +192,8 @@ if(props.firstVariant?.pricelist_ids) {
         </SfCounter>
       </div>
       <div class="flex justify-between">
-        <div class="block">
-          <span class="font-bold typography-text-sm">{{
+        <div class="flex items-center justify-center">
+          <span class="font-bold typography-text-md">{{
             $currency(price)
           }}</span>
           <span

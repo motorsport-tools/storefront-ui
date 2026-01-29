@@ -41,7 +41,6 @@ const doReviveCart = async (action: string) => {
     <div
       v-if="accessToken && !loading"
     >
-      Token: {{accessToken}} <br/>
       <div class="bg-blue-100 text-blue-800 rounded-lg shadow-sm p-6 w-full my-4 max-w-2xl mx-auto">
         <h2 class="font-medium text-xl">This is your current cart</h2>
         <p class="my-2">You have followed a link to restore a previous cart.</p>

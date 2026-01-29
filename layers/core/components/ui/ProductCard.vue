@@ -178,7 +178,7 @@ if(props.firstVariant?.pricelist_ids) {
         <span class="product_card__title block text-neutral-700">{{ name }}</span>
         <span class="product_card__sku block pb-1 border-b border-neutral-200 text-neutral-700">{{ sku }}</span>
       </NuxtLink>
-      <div class="flex items-center mb-2">
+      <div class="flex items-center mb-2 hidden">
         <SfRating
           size="xs"
           :value="rating"

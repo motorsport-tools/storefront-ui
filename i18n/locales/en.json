@@ -312,7 +312,7 @@
     "addAddress": "Add an address",
     "pickup": "Free Click and Collect as early as: {collect}",
     "checkAvailability": "Check availability nearby",
-    "returns": "Free 30-Day returns. {details}",
+    "returns": "30-Day returns. {details}",
     "details": "Details"
   },
   "sale": "Sale",

@@ -129,7 +129,7 @@ onBeforeUnmount(() => {
     window.removeEventListener('resize', onResize)
     clearTimeout(resizeTimeout)
 })
-
+const { modalOverlay } = useReturnsModal()
 const { open, close, isOpen } = useDisclosure()
 const mobileSearch = ref<HTMLDivElement>()
 
@@ -137,7 +137,7 @@ useTrapFocus(mobileSearch)
 </script>
 
 <template>
-    <LazyUiOverlay :isOpen="isOverlayVisible || isSearchOverlayVisible || isMenuOpen"
+    <LazyUiOverlay :isOpen="isOverlayVisible || isSearchOverlayVisible || isMenuOpen || modalOverlay"
         :class="{
             '!z-[91]': isMenuOpen,
             '!z-[10]': isOverlayVisible,

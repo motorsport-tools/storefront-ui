@@ -9,11 +9,12 @@ const route = useRoute()
 
 const cleanPath = computed(() => route?.path?.replace(/\/$/, '').toLowerCase().trim())
 const cleanFullPath = computed(() => route?.fullPath?.replace(/\/$/, '').toLowerCase().trim())
+const modalReturnsPolicy = ref(false)
 
 definePageMeta({
   layout: 'default'
 })
-
+const emit = defineEmits(['openReturnsPolicy'])
 
 
 useHead({
@@ -124,6 +125,12 @@ const breadcrumbs = computed(() => {
     const bc = typeof p.breadcrumb === 'string' ? JSON.parse(p.breadcrumb) : p.breadcrumb
     return [...bc, { name: p.name }]
 })
+
+const doOpenReturnsPolicy = () => {
+    console.log('Page got emit openReturnsPolicy')
+    modalReturnsPolicy.value.open()
+    emit('openReturnsPolicy')
+}
 </script>
 
 <template>
@@ -170,6 +177,7 @@ const breadcrumbs = computed(() => {
                             :regularPrice
                             :loadingProductVariant
                             :getAllAmounts
+                            @openReturnsPolicy="doOpenReturnsPolicy"
                         />
                     </section>
                     <section class="grid-in-left-bottom md:mt-8">
@@ -226,6 +234,10 @@ const breadcrumbs = computed(() => {
                 {{ error }}
                 <ErrorDisplay :msg="$t('error.404')"/>
             </template>
+            <ModalReturnsPolicy 
+                ref="modalReturnsPolicy"
+                
+            />
         </NuxtErrorBoundary>
     </main>
 </template>

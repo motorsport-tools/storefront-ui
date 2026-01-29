@@ -11,6 +11,8 @@ const { deliveryMethods, loadDeliveryMethods, loading } = useDeliveryMethod()
 const tomorrow = useNextDeliveryDateUK()
 const collection = useClickAndCollectTime()
 
+const emit = defineEmits(['openReturnsPolicy'])
+
 onMounted(async () => {
     //await loadDeliveryMethods()
 })
@@ -68,8 +70,8 @@ onMounted(async () => {
         >
             <template #details>
                 <SfLink
-                    class="ml-1"
-                    href="#"
+                    class="ml-1 cursor-pointer"
+                    @click="emit('openReturnsPolicy')"
                     variant="secondary"
                 >
                     {{ $t("additionalInfo.details") }}

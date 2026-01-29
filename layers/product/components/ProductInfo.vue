@@ -17,7 +17,7 @@ interface Props {
     getAllAmounts: any
 }
 const props = defineProps<Props>()
-
+const emit = defineEmits(['openReturnsPolicy'])
 const { productTemplate, productVariant } = toRefs(props)
 
 const { cart, cartAdd } = useCart()
@@ -32,6 +32,10 @@ const handleCartAdd = async () => {
   }
   await cartAdd(id, quantitySelectorValue.value)
   resetCheckoutFromStep('customer')
+}
+
+const onOpenReturnsPolicy = () => {
+    emit('openReturnsPolicy')
 }
 
 const productsInCart = computed(() => {
@@ -206,7 +210,7 @@ watch(() => productVariant.value?.id, (newId) => {
         <div class="flex flex-col">
             <ClientOnly>
                 <LazyUiProductDelivery
-
+                    @openReturnsPolicy="onOpenReturnsPolicy"
                 />
             </ClientOnly>
         </div>

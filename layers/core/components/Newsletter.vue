@@ -17,11 +17,11 @@ const subscribeNewsletter = async () => {
   <div class="relative border-t border-b border-[#E5E7EB] bg-[#d9d9d9] newsletter">
     <div class="flex flex-wrap gap-4 items-center justify-center sm:justify-between narrow-container py-8 sm:py-14">
       <div class="text-center sm:text-left">
-        <h2 class="text-[24px] sm:text-[28px] mb-[5px] font-bold">
-          Save <span class="text-primary-700">10%</span> Off Your First Order
-        </h2>
-        <p class="text-[16px] text-neutral-700">
-          Sign up for exclusive special offers, latest news, updates and more. 
+        <p class="text-[24px] sm:text-[28px] mb-[5px] font-bold break-words">
+          Sign up for exclusive <span class="text-primary-700">special offers</span>. 
+        </p>
+        <p class="text-[18px] sm:text-[20px] mb-[5px] font-bold break-words">
+          Latest news, updates and more. 
         </p>
       </div>
       <div 

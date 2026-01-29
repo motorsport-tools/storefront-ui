@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { SfButton, SfLoaderCircular } from '@storefront-ui/vue';
+import {
+ReviveEnum,
+} from "~/graphql"
 
 const NuxtLink = resolveComponent('NuxtLink');
-const { cart, cartIsEmpty, loading, frequentlyTogetherProducts } = useCart();
+const { cart, cartIsEmpty, loading, frequentlyTogetherProducts, reviveCart } = useCart();
 const { isAuthenticated } = useAuth()
 const { loading: deliveryLoading } = useDeliveryMethod()
 const localePath = useLocalePath();
@@ -12,7 +15,15 @@ const route = useRoute()
 
 const isLoading = computed(() => loading.value || deliveryLoading.value);
 
-const accessToken = route.query.access_token as string
+const accessToken = computed(() => route.query.access_token as string)
+
+const doReviveCart = async (action: string) => {
+  const revive = action.toString().toUpperCase()
+  if (!revive || !accessToken.value) return
+  if (!Object.values(ReviveEnum).includes(revive as ReviveEnum)) return
+  await reviveCart(accessToken.value, revive)
+  navigateTo(localePath('/cart'))
+}
 
 </script>
 
@@ -26,16 +37,19 @@ const accessToken = route.query.access_token as string
       :backText="$t('back')"
       :backToCart="false"
     />
+    <ClientOnly>
     <div
       v-if="accessToken && !loading"
     >
+      Token: {{accessToken}} <br/>
       <div class="bg-blue-100 text-blue-800 rounded-lg shadow-sm p-6 w-full my-4 max-w-2xl mx-auto">
         <h2 class="font-medium text-xl">This is your current cart</h2>
         <p class="my-2">You have followed a link to restore a previous cart.</p>
-        <p class="my-2"><NuxtLink class="text-red-800 font-bold" title="Replace exisiting cart with previous cart" :to="`/shop/cart?access_token=${encodeURIComponent(accessToken)}&revive=squash`">Click Here</NuxtLink> to restore the previous cart. Your current cart will be replaced with the previous cart.</p>
-        <p v-if="!cartIsEmpty" class="my-2"><NuxtLink class="text-red-800 font-bold" title="Merge previous cart with existing cart" :to="`/shop/cart?access_token=${encodeURIComponent(accessToken)}&revive=merge`">Click Here</NuxtLink> if you want to merge your previous cart with your current cart.</p>
-      </div>
+        <p class="my-2"><a class="text-red-800 font-bold hover:underline cursor-pointer" title="Replace exisiting cart with previous cart" @click.prevent="doReviveCart('squash')">Click Here</a> to restore the previous cart. Your current cart will be replaced with the previous cart.</p>
+        <p v-if="!cartIsEmpty" class="my-2"><a class="text-red-800 font-bold hover:underline cursor-pointer" title="Merge previous cart with existing cart" @click.prevent="doReviveCart('merge')">Click Here</a> if you want to merge your previous cart with your current cart.</p>
+      </div>  
     </div>
+    </ClientOnly>
     <div
       v-if="loading"
       class="w-full flex flex-col items-center justify-center min-h-[60vh]"

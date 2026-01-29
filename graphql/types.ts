@@ -135,6 +135,12 @@ export type CartUpdateItemResponse =
     cartUpdateMultipleItems: Cart
   }
 
+export type RestoreCartResponse =
+  {
+    restoreCart: Cart
+  }
+
+
 export type CartRemoveItemResponse =
   {
     cartRemoveMultipleItems: Cart

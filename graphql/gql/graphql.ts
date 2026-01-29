@@ -573,6 +573,8 @@ export type Mutation = {
   register: Maybe<User>;
   /** Send change password url to user's email. */
   resetPassword: Maybe<User>;
+  /** Restore or merge a cart using its access token */
+  restoreCart: Maybe<CartData>;
   /** Select a billing or shipping address to be used on the shopping cart. */
   selectAddress: Maybe<Partner>;
   /** Set a easyship delivery rate on to an Order */
@@ -691,6 +693,12 @@ export type MutationRegisterArgs = {
 
 export type MutationResetPasswordArgs = {
   email: Scalars['String']['input'];
+};
+
+
+export type MutationRestoreCartArgs = {
+  accessToken: Scalars['String']['input'];
+  revive: ReviveEnum;
 };
 
 
@@ -1391,6 +1399,11 @@ export type QueryWebsitePagesArgs = {
   search?: InputMaybe<Scalars['String']['input']>;
   sort?: InputMaybe<WebsitePageSortInput>;
 };
+
+export enum ReviveEnum {
+  Merge = 'MERGE',
+  Squash = 'SQUASH'
+}
 
 export type Ribbon = {
   __typename?: 'Ribbon';

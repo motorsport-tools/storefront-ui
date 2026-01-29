@@ -38,6 +38,7 @@ import StripeTransaction from "./StripeTransaction";
 import UpdateCartAddress from "./UpdateCartAddress";
 import StockNotificationMutation from "./StockNotificationMutation";
 import UpdatePartnerCheckoutAddress from "./UpdatePartnerCheckoutAddress";
+import RestoreCart from "./RestoreCart";
 
 enum MutationName {
   LoginMutation = "LoginMutation",
@@ -80,6 +81,7 @@ enum MutationName {
   UpdateCartAddress = "UpdateCartAddress",
   StockNotificationMutation = "StockNotificationMutation",
   UpdatePartnerCheckoutAddress = "UpdatePartnerCheckoutAddress",
+  RestoreCart = "RestoreCart",
 }
 
 const Mutations: Record<MutationName, string> = {
@@ -122,7 +124,8 @@ const Mutations: Record<MutationName, string> = {
   StripeTransaction,
   UpdateCartAddress,
   StockNotificationMutation,
-  UpdatePartnerCheckoutAddress
+  UpdatePartnerCheckoutAddress,
+  RestoreCart
 };
 
 export { Mutations, MutationName };

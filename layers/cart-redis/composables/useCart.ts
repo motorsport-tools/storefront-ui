@@ -10,15 +10,17 @@ import type {
   MutationCartUpdateMultipleItemsArgs,
   MutationUpdateCartAddressArgs,
   AddressEnum,
-  ExpressAddressInput,
   ApplyDiscountsResponse,
   MutationApplyGiftCardArgs,
   MutationApplyCouponArgs,
+  MutationRestoreCartArgs,
+  RestoreCartResponse,
+  ReviveEnum,
 } from "~/graphql"
 import { MutationName } from "~/server/mutations"
 import { useToast } from "vue-toastification"
 import { CartToast } from "#components"
-import ShippingMethod from "~/server/mutations/ShippingMethod";
+
 
 
 
@@ -202,6 +204,43 @@ export const useCart = () => {
     loading.value = false
   }
 
+  const reviveCart = async (accessToken: string, action: ReviveEnum) => {
+    loading.value = true
+
+    const params: MutationRestoreCartArgs = {
+      accessToken,
+      revive: action
+    }
+
+    try {
+      const data = await $sdk().odoo.mutation<
+        MutationRestoreCartArgs,
+        RestoreCartResponse
+      >(
+        { mutationName: MutationName.RestoreCart }, params,
+      )
+
+      if (data?.restoreCart) {
+        cart.value = data.restoreCart || ({} as Cart)
+        frequentlyTogetherProducts.value = (data.restoreCart?.frequentlyBoughtTogether || []).filter((p: any): p is Product => p !== null)
+      }
+
+      toast.success({
+        component: CartToast,
+        props: {
+          message: params.revive === 'MERGE' ? $i18n.t('cartMergeSuccess') : $i18n.t('cartSquashSuccess')
+        }
+      })
+
+      return true
+    } catch (error: any) {
+      toast.error(error?.data?.message || 'Failed to restore cart')
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
   const clearCart = async () => {
     cart.value = {} as Cart
   }
@@ -221,6 +260,7 @@ export const useCart = () => {
     isCollectEligible,
     updateCartAddress,
     applyDiscount,
-    clearCart
+    clearCart,
+    reviveCart
   };
 };

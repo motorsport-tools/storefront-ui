@@ -135,16 +135,20 @@ defineExpose({
                     <template v-for="node in activeMenu.children" :key="node.key">
                         <div>
                             <SfLink
-                                class="text-sm font-bold text-black whitespace-nowrap cursor-pointer"
+                                class="block text-base font-bold !text-black whitespace-nowrap border-b border-neutral-200 pb-2 no-underline  cursor-pointer"
                                 :to="node.value.link"
                                 :tag="NuxtLink"
                                 size="sm"
                             >
                                 {{ node.value.label }}
                             </SfLink>
-                            <ul class="mt-2">
-                                <li v-for="child in node.children" :key="child.key">
-                                <SfListItem tag="a" size="sm" :href="child.value.link" class="typography-text-sm py-1.5">
+                            <ul class="mt-2 ml-0">
+                                <li 
+                                    v-for="child in node.children"
+                                    :key="child.key"
+                                    class="ml-0 pl-0"
+                                >
+                                <SfListItem tag="a" size="sm" :href="child.value.link" class="typography-text-sm py-1.5 pl-0 text-neutral-700">
                                     {{ child.value.label }}
                                 </SfListItem>
                                 </li>

@@ -3043,7 +3043,7 @@
   optionalDependencies:
     ipx "^2.1.1"
 
-"@nuxt/kit@3.21.0", "@nuxt/kit@^3.10.3", "@nuxt/kit@^3.11.1", "@nuxt/kit@^3.12.1", "@nuxt/kit@^3.12.4", "@nuxt/kit@^3.13.0", "@nuxt/kit@^3.13.1", "@nuxt/kit@^3.13.2", "@nuxt/kit@^3.14.1592", "@nuxt/kit@^3.15.0", "@nuxt/kit@^3.15.1", "@nuxt/kit@^3.15.4", "@nuxt/kit@^3.16.0", "@nuxt/kit@^3.16.1", "@nuxt/kit@^3.17.2", "@nuxt/kit@^3.18.0", "@nuxt/kit@^3.20.2", "@nuxt/kit@^3.7.3", "@nuxt/kit@^3.8.0", "@nuxt/kit@^3.9.0", "@nuxt/kit@^4.2.1", "@nuxt/kit@^4.2.2", "@nuxt/kit@^4.3.0":
+"@nuxt/kit@3.21.0", "@nuxt/kit@^3.10.3", "@nuxt/kit@^3.11.1", "@nuxt/kit@^3.12.1", "@nuxt/kit@^3.12.4", "@nuxt/kit@^3.13.0", "@nuxt/kit@^3.13.1", "@nuxt/kit@^3.13.2", "@nuxt/kit@^3.14.1592", "@nuxt/kit@^3.15.0", "@nuxt/kit@^3.15.1", "@nuxt/kit@^3.15.4", "@nuxt/kit@^3.16.0", "@nuxt/kit@^3.16.1", "@nuxt/kit@^3.17.2", "@nuxt/kit@^3.18.0", "@nuxt/kit@^3.20.2", "@nuxt/kit@^3.7.3", "@nuxt/kit@^3.8.0", "@nuxt/kit@^3.9.0":
   version "3.21.0"
   resolved "https://registry.yarnpkg.com/@nuxt/kit/-/kit-3.21.0.tgz#4267fab25e29101ef488bf18350cada4ebdddc76"
   integrity sha512-KMTLK/dsGaQioZzkYUvgfN9le4grNW54aNcA1jqzgVZLcFVy4jJfrJr5WZio9NT2EMfajdoZ+V28aD7BRr4Zfw==
@@ -3058,6 +3058,32 @@
     jiti "^2.6.1"
     klona "^2.0.6"
     knitwork "^1.3.0"
+    mlly "^1.8.0"
+    ohash "^2.0.11"
+    pathe "^2.0.3"
+    pkg-types "^2.3.0"
+    rc9 "^2.1.2"
+    scule "^1.3.0"
+    semver "^7.7.3"
+    tinyglobby "^0.2.15"
+    ufo "^1.6.3"
+    unctx "^2.5.0"
+    untyped "^2.0.0"
+
+"@nuxt/kit@^4.2.1", "@nuxt/kit@^4.2.2", "@nuxt/kit@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@nuxt/kit/-/kit-4.3.0.tgz#2ea76259a2ba5b27d6ae6998202957123616665e"
+  integrity sha512-cD/0UU9RQmlnTbmyJTDyzN8f6CzpziDLv3tFQCnwl0Aoxt3KmFu4k/XA4Sogxqj7jJ/3cdX1kL+Lnsh34sxcQQ==
+  dependencies:
+    c12 "^3.3.3"
+    consola "^3.4.2"
+    defu "^6.1.4"
+    destr "^2.0.5"
+    errx "^0.1.0"
+    exsolve "^1.0.8"
+    ignore "^7.0.5"
+    jiti "^2.6.1"
+    klona "^2.0.6"
     mlly "^1.8.0"
     ohash "^2.0.11"
     pathe "^2.0.3"
@@ -3360,7 +3386,7 @@
     ufo "^1.6.3"
     ultrahtml "^1.6.0"
 
-"@nuxtjs/tailwindcss@^6.12.0":
+"@nuxtjs/tailwindcss@^6.14.0":
   version "6.14.0"
   resolved "https://registry.yarnpkg.com/@nuxtjs/tailwindcss/-/tailwindcss-6.14.0.tgz#c2feffc4ea4f5c4bd8d60218841d8bae84f70271"
   integrity sha512-30RyDK++LrUVRgc2A85MktGWIZoRQgeQKjE4CjjD64OXNozyl+4ScHnnYgqVToMM6Ch2ZG2W4wV2J0EN6F0zkQ==
@@ -7399,10 +7425,10 @@ didyoumean@^1.2.2:
   resolved "https://registry.yarnpkg.com/didyoumean/-/didyoumean-1.2.2.tgz#989346ffe9e839b4555ecf5666edea0d3e8ad037"
   integrity sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==
 
-diff@^8.0.2:
-  version "8.0.3"
-  resolved "https://registry.yarnpkg.com/diff/-/diff-8.0.3.tgz#c7da3d9e0e8c283bb548681f8d7174653720c2d5"
-  integrity sha512-qejHi7bcSD4hQAZE0tNAawRK1ZtafHDmMTMkrrIGgSLl7hTnQHmKCeB45xAcbfTqK2zowkM3j3bHt/4b/ARbYQ==
+diff@^5.2.2, diff@^8.0.2:
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-5.2.2.tgz#0a4742797281d09cfa699b79ea32d27723623bad"
+  integrity sha512-vtcDfH3TOjP8UekytvnHH1o1P4FcUdt4eQ1Y+Abap1tk/OB2MWQvcwS2ClCd1zuIhc3JKOx6p3kod8Vfys3E+A==
 
 dir-glob@^3.0.1:
   version "3.0.1"
@@ -12992,7 +13018,7 @@ tar-stream@^3.0.0, tar-stream@^3.1.5:
     fast-fifo "^1.2.0"
     streamx "^2.15.0"
 
-tar@^7.4.0, tar@^7.5.4:
+tar@^7.4.0, tar@^7.5.7:
   version "7.5.7"
   resolved "https://registry.yarnpkg.com/tar/-/tar-7.5.7.tgz#adf99774008ba1c89819f15dbd6019c630539405"
   integrity sha512-fov56fJiRuThVFXD6o6/Q354S7pnWMJIVlDBYijsTNx6jKSE4pvrDTs6lUnmGvNyfJwFQQwWy3owKz1ucIhveQ==

@@ -148,7 +148,7 @@ defineExpose({
                                     :key="child.key"
                                     class="ml-0 pl-0"
                                 >
-                                <SfListItem tag="a" size="sm" :href="child.value.link" class="typography-text-sm py-1.5 pl-0 text-neutral-700">
+                                <SfListItem tag="a" size="sm" :href="child.value.link" class="typography-text-sm py-1.5 pl-1.5 text-neutral-700">
                                     {{ child.value.label }}
                                 </SfListItem>
                                 </li>

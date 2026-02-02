@@ -18,7 +18,7 @@ export const useOrders = () => {
   const getOrders = async (params: QueryOrdersArgs) => {
     loading.value = true;
     try {
-      const data = await $sdk().odoo.query<QueryOrdersArgs, GetOrdersResponse>(
+      const data = await $sdk().odoo.queryNoCache<QueryOrdersArgs, GetOrdersResponse>(
         { queryName: QueryName.GetOrdersQuery },
         params
       );
@@ -34,7 +34,7 @@ export const useOrders = () => {
   const getOrderById = async (params: QueryOrderArgs) => {
     loading.value = true;
     try {
-      const data = await $sdk().odoo.query<QueryOrderArgs, GetOrderResponse>(
+      const data = await $sdk().odoo.queryNoCache<QueryOrderArgs, GetOrderResponse>(
         { queryName: QueryName.GetOrderQuery },
         params
       );

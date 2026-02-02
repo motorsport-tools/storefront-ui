@@ -16,7 +16,7 @@ onMounted(async () => {
 });
 
 const linesWithoutUndefinedProducts = computed(() => {
-    return order.value?.reportOrderLine?.filter((item) => item.product !== null);
+    return order.value?.reportOrderLine?.filter((item: { product: null }) => item.product !== null)
 });
 
 const invoiceLines = computed(() => {

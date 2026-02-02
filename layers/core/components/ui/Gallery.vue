@@ -52,7 +52,7 @@ const allImages = computed(() => [
       </button>
     </SfScrollable>
     <SfScrollable
-      class="product__img w-full h-full snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+      class="product__img w-full h-full snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] !overflow-hidden"
       :active-index="activeIndex"
       direction="vertical"
       wrapperClass="w-full"

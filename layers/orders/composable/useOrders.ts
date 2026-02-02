@@ -39,6 +39,9 @@ export const useOrders = () => {
         params
       );
       order.value = data?.order || ({} as Order);
+    } catch (error) {
+      order.value = undefined;
+      useRouter().push({ name: "my-account-my-orders" });
     } finally {
       loading.value = false;
     }

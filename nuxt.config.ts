@@ -22,6 +22,7 @@ export default defineNuxtConfig({
   routeRules: {
     '/payment/**': { cache: false },
     '/mail/**': { cache: false },
+    '/my-account/**': { cache: false },
     '/my/orders/**': { cache: false },
     '/order/*': { cache: false },
     '/shop/*': { cache: false },

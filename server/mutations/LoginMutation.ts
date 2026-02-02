@@ -1,4 +1,5 @@
 import { internalOrderFragment } from "../fragments/orderFragment";
+import { internalOrderLiteFragment } from '../fragments/orderLiteFragment';
 export default `
   mutation ($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -30,7 +31,7 @@ export default `
         }
       }
       cart {
-        ${internalOrderFragment}
+        ${internalOrderLiteFragment}
       }
       wishlistItems {
         id

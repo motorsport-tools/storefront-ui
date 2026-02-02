@@ -1,5 +1,5 @@
 import type { Cart } from '~/graphql'
-import { reduceCart } from '../../utils/cartHelpers'
+import { reduceCart, hydrateCartWithStock } from '../../utils/cartHelpers'
 import { QueryName } from '~/server/queries'
 import { Queries } from '~/server/queries'
 export default defineEventHandler(async (event: any) => {
@@ -17,6 +17,7 @@ export default defineEventHandler(async (event: any) => {
       const cacheCart = await useStorage('cart').getItem(keyName) as any
 
       if (cacheCart && cacheCart.cart) {
+        await hydrateCartWithStock(cacheCart.cart)
         return { success: true, cart: cacheCart.cart }
       }
     }
@@ -59,9 +60,15 @@ export default defineEventHandler(async (event: any) => {
     }
 
     // Return full data if requested, otherwise reduced
+    const finalCart = fullSync ? odooData.data.cart : redisCart
+
+    if (finalCart?.order) {
+      await hydrateCartWithStock(finalCart)
+    }
+
     return {
       success: true,
-      cart: fullSync ? odooData.data.cart : redisCart
+      cart: finalCart
     }
 
   } catch (error) {

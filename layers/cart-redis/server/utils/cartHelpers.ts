@@ -1,4 +1,29 @@
-import type { AttributeValue, Cart, EasyshipRate, OrderLine } from "~/graphql";
+import type { AttributeValue, Cart, EasyshipRate, OrderLine, CustomProductWithStockFromRedis } from "~/graphql";
+
+export async function hydrateCartWithStock(cart: Cart, websiteId = 1) {
+    const productIds = cart?.order?.orderLines?.map((line: any) => line?.product?.id).filter(Boolean) || []
+    const stockKeys = productIds.map((id: number) => `stock:product-${id}`)
+    const stocks = productIds.length > 0 ? await useStorage('stock').getItems(stockKeys) : []
+
+    for (const orderLine of cart?.order?.orderLines || []) {
+        const stockId = `stock:product-${orderLine?.product?.id}`
+        const stock = stocks.find((s: any) => s.key === stockId)?.value as any
+
+        try {
+            if (orderLine.product) {
+                (orderLine.product as CustomProductWithStockFromRedis).stock = 0
+                if (stock) {
+                    (orderLine.product as CustomProductWithStockFromRedis).stock = Number(stock?.[websiteId]) || 0
+                }
+            }
+        }
+        catch (e) {
+            console.log(e)
+            console.log(stock)
+        }
+    }
+    return cart
+}
 
 export const reduceCart = (cartData: Cart) => ({
     order: {

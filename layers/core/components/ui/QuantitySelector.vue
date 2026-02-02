@@ -30,10 +30,13 @@ const decrement = () => {
 };
 
 const handleUpdate = (event: Event) => {
-  if (props.modelValue <= props.maxQty && props.modelValue > 1) {
-    emit('update:modelValue', parseInt((event?.target as any)?.value));
-  } else {
+  const inputValue = parseInt((event?.target as any)?.value);
+  if (inputValue <= props.maxQty && inputValue >= 1) {
+    emit('update:modelValue', inputValue);
+  } else if (inputValue > props.maxQty) {
     emit('update:modelValue', props.maxQty)
+  } else {
+    emit('update:modelValue', 1)
   }
   resetCheckoutFromStep('customer')
 };

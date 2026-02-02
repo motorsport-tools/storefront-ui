@@ -1,9 +1,9 @@
-import orderFragment from "../fragments/orderFragment"
+import { orderLiteFragment } from "../fragments"
 import frequentlyTogetherProductsFragment from '../fragments/frequentlyTogetherProductsFragment'
 export default `
   mutation($lineIds: [Int]!){
     cartRemoveMultipleItems(lineIds: $lineIds) {
-      ${orderFragment}
+      ${orderLiteFragment}
       ${frequentlyTogetherProductsFragment}
     }
   }

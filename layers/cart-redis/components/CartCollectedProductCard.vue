@@ -18,15 +18,38 @@ const props = defineProps({
 const { updateItemQuantity, removeItemFromCart } = useCart()
 const { resetCheckoutFromStep } = useCheckout()
 const itemLoading = ref<Boolean>(false)
-const updateQty = async (id:number, qty:number) => {
-  if (qty == null) return
+const localQty = ref(props.orderLine.quantity ?? 1)
 
+// Sync local state when prop updates (e.g. from server)
+watch(() => props.orderLine.quantity, (newVal) => {
+  if (newVal !== undefined && newVal !== null && newVal !== localQty.value) {
+    localQty.value = newVal
+  }
+})
+
+const updateQty = async (id:number, qty:number) => {
+  // Strict guard against invalid values
+  if (qty === null || qty === undefined || isNaN(qty)) return
+
+  // Optimistic update - don't block UI with itemLoading immediately if debating
+  // But since backend is source of truth, we should probably reflect loading state for the specific item
+  
   itemLoading.value = true
   try {
     await updateItemQuantity(id, qty)
+  } catch (e) {
+    // Revert on failure
+    localQty.value = props.orderLine.quantity ?? 1
   } finally {
     itemLoading.value = false
   }
+}
+
+const handleQtyUpdate = (newQty: number) => {
+  if (newQty === null || newQty === undefined || isNaN(newQty)) return;
+  localQty.value = newQty;
+  resetCheckoutFromStep('customer');
+  updateQty(props.orderLine.id, newQty);
 }
 </script>
 
@@ -115,7 +138,7 @@ const updateQty = async (id:number, qty:number) => {
             v-if="orderLine.product?.combinationInfoVariant?.has_discounted_price"
           >
             {{
-              $currency(orderLine.product?.combinationInfoVariant?.price * (orderLine?.quantity ?? 1))
+              $currency(orderLine.product?.combinationInfoVariant?.price * (localQty ?? 1))
             }}
           </span>
         </span>
@@ -126,13 +149,12 @@ const updateQty = async (id:number, qty:number) => {
           {{ $currency(orderLine.priceTotal) }}
         </span>
         <UiQuantitySelector
-          v-model="orderLine.quantity"
+          :model-value="localQty"
           :min-value="1"
-          :max-value="Number(orderLine.product?.stock)"
-          :maxQty="Number(orderLine.product?.stock)"
-          :value="Number(orderLine.quantity)"
+          :max-value="Number(orderLine.product?.stock || 100)"
+          :maxQty="Number(orderLine.product?.stock || 100)"
           class="mt-4 sm:mt-0"
-          @update:model-value="resetCheckoutFromStep('customer'); updateQty(orderLine.id, $event);"
+          @update:model-value="handleQtyUpdate"
         />
       </div>
     </div>

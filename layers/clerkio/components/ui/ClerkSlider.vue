@@ -127,6 +127,7 @@ const SliderInit = async () => {
 .carousel {
   width: 100%;
   overflow: hidden;
+  overscroll-behavior: auto !important;
 }
 @media (min-width: 430px) {
   .loading .product_slider .carousel__slide {

@@ -37,17 +37,19 @@ const goToPreviousRoute = () => (props.backToCart ? navigateTo(localePath('/cart
       />
       <h1 class="font-bold typography-headline-3 md:typography-headline-2 pl-2">{{ title }}</h1>
     </div>
-    <SfButton 
-        :class="[$viewport.isLessThan('lg') ? 'flex whitespace-nowrap' : 'lg:flex']"
-        :size="$viewport.isLessThan('lg') ? 'sm' : 'base'"
-        :aria-label="$t('prevAriaLabel')"
-        variant="tertiary"
-        @click="goToPreviousRoute"
-    >
-        <template #prefix>
-            <SfIconArrowBack />
-        </template>
-        {{ backText }}
-    </SfButton>
+    
+      <SfButton 
+          :class="[$viewport.isLessThan('lg') ? 'flex whitespace-nowrap' : 'lg:flex']"
+          :size="$viewport.isLessThan('lg') ? 'sm' : 'base'"
+          :aria-label="$t('prevAriaLabel')"
+          variant="tertiary"
+          @click="goToPreviousRoute"
+      >
+          <template #prefix>
+              <SfIconArrowBack />
+          </template>
+          {{ backText }}
+      </SfButton>
+    
 </div>
 </template>

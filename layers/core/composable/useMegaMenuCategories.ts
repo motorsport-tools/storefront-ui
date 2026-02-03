@@ -16,28 +16,26 @@ export const useMegaMenuCategories = () => {
     loading.value = true;
     try {
       const { data } = await useAsyncData('categories-megamenu', async () => {
-          const { categories } = await $sdk().odoo.query<
-            QueryCategoriesArgs,
-            CategoryListResponse
-          >({ queryName: QueryName.GetCategoriesQuery }, params);
-          const menu = transformMenuData(categories?.categories || [])
-          return menu
-        }
+        const { categories } = await $sdk().odoo.query<
+          QueryCategoriesArgs,
+          CategoryListResponse
+        >({ queryName: QueryName.GetCategoriesQuery }, params);
+        const menu = transformMenuData(categories?.categories || [])
+        return menu
+      }
       );
 
       if (data?.value) {
-        categoriesForMegaMenu.value = data.value 
+        categoriesForMegaMenu.value = data.value
       }
     } finally {
       loading.value = false
     }
   }
 
-
-
   return {
     loading,
-    categoriesForMegaMenu, 
+    categoriesForMegaMenu,
     loadCategoriesForMegaMenu
   };
 };

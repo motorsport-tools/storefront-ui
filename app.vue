@@ -1,15 +1,4 @@
 <script setup>
-import { useSiteSetup } from "~/layers/core/composable/useSiteSetup"
-const { setup, categoriesForMegaMenu } = useSiteSetup()
-
-provide(
-  "categoriesForMegaMenu",
-  categoriesForMegaMenu
-);
-
-// Initial setup
-await setup()
-
 const router = useRouter()
 const route = useRoute()
 router.afterEach((to, from) => {

@@ -188,7 +188,21 @@ export default `
           provider
           providerReference
           state
-        }  
+        }
+        deliveryOrders {
+          id
+          name
+          state
+          dateDone
+          scheduledDate
+          isClickAndCollectOrder
+        }
+        rmas {
+          id
+          name
+          state
+          date
+        }
       }
     }
   }

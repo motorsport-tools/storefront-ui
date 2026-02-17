@@ -516,6 +516,42 @@
     "error": {
       "noItemsSelected": "Please select at least one item to return",
       "generic": "Something went wrong while submitting the return"
+    },
+    "notification": {
+      "openRma": "This order has an open return request. Our team is processing it."
+    },
+    "section": {
+      "heading": "Return Requests (RMA)",
+      "status": "Status",
+      "requestedOn": "Requested on"
+    },
+    "state": {
+      "draft": "Pending",
+      "approved": "Processing",
+      "done": "Complete",
+      "cancel": "Cancelled"
+    }
+  },
+  "deliveries": {
+    "section": {
+      "heading": "Deliveries",
+      "status": "Status",
+      "scheduledDate": "Scheduled date",
+      "deliveryDate": "Delivery date",
+      "doneDate": "Delivered on",
+      "clickAndCollect": "Click & Collect",
+      "shipment": "Shipment",
+      "readyForCollection": "Ready for collection",
+      "collectedOn": "Collected on",
+      "collected": "Collected"
+    },
+    "state": {
+      "draft": "Draft",
+      "waiting": "Waiting",
+      "confirmed": "Waiting",
+      "assigned": "Ready",
+      "done": "Shipped",
+      "cancel": "Cancelled"
     }
   }
 }

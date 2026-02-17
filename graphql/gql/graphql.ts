@@ -326,6 +326,7 @@ export type DeliveryOrder = {
   __typename?: 'DeliveryOrder';
   dateDone: Maybe<Scalars['String']['output']>;
   id: Maybe<Scalars['Int']['output']>;
+  isClickAndCollectOrder: Maybe<Scalars['Boolean']['output']>;
   name: Maybe<Scalars['String']['output']>;
   scheduledDate: Maybe<Scalars['String']['output']>;
   state: Maybe<Scalars['String']['output']>;
@@ -844,6 +845,7 @@ export type Order = {
   invoiceCount: Maybe<Scalars['Int']['output']>;
   invoiceIds: Maybe<Array<Invoice>>;
   invoiceStatus: Maybe<InvoiceStatus>;
+  isRmaEligible: Maybe<Scalars['Boolean']['output']>;
   lastTransaction: Maybe<PaymentTransaction>;
   locked: Maybe<Scalars['Boolean']['output']>;
   name: Maybe<Scalars['String']['output']>;
@@ -854,6 +856,8 @@ export type Order = {
   partnerInvoice: Maybe<Partner>;
   partnerShipping: Maybe<Partner>;
   reportOrderLine: Maybe<Array<OrderLine>>;
+  rmaCount: Maybe<Scalars['Int']['output']>;
+  rmas: Maybe<Array<Rma>>;
   shippingMethod: Maybe<ShippingMethod>;
   shippingRate: Maybe<Array<EasyshipRate>>;
   stage: Maybe<OrderStage>;

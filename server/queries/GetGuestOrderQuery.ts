@@ -184,7 +184,23 @@ query ($res_id: Int!, $pid: Int!, $model: String!, $access_token: String!) {
       provider
       providerReference
       state
-    }  
+    }
+    deliveryOrders {
+      id
+      name
+      state
+      dateDone
+      scheduledDate
+      isClickAndCollectOrder
+    }
+    rmas {
+      id
+      name
+      state
+      date
+    }
+    rmaCount
+    isRmaEligible
   } 
 }
 `;

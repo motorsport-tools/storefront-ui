@@ -29,7 +29,7 @@ const fetchOrders = async () => {
   const params: QueryOrdersArgs = {
     currentPage: currentPage.value,
     pageSize: perPage.value,
-    sort: { dateOrder: SortEnum.Desc },
+    sort: { dateOrder: SortEnum.Desc, id: null, name: null, state: null },
   };
   await getOrders(params);
 };
@@ -43,7 +43,7 @@ onMounted(async () => {
 watch(
   () => route.query.page,
   async (newPage) => {
-    if (newPage && newPage !== currentPage.value) {
+    if (newPage && Number(newPage) !== currentPage.value) {
       currentPage.value = Number(newPage);
       await fetchOrders();
     }
@@ -60,7 +60,16 @@ const getLastOrderTransaction = (order: Order): PaymentTransaction | null => {
   return order.transactions?.[0] ?? null;
 };
 
+const getActiveRma = (order: Order | null | undefined) => {
+    if (!order) return null;
+    const rmas = (order as any).rmas || [];
+    // Show the first RMA that is not done or cancelled, or just the first one
+    return rmas.find((rma: any) => rma.state !== 'done' && rma.state !== 'cancel') || rmas[0];
+};
+
 const NuxtLink = resolveComponent("NuxtLink");
+
+const ordersList = computed(() => orders.value?.orders || []);
 </script>
 
 <template>
@@ -78,9 +87,8 @@ const NuxtLink = resolveComponent("NuxtLink");
         <span class="font-medium">{{ Math.min(currentPage * perPage, totalOrders) }}</span> of <span class="font-medium">{{ totalOrders }}</span>
       </div>
     </div>
-    <template v-if="viewport.isLessThan('md')">
-      {{ orders?.order }}
-      <ul v-for="(order, index) in orders?.orders" :key="index" class="my-4 last-of-type:mb-0">
+    <template v-if="viewport.isLessThan('md') && ordersList.length > 0">
+      <ul v-for="(order, index) in ordersList" :key="index" class="my-4 last-of-type:mb-0">
         <li>
           <p class="block typography-text-sm font-medium">{{ $t('account.myOrders.orderId') }}</p>
           <span class="block typography-text-sm mb-2">{{ order?.name }}</span>
@@ -102,8 +110,11 @@ const NuxtLink = resolveComponent("NuxtLink");
         </li>
         -->
         <li class="flex flex-wrap items-center mb-2">
+          <template v-if="order && getActiveRma(order)">
+              <RmaStatus :status="getActiveRma(order).state" class="mr-4" />
+          </template>
           <UiAlert 
-              v-if="order.locked"
+              v-else-if="order && order.locked"
               class="font-semibold mr-4"
               variant="neutral"
             >
@@ -145,8 +156,8 @@ const NuxtLink = resolveComponent("NuxtLink");
       </thead>
       <tbody>
         <tr
-          v-for="order in orders.orders"
-          :key="order?.id"
+          v-for="order in ordersList"
+          :key="order?.id ?? 0"
           class="border-b border-neutral-200 last:border-transparent"
         >
           <td class="py-4 pr-4 lg:whitespace-nowrap">{{ order?.name }}</td>
@@ -155,17 +166,21 @@ const NuxtLink = resolveComponent("NuxtLink");
             {{ $currency(order?.amountTotal ? order?.amountTotal : 0) }}
           </td>
           <td class="p-4">
+            <template v-if="order && getActiveRma(order)">
+                <RmaStatus :status="getActiveRma(order).state" />
+            </template>
             <UiAlert 
-              v-if="order.locked"
+              v-else-if="order && order.locked"
               class="font-semibold"
               variant="neutral"
             >
-            <SfIconCheckCircle class="text-positive-700 shrink-0" size="sm" />
-            {{ $t("account.myOrders.confirmed") }}
+                <SfIconCheckCircle class="text-positive-700 shrink-0" size="sm" />
+                {{ $t("account.myOrders.confirmed") }}
             </UiAlert>
           </td>
           <td class="py-1.5 pl-4 text-right w-full">
             <SfButton
+                v-if="order"
               :tag="NuxtLink"
               size="sm"
               variant="tertiary"

@@ -390,7 +390,7 @@
       "status": "Status",
       "details": "Details",
       "done": "Done",
-      "confirmed": "confirmed",
+      "confirmed": "Confirmed",
       "myOrders": "My orders",
       "noOrders": "You haven’t shopped with us yet",
       "continue": "Continue shopping",
@@ -526,10 +526,10 @@
       "requestedOn": "Requested on"
     },
     "state": {
-      "draft": "Pending",
-      "approved": "Processing",
-      "done": "Complete",
-      "cancel": "Cancelled"
+      "Draft": "RMA Pending",
+      "Approved": "RMA Processing",
+      "Done": "RMA Complete",
+      "Cancel": "RMA Cancelled"
     }
   },
   "deliveries": {
@@ -546,12 +546,12 @@
       "collected": "Collected"
     },
     "state": {
-      "draft": "Draft",
-      "waiting": "Waiting",
-      "confirmed": "Waiting",
-      "assigned": "Ready",
-      "done": "Shipped",
-      "cancel": "Cancelled"
+      "Draft": "Draft",
+      "Waiting": "Waiting",
+      "Confirmed": "Waiting",
+      "Assigned": "Ready",
+      "Done": "Shipped",
+      "Cancel": "Cancelled"
     }
   }
 }

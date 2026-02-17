@@ -45,7 +45,7 @@ const statusClass = computed(() => {
 </script>
 
 <template>
-    <UiAlert v-if="props.status" :class="statusClass" class="font-semibold !bg-neutral-100">
+    <UiAlert v-if="props.status" :class="statusClass" class="font-semibold !bg-neutral-100 border border-neutral-200 ml-1">
     <component :is="iconComponent" class="shrink-0" size="sm"/>
     {{ $t(translationKey) }}
   </UiAlert>

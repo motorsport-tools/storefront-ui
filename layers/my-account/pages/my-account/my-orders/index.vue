@@ -110,17 +110,18 @@ const ordersList = computed(() => orders.value?.orders || []);
         </li>
         -->
         <li class="flex flex-wrap items-center mb-2">
-          <template v-if="order && getActiveRma(order)">
-              <RmaStatus :status="getActiveRma(order).state" class="mr-4" />
-          </template>
+          
           <UiAlert 
-              v-else-if="order && order.locked"
+              v-if="order && order.locked"
               class="font-semibold mr-4"
               variant="neutral"
             >
             <SfIconCheckCircle class="text-positive-700 shrink-0" size="sm" />
             {{ $t("account.myOrders.done") }}
           </UiAlert>
+          <template v-if="order && getActiveRma(order)">
+              <RmaStatus :status="getActiveRma(order).state" class="mr-4" />
+          </template>
           <SfButton
             :tag="NuxtLink"
             size="sm"
@@ -165,20 +166,20 @@ const ordersList = computed(() => orders.value?.orders || []);
           <td class="p-4">
             {{ $currency(order?.amountTotal ? order?.amountTotal : 0) }}
           </td>
-          <td class="p-4">
-            <template v-if="order && getActiveRma(order)">
-                <RmaStatus :status="getActiveRma(order).state" />
-            </template>
+          <td class="p-4 w-full">
             <UiAlert 
-              v-else-if="order && order.locked"
+              v-if="order && order.locked"
               class="font-semibold"
               variant="neutral"
             >
                 <SfIconCheckCircle class="text-positive-700 shrink-0" size="sm" />
                 {{ $t("account.myOrders.confirmed") }}
             </UiAlert>
+            <template v-if="order && getActiveRma(order)">
+                <RmaStatus :status="getActiveRma(order).state" />
+            </template>
           </td>
-          <td class="py-1.5 pl-4 text-right w-full">
+          <td class="py-1.5 pl-4 text-right">
             <SfButton
                 v-if="order"
               :tag="NuxtLink"

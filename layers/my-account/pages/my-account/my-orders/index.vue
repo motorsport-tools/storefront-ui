@@ -29,7 +29,7 @@ const fetchOrders = async () => {
   const params: QueryOrdersArgs = {
     currentPage: currentPage.value,
     pageSize: perPage.value,
-    sort: { dateOrder: SortEnum.Desc, id: null, name: null, state: null },
+    sort: { dateOrder: SortEnum.Desc },
   };
   await getOrders(params);
 };

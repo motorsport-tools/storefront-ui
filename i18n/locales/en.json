@@ -497,5 +497,25 @@
       "title": "Click to show more",
       "label": "Show More Products"
     }
+  },
+  "rma": {
+    "button": "Create RMA",
+    "modal": {
+      "title": "Return Items from Order",
+      "description": "Please select the items you wish to return and the reason for each.",
+      "quantity": "Quantity",
+      "reason": "Reason",
+      "additionalInfo": "Additional Information",
+      "descriptionPlaceholder": "Please provide any additional details about the return (e.g. specific faults, condition of packaging)...",
+      "cancel": "Cancel",
+      "submit": "Submit Return"
+    },
+    "success": {
+      "created": "Return request submitted successfully"
+    },
+    "error": {
+      "noItemsSelected": "Please select at least one item to return",
+      "generic": "Something went wrong while submitting the return"
+    }
   }
 }

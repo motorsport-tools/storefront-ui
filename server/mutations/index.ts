@@ -11,6 +11,7 @@ import RvvupProviderInfo from "./RvvupProviderInfo";
 import RvvupTransaction from "./RvvupTransaction";
 import ApplyGiftCardMutation from "./ApplyGiftCardMutation";
 import ApplyCouponMutation from "./ApplyCouponMutation";
+import CreateRmaMutation from "./CreateRmaMutation";
 import CartAddItem from "./CartAddItem";
 import CartRemoveItem from "./CartRemoveItem";
 import CartUpdateQuantity from "./CartUpdateQuantity";
@@ -47,6 +48,7 @@ enum MutationName {
   SendResetPasswordMutation = "SendResetPasswordMutation",
   UpdatePasswordMutation = "UpdatePasswordMutation",
   ChangePasswordMutation = "ChangePasswordMutation",
+  CreateRma = "CreateRmaMutation",
   CartAddItem = "CartAddItem",
   CartUpdateQuantity = "CartUpdateQuantity",
   CartRemoveItem = "CartRemoveItem",
@@ -116,6 +118,7 @@ const Mutations: Record<MutationName, string> = {
   NewsletterSubscribeMutation,
   ApplyGiftCardMutation,
   ApplyCouponMutation,
+  CreateRmaMutation,
   MakeGiftCardPaymentMutation,
   ShippingMethod,
   CartSetEasyship,

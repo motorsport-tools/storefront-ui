@@ -23,6 +23,8 @@ export default `
           code
         }
         dateOrder
+        deliveryStatus
+        effectiveDate
         orderUrl
         stage
         transactions {

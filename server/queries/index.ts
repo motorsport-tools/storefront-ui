@@ -23,6 +23,7 @@ import GetEasyShipRatesQuery from './GetEasyShipRatesQuery';
 import GetProductTemplateListQueryForRecentViews from './GetProductTemplateListQueryForRecentViews'
 import AccessQuery from './AccessQuery';
 import PaymentPayQuery from './PaymentPayQuery';
+import GetRmaOperationsQuery from './GetRmaOperationsQuery';
 
 enum QueryName {
   GetProductVariantQuery = 'GetProductVariantQuery',
@@ -51,6 +52,7 @@ enum QueryName {
   GetEasyShipRatesQuery = 'GetEasyShipRatesQuery',
   AccessQuery = 'AccessQuery',
   PaymentPayQuery = 'PaymentPayQuery',
+  GetRmaOperationsQuery = 'GetRmaOperationsQuery',
 }
 
 const Queries: Record<QueryName, string> = {
@@ -79,6 +81,7 @@ const Queries: Record<QueryName, string> = {
   GetEasyShipRatesQuery,
   AccessQuery,
   PaymentPayQuery,
+  GetRmaOperationsQuery,
 };
 
 const QueriesToByPassCache: string[] = [

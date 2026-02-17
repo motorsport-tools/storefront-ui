@@ -1,22 +1,37 @@
 <script setup lang="ts">
-import { SfButton, SfLoaderCircular, SfIconDownload } from "@storefront-ui/vue";
+import { SfButton, SfLoaderCircular, SfIconDownload, SfIconArrowBack } from "@storefront-ui/vue";
+import type { OrderLine } from "~/graphql";
+import { useOrders } from "~/layers/orders/composable/useOrders";
 
 definePageMeta({
   layout: "account",
   middleware: ["auth-check"],
 });
 
-import { useOrders } from "~/layers/orders/composable/useOrders";
-
 const route = useRoute();
 const { getOrderById, order } = useOrders();
+const { open: openRmaModal } = useRmaModal();
 
 onMounted(async () => {
-    await getOrderById({ id: parseInt(route.params.id) });
+    const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id;
+    await getOrderById({ id: parseInt(id) });
+});
+
+const isWithin30Days = (date?: string | null) => {
+    if (!date) return false;
+    const deliveryDate = new Date(date);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - deliveryDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays <= 30;
+};
+
+const showReturnButton = computed(() => {
+    return order.value?.deliveryStatus === 'full' && isWithin30Days(order.value?.effectiveDate);
 });
 
 const linesWithoutUndefinedProducts = computed(() => {
-    return order.value?.reportOrderLine?.filter((item: { product: null }) => item.product !== null)
+    return order.value?.reportOrderLine?.filter((item: OrderLine) => item.product !== null)
 });
 
 const invoiceLines = computed(() => {
@@ -26,11 +41,12 @@ const invoiceLines = computed(() => {
 const NuxtLink = resolveComponent("NuxtLink");
 </script>
 <template>
+    <template v-if="order">
     <UiDivider class="w-screen -mx-4 md:col-span-3 md:w-auto md:mx-0" />
     <h2 class="typography-headline-3 font-bold">
         {{ $t("account.myOrders.orderDetails.heading") }} #{{ order?.id }}
     </h2>
-    <!-- Button to go back to the orders list -->
+
     <SfButton
         variant="tertiary"
         :tag="NuxtLink"
@@ -42,21 +58,34 @@ const NuxtLink = resolveComponent("NuxtLink");
     >
         {{ $t("account.myOrders.backToOrders") }}
     </SfButton>
-    <div v-if="order" class="col-span-3">
+    
+    <div class="col-span-3 flex gap-1">
         <SfButton
             v-if="order?.orderUrl"
             variant="secondary"
             :tag="NuxtLink"
-            :to="`${order.orderUrl}&report_type=pdf`"
+            :to="order.orderUrl ? `${order.orderUrl}&report_type=pdf` : ''"
             :prefetch-on="{ interaction: true }"
             target="_blank"
         >
         <SfIconDownload/>
         {{ $t("account.myOrders.viewDetails") }}
         </SfButton>
+        <SfButton
+            v-if="showReturnButton"
+            variant="secondary"
+            class="col-start-3 col-span-1 justify-self-end p-4"
+            @click="openRmaModal"
+            :disabled="!showReturnButton"
+        >
+            <template #prefix>
+                <SfIconArrowBack size="base" class="rotate-90" />
+            </template>
+            {{ $t("rma.button") }}
+        </SfButton>
     </div>
     
-    <div v-if="order" class="col-span-3">
+    <div class="col-span-3">
         <!-- Order Overview -->
         <ul class="bg-neutral-100 p-4 rounded-md md:columns-2 mb-6">
             <li>
@@ -75,7 +104,7 @@ const NuxtLink = resolveComponent("NuxtLink");
             <p class="font-medium">
                 {{ $t("account.myOrders.orderDetails.paymentAmount") }}
             </p>
-            <p><span>{{ $currency(order?.amountTotal) }}</span></p>
+            <p><span>{{ $currency(Number(order?.amountTotal)) }}</span></p>
             </li>
             <li class="mt-4">
             <p class="font-medium">
@@ -85,7 +114,7 @@ const NuxtLink = resolveComponent("NuxtLink");
             </li>
         </ul>
 
-        <div v-if="order.invoiceIds?.length > 0 " class="block mb-6">
+        <div v-if="order.invoiceIds && order.invoiceIds.length > 0 " class="block mb-6">
             <div class="grid grid-cols-1 2xs:grid-cols-2 gap-4 md:gap-y-6 md:gap-x-2 md:grid-cols-2 lg:grid-cols-2 3xl:grid-cols-2 md:mb-5">
                 <table class="hidden md:table col-span-1 w-full text-left typography-text-sm mx-4 md:mx-0">
                     <caption class="hidden">
@@ -125,7 +154,7 @@ const NuxtLink = resolveComponent("NuxtLink");
                                 </p>
                             </td>
                             <td class="p-4 lg:whitespace-nowrap typography-text-base flex flex-col items-center">
-                                <InvoiceStatus :status="line.paymentState"/>
+                                <InvoiceStatus :status="(line.paymentState as any)"/>
                             </td>
                         </tr>
                     </tbody>
@@ -193,6 +222,11 @@ const NuxtLink = resolveComponent("NuxtLink");
             <span>{{ $currency(Number(order?.amountTotal)) }}</span>
         </div>
     </div>
+    <RmaModal
+        v-if="showReturnButton"
+        :order="order"
+    />
+    </template>
     <div v-else class="flex items-center justify-center w-full text-center col-span-3">
         <SfLoaderCircular size="xl" class="mt-[160px]" />
     </div>

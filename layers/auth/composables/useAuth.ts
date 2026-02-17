@@ -1,5 +1,3 @@
-import type { NuxtRoute } from "@typed-router/__router";
-import type { RoutesNamesList } from "@typed-router/__routes";
 import { useToast } from "vue-toastification";
 import type {
   ChangePasswordResponse,
@@ -43,11 +41,18 @@ export const useAuth = () => {
 
   const loadUser = async (withoutCache: boolean = false) => {
     loading.value = true
-    const query = withoutCache ? $sdk().odoo.queryNoCache : $sdk().odoo.query
 
-    const data = await query<null, LoadUserQueryResponse>({
-      queryName: QueryName.LoadUserQuery,
-    });
+    let data = null
+    if (withoutCache) {
+      data = await $sdk().odoo.queryNoCache<null, LoadUserQueryResponse>({
+        queryName: QueryName.LoadUserQuery,
+      });
+    } else {
+      data = await $sdk().odoo.query<null, LoadUserQueryResponse>({
+        queryName: QueryName.LoadUserQuery,
+      });
+    }
+
 
     userCookie.value = data?.partner?.id
     user.value = data?.partner

@@ -322,6 +322,15 @@ export type DeleteAddressInput = {
   id: Scalars['Int']['input'];
 };
 
+export type DeliveryOrder = {
+  __typename?: 'DeliveryOrder';
+  dateDone: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars['Int']['output']>;
+  name: Maybe<Scalars['String']['output']>;
+  scheduledDate: Maybe<Scalars['String']['output']>;
+  state: Maybe<Scalars['String']['output']>;
+};
+
 export type EasyshipRate = {
   __typename?: 'EasyshipRate';
   courierId: Maybe<Scalars['String']['output']>;
@@ -555,6 +564,8 @@ export type Mutation = {
   checkoutRedirect: Maybe<CheckoutRedirectOutput>;
   /** Creates a new lead with the contact information. */
   contactUs: Maybe<Lead>;
+  /** Create RMA for sale order */
+  createRma: Maybe<Rma>;
   /** Create or update a partner for guest checkout */
   createUpdatePartner: Maybe<Partner>;
   /** Delete a billing or shipping address. */
@@ -654,6 +665,16 @@ export type MutationCheckoutRedirectArgs = {
 
 export type MutationContactUsArgs = {
   contactus: InputMaybe<ContactUsParams>;
+};
+
+
+export type MutationCreateRmaArgs = {
+  accessToken: InputMaybe<Scalars['String']['input']>;
+  description: InputMaybe<Scalars['String']['input']>;
+  operationId: Scalars['Int']['input'];
+  orderId: Scalars['Int']['input'];
+  productId: Scalars['Int']['input'];
+  qty: InputMaybe<Scalars['Float']['input']>;
 };
 
 
@@ -815,6 +836,9 @@ export type Order = {
   currency: Maybe<Currency>;
   currencyRate: Maybe<Scalars['String']['output']>;
   dateOrder: Maybe<Scalars['String']['output']>;
+  deliveryOrders: Maybe<Array<DeliveryOrder>>;
+  deliveryStatus: Maybe<Scalars['String']['output']>;
+  effectiveDate: Maybe<Scalars['String']['output']>;
   giftCards: Maybe<Array<GiftCard>>;
   id: Scalars['Int']['output'];
   invoiceCount: Maybe<Scalars['Int']['output']>;
@@ -1184,6 +1208,9 @@ export type Query = {
   productVariant: ProductVariant;
   products: Maybe<Products>;
   rates: Maybe<Array<Maybe<EasyshipRate>>>;
+  rmaByOrder: Maybe<Array<Rma>>;
+  rmaOperations: Maybe<Array<RmaOperation>>;
+  rmas: Maybe<Array<Rma>>;
   validate: Maybe<PaymentLinkValidation>;
   websiteFooter: Maybe<Array<WebsiteMenu>>;
   websiteHomepage: Maybe<Homepage>;
@@ -1364,6 +1391,17 @@ export type QueryRatesArgs = {
 };
 
 
+export type QueryRmaByOrderArgs = {
+  accessToken: InputMaybe<Scalars['String']['input']>;
+  orderId: Scalars['Int']['input'];
+};
+
+
+export type QueryRmasArgs = {
+  accessToken: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type QueryValidateArgs = {
   accessToken: InputMaybe<Scalars['String']['input']>;
   amount: InputMaybe<Scalars['Float']['input']>;
@@ -1413,6 +1451,37 @@ export type Ribbon = {
   htmlClass: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   textColor: Maybe<Scalars['String']['output']>;
+};
+
+export type Rma = {
+  __typename?: 'Rma';
+  canBeFinished: Maybe<Scalars['Boolean']['output']>;
+  canBeLocked: Maybe<Scalars['Boolean']['output']>;
+  canBeRefunded: Maybe<Scalars['Boolean']['output']>;
+  canBeReplaced: Maybe<Scalars['Boolean']['output']>;
+  canBeReturned: Maybe<Scalars['Boolean']['output']>;
+  canBeSplit: Maybe<Scalars['Boolean']['output']>;
+  date: Maybe<Scalars['String']['output']>;
+  deadline: Maybe<Scalars['String']['output']>;
+  description: Maybe<Scalars['String']['output']>;
+  finalizationId: Maybe<Scalars['Int']['output']>;
+  id: Scalars['Int']['output'];
+  name: Maybe<Scalars['String']['output']>;
+  partnerId: Maybe<Scalars['Int']['output']>;
+  partnerInvoiceId: Maybe<Scalars['Int']['output']>;
+  partnerShippingId: Maybe<Scalars['Int']['output']>;
+  product: Maybe<Product>;
+  sent: Maybe<Scalars['Boolean']['output']>;
+  state: Maybe<Scalars['String']['output']>;
+  teamId: Maybe<Scalars['Int']['output']>;
+  userId: Maybe<Scalars['Int']['output']>;
+};
+
+export type RmaOperation = {
+  __typename?: 'RmaOperation';
+  active: Maybe<Scalars['Boolean']['output']>;
+  id: Scalars['Int']['output'];
+  name: Maybe<Scalars['String']['output']>;
 };
 
 /** Summary of sale order for payment link validation */

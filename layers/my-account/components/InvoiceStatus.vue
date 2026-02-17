@@ -45,17 +45,17 @@ const translationKey = computed(() => {
 const statusClass = computed(() => {
   switch (props.status) {
     case 'paid':
-      return 'text-positive-700'; // Green
+      return '!text-positive-700'; // Green
     case 'not_paid':
-      return 'text-negative-700'; // Red
+      return '!text-negative-700'; // Red
     case 'in_payment':
-      return 'text-warning-700'; // Yellow
+      return '!text-warning-700'; // Yellow
     case 'partial':
-      return 'text-primary-700'; // Blue
+      return '!text-primary-700'; // Blue
     case 'reversed':
-      return 'text-negative-700'; // Red
+      return '!text-negative-700'; // Red
     default:
-      return 'text-neutral-700'; // Gray
+      return '!text-neutral-700'; // Gray
   }
 });
 
@@ -63,7 +63,7 @@ const statusClass = computed(() => {
 </script>
 
 <template>
-    <UiAlert v-if="props.status" :class="statusClass" class="font-semibold">
+    <UiAlert v-if="props.status" :class="statusClass" class="font-semibold !bg-neutral-100">
     <component :is="iconComponent" class="shrink-0" size="sm"/>
     {{ $t(translationKey) }}
   </UiAlert>

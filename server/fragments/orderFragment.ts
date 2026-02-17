@@ -18,6 +18,8 @@ giftCards {
   code
 }
 dateOrder
+deliveryStatus
+effectiveDate
 orderUrl
 stage
 transactions {
@@ -40,6 +42,7 @@ websiteOrderLine {
   product {
     id
     name
+    sku
     image
     imageFilename
     displayName
@@ -64,6 +67,7 @@ reportOrderLine {
   product {
     id
     name
+    sku
     image
     imageFilename
     displayName

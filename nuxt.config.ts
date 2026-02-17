@@ -23,6 +23,7 @@ export default defineNuxtConfig({
     '/payment/**': { cache: false },
     '/mail/**': { cache: false },
     '/my-account/**': { cache: false },
+    '/my-account/order/*': { cache: false },
     '/my/orders/**': { cache: false },
     '/order/*': { cache: false },
     '/shop/*': { cache: false },

@@ -27,12 +27,12 @@ export const useSiteSetup = () => {
                     loadUser(true),
                     loadWishlist(),
                     loadCart(),
-                    loadCountries()
+
                 ])
             } else {
                 await Promise.all([
                     loadCart(),
-                    loadCountries()
+
                 ])
             }
         }

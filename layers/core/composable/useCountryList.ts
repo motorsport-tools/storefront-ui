@@ -21,8 +21,8 @@ export const useCountryList = () => {
         }),
       )
       countries.value = data.value?.countries || ({} as Countries)
-    } catch (error: any) {
-      error.value = error?.data?.message
+    } catch (err: any) {
+      error.value = err?.data?.message || err?.message || 'Failed to load countries'
     } finally {
       pending.value = false
     }

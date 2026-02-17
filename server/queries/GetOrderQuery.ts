@@ -21,6 +21,8 @@ query ($id: Int!) {
       code
     }
     dateOrder
+    deliveryStatus
+    effectiveDate
     orderUrl
     stage
     transactions {
@@ -36,6 +38,7 @@ query ($id: Int!) {
       product {
         id
         name
+        sku
         image
         imageFilename
         displayName
@@ -69,6 +72,7 @@ query ($id: Int!) {
       product {
         id
         name
+        sku
         image
         imageFilename
         displayName

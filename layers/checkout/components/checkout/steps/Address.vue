@@ -59,12 +59,21 @@ const autocompletePrefix = computed(() => props.addressType == AddressEnum.Billi
 
 const handleSubmit = async () => {
     if(form.street && form.city && form.zip && form.countryId) {
-        const data = {
+        const data: { 
+            name?: string; 
+            street: string; 
+            street2: string; 
+            city: string; 
+            zip: string;
+            countryId: number;
+            stateId: number;
+            useDelivery: boolean;
+        } = {
             name:  form.name || '',
             street: form.street,
             street2: form.street2,
-            city: form.city,
-            zip: form.zip,
+            city: form.city || '',
+            zip: form.zip || '',
             countryId: Number(form.countryId),
             stateId: Number(form.stateId),
             useDelivery: Boolean(form?.useDelivery || false)
@@ -120,7 +129,7 @@ const handleSubmit = async () => {
                     </option>
                     <option
                         v-else
-                        v-for="countryOption in countries.countries"
+                        v-for="countryOption in countries?.countries"
                         :key="countryOption?.id"
                         :value="countryOption?.id"
                     >

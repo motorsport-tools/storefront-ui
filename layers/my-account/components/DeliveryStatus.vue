@@ -58,7 +58,6 @@ const statusClass = computed(() => {
 </script>
 
 <template>
-    {{ isClickAndCollect }} - {{ translationKey }}
     <UiAlert v-if="props.status" :class="statusClass" class="font-semibold !bg-neutral-100">
     <component :is="iconComponent" class="shrink-0" size="sm"/>
     {{ $t(translationKey) }}

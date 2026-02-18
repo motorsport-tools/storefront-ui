@@ -3,20 +3,20 @@ import { SfIconCheckCircle, SfIconError, SfIconSchedule, SfIconInfo, SfIconWarni
 
 const props = defineProps({
     status: {
-        type: String, // String as PropType<'draft' | 'approved' | 'done' | 'cancel'>
+        type: String,
         required: true,
     }
 })
 
 const iconComponent = computed(() => {
   switch (props.status) {
-    case 'done':
+    case 'Done':
       return SfIconCheckCircle;
-    case 'draft':
+    case 'Draft':
       return SfIconSchedule;
-    case 'approved':
+    case 'Approved':
       return SfIconInfo;
-    case 'cancel':
+    case 'Cancel':
       return SfIconError;
     default:
       return SfIconWarning;
@@ -29,13 +29,13 @@ const translationKey = computed(() => {
 
 const statusClass = computed(() => {
   switch (props.status) {
-    case 'done':
+    case 'Done':
       return '!text-positive-700'; // Green
-    case 'draft':
+    case 'Draft':
       return '!text-warning-700'; // Yellow
-    case 'approved':
+    case 'Approved':
       return '!text-primary-700'; // Blue
-    case 'cancel':
+    case 'Cancel':
       return '!text-negative-700'; // Red
     default:
       return '!text-neutral-700'; // Gray

@@ -3,7 +3,6 @@ import { SfButton, SfLoaderCircular, SfIconCheckCircle } from "@storefront-ui/vu
 import { useOrders } from "~/layers/orders/composable/useOrders";
 import {
   PaymentTransactionState,
-  type QueryOrderArgs,
   type QueryOrdersArgs,
   type Order,
   type PaymentTransaction,
@@ -80,7 +79,7 @@ const ordersList = computed(() => orders.value?.orders || []);
   <div v-if="loading" class="w-full text-center">
     <SfLoaderCircular size="xl" class="mt-[160px]" />
   </div>
-  <div v-else-if="orders?.orders.length > 0" class="col-span-3">
+  <div v-else-if="orders?.orders && orders.orders.length > 0" class="col-span-3">
     <div class="flex justify-between items-center mx-4">
       <div class="bg-gray-100 text-sm ml-auto px-4 py-2 rounded-md">
         <span class="font-medium">{{ (currentPage - 1) * perPage + 1 }}</span> -
@@ -126,7 +125,7 @@ const ordersList = computed(() => orders.value?.orders || []);
             :tag="NuxtLink"
             size="sm"
             variant="tertiary"
-            :to="`/my-account/my-orders/${order.id}`"
+            :to="`/my-account/my-orders/${order?.id}`"
           >
             {{ $t("account.myOrders.details") }}
           </SfButton>

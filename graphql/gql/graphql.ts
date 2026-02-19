@@ -329,8 +329,18 @@ export type DeliveryOrder = {
   isClickAndCollectOrder: Maybe<Scalars['Boolean']['output']>;
   name: Maybe<Scalars['String']['output']>;
   scheduledDate: Maybe<Scalars['String']['output']>;
-  state: Maybe<Scalars['String']['output']>;
+  state: Maybe<DeliveryState>;
 };
+
+/** An enumeration. */
+export enum DeliveryState {
+  Assigned = 'Assigned',
+  Cancel = 'Cancel',
+  Confirmed = 'Confirmed',
+  Done = 'Done',
+  Draft = 'Draft',
+  Waiting = 'Waiting'
+}
 
 export type EasyshipRate = {
   __typename?: 'EasyshipRate';
@@ -1476,7 +1486,7 @@ export type Rma = {
   partnerShippingId: Maybe<Scalars['Int']['output']>;
   product: Maybe<Product>;
   sent: Maybe<Scalars['Boolean']['output']>;
-  state: Maybe<Scalars['String']['output']>;
+  state: Maybe<RmaState>;
   teamId: Maybe<Scalars['Int']['output']>;
   userId: Maybe<Scalars['Int']['output']>;
 };
@@ -1487,6 +1497,21 @@ export type RmaOperation = {
   id: Scalars['Int']['output'];
   name: Maybe<Scalars['String']['output']>;
 };
+
+/** An enumeration. */
+export enum RmaState {
+  Cancelled = 'Cancelled',
+  Confirmed = 'Confirmed',
+  Draft = 'Draft',
+  Finished = 'Finished',
+  Locked = 'Locked',
+  Received = 'Received',
+  Refunded = 'Refunded',
+  Replaced = 'Replaced',
+  Returned = 'Returned',
+  WaitingReplacement = 'WaitingReplacement',
+  WaitingReturn = 'WaitingReturn'
+}
 
 /** Summary of sale order for payment link validation */
 export type SaleOrderSummary = {

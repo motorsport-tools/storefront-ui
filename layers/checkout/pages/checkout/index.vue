@@ -2,6 +2,11 @@
 import { SfLoaderCircular, SfIconLock } from "@storefront-ui/vue"
 import { type PaymentMethod, type Partner, type ShippingMethod, AddressEnum } from "~/graphql"
 import { useCountryList } from "~/layers/core/composable/useCountryList";
+import CustomerInfo from "./../../components/checkout/steps/CustomerInfo.vue"
+import Address from "./../../components/checkout/steps/Address.vue"
+import DeliveryMethod from "./../../components/checkout/steps/DeliveryMethod.vue"
+import DeliveryRates from "./../../components/checkout/steps/DeliveryRates.vue"
+import Payment from "./../../components/checkout/steps/Payment.vue"
 
 definePageMeta({
     layout: 'checkout',
@@ -10,19 +15,13 @@ definePageMeta({
 
 const { cart, cartIsEmpty, loading: cartLoading } = useCart()
 const { loading: deliveryLoading } = useDeliveryMethod()
-const { loadUser, isAuthenticated } = useAuth()
+const { hydrateAuthOnce, loadUser, isAuthenticated } = useAuth()
 const isLoading = computed(() => cartLoading.value || deliveryLoading.value);
-const selectedProvider = ref(<PaymentMethod | null>(null))
+const selectedProvider = ref<PaymentMethod | null>(null)
 
 const { $i18n } = useNuxtApp()
 
 const { steps, visibleSteps, isLastStep, currentStepId, currentStepIndex, allStepsCompleted, registerSteps, completeStep, goToStep, updateStepData, getAllData, getStepData, resetCheckout } = useCheckout()
-
-import CustomerInfo from "./../../components/checkout/steps/CustomerInfo.vue"
-import Address from "./../../components/checkout/steps/Address.vue"
-import DeliveryMethod from "./../../components/checkout/steps/DeliveryMethod.vue"
-import DeliveryRates from "./../../components/checkout/steps/DeliveryRates.vue"
-import Payment from "./../../components/checkout/steps/Payment.vue"
 
 const checkoutSteps = [
     {
@@ -86,9 +85,10 @@ const checkoutSteps = [
 ]
 
 onMounted(async () => {
-    if(isAuthenticated.value) {
-        await Promise.all([loadUser(true)]);
-    } 
+    await hydrateAuthOnce()
+    if (isAuthenticated.value) {
+        await loadUser(true)
+    }
     registerSteps(checkoutSteps)
 })
 </script>

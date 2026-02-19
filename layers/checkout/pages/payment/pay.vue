@@ -23,6 +23,13 @@ const isPaymentWithCardReady = ref(false)
 const providerPaymentHandler = ref()
 const loading = ref(false);
 
+const removeAccessTokenFromUrl = async () => {
+  if (!route.query.access_token) return
+  const query = { ...route.query }
+  delete query.access_token
+  await router.replace({ query })
+}
+
 const readyToPay = computed(() => {
   if(isPaymentWithCardReady.value && isValidated.value && !processing.value) return true
   return false
@@ -55,7 +62,7 @@ async function validate() {
   // Success - show payment form
   isValidated.value = true
   orderData.value = result.data
-  console.log(orderData.value)
+  await removeAccessTokenFromUrl()
 }
 
 onMounted(async () => {

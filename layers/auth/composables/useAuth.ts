@@ -26,38 +26,76 @@ export const useAuth = () => {
   const { $sdk } = useNuxtApp()
   const router = useRouter()
   const { cart } = useCart()
-  const userCookie = useCookie<any | null>("odoo-user", { maxAge: 3600 * 30, sameSite: "lax" })
+  const userCookie = useCookie<number | null>("odoo-user", { maxAge: 3600 * 30, sameSite: "lax" })
+  const getPublicUser = () =>
+    ({
+      isPublic: true,
+      publicPricelist: {
+        id: 4,
+      }
+    }) as Partner
   const user = useState<Partner>("user", () => ({
-    isPublic: true,
-    publicPricelist: {
-      id: 4,
-    }
-  }) as Partner);
+    ...getPublicUser(),
+  }));
 
   const toast = useToast()
 
   const loading = ref(false)
   const resetEmail = useCookie<string>("reset-email");
+  const authHydrated = useState<boolean>("auth-hydrated", () => false)
+
+  const setAuthCookie = (partner: Partner | null | undefined) => {
+    if (partner?.id && !partner?.isPublic) {
+      userCookie.value = Number(partner.id)
+      return
+    }
+    userCookie.value = null
+  }
 
   const loadUser = async (withoutCache: boolean = false) => {
-    loading.value = true
+    try {
+      loading.value = true
 
-    let data = null
-    if (withoutCache) {
-      data = await $sdk().odoo.queryNoCache<null, LoadUserQueryResponse>({
-        queryName: QueryName.LoadUserQuery,
-      });
-    } else {
-      data = await $sdk().odoo.query<null, LoadUserQueryResponse>({
-        queryName: QueryName.LoadUserQuery,
-      });
+      let data = null
+      if (withoutCache) {
+        data = await $sdk().odoo.queryNoCache<null, LoadUserQueryResponse>({
+          queryName: QueryName.LoadUserQuery,
+        });
+      } else {
+        data = await $sdk().odoo.query<null, LoadUserQueryResponse>({
+          queryName: QueryName.LoadUserQuery,
+        });
+      }
+
+      user.value = data?.partner as Partner
+      setAuthCookie(data?.partner as Partner)
+      authHydrated.value = true
+      return user.value
+    } catch {
+      // Treat "no user in session" as a normal public state.
+      user.value = getPublicUser()
+      setAuthCookie(null)
+      authHydrated.value = true
+      return null
+    } finally {
+      loading.value = false
+    }
+  };
+
+  const hydrateAuthOnce = async () => {
+    if (authHydrated.value) {
+      return user.value
     }
 
+    // No auth cookie means we can safely initialize as public without backend call.
+    if (!userCookie.value) {
+      user.value = getPublicUser()
+      authHydrated.value = true
+      return null
+    }
 
-    userCookie.value = data?.partner?.id
-    user.value = data?.partner
-    loading.value = false
-  };
+    return loadUser(true)
+  }
 
   const updatePartner = async (params: MutationCreateUpdatePartnerArgs) => {
     loading.value = true;
@@ -69,8 +107,8 @@ export const useAuth = () => {
 
     user.value = data?.createUpdatePartner;
 
-    if (userCookie.value?.id) {
-      userCookie.value = data?.createUpdatePartner?.id;
+    if (userCookie.value) {
+      setAuthCookie(data?.createUpdatePartner as Partner)
     }
     //If update partner, update data on cart also
     if (cart.value?.order?.partner) {
@@ -82,7 +120,8 @@ export const useAuth = () => {
 
   const logout = async () => {
     userCookie.value = null;
-    user.value = {} as Partner;
+    user.value = getPublicUser();
+    authHydrated.value = true
     cart.value = {} as Cart
     await $sdk().odoo.mutation<null, null>({
       mutationName: MutationName.LogoutMutation,
@@ -119,8 +158,9 @@ export const useAuth = () => {
         SignInUserResponse
       >({ mutationName: MutationName.LoginMutation }, { ...params })
 
-      userCookie.value = data?.login?.user?.partner;
       user.value = data?.login?.user?.partner as Partner
+      setAuthCookie(data?.login?.user?.partner as Partner)
+      authHydrated.value = true
       cart.value.order = data?.login?.cart || {} as Cart
       if (!redirectTo) {
         redirectTo = "/my-account/personal-data"
@@ -209,6 +249,7 @@ export const useAuth = () => {
     successResetEmail,
     updatePassword,
     loadUser,
+    hydrateAuthOnce,
     updatePartner,
   };
 };

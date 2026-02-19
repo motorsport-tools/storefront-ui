@@ -4,8 +4,52 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
   const body = await readBody(event)
 
+  const requestHeaders = getRequestHeaders(event)
+  const requestHost = getRequestHost(event)
+  const secFetchSite = (requestHeaders['sec-fetch-site'] || '').toLowerCase()
+  const origin = requestHeaders.origin
+  const referer = requestHeaders.referer
+
+  // Basic CSRF hardening for browser-initiated mutation requests.
+  const isCrossSiteFetch =
+    !!secFetchSite &&
+    !['same-origin', 'same-site', 'none'].includes(secFetchSite)
+
+  if (isCrossSiteFetch) {
+    throw createError({
+      statusCode: 403,
+      statusMessage: 'Forbidden',
+      message: 'Cross-site mutation blocked',
+    })
+  }
+
+  const hasMismatchedOrigin = (() => {
+    if (!origin) return false
+    try {
+      return new URL(origin).host !== requestHost
+    } catch {
+      return true
+    }
+  })()
+
+  const hasMismatchedReferer = (() => {
+    if (!referer) return false
+    try {
+      return new URL(referer).host !== requestHost
+    } catch {
+      return true
+    }
+  })()
+
+  if (hasMismatchedOrigin || hasMismatchedReferer) {
+    throw createError({
+      statusCode: 403,
+      statusMessage: 'Forbidden',
+      message: 'Invalid mutation origin',
+    })
+  }
+
   try {
-    const xff = event.req.headers['x-forwarded-for'] || '';
     const response: any = await $fetch.raw(`${config.public.odooBaseUrl}graphql/vsf`, {
       method: 'POST',
       headers: {
@@ -18,14 +62,10 @@ export default defineEventHandler(async (event) => {
       body: { query: Mutations[body?.[0]?.mutationName], variables: body?.[1] },
     })
 
-    const cookies: string[] = response?.headers?.getSetCookie()
-    const hasSessionIdOnRequest = cookies.some((cookie: string) => cookie.includes('session_id'))
+    const cookies: string[] = response?.headers?.getSetCookie() || []
 
-    if (!hasSessionIdOnRequest) {
-      setCookie(event, 'session_id', getCookie(event, 'session_id') as string)
-    }
-
-    cookies?.forEach((cookie: string) => {
+    cookies.forEach((cookie: string) => {
+      if (!cookie?.startsWith('session_id=')) return
       appendResponseHeader(event, 'set-cookie', cookie)
     })
 

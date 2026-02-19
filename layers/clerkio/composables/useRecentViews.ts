@@ -4,9 +4,18 @@ interface ClerkProductsResponse<T = any> {
 }
 
 export const useRecentViews = () => {
-  const list = useCookie<Number[]>("recent-view-products")
-  const sid = useCookie('session_id')
-  const state = useState(`useRecentViews-${sid.value}`, () => ({
+  const recentViewsVisitor = useCookie<string>('recent-view-visitor', {
+    sameSite: 'strict',
+    default: () =>
+      globalThis.crypto?.randomUUID?.() ||
+      `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+  })
+
+  const list = useCookie<number[]>("recent-view-products", {
+    default: () => [],
+    sameSite: 'strict',
+  })
+  const state = useState(`useRecentViews-${recentViewsVisitor.value}`, () => ({
     data: [],
     loading: false,
   }
@@ -30,7 +39,7 @@ export const useRecentViews = () => {
 
   const getRecentViewsData = async (limit: number = 10) => {
     state.value.loading = true;
-    const { data } = await useAsyncData(`useRecentViews-${sid.value}-${JSON.stringify(list.value)}-${limit}`, () => $fetch<ClerkProductsResponse>('/api/search/v2/products', {
+    const { data } = await useAsyncData(`useRecentViews-${recentViewsVisitor.value}-${JSON.stringify(list.value)}-${limit}`, () => $fetch<ClerkProductsResponse>('/api/search/v2/products', {
       method: 'GET',
       query: {
         products: list.value.slice(0, limit).join(','),

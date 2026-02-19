@@ -10,7 +10,13 @@ const props = defineProps({
 })
 const { list, loading, data: recentProducts, getRecentViewsData } = useRecentViews()
 
-await getRecentViewsData(10)
+watch(
+  () => JSON.stringify(list.value || []),
+  async () => {
+    await getRecentViewsData(10)
+  },
+  { immediate: true },
+)
 </script>
 
 <template>

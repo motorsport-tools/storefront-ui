@@ -3,7 +3,7 @@ import { useCountryList } from "./useCountryList"
 
 export const useSiteSetup = () => {
     const { loadCategoriesForMegaMenu, categoriesForMegaMenu } = useMegaMenuCategories()
-    const { isAuthenticated, loadUser } = useAuth()
+    const { isAuthenticated, hydrateAuthOnce } = useAuth()
     const { loadWishlist } = useWishlist()
     const { loadCart } = useCart()
     const { loadCountries } = useCountryList()
@@ -22,9 +22,10 @@ export const useSiteSetup = () => {
 
         // 2. Client-side: Trigger fetches but don't block hydration
         const initClient = async () => {
+            await hydrateAuthOnce()
+
             if (isAuthenticated.value) {
                 await Promise.all([
-                    loadUser(true),
                     loadWishlist(),
                     loadCart(),
 

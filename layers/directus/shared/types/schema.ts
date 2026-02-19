@@ -274,7 +274,7 @@ export interface PageSectionsBlock {
 	/** @primaryKey */
 	id: number;
 	page_sections_id?: PageSection | string | null;
-	item?: BlockSlider | BlockProduct | BlockLunchbox | BlockImage | BlockRichtext | BlockGrid | string | null;
+	item?: string | null;
 	collection?: string | null;
 }
 

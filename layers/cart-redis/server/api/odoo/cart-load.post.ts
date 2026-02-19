@@ -38,15 +38,15 @@ export default defineEventHandler(async (event: any) => {
     const odooData = response?._data;
 
     // Proxy cookies back to client and extract session_id
-    const cookies: string[] = response?.headers?.getSetCookie()
+    const cookies: string[] = response?.headers?.getSetCookie() || []
     let odooSessionId = sessionId;
 
-    cookies?.forEach((cookie: string) => {
+    // Only proxy Odoo session cookie to the client.
+    cookies.forEach((cookie: string) => {
+      if (!cookie?.startsWith('session_id=')) return
       appendResponseHeader(event, 'set-cookie', cookie)
-      if (cookie.includes('session_id=')) {
-        const match = cookie.match(/session_id=([^;]+)/);
-        if (match) odooSessionId = match[1];
-      }
+      const match = cookie.match(/session_id=([^;]+)/);
+      if (match) odooSessionId = match[1];
     })
 
     if (!odooData?.data?.cart?.order) {

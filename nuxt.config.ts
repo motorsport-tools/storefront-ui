@@ -1,4 +1,16 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+const toOrigin = (value?: string) => {
+  if (!value) return ''
+  try {
+    return new URL(value).origin
+  } catch {
+    return value
+  }
+}
+
+const odooOrigin = toOrigin(process.env.NUXT_PUBLIC_ODOO_BASE_URL)
+const directusOrigin = toOrigin(process.env.DIRECTUS_URL)
+
 export default defineNuxtConfig({
   modules: [
     "@pinia/nuxt",
@@ -41,10 +53,71 @@ export default defineNuxtConfig({
     headers: {
       xFrameOptions: 'SAMEORIGIN',
       contentSecurityPolicy: {
-        'img-src': ["'self'", 'data:', '*'],
-        'script-src': ["'self'", "'unsafe-inline'", '*'],
-        'connect-src': ["'self'", process.env.DIRECTUS_URL || ''],
-        'frame-ancestors': ["'self'", process.env.DIRECTUS_URL || ''],
+        'default-src': ["'self'"],
+        'base-uri': ["'self'"],
+        'object-src': ["'none'"],
+        'img-src': [
+          "'self'",
+          'data:',
+          'blob:',
+          'https:',
+        ],
+        'script-src': [
+          "'self'",
+          "'unsafe-inline'",
+          'https://js.stripe.com',
+          'https://cdn.clerk.io',
+          'https://checkout.dev.rvvuptech.com',
+          odooOrigin,
+        ].filter(Boolean),
+        'style-src': [
+          "'self'",
+          "'unsafe-inline'",
+          'https://fonts.googleapis.com',
+        ],
+        'font-src': [
+          "'self'",
+          'data:',
+          'https://fonts.gstatic.com',
+        ],
+        'connect-src': [
+          "'self'",
+          odooOrigin,
+          directusOrigin,
+          'https://js.stripe.com',
+          'https://api.stripe.com',
+          'https://q.stripe.com',
+          'https://r.stripe.com',
+          'https://m.stripe.network',
+          'https://cdn.clerk.io',
+          'https://api.clerk.io',
+          'https://pay.google.com',
+          'https://apple-pay-gateway.apple.com',
+          'https://applepay.cdn-apple.com',
+          'https://www.paypal.com',
+          'https://*.paypal.com',
+          'https://*.klarna.com',
+          'https://*.clearpay.co.uk',
+          'https://*.afterpay.com',
+        ].filter(Boolean),
+        'frame-src': [
+          "'self'",
+          'https://js.stripe.com',
+          'https://hooks.stripe.com',
+          'https://pay.google.com',
+          'https://applepay.cdn-apple.com',
+          'https://www.paypal.com',
+          'https://*.paypal.com',
+          'https://*.klarna.com',
+          'https://*.clearpay.co.uk',
+          'https://*.afterpay.com',
+        ],
+        'worker-src': ["'self'", 'blob:'],
+        'form-action': ["'self'"],
+        'frame-ancestors': [
+          "'self'",
+          directusOrigin,
+        ].filter(Boolean),
         'upgrade-insecure-requests': true,
       }
     },

@@ -17,6 +17,7 @@ const { getRegularPrice, getSpecialPrice } = useProductAttributes()
 
 const sliderRef = ref()
 const wrapperRef = ref()
+const isShortList = computed(() => props.productTemplateList.length <= 4)
 const sliderOptions = {
   ignoreAnimations: true,
   itemsToScroll: 1,
@@ -29,7 +30,7 @@ const sliderOptions = {
   breakpoints: {
     0: {
       itemsToShow: 1,
-      snapAlign: 'center',
+      snapAlign: 'start',
     },
     430: {
       itemsToShow: 2,
@@ -68,6 +69,10 @@ const SliderInit = async () => {
         v-bind="sliderOptions"
         ref="sliderRef"
         class="product_slider"
+        :class="{ 'product_slider--short': isShortList }"
+        :items-to-show="isShortList ? 'auto' : undefined"
+        :snap-align="isShortList ? 'start' : undefined"
+        :wrap-around="!isShortList"
         aria-roledescription="carousel"
         @init="SliderInit"
       >
@@ -182,5 +187,15 @@ const SliderInit = async () => {
 .carousel__next:hover {
   background-color:hsla(0, 0%, 85%, 1);
   transition: background-color ease .3s;
+}
+
+/* Keep small result sets left-aligned and card-sized instead of stretching. */
+.product_slider--short .carousel__track {
+  justify-content: flex-start;
+}
+
+.product_slider--short .carousel__slide {
+  flex: 0 0 auto;
+  width: min(270px, calc(100% - 0.5rem)) !important;
 }
 </style>

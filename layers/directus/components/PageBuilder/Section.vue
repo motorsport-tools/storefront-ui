@@ -34,7 +34,7 @@ const styleObject = computed(() => ({
         :class="sectionData?.full_width ? 'w-full' : 'narrow-container'"
     >
         <div 
-            class="flex flex-col px-4 lg:px-0"
+            class="flex flex-col px-4 lg:px-0 overflow-hidden"
             :style="styleObject"
         >
             <component

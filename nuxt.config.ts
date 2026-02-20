@@ -68,6 +68,7 @@ export default defineNuxtConfig({
           'https://js.stripe.com',
           'https://cdn.clerk.io',
           'https://checkout.dev.rvvuptech.com',
+          'https://mautic.motorsport-tools.co.uk',
           odooOrigin,
         ].filter(Boolean),
         'style-src': [

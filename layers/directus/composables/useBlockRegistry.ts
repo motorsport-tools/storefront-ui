@@ -5,6 +5,8 @@ import BlocksBlockGrid from '#layers/directus/components/Blocks/BlockGrid.vue'
 import BlocksBlockRichText from '#layers/directus/components/Blocks/BlockRichText.vue'
 import BlocksBlockImage from '#layers/directus/components/Blocks/BlockImage.vue'
 import BlocksBlockButton from '#layers/directus/components/Blocks/BlockButton.vue'
+import BlocksBlockCode from '#layers/directus/components/Blocks/BlockCode.vue'
+import BlocksBlockScript from '#layers/directus/components/Blocks/BlockScript.vue'
 
 export default function useBlockRegistry() {
 
@@ -15,7 +17,9 @@ export default function useBlockRegistry() {
         block_grid: BlocksBlockGrid,
         block_richtext: BlocksBlockRichText,
         block_image: BlocksBlockImage,
-        block_button: BlocksBlockButton
+        block_button: BlocksBlockButton,
+        block_code: BlocksBlockCode,
+        block_script: BlocksBlockScript
     }
 
     const getBlockComponent = (collection: string) => {

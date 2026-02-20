@@ -13,6 +13,11 @@ html {
   --dodger-blue-500: #1656AD;
 }
 
+.text-body {
+  @apply text-base lg:text-lg xl:text-xl;
+  text-transform: none;
+}
+
 @layer base {
 
   h1,
@@ -23,6 +28,37 @@ html {
   h6 {
     @apply font-headings;
     text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  h1,
+  .h1 {
+    @apply text-5xl md:text-6xl lg:text-7xl xl:text-8xl;
+  }
+
+  h2,
+  .h2 {
+    @apply text-4xl md:text-5xl lg:text-6xl xl:text-7xl;
+  }
+
+  h3,
+  .h3 {
+    @apply text-3xl md:text-4xl lg:text-5xl xl:text-6xl;
+  }
+
+  h4,
+  .h4 {
+    @apply text-2xl md:text-3xl lg:text-4xl xl:text-5xl;
+  }
+
+  h5,
+  .h5 {
+    @apply text-xl md:text-2xl lg:text-3xl xl:text-4xl;
+  }
+
+  h6,
+  .h6 {
+    @apply text-lg md:text-xl lg:text-2xl xl:text-3xl;
   }
 
   .anti-aliasing {
@@ -88,5 +124,110 @@ html {
 
   .product__img:hover:not(.main__img)::after {
     background-color: rgba(19, 6, 6, 0.08);
+  }
+}
+
+.mauticform_wrapper {
+  @apply w-auto lg:w-full max-w-[600px] mx-auto box-border;
+}
+
+.mauticform_wrapper form,
+.mauticform_wrapper .mauticform-innerform,
+.mauticform_wrapper .mauticform-page-wrapper {
+  @apply w-full max-w-full box-border;
+}
+
+.mauticform_wrapper .mauticform-page-wrapper {
+  @apply flex flex-wrap -mx-2;
+}
+
+.mauticform_wrapper .mauticform-row {
+  @apply mb-4 px-2 w-full box-border;
+  float: none !important;
+  clear: none !important;
+}
+
+.mauticform_wrapper .mauticform-row[style*="width:50%"],
+.mauticform_wrapper .mauticform-row[style*="width: 50%"] {
+  @apply w-1/2;
+  flex: 0 0 50% !important;
+  max-width: 50% !important;
+  gap: 1rem;
+}
+
+.mauticform_wrapper .mauticform-row[style*="width:100%"],
+.mauticform_wrapper .mauticform-row[style*="width: 100%"] {
+  @apply w-full;
+  flex: 0 0 100% !important;
+  max-width: 100% !important;
+  clear: both;
+}
+
+.mauticform_wrapper .mauticform-label {
+  @apply block text-sm font-medium pb-0.5 text-neutral-900;
+}
+
+.mauticform_wrapper .mauticform-input,
+.mauticform_wrapper .mauticform-textarea,
+.mauticform_wrapper select.mauticform-select {
+  @apply w-full px-4 bg-white rounded-md ring-1 ring-[#222222] text-neutral-900;
+  @apply hover:ring-primary-700 focus:ring-primary-700 outline-none;
+}
+
+.mauticform_wrapper .mauticform-input,
+.mauticform_wrapper select.mauticform-select {
+  @apply h-[40px];
+}
+
+.mauticform_wrapper .mauticform-textarea {
+  @apply min-h-[120px] py-2;
+}
+
+.mauticform_wrapper .mauticform-required .mauticform-label::after {
+  content: ' *';
+  @apply text-negative-700;
+}
+
+.mauticform_wrapper .mauticform-errormsg {
+  @apply mt-1 text-sm text-negative-700;
+}
+
+.mauticform_wrapper .mauticform-error {
+  @apply mb-3 rounded-md border border-negative-700 bg-negative-100 px-3 py-2 text-sm text-negative-700;
+}
+
+.mauticform_wrapper .mauticform-message {
+  @apply mb-3 rounded-md border border-positive-700 bg-positive-100 px-3 py-2 text-sm text-positive-700;
+}
+
+.mauticform_wrapper .mauticform-error:empty,
+.mauticform_wrapper .mauticform-message:empty {
+  display: none;
+}
+
+.mauticform_wrapper .mauticform-error:not(:empty),
+.mauticform_wrapper .mauticform-message:not(:empty) {
+  display: block;
+}
+
+.mauticform_wrapper .mauticform-button-wrapper {
+  @apply mt-2;
+}
+
+.mauticform_wrapper .mauticform-button,
+.mauticform_wrapper .btn.mauticform-button {
+  @apply inline-flex items-center justify-center rounded-md px-6 py-3 text-base font-semibold text-white;
+  @apply bg-primary-700 hover:bg-primary-800 active:bg-primary-900;
+  @apply disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+@media (max-width: 767px) {
+
+  .mauticform_wrapper .mauticform-row[style*="width:50%"],
+  .mauticform_wrapper .mauticform-row[style*="width: 50%"] {
+    @apply w-full;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
   }
 }

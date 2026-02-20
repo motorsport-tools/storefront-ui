@@ -26,6 +26,47 @@ export interface BlockButton {
 	title?: string | null;
 }
 
+export interface BlockCode {
+	/** @primaryKey */
+	id: number;
+	sort?: number | null;
+	user_created?: string | null;
+	date_created?: string | null;
+	user_updated?: string | null;
+	date_updated?: string | null;
+	content?: string | null;
+}
+
+export interface BlockColumnItem {
+	/** @primaryKey */
+	id: number;
+	sort?: number | null;
+	user_created?: string | null;
+	date_created?: string | null;
+	user_updated?: string | null;
+	date_updated?: string | null;
+}
+
+export interface BlockColumn {
+	/** @primaryKey */
+	id: number;
+	sort?: number | null;
+	user_created?: string | null;
+	date_created?: string | null;
+	user_updated?: string | null;
+	date_updated?: string | null;
+	items?: BlockColumnsItem[] | string[];
+}
+
+export interface BlockColumnsItem {
+	/** @primaryKey */
+	id: number;
+	block_columns_id?: BlockColumn | string | null;
+	item?: BlockColumnItem | string | null;
+	collection?: string | null;
+	sort?: number | null;
+}
+
 export interface BlockGrid {
 	/** @primaryKey */
 	id: number;
@@ -121,6 +162,17 @@ export interface BlockProduct {
 }
 
 export interface BlockRichtext {
+	/** @primaryKey */
+	id: number;
+	sort?: number | null;
+	user_created?: string | null;
+	date_created?: string | null;
+	user_updated?: string | null;
+	date_updated?: string | null;
+	content?: string | null;
+}
+
+export interface BlockScript {
 	/** @primaryKey */
 	id: number;
 	sort?: number | null;
@@ -267,6 +319,9 @@ export interface PageSection {
 	background_color: string;
 	/** @required */
 	background_size: 'cover' | 'contain';
+	border_radius?: number | null;
+	border_width?: number | null;
+	border_color?: string | null;
 	blocks?: PageSectionsBlock[] | string[];
 }
 
@@ -274,7 +329,7 @@ export interface PageSectionsBlock {
 	/** @primaryKey */
 	id: number;
 	page_sections_id?: PageSection | string | null;
-	item?: string | null;
+	item?: BlockSlider | BlockProduct | BlockLunchbox | BlockImage | BlockRichtext | BlockGrid | BlockButton | BlockColumn | BlockCode | BlockScript | string | null;
 	collection?: string | null;
 }
 
@@ -391,6 +446,10 @@ export interface DirectusTranslation {
 
 export interface Schema {
 	block_button: BlockButton[];
+	block_code: BlockCode[];
+	block_column_item: BlockColumnItem[];
+	block_columns: BlockColumn[];
+	block_columns_items: BlockColumnsItem[];
 	block_grid: BlockGrid[];
 	block_grid_items: BlockGridItem[];
 	block_image: BlockImage[];
@@ -399,6 +458,7 @@ export interface Schema {
 	block_lunchbox_section_content: BlockLunchboxSectionContent[];
 	block_products: BlockProduct[];
 	block_richtext: BlockRichtext[];
+	block_script: BlockScript[];
 	block_slider: BlockSlider[];
 	block_slider_slides: BlockSliderSlide[];
 	block_slider_slides_block_content: BlockSliderSlidesBlockContent[];
@@ -418,6 +478,10 @@ export interface Schema {
 
 export enum CollectionNames {
 	block_button = 'block_button',
+	block_code = 'block_code',
+	block_column_item = 'block_column_item',
+	block_columns = 'block_columns',
+	block_columns_items = 'block_columns_items',
 	block_grid = 'block_grid',
 	block_grid_items = 'block_grid_items',
 	block_image = 'block_image',
@@ -426,6 +490,7 @@ export enum CollectionNames {
 	block_lunchbox_section_content = 'block_lunchbox_section_content',
 	block_products = 'block_products',
 	block_richtext = 'block_richtext',
+	block_script = 'block_script',
 	block_slider = 'block_slider',
 	block_slider_slides = 'block_slider_slides',
 	block_slider_slides_block_content = 'block_slider_slides_block_content',

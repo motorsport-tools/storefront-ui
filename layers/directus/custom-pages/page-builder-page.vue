@@ -91,7 +91,7 @@ onMounted(() => {
 </script>
 <template>
     <main 
-        class="w-full"
+        class="page-builder-page w-full"
         data-testid="page-builder-page"
     >
         <NuxtErrorBoundary> 

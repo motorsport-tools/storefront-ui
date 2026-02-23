@@ -13,10 +13,46 @@ html {
   --dodger-blue-500: #1656AD;
 }
 
-.text-body {
+.page-builder-page h1,
+.page-builder-page .h1 {
+  @apply text-5xl lg:text-6xl xl:text-7xl;
+}
+
+.page-builder-page h2,
+.page-builder-page .h2 {
+  @apply text-4xl lg:text-5xl xl:text-6xl;
+}
+
+.page-builder-page h3,
+.page-builder-page .h3 {
+  @apply text-3xl lg:text-4xl xl:text-5xl;
+}
+
+.page-builder-page h4,
+.page-builder-page .h4 {
+  @apply text-2xl lg:text-3xl xl:text-4xl;
+}
+
+.page-builder-page h5,
+.page-builder-page .h5 {
+  @apply text-xl lg:text-2xl xl:text-3xl;
+}
+
+.page-builder-page h6,
+.page-builder-page .h6 {
+  @apply text-lg lg:text-xl xl:text-2xl;
+}
+
+h1.text-body,
+h2.text-body,
+h3.text-body,
+h4.text-body,
+h5.text-body,
+h6.text-body {
   @apply text-base lg:text-lg xl:text-xl;
   text-transform: none;
 }
+
 
 @layer base {
 
@@ -29,36 +65,6 @@ html {
     @apply font-headings;
     text-transform: uppercase;
     font-weight: 700;
-  }
-
-  h1,
-  .h1 {
-    @apply text-5xl md:text-6xl lg:text-7xl xl:text-8xl;
-  }
-
-  h2,
-  .h2 {
-    @apply text-4xl md:text-5xl lg:text-6xl xl:text-7xl;
-  }
-
-  h3,
-  .h3 {
-    @apply text-3xl md:text-4xl lg:text-5xl xl:text-6xl;
-  }
-
-  h4,
-  .h4 {
-    @apply text-2xl md:text-3xl lg:text-4xl xl:text-5xl;
-  }
-
-  h5,
-  .h5 {
-    @apply text-xl md:text-2xl lg:text-3xl xl:text-4xl;
-  }
-
-  h6,
-  .h6 {
-    @apply text-lg md:text-xl lg:text-2xl xl:text-3xl;
   }
 
   .anti-aliasing {

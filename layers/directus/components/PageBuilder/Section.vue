@@ -38,7 +38,7 @@ const styleObject = computed(() => ({
             :style="styleObject"
         >
             <component
-                class=""
+                :class="sectionData?.full_width ? '' : 'py-4'"
                 v-for="block in sectionData?.blocks"
                 :key="block.id"
                 :is="getBlockComponent(block.collection)"

@@ -13,36 +13,6 @@ html {
   --dodger-blue-500: #1656AD;
 }
 
-.page-builder-page h1,
-.page-builder-page .h1 {
-  @apply text-5xl lg:text-6xl xl:text-7xl;
-}
-
-.page-builder-page h2,
-.page-builder-page .h2 {
-  @apply text-4xl lg:text-5xl xl:text-6xl;
-}
-
-.page-builder-page h3,
-.page-builder-page .h3 {
-  @apply text-3xl lg:text-4xl xl:text-5xl;
-}
-
-.page-builder-page h4,
-.page-builder-page .h4 {
-  @apply text-2xl lg:text-3xl xl:text-4xl;
-}
-
-.page-builder-page h5,
-.page-builder-page .h5 {
-  @apply text-xl lg:text-2xl xl:text-3xl;
-}
-
-.page-builder-page h6,
-.page-builder-page .h6 {
-  @apply text-lg lg:text-xl xl:text-2xl;
-}
-
 h1.text-body,
 h2.text-body,
 h3.text-body,

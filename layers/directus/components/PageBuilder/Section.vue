@@ -38,7 +38,7 @@ const styleObject = computed(() => ({
             :style="styleObject"
         >
             <component
-                class="py-4"
+                class=""
                 v-for="block in sectionData?.blocks"
                 :key="block.id"
                 :is="getBlockComponent(block.collection)"

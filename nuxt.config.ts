@@ -117,6 +117,7 @@ export default defineNuxtConfig({
         'form-action': ["'self'"],
         'frame-ancestors': [
           "'self'",
+          'https://pay.google.com',
           directusOrigin,
         ].filter(Boolean),
         'upgrade-insecure-requests': true,

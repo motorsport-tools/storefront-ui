@@ -86,6 +86,14 @@ h6.text-body {
     }
   }
 
+  .page-builder-page p {
+    margin-bottom: 1rem;
+  }
+
+  .page-builder-page p:last-child {
+    margin-bottom: 0;
+  }
+
   .grid-areas-product-page {
     grid-template-areas:
       'left-top right'

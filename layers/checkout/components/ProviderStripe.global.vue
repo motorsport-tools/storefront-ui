@@ -108,6 +108,8 @@ const initStripeCheckout = async () => {
         emit('paymentLoading', false);
     })
 
+    
+
     stripeDropin.value?.on('ready', event => {
         loading.value =false
         emit('paymentLoading', false);

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { 
-    SfButton,
+    SfButton
 } from '@storefront-ui/vue'
 const {
     manageSetting,

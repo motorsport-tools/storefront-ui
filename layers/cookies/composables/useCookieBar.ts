@@ -33,7 +33,6 @@ export const useCookieBar = () => {
     const cookieGroups = computed<CookieGroup[]>(() => {
         const groups = (state.value.data?.groups as CookieGroup[]) || [];
         return groups.map(group => {
-            const { consent: groupConsent } = useCookieConsent("group_" + group.id);
             return {
                 ...group,
                 get showMore() {
@@ -44,59 +43,64 @@ export const useCookieBar = () => {
                         state.value.showMore[group.id] = val;
                     }
                 },
-                get accepted() { return groupConsent.value; },
-                set accepted(val: boolean) { groupConsent.value = val; },
+                get accepted() { return group.accepted; },
+                set accepted(val: boolean) { group.accepted = val; },
                 cookies: group.cookies.map(cookie => {
-                    const { consent } = useCookieConsent(cookie.name);
                     return {
                         ...cookie,
-                        get accepted() { return consent.value; },
-                        set accepted(val: boolean) { consent.value = val; }
+                        get accepted() { return cookie.accepted; },
+                        set accepted(val: boolean) { cookie.accepted = val; }
                     };
                 })
             } as CookieGroup;
         });
     });
 
-    const initializeCookies = () => {
+    const initializeCookies = (isMounted = false) => {
         const runtimeCookiesConfig = useRuntimeConfig().public.cookieGroups as CookieBarConfig;
-        const browserCookies = useCookie<{ hash: string | undefined; groups: Record<string, Record<string, boolean>> } | null>("consent", {
-            default: () => null,
-            path: "/"
-        });
-
-        const hasConsent = !!(browserCookies.value && typeof browserCookies.value === 'object' && browserCookies.value.groups);
-        const browserHash = (browserCookies.value && typeof browserCookies.value === 'object') ? (browserCookies.value.hash ?? "") : "";
-
-        const configHash = runtimeCookiesConfig.configHash || useSha256(runtimeCookiesConfig.groups);
-
-        runtimeCookiesConfig.groups.forEach((group) => {
-            let groupHasAccepted = false;
-            group.cookies.forEach((cookie) => {
-                const isAccepted = group.name === ESSENTIAL_COOKIE_GROUP || (browserCookies.value?.groups?.[group.name]?.[cookie.name] ?? false);
-                const { consent } = useCookieConsent(cookie.name);
-                consent.value = isAccepted;
-                if (isAccepted) {
-                    groupHasAccepted = true;
-                    if (cookie.script && cookie.script.length) fetchScripts(cookie.script);
-                }
-            });
-            const { consent: groupConsent } = useCookieConsent("group_" + group.id);
-            groupConsent.value = groupHasAccepted;
-        });
 
         state.value.data = runtimeCookiesConfig;
 
         if (!import.meta.server) {
-            state.value.visible = !hasConsent || (configHash !== "" && browserHash !== configHash);
-            state.value.manageSetting = false;
-        } else {
-            state.value.visible = false;
+            const browserCookies = useCookie<{ hash: string | undefined; groups: Record<string, Record<string, boolean>> } | null>("consent", {
+                default: () => null,
+                path: "/"
+            });
+
+            const hasConsent = !!(browserCookies.value && typeof browserCookies.value === 'object' && browserCookies.value.groups);
+            const browserHash = (browserCookies.value && typeof browserCookies.value === 'object') ? (browserCookies.value.hash ?? "") : "";
+            const configHash = runtimeCookiesConfig.configHash || useSha256(runtimeCookiesConfig.groups);
+
+            runtimeCookiesConfig.groups.forEach((group) => {
+                let groupHasAccepted = false;
+                group.cookies.forEach((cookie) => {
+                    const isAccepted = group.name === ESSENTIAL_COOKIE_GROUP || (browserCookies.value?.groups?.[group.name]?.[cookie.name] ?? false);
+                    cookie.accepted = isAccepted;
+
+                    const { consent } = useCookieConsent(cookie.name);
+                    consent.value = isAccepted;
+
+                    if (isAccepted) {
+                        groupHasAccepted = true;
+                        if (isMounted && cookie.script && cookie.script.length) fetchScripts(cookie.script);
+                    }
+                });
+                group.accepted = groupHasAccepted;
+                const { consent: groupConsent } = useCookieConsent("group_" + group.id);
+                groupConsent.value = groupHasAccepted;
+            });
+
+            if (isMounted) {
+                state.value.visible = !hasConsent || (configHash !== "" && browserHash !== configHash);
+                state.value.manageSetting = false;
+            }
         }
     };
 
+    initializeCookies(false);
+
     onMounted(() => {
-        initializeCookies();
+        initializeCookies(true);
     });
 
     const setConsent = () => {
@@ -109,9 +113,16 @@ export const useCookieBar = () => {
         let cookieRevoke = false;
 
         const jsonCookie = cookieGroups.value.reduce((accumulator: Record<string, Record<string, boolean>>, group) => {
+
+            const { consent: groupConsent } = useCookieConsent("group_" + group.id);
+            groupConsent.value = group.accepted;
+
             accumulator[group.name] = group.cookies.reduce((childAccumulator: Record<string, boolean>, cookie) => {
                 const currentStatus = !!browserCookies.value?.groups?.[group.name]?.[cookie.name] || false;
                 childAccumulator[cookie.name] = cookie.accepted;
+
+                const { consent } = useCookieConsent(cookie.name);
+                consent.value = cookie.accepted;
 
                 if (currentStatus && !cookie.accepted) {
                     cookieRevoke = true;
@@ -133,7 +144,8 @@ export const useCookieBar = () => {
         consentCookie.value = { hash: configHash, groups: jsonCookie };
         state.value.visible = false;
         state.value.manageSetting = false;
-        if (cookieRevoke) router.go(0);
+
+        router.go(0);
     };
 
     const setAllCookiesState = (accepted: boolean) => {

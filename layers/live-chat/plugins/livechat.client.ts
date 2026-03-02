@@ -26,14 +26,12 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
 
   nuxtApp.hook('app:mounted', () => {
-    watch(consent, (hasConsent) => {
-      if (hasConsent) {
-        if ('requestIdleCallback' in window) {
-          requestIdleCallback(loadLiveChat, { timeout: 10000 })
-        } else {
-          setTimeout(loadLiveChat, 2000)
-        }
+    if (consent.value) {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadLiveChat, { timeout: 10000 })
+      } else {
+        setTimeout(loadLiveChat, 2000)
       }
-    }, { immediate: true })
+    }
   })
 })

@@ -11,7 +11,7 @@ export default {
             showMore: true,
             cookies: [
                 {
-                    name: "cookieBar.essentials.cookies.session.label",
+                    name: "cookieBar.essentials.cookies.session.name",
                     provider: "cookieBar.essentials.cookies.session.provider",
                     status: "cookieBar.essentials.cookies.session.status",
                     privacyPolicy: "/privacy-policy",
@@ -19,7 +19,7 @@ export default {
                     accepted: true,
                 },
                 {
-                    name: "cookieBar.essentials.cookies.payment.label",
+                    name: "cookieBar.essentials.cookies.payment.name",
                     provider: "cookieBar.essentials.cookies.payment.provider",
                     status: "cookieBar.essentials.cookies.payment.status",
                     privacyPolicy: "https://stripe.com/gb/privacy",
@@ -36,7 +36,7 @@ export default {
             showMore: true,
             cookies: [
                 {
-                    name: "cookieBar.functional.cookies.recentlyViewed.label",
+                    name: "cookieBar.functional.cookies.recentlyViewed.name",
                     provider: "cookieBar.functional.cookies.recentlyViewed.provider",
                     status: "cookieBar.functional.cookies.recentlyViewed.status",
                     privacyPolicy: "/privacy-policy",
@@ -44,7 +44,7 @@ export default {
                     accepted: false,
                 },
                 {
-                    name: "cookieBar.functional.cookies.chat.label",
+                    name: "cookieBar.functional.cookies.chat.name",
                     provider: "cookieBar.functional.cookies.chat.provider",
                     status: "cookieBar.functional.cookies.chat.status",
                     privacyPolicy: "/privacy-policy",

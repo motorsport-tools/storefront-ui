@@ -8,7 +8,7 @@ import {
     SfDrawer,
     SfButton,
     SfIconClose,
-    useTrapFocus, 
+    useTrapFocus,
 } from '@storefront-ui/vue'
 const {
     cookieGroups,
@@ -21,14 +21,10 @@ const {
     changeManageSettingsState,
 } = useCookieBar()
 
-console.log('Cookie Groups', cookieGroups.value)
-console.log('Cookie Bar Visible: ', visible.value)
-
 const openManageSettings = () => {
-    console.log('Open Manage Settings')
     changeManageSettingsState()
-    console.log('Manage Settings: ', manageSetting.value)
 }
+
 </script>
 
 <template>

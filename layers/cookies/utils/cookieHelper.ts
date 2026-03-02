@@ -3,7 +3,7 @@ export interface Cookie {
     provider?: string;
     status?: string;
     privacyPolicy?: string;
-    Lifespan?: string;
+    lifespan?: string;
     accepted: boolean;
     script?: string[];
     cookieNames?: string[];
@@ -31,16 +31,21 @@ const convertToDays = (daysInString: string | number): number => {
 };
 
 const getMinimumLifeSpan = (cookieGroups: CookieGroup[]): number => {
-    let minimum = 999999;
+    let minimum = 365; // Default to 1 year
     cookieGroups.forEach((group) => {
         const accepted = group.cookies.filter((cookie) => cookie.accepted);
         accepted.forEach((cookie) => {
-            if (cookie.Lifespan && minimum > convertToDays(cookie.Lifespan)) {
-                minimum = convertToDays(cookie.Lifespan);
+            if (cookie.lifespan) {
+                const days = convertToDays(cookie.lifespan);
+                if (!isNaN(days) && minimum > days) {
+                    minimum = days;
+                }
             }
         });
     });
-    return 60 * 60 * 24 * minimum;
+    // Cap at 365 days to avoid browser rejection (Chrome caps @ 400 days)
+    const lifespanInDays = Math.min(minimum, 365);
+    return 60 * 60 * 24 * lifespanInDays;
 };
 
 export const cookieHelper = () => {

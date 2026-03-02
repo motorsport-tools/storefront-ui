@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import { 
-    SfCheckbox, 
-    SfIconBase, 
-    SfLink, 
-    SfTooltip,
-    SfLoaderCircular,
-    SfDrawer,
     SfButton,
-    SfIconClose,
-    useTrapFocus,
 } from '@storefront-ui/vue'
 const {
     manageSetting,

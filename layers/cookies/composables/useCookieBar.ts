@@ -31,7 +31,7 @@ export const useCookieBar = () => {
         console.log('Runtime Cookies', runtimeCookies);
         const { configHash, ...configWithoutHash } = runtimeCookies;
         runtimeCookies.configHash = useSha256(configWithoutHash);
-        const browserCookies = useCookie<{ hash: string; groups: Record<string, Record<string, boolean>> } | null>("consent-cookie", { default: () => null });
+        const browserCookies = useCookie<{ hash: string; groups: Record<string, Record<string, boolean>> } | null>("consent", { default: () => null });
         const browserHash = browserCookies.value?.hash ?? "";
 
         runtimeCookies.groups.forEach((group) => {
@@ -48,12 +48,13 @@ export const useCookieBar = () => {
         });
         state.value.data = runtimeCookies;
         state.value.visible = browserHash !== runtimeCookies.configHash;
+        state.value.manageSetting = false;
     };
 
     const setConsent = () => {
         const { getMinimumLifeSpan } = cookieHelper();
         const router = useRouter();
-        const browserCookies = useCookie<{ groups: Record<string, Record<string, boolean>> } | null>("consent-cookie", { default: () => null });
+        const browserCookies = useCookie<{ groups: Record<string, Record<string, boolean>> } | null>("consent", { default: () => null });
         let cookieRevoke = false;
 
         const jsonCookie = cookieGroups.value.reduce((accumulator: Record<string, Record<string, boolean>>, group) => {
@@ -73,12 +74,13 @@ export const useCookieBar = () => {
             return accumulator;
         }, {});
 
-        const consentCookie = useCookie("consent-cookie", {
+        const consentCookie = useCookie("consent", {
             path: "/",
             maxAge: getMinimumLifeSpan(cookieGroups.value)
         });
         consentCookie.value = JSON.stringify({ hash: state.value.data.configHash, groups: jsonCookie });
         changeVisibilityState();
+        changeManageSettingsState();
         if (cookieRevoke) router.go(0);
     };
 

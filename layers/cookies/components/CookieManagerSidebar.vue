@@ -40,7 +40,6 @@ const NuxtLink = resolveComponent('NuxtLink')
 const localePath = useLocalePath()
 
 const privacyPolicy = computed(() => localePath('/privacy-policy'))
-const cookieNotice = computed(() => localePath('/cookies'))
 
 const triggerGroupConsent = (group: CookieGroup) => {
     group.cookies.forEach((cookie: Cookie) => {

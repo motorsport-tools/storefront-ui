@@ -12,6 +12,7 @@ interface Props {
     availableThreshold: number,
     isStock: boolean,
     allowOutOfStockOrder: boolean,
+    outOfStockMessage: string,
 
 }
 const props = defineProps<Props>()
@@ -62,6 +63,12 @@ const subscribeStock = async () => {
             data-text="stock-message"
         >
             {{ $t('stock.availability', { stock }) }}
+        </div>
+        <div 
+            v-if="allowOutOfStockOrder && stock === 0 && outOfStockMessage"
+            class="py-1 px-1 text-xs text-center border rounded text-neutral-600 bg-neutral-100"
+            v-html="outOfStockMessage"
+        >
         </div>
     </div>
     <div

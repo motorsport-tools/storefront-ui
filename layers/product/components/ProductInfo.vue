@@ -139,6 +139,7 @@ watch(() => productVariant.value?.id, (newId) => {
                     :availableThreshold="productVariant?.combinationInfoVariant?.available_threshold"
                     :isStock="isStock"
                     :allowOutOfStockOrder="productVariant?.combinationInfoVariant?.allow_out_of_stock_order || false"
+                    :outOfStockMessage="productVariant?.combinationInfoVariant?.out_of_stock_message || ''"
                 />
             </ClientOnly>
         </div>

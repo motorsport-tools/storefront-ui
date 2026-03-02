@@ -1,5 +1,4 @@
 import { useCookieConsent } from "../../cookies/composables/useCookieConsent"
-import { watch } from "vue"
 
 export default defineNuxtPlugin((nuxtApp) => {
   const { consent } = useCookieConsent("cookieBar.functional.cookies.chat.name")
@@ -27,12 +26,14 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
 
   nuxtApp.hook('app:mounted', () => {
-    if (consent.value) {
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(loadLiveChat, { timeout: 10000 })
-      } else {
-        setTimeout(loadLiveChat, 2000)
+    watch(consent, (hasConsent) => {
+      if (hasConsent) {
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadLiveChat, { timeout: 10000 })
+        } else {
+          setTimeout(loadLiveChat, 2000)
+        }
       }
-    }
+    }, { immediate: true })
   })
 })

@@ -553,5 +553,61 @@
       "Done": "Shipped",
       "Cancel": "Cancelled"
     }
+  },
+  "cookieBar": {
+    "privacyPolicy": "Privacy Policy",
+    "about": {
+      "label": "We Value Your Privacy",
+      "description": "We use cookies to make this site work. Cookies are small text files stored on your device that help us improve the site and your experience.\nFor detailed information or to update your preferences",
+      "manageLabel": "Manage Cookie Settings",
+      "manageDescription": "Manage your cookie settings here",
+      "acceptLabel": "Accept All Cookies",
+      "acceptSelectionLabel": "Accept Selected Cookies",
+      "rejectLabel": "Reject Non-essential Cookies"
+    },
+    "manageSettings": {
+      "label": "Manage Cookie Settings",
+      "description": "Using the menus below, you can learn more about the purposes for which we use cookies and personal data.\n\nConfigure your preferences below:\nYour choices may impact your user experience.",
+      "showLess": "Show less",
+      "showMore": "Show more"
+    },
+    "keys": {
+      "provider": "Provider",
+      "status": "Status",
+      "privacyPolicy": "Privacy Policy",
+      "lifespan": "Lifespan"
+    },
+    "essentials": {
+      "label": "Essentials",
+      "description": "Necessary for the website to function and cannot be switched off in our systems. Includes checkout, basket, login and payment systems.",
+      "cookies": {
+        "session": {
+          "name": "Session",
+          "provider": "Motorsport-Tools",
+          "status": "Stores information about the current session, login and basket."
+        },
+        "payment": {
+          "name": "Payment",
+          "provider": "Stripe",
+          "status": "Required for payment processing via our payment provider Stripe."
+        }
+      }
+    },
+    "functional": {
+      "label": "Functional",
+      "description": "Provides enhanced functionality and personalisation.",
+      "cookies": {
+        "recentlyViewed": {
+          "name": "Recently Viewed",
+          "provider": "Motorsport-Tools",
+          "status": "Stores information about recently viewed products to improve user experience"
+        },
+        "chat": {
+          "name": "Chat",
+          "provider": "Motorsport-Tools",
+          "status": "Stores information about the live chat session."
+        }
+      }
+    }
   }
 }

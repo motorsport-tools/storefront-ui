@@ -16,5 +16,6 @@ router.afterEach((to, from) => {
     <NuxtLayout :key="$route.meta.layout">
       <NuxtPage :page-key="(route) => route.path" />
     </NuxtLayout>
+    <CookieBanner />
   </div>
 </template>

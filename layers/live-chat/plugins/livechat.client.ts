@@ -32,6 +32,10 @@ export default defineNuxtPlugin((nuxtApp) => {
       } else {
         setTimeout(loadLiveChat, 2000)
       }
+    } else {
+      document.cookie = "im_livechat_history=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/"
+      document.cookie = "im_livechat_session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/"
+      document.cookie = "im_livechat_previous_operator_pid=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/"
     }
   })
 })

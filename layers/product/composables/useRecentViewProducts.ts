@@ -1,5 +1,15 @@
+
+const { consent } = useCookieConsent("cookieBar.functional.cookies.recentlyViewed.name")
+
 export const useRecentViewProducts = () => {
-  const list = useCookie<Number[]>("recent-view-products");
+  if (!consent.value) {
+    return {
+      addProductToRecentViews: () => { },
+      removeProductFromRecentViews: () => { },
+      list: computed(() => []),
+    }
+  }
+  const list = useCookie<Number[]>("recent-view-products")
 
   const addProductToRecentViews = (id: number) => {
     if (list.value?.includes(id)) {

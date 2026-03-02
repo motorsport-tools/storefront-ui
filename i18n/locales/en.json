@@ -563,7 +563,8 @@
       "manageDescription": "Manage your cookie settings here",
       "acceptLabel": "Accept All Cookies",
       "acceptSelectionLabel": "Accept Selected Cookies",
-      "rejectLabel": "Reject Non-essential Cookies"
+      "rejectLabel": "Reject Non-essential Cookies",
+      "cookiePreferences": "Cookie Preferences"
     },
     "manageSettings": {
       "label": "Manage Cookie Settings",

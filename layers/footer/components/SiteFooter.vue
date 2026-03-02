@@ -31,13 +31,30 @@ const props = defineProps<Props>()
 
 const socialLinks = computed(() => props.globals?.social_links || [])   
 const org = computed(() => props.globals?.organization || {})
+
+const { changeManageSettingsState } = useCookieBar()
+const NuxtLink = resolveComponent('NuxtLink')
+
+const openManageSettings = () => {
+    changeManageSettingsState()
+}
 </script>
 <template>
     <footer class="pt-10 bg-[#353535]">
         <div
-            class="grid md:justify-items-center grid-cols-[1fr_1fr] md:grid-cols-[repeat(4,1fr)] narrow-container"
+            class="pb-10 grid md:justify-items-center grid-cols-[1fr_1fr] md:grid-cols-[repeat(4,1fr)] narrow-container"
         >
-
+            <nav
+                class="flex justify-between items-center"
+            >
+                <SfLink
+                    :tag="NuxtLink"
+                    @click="openManageSettings()"
+                    class="cursor-pointer !text-gray-400 text-sm no-underline hover:!underline hover:!text-white"
+                >
+                    {{ $t('cookieBar.about.cookiePreferences') }}
+                </SfLink>
+            </nav>
         </div>
         <div class="bg-neutral-900">
             <div

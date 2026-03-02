@@ -11,13 +11,9 @@ import {
     useTrapFocus,
 } from '@storefront-ui/vue'
 const {
-    cookieGroups,
-    data: cookieJson,
-    visible,
     manageSetting,
-    setConsent,
+    visible,
     setAllCookiesState,
-    changeVisibilityState,
     changeManageSettingsState,
 } = useCookieBar()
 
@@ -34,7 +30,6 @@ const openManageSettings = () => {
     />
     <CookieManagerSidebar
         class="!z-[98]"
-        :isOpen="manageSetting"
     />
     <div v-if="visible" class="fixed bottom-0 left-0 right-0 z-[95]">
         <div class="bg-white p-4 border-t border-gray-200">

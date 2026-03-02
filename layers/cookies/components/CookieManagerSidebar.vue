@@ -1,40 +1,24 @@
 <script setup lang="ts">
 import {
     SfCheckbox,
-    SfLoaderCircular,
     SfDrawer,
     SfLink,
     SfButton,
-    SfIconClose,
     useTrapFocus, 
 } from '@storefront-ui/vue'
 
-const props = defineProps({
-    isOpen: {
-        type: Boolean,
-        default: false
-    }
-})
-console.log('Is Open: ', props.isOpen)
-watch(() => props.isOpen, (newVal) => {
-    console.log('Is Open: ', newVal)
-})
-
 const {
     cookieGroups,
-    data: cookieJson,
-    visible,
     manageSetting,
     setConsent,
     setAllCookiesState,
-    changeVisibilityState,
-    changeManageSettingsState,
 } = useCookieBar()
 
 const essentialIndex = useRuntimeConfig().public.essentialCookiesIndex
 
-const cookieDrawerRef = ref()
+const cookieDrawerRef = ref<HTMLElement | undefined>(undefined)
 useTrapFocus(cookieDrawerRef, { activeState: manageSetting })
+
 
 const NuxtLink = resolveComponent('NuxtLink')
 const localePath = useLocalePath()
@@ -63,17 +47,16 @@ const getCookiePropertyValue = (cookie: Cookie, propertyKey: string) => {
         enter-from-class="-translate-x-full"
         enter-to-class="translate-x-0"
         leave-from-class="translate-x-0"
-        leave-to-class="-ranslate-x-full"
+        leave-to-class="-translate-x-full"
     >
         <SfDrawer
-            v-model="props.isOpen"
-            ref="cookieDrawerRef"
+            v-model="manageSetting"
             :open-direction="'left'"
             :disableEsc="true"
             :disableClickAway="true"
             class="shadow-none z-[100] w-full max-w-[500px] bg-white"
         >
-            <div class="flex flex-col h-full">
+            <div ref="cookieDrawerRef" class="flex flex-col h-full">
                 <div class="bg-[#353535] text-white p-4 mb-4 flex justify-between items-center">
                     <span class="font-bold text-lg">{{ $t('cookieBar.manageSettings.label') }}</span>
                 </div>

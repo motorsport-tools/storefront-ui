@@ -12,6 +12,7 @@ export interface CookieBarState {
     visible: boolean;
     manageSetting: boolean;
     loading: boolean;
+    showMore: Record<string, boolean>;
 }
 
 export const useCookieBar = () => {
@@ -19,8 +20,14 @@ export const useCookieBar = () => {
         data: {},
         visible: false,
         manageSetting: false,
-        loading: false
+        loading: false,
+        showMore: {}
     }));
+
+    if (state.value && !state.value.showMore) {
+        state.value.showMore = {};
+    }
+
     const changeVisibilityState = () => state.value.visible = !state.value.visible;
     const changeManageSettingsState = () => state.value.manageSetting = !state.value.manageSetting;
     const cookieGroups = computed<CookieGroup[]>(() => {
@@ -29,6 +36,14 @@ export const useCookieBar = () => {
             const { consent: groupConsent } = useCookieConsent("group_" + group.id);
             return {
                 ...group,
+                get showMore() {
+                    return state.value.showMore?.[group.id] ?? !!group.showMore;
+                },
+                set showMore(val: boolean) {
+                    if (state.value.showMore) {
+                        state.value.showMore[group.id] = val;
+                    }
+                },
                 get accepted() { return groupConsent.value; },
                 set accepted(val: boolean) { groupConsent.value = val; },
                 cookies: group.cookies.map(cookie => {
@@ -53,7 +68,6 @@ export const useCookieBar = () => {
         const hasConsent = !!(browserCookies.value && typeof browserCookies.value === 'object' && browserCookies.value.groups);
         const browserHash = (browserCookies.value && typeof browserCookies.value === 'object') ? (browserCookies.value.hash ?? "") : "";
 
-        // Generate hash from config if not provided
         const configHash = runtimeCookiesConfig.configHash || useSha256(runtimeCookiesConfig.groups);
 
         runtimeCookiesConfig.groups.forEach((group) => {
@@ -73,12 +87,10 @@ export const useCookieBar = () => {
 
         state.value.data = runtimeCookiesConfig;
 
-        // SSR should NOT open by default at start so it doesn't flash pop open
         if (!import.meta.server) {
             state.value.visible = !hasConsent || (configHash !== "" && browserHash !== configHash);
             state.value.manageSetting = false;
         } else {
-            // Server-side: always hidden
             state.value.visible = false;
         }
     };

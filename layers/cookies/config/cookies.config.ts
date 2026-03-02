@@ -8,7 +8,7 @@ export default {
             name: "cookieBar.essentials.label",
             description: "cookieBar.essentials.description",
             accepted: true,
-            showMore: true,
+            showMore: false,
             cookies: [
                 {
                     name: "cookieBar.essentials.cookies.session.name",
@@ -33,7 +33,7 @@ export default {
             name: "cookieBar.functional.label",
             description: "cookieBar.functional.description",
             accepted: false,
-            showMore: true,
+            showMore: false,
             cookies: [
                 {
                     name: "cookieBar.functional.cookies.recentlyViewed.name",

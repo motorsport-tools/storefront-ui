@@ -18,9 +18,7 @@ export default `
           id
           html
           textColor
-          htmlClass
           bgColor
-          displayName
         }
         mediaGallery {
           id

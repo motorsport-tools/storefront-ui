@@ -153,6 +153,7 @@ export default defineNuxtConfig({
       "GetOrdersQuery",
       "LoadUserQuery",
       "PaymentPayQuery",
+      "GetProductVariantQuery",
     ],
     public: {
       odooBaseImageUrl: "",

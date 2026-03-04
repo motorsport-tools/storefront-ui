@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import type { Ribbon } from '~/graphql'
 import { 
-  SfIconSell 
+  SfIconSell,
+  SfIconBlock,
+  SfIconSchedule,
+  
 } from '@storefront-ui/vue'
 
 const props = defineProps({
@@ -12,6 +16,9 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  ribbon: {
+    type: Object as PropType<Ribbon>,
+  },
   size: {
     type: String,
     default: 'sm',
@@ -22,27 +29,37 @@ const props = defineProps({
 const attrs = useAttrs()
 
 const itemClass = computed(() => [
-  `inline-flex items-center justify-center font-medium rounded-none bg-secondary-800 text-${props.size} p-1 gap-1`,
+  `inline-flex items-center justify-center font-medium rounded-none text-${props.size} p-1 gap-1`,
   props.size === 'xs' ? 'p-1' : '',
   props.size === 'sm' ? 'p-1.5' : '',
   props.size === 'md' ? 'p-2' : '',
   props.size === 'lg' ? 'p-2.5' : '',
   props.size === 'xl' ? 'p-3' : '',
 ])
+
+const icon = computed(() => {
+  if(props.ribbon?.id == 1) {
+    return SfIconSell
+  }
+  if(props.ribbon?.id == 3) {
+    return SfIconBlock
+  }
+  if(props.ribbon?.id == 4) {
+    return SfIconSchedule
+  }
+})
 </script>
 <template>
-    <div :class="attrs.class || ''">
-        <div
-          :class="itemClass"
-          v-if="isOnSale"
-        >
-          <SfIconSell
-              color="white"
-              :size="size"
-              class="mr-1"
-          />
-          <span class="mr-1 text-white">{{ $t(`sale`) }}</span>
-        </div>
-        
+    <div 
+      v-if="ribbon"
+      :class="attrs.class || ''"
+    >
+      <div
+        :class="itemClass"
+        :style="{ backgroundColor: ribbon.bgColor || '', color: ribbon.textColor || '' }"
+      >
+        <component :is="icon" :size="size || 'base'" class="mr-1"/>
+        {{ ribbon.html }}
+      </div>
     </div>
 </template>

@@ -14,6 +14,14 @@ export default `
         image
         imageFilename
         slug
+        ribbon {
+          id
+          html
+          textColor
+          htmlClass
+          bgColor
+          displayName
+        }
         mediaGallery {
           id
           name

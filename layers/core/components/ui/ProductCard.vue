@@ -147,7 +147,6 @@ const ribbon = computed(() => {
   }
   return undefined
 })
-console.log(ribbon.value)
 </script>
 
 <template>

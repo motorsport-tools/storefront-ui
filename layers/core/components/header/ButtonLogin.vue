@@ -6,16 +6,14 @@ const NuxtLink = resolveComponent("NuxtLink");
 const { user, isAuthenticated, logout, loading } = useAuth();
 const { resetCheckoutFromStep } = useCheckout()
 
-const loginLink = ref<String>('/login')
-const loginButtonClass = ref<String>('ion:person-outline')
+const loginLink = computed(() =>
+  isAuthenticated.value ? '/my-account/personal-data' : '/login'
+)
+const loginButtonClass = computed(() =>
+  isAuthenticated.value ? 'ion:person' : 'ion:person-outline'
+)
 
 const { isOpen, toggle, open, close } = useDisclosure();
-
-
-onMounted( () => {
-  loginLink.value = isAuthenticated.value ? '/my-account/personal-data' : '/login'
-  loginButtonClass.value = isAuthenticated.value ? 'ion:person' : 'ion:person-outline'
-})
 
 </script>
 

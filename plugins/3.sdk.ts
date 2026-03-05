@@ -27,12 +27,14 @@ const avoidErrorThrowForSomeRequests = (options: any) => {
 
 export default defineNuxtPlugin(async () => {
   const config = useRuntimeConfig();
+  const headers = import.meta.server ? useRequestHeaders(['cookie']) : {}
 
   const sdkConfig = {
     odoo: buildModule<OdooModuleType>(OdooModule, {
       apiUrl: `${config.public.middlewareUrl}api/odoo/`,
       ofetch: $fetch.create({
         credentials: 'include',
+        headers,
         onResponseError({ request, response, options }) {
           if (avoidErrorThrowForSomeRequests(options) && response.status === 500) {
             return

@@ -68,13 +68,19 @@ export const useAuth = () => {
       }
 
       user.value = data?.partner as Partner
-      setAuthCookie(data?.partner as Partner)
+      if (data?.partner?.id) {
+        setAuthCookie(data.partner as Partner)
+      } else if (import.meta.client) {
+        setAuthCookie(null)
+      }
       authHydrated.value = true
       return user.value
-    } catch {
+    } catch (e: any) {
       // Treat "no user in session" as a normal public state.
       user.value = getPublicUser()
-      setAuthCookie(null)
+      if (import.meta.client) {
+        setAuthCookie(null)
+      }
       authHydrated.value = true
       return null
     } finally {

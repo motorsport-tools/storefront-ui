@@ -15,7 +15,8 @@ export const useSiteSetup = () => {
         if (import.meta.server) {
             await Promise.all([
                 megaMenuPromise,
-                loadCountries()
+                loadCountries(),
+                hydrateAuthOnce()
             ])
             return
         }

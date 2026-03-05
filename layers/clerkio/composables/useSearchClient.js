@@ -9,6 +9,7 @@ export const useSearchClient = (config = {}) => {
             'list_price', 'rating', 'ratingCount', 'sku', 'slug', 'has_stock', 'fits',
             'image_slug', 'image_filename',
             'pricelist_ids', 'pricelist_names', 'pricelist_prices', 'pricelist_list_prices', 'pricelist_price_extra', 'pricelist_on_sale', 'pricelist_currencies', 'pricelist_discount_perc',
+            'ribbon_id', 'ribbon_html', 'ribbon_text_color', 'ribbon_bg_color',
         ],
         searchableAttributes: ['name', 'brand', 'sku'],
         defaultFacets: ['price', 'fits', 'brand', 'on_sale', 'has_stock'],
@@ -477,6 +478,7 @@ export const useSearchClient = (config = {}) => {
                 },
                 body: JSON.stringify({ ...options, ...apiRequest, }),
             });
+
             const processingTimeMS = Date.now() - start
             // Transform response
             const result = this.transformResponse({ ...response, processingTimeMS }, request);

@@ -96,6 +96,10 @@ const SliderInit = async () => {
               :rating-count="productTemplate.ratingCount || 0"
               :rating="productTemplate.rating || 0"
               :first-variant="productTemplate.firstVariant as CustomProductWithStockFromRedis"
+              :ribbon-id="productTemplate.firstVariant?.ribbon?.id"
+              :ribbon-html="productTemplate.firstVariant?.ribbon?.html"
+              :ribbon-bg-color="productTemplate.firstVariant?.ribbon?.bgColor"
+              :ribbon-text-color="productTemplate.firstVariant?.ribbon?.textColor"
             />
             <UiProductCardSkeleton
               v-else

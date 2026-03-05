@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { SfButton, SfIconTune, useDisclosure, SfLoaderCircular } from '@storefront-ui/vue'
 import generateSeo, { type SeoEntity } from '~/utils/buildSEOHelper'
-import type { Product } from '~/graphql'
+import type { CustomProductWithStockFromRedis, Product } from '~/graphql'
 
 const route = useRoute()
 

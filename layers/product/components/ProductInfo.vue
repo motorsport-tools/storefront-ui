@@ -108,10 +108,7 @@ watch(() => productVariant.value?.id, (newId) => {
             </span>
         </ClientOnly>
         <UiProductCardRibbon
-            :isOnSale="isMounted && productVariant?.id
-            ? productVariant?.combinationInfoVariant?.has_discounted_price
-            : productTemplate?.firstVariant?.combinationInfoVariant?.has_discounted_price"
-            :ribbon="productVariant?.ribbon"
+            :ribbon="productVariant?.ribbon || undefined"
             size="sm"
             class="grow"
         />

@@ -25,6 +25,12 @@ export default `
         name
       }
     }
+    ribbon {
+      id
+      html
+      bgColor
+      textColor
+    }
   }
   ${alternativeProductsFragment}
   ${frequentlyTogetherProductsFragment}

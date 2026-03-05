@@ -8,16 +8,8 @@ import {
 } from '@storefront-ui/vue'
 
 const props = defineProps({
-  isNew: {
-    type: Boolean,
-    default: false,
-  },
-  isOnSale: {
-    type: Boolean,
-    default: false,
-  },
   ribbon: {
-    type: Object as PropType<Ribbon>,
+    type: Object as PropType<Ribbon> | null,
   },
   size: {
     type: String,

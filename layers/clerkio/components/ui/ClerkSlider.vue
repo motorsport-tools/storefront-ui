@@ -104,6 +104,9 @@ const SliderInit = async () => {
                     String(product.imageFilename),
                     )
                 "
+                :ribbon-html="product.ribbon_html"
+                :ribbon-bg-color="product.ribbon_bg_color"
+                :ribbon-text-color="product.ribbon_text_color"
             />            
             <UiProductCardSkeleton
               v-else

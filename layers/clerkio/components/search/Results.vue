@@ -34,6 +34,10 @@ const { Pid } = useAuth()
                         String(product.imageFilename),
                         )
                     "
+                    :ribbon-id="product.ribbon_id"
+                    :ribbon-html="product.ribbon_html"
+                    :ribbon-bg-color="product.ribbon_bg_color"
+                    :ribbon-text-color="product.ribbon_text_color"
                 />                
             </section>
             <SearchPagination

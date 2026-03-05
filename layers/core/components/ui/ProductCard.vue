@@ -66,6 +66,22 @@ const props = defineProps({
   isSearch: {
     type: Boolean,
     default: false
+  },
+  ribbonId: {
+    type: Number,
+    default: 0
+  },
+  ribbonHtml: {
+    type: String,
+    default: ''
+  },
+  ribbonBgColor: {
+    type: String,
+    default: ''
+  },
+  ribbonTextColor: {
+    type: String,
+    default: ''
   }
 })
 
@@ -110,6 +126,7 @@ const isStock = computed(() => {
 let price = props.specialPrice
 let listPrice = props.regularPrice
 let onSale = !!props.regularPrice
+
 if(props.firstVariant?.pricelist_ids) {
   const index = props.firstVariant?.pricelist_ids.indexOf(props.pid)
   if (index !== -1 && props.pid !== 4) {
@@ -118,6 +135,19 @@ if(props.firstVariant?.pricelist_ids) {
     onSale = props.firstVariant?.pricelist_on_sale[index]
   }
 }
+
+const ribbon = computed(() => {
+  if(props.ribbonHtml && props.ribbonTextColor && props.ribbonBgColor) {
+    return {
+      id: props.ribbonId || 0,
+      html: props.ribbonHtml,
+      textColor: props.ribbonTextColor,
+      bgColor: props.ribbonBgColor
+    }
+  }
+  return undefined
+})
+console.log(ribbon.value)
 </script>
 
 <template>
@@ -135,9 +165,9 @@ if(props.firstVariant?.pricelist_ids) {
         />
       </NuxtLink>
       <UiProductCardRibbon
-        :isOnSale="!!regularPrice"
-        size="xs"
-        class="absolute top-0 left-0 p-2"
+            :ribbon="ribbon"
+            size="xs"
+            class="absolute top-0 left-0 p-2"
       />
       <SfButton
         v-if="isAuthenticated"

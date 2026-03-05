@@ -45,14 +45,14 @@ onMounted(async () => {
           price: line.quantity > 0 ? Number((line.priceTotal / line.quantity).toFixed(2)) : 0
         }))
 
-      console.log('products', products.value)
-
       if (typeof window !== 'undefined' && window.Clerk) {
         window.Clerk('call', 'log/sale', {
           sale: orderData.value.order?.id,
           email: orderData.value.order?.partner?.email,
           customer: orderData.value.order?.partner?.id,
-          products: products.value
+          products: products.value,
+          visitor: useCookie('clerk_visitor').value || 'auto',
+          labels: ['Checkout - Thank You'],
         })
       }
 

@@ -55,6 +55,18 @@ const SliderInit = async () => {
     wrapperRef.value.classList?.remove('loading')
   }
 }
+
+const clickProduct = (e: Event, p: number,  n: number) => {  
+  if (typeof window !== 'undefined' && window.Clerk) {
+    window.Clerk('call', 'log/click', {
+      visitor: useCookie('clerk_visitor').value || 'auto',
+      api: 'search/v2/products',
+      n: n,
+      labels: ['Recent views'],
+      product: p
+    })
+  }
+}
 </script>
 
 <template>
@@ -83,6 +95,7 @@ const SliderInit = async () => {
         >
             <LazyUiProductCard
                 v-if="!loading"
+                @click="clickProduct($event, product.id, index)"
                 :key="product?.id || index"
                 :pid="Pid"
                 :isSearch="true"

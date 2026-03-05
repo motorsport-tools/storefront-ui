@@ -464,10 +464,12 @@ export const useSearchClient = (config = {}) => {
             const indexPath = this.getIndexPath(request.indexName);
             const url = `${this.apiUrl}${indexPath}`;
 
+            const visitorId = useCookie('clerk_visitor').value || 'auto'
+
             // Make API call
             const options = {
                 key: this.apiKey,
-                visitor: 'auto',
+                visitor: visitorId,
                 labels: this.isCategoryPage ? ['Category page'] : ['Search page'],
                 semantic: 0,
             }

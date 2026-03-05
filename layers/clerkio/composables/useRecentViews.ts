@@ -47,12 +47,16 @@ export const useRecentViews = () => {
     if (!consent.value) return []
 
     state.value.loading = true
+
+    const visitorId = useCookie('clerk_visitor').value || 'auto'
+
     const { data } = await useAsyncData(
       `useRecentViews-${recentViewsVisitor.value}-${JSON.stringify(list.value)}-${limit}`,
       () => $fetch<ClerkProductsResponse>('/api/search/v2/products', {
         method: 'GET',
         query: {
           products: (list.value ?? []).slice(0, limit).join(','),
+          visitor: visitorId,
           key: config.public.clerkApiKey,
           limie: limit,
         },

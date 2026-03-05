@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
     query: string
     results?: {
         pages?: {
@@ -17,6 +17,17 @@ defineProps<{
     }
 }>()
 
+const clickProduct = (e: Event, p: number,  n: number) => {  
+  if (typeof window !== 'undefined' && window.Clerk) {
+    window.Clerk('call', 'log/click', {
+      visitor: useCookie('clerk_visitor').value || 'auto',
+      api: 'search/omni',
+      n: n,
+      labels: ['Search bar'],
+      product: p
+    })
+  }
+}
 </script>
 
 <template>
@@ -56,11 +67,13 @@ defineProps<{
         <h3 class="px-4 pt-2 text-s text-black font-bold uppercase">Products</h3>
         <ul>
           <li
-            v-for="p in results.results.products?.result"
+            v-for="p, i in results.results.products?.result"
             :key="p.id"
             class="flex gap-2"
           >
             <NuxtLink :to="p.url"
+                :data-clerk-product-id="p.id"
+                @click="clickProduct($event, p.id, i)"
                 class="flex gap-4 px-4 py-2 hover:bg-gray-100 w-full"
             >
                 <img :src="p.image" :alt="p.name" class="w-12 h-12 object-cover rounded" />

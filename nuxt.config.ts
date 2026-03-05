@@ -67,7 +67,7 @@ export default defineNuxtConfig({
           "'unsafe-inline'",
           'https://js.stripe.com',
           'https://cdn.clerk.io',
-          'https://checkout.dev.rvvuptech.com',
+          'https://api.clerk.io',
           'https://mautic.motorsport-tools.co.uk',
           odooOrigin,
         ].filter(Boolean),

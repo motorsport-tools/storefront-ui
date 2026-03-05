@@ -142,6 +142,7 @@ const limitOptions = [
                             <SearchResults
                                 v-show="!isSearchStalled"
                                 :pid="user?.publicPricelist?.id || 4"
+                                :isCategoryPage="true"
                             />
                             
                         </SearchLoadingProvider>

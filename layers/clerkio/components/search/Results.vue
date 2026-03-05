@@ -2,7 +2,26 @@
 import type { Product, CustomProductWithStockFromRedis } from "~/graphql";
 import { AisHits} from "vue-instantsearch/vue3/es";
 
+const props = defineProps({
+    isCategoryPage: {
+        type: Boolean,
+        default: false
+    }
+})
+
 const { Pid } = useAuth()
+
+const clickProduct = (e: Event, p: number,  n: number) => {  
+  if (typeof window !== 'undefined' && window.Clerk) {
+    window.Clerk('call', 'log/click', {
+      visitor: useCookie('clerk_visitor').value || 'auto',
+      api: 'search/products',
+      n: n,
+      labels: props.isCategoryPage ? ['Category page'] : ['Search page'],
+      product: p
+    })
+  }
+}
 </script>
 
 <template>
@@ -12,7 +31,9 @@ const { Pid } = useAuth()
                 class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8"
             >
                 <LazyUiProductCard
-                    v-for="product in items"
+                    v-for="product, i in items"
+                    @click="clickProduct($event, product.id, i)"
+                    :data-clerk-product-id="product.id"
                     :key="product?.id"
                     :pid="Pid"
                     :isSearch="true"

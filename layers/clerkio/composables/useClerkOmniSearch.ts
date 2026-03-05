@@ -50,12 +50,14 @@ export const useClerkOmniSearch = (formSearchTemplateRef?: any, options = { limi
             return
         }
 
+        const visitorId = useCookie('clerk_visitor').value || 'auto'
+
         try {
             const predictive = await $fetch<ClerkSearchResponse>('/api/search/v3/search/omni', {
                 method: 'POST',
                 body: {
                     key: config.public.clerkApiKey,
-                    visitor: 'auto',
+                    visitor: visitorId,
                     labels: ['Search bar'],
                     query: searchInputValue.value,
                     searches: {

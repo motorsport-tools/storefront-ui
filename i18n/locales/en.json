@@ -85,7 +85,8 @@
     "was": "was",
     "save": "Save",
     "stockNotification": "Get notified when product is back in stock",
-    "notifSuccess": "We'll notify you once the product is back in stock"
+    "notifSuccess": "We'll notify you once the product is back in stock",
+    "priceNote": "Includes UK VAT where applicable"
   },
   "myCart": "My Basket",
   "subscribe": "Subscribe",

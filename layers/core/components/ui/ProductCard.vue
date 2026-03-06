@@ -117,10 +117,11 @@ const handleAddToCart = async (variantId: number | undefined, quantity: number) 
 }
 
 const isStock = computed(() => {
+
     if(props.isSearch) {
       return Boolean(props.firstVariant?.has_stock)
     }
-    return Boolean(props.firstVariant?.stock > 0 || props.firstVariant?.['allow_out_of_stock_order'])
+    return Boolean(props.firstVariant?.stock > 0 || props.firstVariant?.combinationInfoVariant['allow_out_of_stock_order'])
 })
 
 let price = props.specialPrice

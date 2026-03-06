@@ -117,7 +117,6 @@ const handleAddToCart = async (variantId: number | undefined, quantity: number) 
 }
 
 const isStock = computed(() => {
-
     if(props.isSearch) {
       return Boolean(props.firstVariant?.has_stock)
     }

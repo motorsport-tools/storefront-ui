@@ -3,7 +3,7 @@ import type { Ribbon } from '~/graphql'
 import { 
   SfIconSell,
   SfIconBlock,
-  SfIconSchedule,
+  SfIconRadioButtonChecked,
   
 } from '@storefront-ui/vue'
 
@@ -37,7 +37,7 @@ const icon = computed(() => {
     return SfIconBlock
   }
   if(props.ribbon?.id == 4) {
-    return SfIconSchedule
+    return SfIconRadioButtonChecked
   }
 })
 </script>

@@ -100,6 +100,7 @@ export default defineNuxtConfig({
           'https://*.klarna.com',
           'https://*.clearpay.co.uk',
           'https://*.afterpay.com',
+          'https://*.clerk.io',
         ].filter(Boolean),
         'frame-src': [
           "'self'",

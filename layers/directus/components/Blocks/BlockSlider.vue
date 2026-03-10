@@ -68,7 +68,7 @@ const SliderInit = async () => {
                 class="text-black bg-cover bg-no-repeat bg-center w-full h-60 lg:h-[30rem]"
                 aria-roledescription="slide"
             >
-                <BlocksSliderSlide
+                <BlocksCarouselSlide
                     :slide="slide"
                     :itemKey="slideIndex"
                 />

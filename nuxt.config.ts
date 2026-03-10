@@ -39,6 +39,10 @@ export default defineNuxtConfig({
     '/my/orders/**': { cache: false },
     '/order/*': { cache: false },
     '/shop/*': { cache: false },
+    '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    '/images/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    '/img/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    '/favicon.ico': { headers: { 'cache-control': 'public, max-age=604800' } },
   },
   $production: {
     routeRules: {
@@ -46,6 +50,10 @@ export default defineNuxtConfig({
       '/product/**': { swr: 300 }, //5 min
       '/my/orders/**': { cache: false },
       '/payment/**': { cache: false },
+      '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+      '/images/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+      '/img/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+      '/favicon.ico': { headers: { 'cache-control': 'public, max-age=604800' } },
     },
 
   },

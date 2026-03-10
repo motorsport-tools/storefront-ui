@@ -22,6 +22,10 @@ const routesToSkipCache = [
   '/__nuxt_island/**',
   '/_ipx/**',
   '/_scripts/**',
+  '/_nuxt/**',
+  '/images/**',
+  '/img/**',
+  '/favicon.ico',
 ]
 
 type Handler = {

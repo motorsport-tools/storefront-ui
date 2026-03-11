@@ -16,25 +16,11 @@ definePageMeta({
 })
 const emit = defineEmits(['openReturnsPolicy'])
 
-
-useHead({
-    script: [
-        {
-            src: 'https://js.stripe.com/v3/',
-            type: 'text/javascript',
-            async: true,
-        },
-    ]
-})
-
 const {
   loadProductTemplate,
   productTemplate,
   loadingProductTemplate,
   getAllAmounts,
-  getAllColors,
-  getAllMaterials,
-  getAllSizes,
 } = useProductTemplate(cleanPath.value)
 const {
   loadProductVariant,

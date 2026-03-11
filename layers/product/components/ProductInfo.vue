@@ -128,18 +128,17 @@ watch(() => productVariant.value?.id, (newId) => {
             :ratingCount="productTemplate?.ratingCount || 0"
         />
         <div class="my-4">
-            <ClientOnly>
-                <UiProductStockStatus
-                    class="mb-4"
-                    :stock="productVariant?.stock"
-                    :productId="productVariant?.id"
-                    :showAvailability="productVariant?.combinationInfoVariant?.show_availability"
-                    :availableThreshold="productVariant?.combinationInfoVariant?.available_threshold"
-                    :isStock="isStock"
-                    :allowOutOfStockOrder="productVariant?.combinationInfoVariant?.allow_out_of_stock_order || false"
-                    :outOfStockMessage="productVariant?.combinationInfoVariant?.out_of_stock_message || ''"
-                />
-            </ClientOnly>
+            <UiProductStockStatus
+                class="mb-4"
+                :stock="productVariant?.stock"
+                :productId="productVariant?.id"
+                :showAvailability="productVariant?.combinationInfoVariant?.show_availability"
+                :availableThreshold="productVariant?.combinationInfoVariant?.available_threshold"
+                :isStock="isStock"
+                :allowOutOfStockOrder="productVariant?.combinationInfoVariant?.allow_out_of_stock_order || false"
+                :outOfStockMessage="productVariant?.combinationInfoVariant?.out_of_stock_message || ''"
+                :loading="loadingProductVariant"
+            />
         </div>
         <div class="py-4 my-4 border-gray-200 border-y">
             <div v-if="getAllAmounts && getAllAmounts.length"
@@ -169,6 +168,7 @@ watch(() => productVariant.value?.id, (newId) => {
                     :discPercentage="isMounted && productVariant?.id 
                         ? productVariant?.combinationInfoVariant?.discount_perc 
                         : productTemplate?.firstVariant?.combinationInfoVariant?.discount_perc || 0"
+                    :loading="loadingProductVariant || !productVariant?.id"
                 />
                 <UiQuantitySelector
                     v-model="quantitySelectorValue"

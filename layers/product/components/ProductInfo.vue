@@ -177,13 +177,11 @@ watch(() => productVariant.value?.id, (newId) => {
                     class="max-w-[145px] flex-grow flex-shrink-0 basis-0"
                 />
             </div>
-            <ClientOnly>
-                <LazyUiStripeProductMessage
-                    class="mt-2 mb-4"
-                    :specialPrice
-                    :regularPrice
-                />
-            </ClientOnly>
+            <LazyUiStripeProductMessage
+                class="h-[60px] mt-2 mb-4"
+                :specialPrice
+                :regularPrice
+            />
             <div
                 v-if="isMounted && productsInCart"
                 class="w-full mb-4 bg-green-200 p-2 rounded-md text-center text-neutral-700"

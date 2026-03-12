@@ -294,6 +294,7 @@
   "orderErrorMessage": "Something went wrong. Try again later.",
   "orderNumber": "Order number",
   "productDetails": "Product Details",
+  "productSpecifications": "Product Specifications",
   "customerReviews": "Customer Reviews",
   "loadingReviews": "Loading Reviews...",
   "recommendedProducts": "Recommended with this product",

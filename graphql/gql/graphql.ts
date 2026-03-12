@@ -1042,6 +1042,7 @@ export type Product = {
   allowOutOfStock: Maybe<Scalars['Boolean']['output']>;
   alokaiPages: Maybe<Array<WebsitePage>>;
   alternativeProducts: Maybe<Array<Product>>;
+  attributeLines: Maybe<Array<ProductAttribute>>;
   /** Specific to Product Template */
   attributeValues: Maybe<Array<AttributeValue>>;
   barcode: Maybe<Scalars['String']['output']>;
@@ -1102,6 +1103,12 @@ export type Product = {
   visibility: Maybe<Scalars['Int']['output']>;
   websiteDescription: Maybe<Scalars['String']['output']>;
   weight: Maybe<Scalars['Float']['output']>;
+};
+
+export type ProductAttribute = {
+  __typename?: 'ProductAttribute';
+  attribute: Maybe<Scalars['String']['output']>;
+  values: Maybe<Array<Maybe<Scalars['String']['output']>>>;
 };
 
 export type ProductFilterInput = {

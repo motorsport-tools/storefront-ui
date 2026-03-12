@@ -6,7 +6,7 @@ import type { CustomProductWithStockFromRedis } from '~/graphql'
 import generateSeo, { type SeoEntity } from '~/utils/buildSEOHelper'
 
 const route = useRoute()
-
+const viewport = useViewport()
 const cleanPath = computed(() => route?.path?.replace(/\/$/, '').toLowerCase().trim())
 const cleanFullPath = computed(() => route?.fullPath?.replace(/\/$/, '').toLowerCase().trim())
 const modalReturnsPolicy = ref(false)
@@ -63,6 +63,8 @@ watch(
 )
 
 const productDetailsOpen = ref(true)
+const productSpecificationsOpen = ref(viewport.isGreaterOrEquals('md'))
+
 watch(
   [() => productTemplate.value?.id, () => route.query],
   async ([templateId, query]) => {
@@ -183,6 +185,20 @@ const doOpenReturnsPolicy = () => {
                                 </template>
                                 <div v-html="(isMounted && productVariant?.description) || productTemplate?.description">
                                 </div>
+                            </UiAccordionItem>
+                            <UiDivider class="my-4" />
+                            <UiAccordionItem
+                                v-model="productSpecificationsOpen"
+                                summary-class="md:rounded-md w-full hover:bg-neutral-100 py-2 lg:pl-4 pr-3 flex justify-between items-center"
+                            >
+                                <template #summary>
+                                    <h2
+                                        class="font-bold font-headings text-lg leading-6 md:text-2xl"
+                                    >
+                                        {{ $t("productSpecifications") }}
+                                    </h2>
+                                </template>
+                                <ProductSpecifications :attributeLines="productTemplate?.attributeLines || []" />
                             </UiAccordionItem>
                             <UiDivider class="my-4" />
                             <UiAccordionItem

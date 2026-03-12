@@ -100,9 +100,6 @@ onMounted(() => {
                 :key="`section-${index}`"
                 :sectionData="section?.item || {}"
             />
-            <pre v-if="enabled">
-                {{ page }}
-            </pre>
         </NuxtErrorBoundary>
     </main>
     <ClientOnly>

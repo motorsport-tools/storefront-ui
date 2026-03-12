@@ -47,6 +47,15 @@ h6.text-body {
   text-transform: none;
 }
 
+h1.text-border,
+h2.text-border,
+h3.text-border,
+h4.text-border,
+h5.text-border,
+h6.text-border {
+  border-left: 4px solid #CD1619;
+  padding-left: 0.75rem;
+}
 
 @layer base {
 

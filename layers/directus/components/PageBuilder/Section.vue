@@ -34,13 +34,16 @@ const styleObject = computed(() => ({
         :class="sectionData?.full_width ? 'w-full' : 'narrow-container'"
     >
         <div 
-            class="flex flex-col px-4 lg:px-0 overflow-hidden"
+            class="page-builder-section flex flex-col px-4 lg:px-0 overflow-hidden"
             :style="styleObject"
         >
             <component
-                :class="sectionData?.full_width ? '' : 'py-4'"
                 v-for="block in sectionData?.blocks"
                 :key="block.id"
+                :class="[
+                    block.collection,                  
+                    !sectionData?.full_width ? 'py-4' : ''  
+                ]"
                 :is="getBlockComponent(block.collection)"
                 :blockData="block.item"
             />

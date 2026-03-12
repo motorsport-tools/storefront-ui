@@ -44,7 +44,7 @@ const props = defineProps<Props>()
                     {{ $currency(regularPrice) }}
                 </span>
             </div>
-            <span class="text-[0.6rem] text-neutral-500 text-balance max-w-[100px]">
+            <span class="text-[0.8rem] text-neutral-500 text-balance max-w-[100px]">
                 {{ $t('productInfo.priceNote') }}
             </span>
         </template>

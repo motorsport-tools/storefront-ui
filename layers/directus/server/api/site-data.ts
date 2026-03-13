@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 	const globalsCollection = 'globals' as RegularCollections<String>
 	const navigationCollection = 'navigation' as RegularCollections<String>
 	try {
-		const [globals, headerNavigation, /*footerNavigation*/] = await Promise.all([
+		const [globals, headerNavigation, footerNavigation] = await Promise.all([
 			directusServer.request(
 				readSingleton(globalsCollection, {
 					fields: ['organization', 'social_links'],
@@ -47,9 +47,9 @@ export default defineEventHandler(async (event) => {
 					},
 				}),
 			),
-			/*
+
 			directusServer.request(
-				readItem(navigationCollection, 'footer', {
+				readItem(navigationCollection, 2, {
 					fields: [
 						'id',
 						'title',
@@ -61,10 +61,10 @@ export default defineEventHandler(async (event) => {
 								'type',
 								{
 									page: ['id', 'permalink'],
-									post: ['id', 'slug'],
+									//post: ['id', 'slug'],
 									children: ['id', 'title', 'url', 'type', {
 										page: ['id', 'permalink'],
-										post: ['id', 'slug']
+										//post: ['id', 'slug']
 									}],
 								},
 							],
@@ -80,9 +80,9 @@ export default defineEventHandler(async (event) => {
 					},
 				}),
 			),
-			*/
+
 		]);
-		return { globals, headerNavigation, /*footerNavigation*/ };
+		return { globals, headerNavigation, footerNavigation };
 	} catch {
 		throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
 	}

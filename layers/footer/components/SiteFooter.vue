@@ -16,6 +16,10 @@ interface Props {
     navigation:{
         type: Object,
     },
+    refresh: {
+        type: Function,
+        required: false,
+    },
     globals: {
         type: Object,
         social_links: Array<{
@@ -45,12 +49,23 @@ const openManageSettings = () => {
             class="pb-10 grid md:justify-items-center grid-cols-[1fr_1fr] md:grid-cols-[repeat(4,1fr)] narrow-container"
         >
             <nav
-                class="flex justify-between items-center"
+                class="flex gap-4 items-center col-span-4 w-full"
             >
                 <SfLink
+                    v-for="item in navigation?.items"
+                    :key="item.id"
                     :tag="NuxtLink"
+                    :title="item.title"
+                    :to="item.type == 'url' ? item.url : item.page.permalink"
+                    class="cursor-pointer !text-gray-400 text-xs no-underline hover:!underline hover:!text-white"
+                >
+                    {{ item.title }}
+                </SfLink>
+                <SfLink
+                    :tag="NuxtLink"
+                    :title="$t('cookieBar.about.cookiePreferences')"
                     @click="openManageSettings()"
-                    class="cursor-pointer !text-gray-400 text-sm no-underline hover:!underline hover:!text-white"
+                    class="cursor-pointer !text-gray-400 text-xs no-underline hover:!underline hover:!text-white"
                 >
                     {{ $t('cookieBar.about.cookiePreferences') }}
                 </SfLink>

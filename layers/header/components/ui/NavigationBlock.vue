@@ -40,7 +40,7 @@ onMounted(async () => {
             >
                 <NuxtLink
                     :title="item.title"
-                    :to="item.type == 'url' ? item.url : item.page.slug"
+                    :to="item.type == 'url' ? item.url : item.page.permalink"
                 >
                     {{ item.title }}
                 </NuxtLink>

@@ -17,9 +17,9 @@ const props = defineProps<{
     }
 }>()
 
-const clickProduct = (e: Event, p: number,  n: number) => {  
+const clickProduct = async (e: Event, p: number,  n: number) => {  
   if (typeof window !== 'undefined' && window.Clerk) {
-    window.Clerk('call', 'log/click', {
+    await window.Clerk('call', 'log/click', {
       visitor: useCookie('clerk_visitor').value || 'auto',
       api: 'search/omni',
       n: n,
@@ -27,6 +27,7 @@ const clickProduct = (e: Event, p: number,  n: number) => {
       product: p
     })
   }
+  return true
 }
 </script>
 
@@ -74,13 +75,14 @@ const clickProduct = (e: Event, p: number,  n: number) => {
             <NuxtLink :to="p.url"
                 :data-clerk-product-id="p.id"
                 @click="clickProduct($event, p.id, i)"
-                class="flex gap-4 px-4 py-2 hover:bg-gray-100 w-full"
+                class="flex items-center gap-4 px-4 py-2 hover:bg-gray-100 w-full border-b border-neutral-200"
             >
                 <img :src="p.image" :alt="p.name" class="w-12 h-12 object-cover rounded" />
                 <div class="text-sm">
-                <h4 class="font-semibold">{{ p.name }}</h4>
-                <p class="text-gray-600 text-xs">{{ $currency(p.price) }}</p>
+                  <h4 class="font-semibold">{{ p.name }}</h4>
+                  <p class="text-gray-600 text-xs">{{ p.sku }}</p>
                 </div>
+                <p class="text-gray-600 text-base font-bold">{{ $currency(p.price) }}</p>
             </NuxtLink>
           </li>
         </ul>

@@ -64,16 +64,16 @@ export const useClerkOmniSearch = (formSearchTemplateRef?: any, options = { limi
                         products: {
                             index: 'products',
                             limit: 8,
-                            attributes: ['id', 'name', 'image', 'price', 'on_sale', 'sku', 'url'],
+                            attributes: ['id', 'name', 'image', 'price', 'on_sale', 'sku', 'url', 'slug'],
                         },
                         categories: {
                             index: 'categories',
                             limit: 6,
-                            attributes: ['id', 'name', 'url', 'display_name'],
+                            attributes: ['id', 'name', 'url', 'display_name', 'slug'],
                         },
                         pages: {
                             index: 'pages',
-                            limit: 6
+                            limit: 6,
                         }
                     }
                 },

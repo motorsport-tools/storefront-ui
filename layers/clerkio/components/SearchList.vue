@@ -1,31 +1,49 @@
 <script setup lang="ts">
+interface ClerkProduct {
+    id: number
+    name: string
+    image: string
+    price: number
+    sku: string
+    slug: string
+}
+
+interface ClerkCategory {
+    id: number
+    display_name: string
+    url: string
+}
+
 const props = defineProps<{
     query: string
     results?: {
-        pages?: {
-            result: any[]
-            estimated_total_count: number
-        }
-        products?: {
-            result: any[]
-            estimated_total_count: number
-        }
-        categories?: {
-            result: any[]
-            estimated_total_count: number
+        suggestions?: string[]
+        results: {
+            pages?: {
+                result: any[]
+                estimated_total_count: number
+            }
+            products?: {
+                result: ClerkProduct[]
+                estimated_total_count: number
+            }
+            categories?: {
+                result: ClerkCategory[]
+                estimated_total_count: number
+            }
         }
     }
 }>()
 
-const clickProduct = async (e: Event, p: number,  n: number) => {  
-  if (typeof window !== 'undefined' && window.Clerk) {
-    await window.Clerk('call', 'log/click', {
-      visitor: useCookie('clerk_visitor').value || 'auto',
-      api: 'search/omni',
-      n: n,
-      labels: ['Search bar'],
-      product: p
-    })
+const clickProduct = (e: Event, p: number,  n: number) => {  
+  if (import.meta.client && typeof window !== 'undefined' && window.Clerk) {
+      window.Clerk('call', 'log/click', {
+        visitor: useCookie('clerk_visitor').value || 'auto',
+        api: 'search/omni',
+        n: n,
+        labels: ['Search bar'],
+        product: p
+      })
   }
   return true
 }
@@ -72,7 +90,7 @@ const clickProduct = async (e: Event, p: number,  n: number) => {
             :key="p.id"
             class="flex gap-2"
           >
-            <NuxtLink :to="p.url"
+            <NuxtLink :to="p.slug"
                 :data-clerk-product-id="p.id"
                 @click="clickProduct($event, p.id, i)"
                 class="flex items-center gap-4 px-4 py-2 hover:bg-gray-100 w-full border-b border-neutral-200"

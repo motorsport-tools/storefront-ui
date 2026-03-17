@@ -3,11 +3,11 @@ steps:
     entrypoint: bash
     args: [
       '-c',
-      'docker build --no-cache -f=Dockerfile . --build-arg NUXT_STORAGE_PASSWORD=$$NUXT_STORAGE_PASSWORD --build-arg DIRECTUS_SERVER_TOKEN=$$DIRECTUS_SERVER_TOKEN --build-arg IMGPROXY_KEY=$$IMGPROXY_KEY --build-arg IMGPROXY_SALT=$$IMGPROXY_SALT -t $_AR_HOSTNAME/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
+      'docker build --no-cache -f=Dockerfile . --build-arg NUXT_STORAGE_PASSWORD=$$NUXT_STORAGE_PASSWORD --build-arg DIRECTUS_SERVER_TOKEN=$$DIRECTUS_SERVER_TOKEN --build-arg IMGPROXY_KEY=$$IMGPROXY_KEY --build-arg IMGPROXY_SALT=$$IMGPROXY_SALT --build-arg GCS_DIRECTUS_BUCKET=$$GCS_DIRECTUS_BUCKET --build-arg GCS_ODOO_BUCKET=$$GCS_ODOO_BUCKET -t $_AR_HOSTNAME/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA
       '
     ]
     id: Build
-    secretEnv: ['NUXT_STORAGE_PASSWORD','DIRECTUS_SERVER_TOKEN','IMGPROXY_KEY','IMGPROXY_SALT']  
+    secretEnv: ['NUXT_STORAGE_PASSWORD','DIRECTUS_SERVER_TOKEN','IMGPROXY_KEY','IMGPROXY_SALT','GCS_DIRECTUS_BUCKET','GCS_ODOO_BUCKET']  
   - name: gcr.io/cloud-builders/docker
     args:
       - push
@@ -36,6 +36,10 @@ availableSecrets:
     env: 'IMGPROXY_KEY'
   - versionName: projects/$PROJECT_ID/secrets/IMGPROXY_SALT/versions/latest
     env: 'IMGPROXY_SALT'
+  - versionName: projects/$PROJECT_ID/secrets/GCS_DIRECTUS_BUCKET/versions/latest
+    env: 'GCS_DIRECTUS_BUCKET'
+  - versionName: projects/$PROJECT_ID/secrets/GCS_ODOO_BUCKET/versions/latest
+    env: 'GCS_ODOO_BUCKET'
 images:
   - >-
     $_AR_HOSTNAME/$PROJECT_ID/cloud-run-source-deploy/$REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA

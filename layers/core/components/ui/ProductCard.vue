@@ -157,9 +157,10 @@ const ribbon = computed(() => {
       <NuxtLink :to="slug" class="product__img" :title="name">
         <NuxtImg
           :src="imageUrl"
+          provider="odooProvider"
           :alt="imageAlt"
-          :width="370"
-          :height="370"
+          :width="250"
+          :height="250"
           :loading="loading"
         />
       </NuxtLink>
@@ -248,7 +249,9 @@ const ribbon = computed(() => {
   </div>
 </template>
 <style>
-
+.product__img {
+  display: block;
+}
 .product_card:hover .product__img::after {
   background-color: rgba(19, 6, 6, 0.08);
 }

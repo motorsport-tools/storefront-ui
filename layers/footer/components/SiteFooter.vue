@@ -1,15 +1,6 @@
 <script setup lang="ts">
 import {
-  SfIconContactSupport,
-  SfIconFacebook,
-  SfIconHelp,
-  SfIconInstagram,
-  SfIconCall,
-  SfIconTwitter,
-  SfIconYoutube,
-  SfButton,
   SfLink,
-  SfListItem,
 } from '@storefront-ui/vue'
 
 interface Props {
@@ -19,7 +10,7 @@ interface Props {
     refresh: {
         type: Function,
         required: false,
-    },
+    }
     globals: {
         type: Object,
         social_links: Array<{

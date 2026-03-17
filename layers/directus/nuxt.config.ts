@@ -21,6 +21,12 @@ export default defineNuxtConfig({
 			directus: {
 				name: 'directus',
 				provider: '~/layers/directus/providers/directus-provider',
+				options: {
+					baseURL: process.env.IMGPROXY_URL,
+					key: process.env.IMGPROXY_KEY,
+					salt: process.env.IMGPROXY_SALT,
+					gcsBucket: process.env.GCS_DIRECTUS_BUCKET,
+				},
 			},
 		},
 	},

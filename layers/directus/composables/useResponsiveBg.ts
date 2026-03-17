@@ -1,6 +1,6 @@
 export function useResponsiveBg(src: string) {
     const img = useImage()
-    const { breakpoint } = useViewport() 
+    const { breakpoint } = useViewport()
 
     // Find matching width for current breakpoint
     const getWidthForBreakpoint = (bp: string) => {
@@ -28,9 +28,12 @@ export function useResponsiveBg(src: string) {
     const width = ref(getWidthForBreakpoint(breakpoint.value))
 
     // computed url for current viewport width
-    const responsiveUrl = computed(() => 
-        img.getImage(`/assets/${src}?format=webp&width=${width.value}&quality=70`, {
-            provider: 'directus'
+    const responsiveUrl = computed(() =>
+        img.getImage(src, {
+            provider: 'directus',
+            format: 'webp',
+            width: width.value,
+            quality: 70,
         })
     )
 

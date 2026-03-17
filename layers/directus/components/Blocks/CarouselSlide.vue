@@ -41,14 +41,13 @@ onMounted(() => {
             class="cs__img w-full h-full object-cover absolute z-0"
             :loading="itemKey >= 1 ? 'lazy' : 'eager'"
             :fetchpriority="itemKey == 0 ? 'high' : 'auto'"
-            :src="`/assets/${slide?.background_image?.id}`"
+            :src="slide?.background_image?.filename_disk"
             sizes="100vw sm:1024px lg:1280px xl:1536px"
             format="webp"
             quality="75"
             provider="directus"
             :alt="slide?.background_image?.title ? slide?.background_image.title : `Promotional image slide ${itemKey}`"
         />
-
         <!-- Video background -->
         <video
             v-if="slide?.background_video"

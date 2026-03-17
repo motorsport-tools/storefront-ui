@@ -76,15 +76,9 @@ const handleQtyUpdate = (newQty: number) => {
       >
         <NuxtImg
           class="w-full h-auto"
-          :src="
-            $getImage(
-              String(orderLine.product?.image),
-              370,
-              370,
-              String(orderLine.product?.imageFilename)
-            )
-          "
+          :src="orderLine.product?.image"
           :alt="orderLine.product?.imageFilename ?? ''"
+          provider="odooProvider"
           width="300"
           height="300"
           loading="lazy"

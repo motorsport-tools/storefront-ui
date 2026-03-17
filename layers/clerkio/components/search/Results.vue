@@ -47,14 +47,7 @@ const clickProduct = (e: Event, p: number,  n: number) => {
                     :rating="product.rating || 0"
                     :first-variant="product as unknown as CustomProductWithStockFromRedis"
                     :image-alt="product?.name || ''"
-                    :image-url="
-                        $getImage(
-                        `${String(product.image_slug)}`,
-                        370,
-                        370,
-                        String(product.imageFilename),
-                        )
-                    "
+                    :image-url="product.image_slug"
                     :ribbon-id="product.ribbon_id"
                     :ribbon-html="product.ribbon_html"
                     :ribbon-bg-color="product.ribbon_bg_color"

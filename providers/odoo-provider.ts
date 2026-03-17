@@ -1,12 +1,30 @@
-import type { ProviderGetImage } from '@nuxt/image';
-import objectHash from 'object-hash';
+// Odoo ImgProxy Provider
+import { joinURL } from 'ufo'
+import { defu } from 'defu'
+import { defineProvider } from '@nuxt/image/runtime'
+import {
+  type ImgproxyBaseOptions,
+  operationsGenerator,
+  urlSafeBase64,
+  sign,
+  defaultModifiers,
+  resolveModifiers,
+} from './imgproxy-shared'
 
-export const getImage: ProviderGetImage = (src, { modifiers }, ctx) => {
-  const baseURL = useRuntimeConfig().public.odooBaseImageUrl;
+interface OdooImgproxyOptions extends ImgproxyBaseOptions {
+  gcsBucket: string
+}
 
-  const resolution = `${modifiers?.width}x${modifiers?.height}`;
+export default defineProvider<OdooImgproxyOptions>({
+  getImage: (src, { modifiers, baseURL, key, salt, gcsBucket }) => {
+    const mergedModifiers = resolveModifiers(defu(modifiers, defaultModifiers))
+    const gcsUrl = `gs://${gcsBucket}/${src}`
+    const encodedUrl = urlSafeBase64(gcsUrl)
+    const path = joinURL('/', operationsGenerator(mergedModifiers), encodedUrl)
+    const signature = sign(salt, path, key)
 
-  const hash = objectHash({ text: src + resolution });
-
-  return { url: `${baseURL}${src?.replace('/', '')}/${resolution}/${hash}` };
-};
+    return {
+      url: joinURL(baseURL, signature, path),
+    }
+  }
+})

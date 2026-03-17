@@ -25,7 +25,7 @@
     "@erpgap/odoo-sdk-api-client": "^2.2.2",
     "@noble/hashes": "^2.0.1",
     "@nuxt/eslint": "^1.1.0",
-    "@nuxt/image": "^1.7.0",
+    "@nuxt/image": "^2.0.0",
     "@nuxt/scripts": "0.10.5",
     "@nuxtjs/critters": "^0.9.0",
     "@nuxtjs/device": "3.1.1",

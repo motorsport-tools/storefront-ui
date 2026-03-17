@@ -225,6 +225,12 @@ export default defineNuxtConfig({
       odooProvider: {
         name: "odooProvider",
         provider: "~/providers/odoo-provider.ts",
+        options: {
+          baseURL: process.env.IMGPROXY_URL,
+          key: process.env.IMGPROXY_KEY,
+          salt: process.env.IMGPROXY_SALT,
+          gcsBucket: process.env.GCS_ODOO_BUCKET,
+        },
       },
     },
     viewport: {

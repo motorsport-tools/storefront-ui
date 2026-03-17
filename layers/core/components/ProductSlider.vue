@@ -80,14 +80,7 @@ const SliderInit = async () => {
               :key="productTemplate?.id || index"
               :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product || productTemplate as Product) || '' "
               :name="productTemplate?.name || ''"
-              :image-url="
-                $getImage(
-                  `${String(productTemplate.image)}`,
-                  370,
-                  370,
-                  String(productTemplate.imageFilename),
-                )
-              "
+              :image-url="productTemplate?.image"
               :brand="productTemplate?.brand"
               :image-alt="productTemplate?.name || ''"
               :regular-price="getRegularPrice(productTemplate.firstVariant as Product)"

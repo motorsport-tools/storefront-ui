@@ -119,7 +119,7 @@ function getPositionClass(position: string): string {
             class="w-full h-full object-cover absolute z-0"
             loading="lazy"
             provider="directus"
-            :src="`/assets/${data?.background_image?.id}`"
+            :src="data?.background_image?.filename_disk"
             format="webp"
             quality="75"
             :alt="data?.background_image?.title || `Image background for ${data?.link_title}`"

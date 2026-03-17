@@ -459,13 +459,13 @@
     },
     "resetPassword": {
       "heading": "Reset password",
-      "info": "Enter the email address you used to sign up. We will send you a password reset link, that you’ll be able to use to set a new password for your account.",
+      "info": "Enter the email address you used to sign up. We will send you a password reset link, that you'll be able to use to set a new password for your account.",
       "email": "Email",
       "continue": "Continue",
       "backToLogin": "Back to Login",
-      "thankYou": "Thank you, if there is an account registered with {0}, you should receive the password reset link in your inbox right away.",
+      "thankYou": "Thank you, if there is an account registered with your email, you should receive the password reset link in your inbox right away.",
       "anotherEmail": "I need to try another email address",
-      "emailSent": "Email sent"
+      "emailSent": "We have received your request"
     },
     "setNewPassword": {
       "heading": "Set new password",

@@ -16,6 +16,7 @@ const {
 })
 
 const navigationMenu = computed(() => siteData.value?.headerNavigation || {})
+const footerMenu = computed(() => siteData.value?.footerNavigation || {})
 const footer = useTemplateRef('footerRef')
 </script>
 <template>
@@ -37,7 +38,8 @@ const footer = useTemplateRef('footerRef')
     <LazySiteFooter 
       hydrate-on-visible 
       ref="footerRef"
-      :navigation="navigationMenu"
+      :navigation="footerMenu"
+      :refresh="refresh"
       :globals="siteData?.globals || {}"
     />
     <LazyWishlistSidebar />

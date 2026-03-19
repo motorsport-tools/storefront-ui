@@ -64,7 +64,7 @@ export const useClerkOmniSearch = (formSearchTemplateRef?: any, options = { limi
                         products: {
                             index: 'products',
                             limit: 8,
-                            attributes: ['id', 'name', 'image', 'price', 'on_sale', 'sku', 'url', 'slug'],
+                            attributes: ['id', 'name', 'image', 'image_slug', 'price', 'list_price', 'on_sale', 'sku', 'url', 'slug', 'pricelist_ids', 'pricelist_prices', 'pricelist_list_prices', 'pricelist_on_sale', 'pricelist_price_extra'],
                         },
                         categories: {
                             index: 'categories',

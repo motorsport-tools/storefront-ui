@@ -3,6 +3,7 @@ interface ClerkProduct {
     id: number
     name: string
     image: string
+    image_slug: string
     price: number
     sku: string
     slug: string
@@ -35,18 +36,7 @@ const props = defineProps<{
     }
 }>()
 
-const clickProduct = (e: Event, p: number,  n: number) => {  
-  if (import.meta.client && typeof window !== 'undefined' && window.Clerk) {
-      window.Clerk('call', 'log/click', {
-        visitor: useCookie('clerk_visitor').value || 'auto',
-        api: 'search/omni',
-        n: n,
-        labels: ['Search bar'],
-        product: p
-      })
-  }
-  return true
-}
+const { Pid } = useAuth()
 </script>
 
 <template>
@@ -90,18 +80,12 @@ const clickProduct = (e: Event, p: number,  n: number) => {
             :key="p.id"
             class="flex gap-2"
           >
-            <NuxtLink :to="p.slug"
-                :data-clerk-product-id="p.id"
-                @click="clickProduct($event, p.id, i)"
-                class="flex items-center gap-4 px-4 py-2 hover:bg-gray-100 w-full border-b border-neutral-200"
-            >
-                <img :src="p.image" :alt="p.name" class="w-12 h-12 object-cover rounded" />
-                <div class="text-sm">
-                  <h4 class="font-semibold">{{ p.name }}</h4>
-                  <p class="text-gray-600 text-xs">{{ p.sku }}</p>
-                </div>
-                <p class="text-gray-600 text-base font-bold">{{ $currency(p.price) }}</p>
-            </NuxtLink>
+            <UiSearchListProduct
+              :product="p"
+              :index="i"
+              :query="query"
+              :pid="Pid"
+            />
           </li>
         </ul>
       </div>

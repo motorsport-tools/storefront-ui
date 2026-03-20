@@ -133,15 +133,22 @@ const focusTrigger = (index: number) => {
                         <div>
                             <SfLink
                                 class="typography-text-base font-bold text-white whitespace-nowrap px-4 py-1.5 border-b border-b-neutral-200 border-b-solid cursor-pointer"
-                                :to="node.value.link"
-                                :tag="NuxtLink"
+                                :href="node.value.link"
+                                tag="a"
                                 size="sm"
+                                @click="close()"
                             >
                                 {{ node.value.label }}
                             </SfLink>
                             <ul class="mt-2">
                                 <li v-for="child in node.children" :key="child.key">
-                                <SfListItem tag="a" size="sm" :href="child.value.link" class="typography-text-sm py-1.5">
+                                <SfListItem 
+                                    tag="a"
+                                    size="sm"
+                                    :href="child.value.link"
+                                    class="typography-text-sm py-1.5"
+                                    @click="close()"
+                                >
                                     {{ child.value.label }}
                                 </SfListItem>
                                 </li>

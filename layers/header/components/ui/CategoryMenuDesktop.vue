@@ -139,6 +139,7 @@ defineExpose({
                                 :to="node.value.link"
                                 :tag="NuxtLink"
                                 size="sm"
+                                @click="closeMenu()"
                             >
                                 {{ node.value.label }}
                             </SfLink>
@@ -148,7 +149,13 @@ defineExpose({
                                     :key="child.key"
                                     class="ml-0 pl-0"
                                 >
-                                <SfListItem tag="a" size="sm" :href="child.value.link" class="typography-text-sm py-1.5 pl-1.5 text-neutral-700">
+                                <SfListItem 
+                                    :tag="NuxtLink" 
+                                    size="sm" 
+                                    :to="child.value.link" 
+                                    class="typography-text-sm py-1.5 pl-1.5 text-neutral-700"
+                                    @click="closeMenu()"
+                                >
                                     {{ child.value.label }}
                                 </SfListItem>
                                 </li>

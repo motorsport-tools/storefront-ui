@@ -104,6 +104,7 @@ defineExpose({
                     :tag="NuxtLink"
                     :to="menuNode.value.link"
                     @mouseenter="startHover([menuNode.key])"
+                    @click="closeMenu()"
                 >
                 <span>{{ menuNode.value.label }}</span>
                 <SfIconChevronRight v-if="menuNode.isLeaf"

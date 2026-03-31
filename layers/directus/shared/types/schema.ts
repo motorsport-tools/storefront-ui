@@ -45,6 +45,7 @@ export interface BlockColumnItem {
 	date_created?: string | null;
 	user_updated?: string | null;
 	date_updated?: string | null;
+	block_column_item_content?: string;
 }
 
 export interface BlockColumn {

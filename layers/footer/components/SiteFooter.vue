@@ -3,22 +3,20 @@ import {
   SfLink,
 } from '@storefront-ui/vue'
 
+interface SocialLink {
+  service: string
+  url: string
+}
+
+interface Globals {
+  social_links: SocialLink[]
+  organization: string
+}
+
 interface Props {
-    navigation:{
-        type: Object,
-    },
-    refresh: {
-        type: Function,
-        required: false,
-    }
-    globals: {
-        type: Object,
-        social_links: Array<{
-            service: string,
-            url: string
-        }>,
-        organization: string
-    }
+  navigation: Record<string, any>
+  refresh?: () => void
+  globals: Globals
 }
 
 const props = defineProps<Props>()

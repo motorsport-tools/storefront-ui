@@ -105,6 +105,7 @@ onMounted(() => {
             transparent 100%
         );
     pointer-events: none;
+    opacity: 0.90;
 }
 
 .cs__accent {
@@ -125,7 +126,7 @@ onMounted(() => {
 
 .cs__carbon {
     pointer-events: none;
-    opacity: 0.2;
+    opacity: 0.1;
     background-image: radial-gradient(circle at center center, transparent,rgb(33,33,33)),repeating-linear-gradient(135deg, rgb(33,33,33) 0px, rgb(33,33,33) 2px,transparent 2px, transparent 10px,rgb(33,33,33) 10px, rgb(33,33,33) 11px,transparent 11px, transparent 21px),repeating-linear-gradient(45deg, rgb(47,47,47) 0px, rgb(47,47,47) 4px,transparent 4px, transparent 8px),linear-gradient(90deg, rgb(33,33,33),rgb(33,33,33));
 }
 

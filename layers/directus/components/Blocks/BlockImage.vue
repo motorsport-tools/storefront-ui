@@ -39,5 +39,6 @@ const props = defineProps<Props>()
         :width="blockData?.image?.width"
         :height="blockData?.image?.height"
         densities="1"
+        class="h-full w-full object-cover"
         />
 </template>

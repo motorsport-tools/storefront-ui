@@ -37,15 +37,11 @@ export interface BlockCode {
 	content?: string | null;
 }
 
-export interface BlockColumnItem {
+export interface BlockColumnItemBlockColumnItemContent {
 	/** @primaryKey */
 	id: number;
-	sort?: number | null;
-	user_created?: string | null;
-	date_created?: string | null;
-	user_updated?: string | null;
-	date_updated?: string | null;
-	block_column_item_content?: string;
+	item?: BlockImage | BlockRichtext | string | null;
+	collection?: string | null;
 }
 
 export interface BlockColumn {
@@ -56,16 +52,15 @@ export interface BlockColumn {
 	date_created?: string | null;
 	user_updated?: string | null;
 	date_updated?: string | null;
-	items?: BlockColumnsItem[] | string[];
+	columns?: BlockColumnsColumn[] | string[];
 }
 
-export interface BlockColumnsItem {
+export interface BlockColumnsColumn {
 	/** @primaryKey */
 	id: number;
 	block_columns_id?: BlockColumn | string | null;
-	item?: BlockColumnItem | string | null;
+	item?: PageSection | string | null;
 	collection?: string | null;
-	sort?: number | null;
 }
 
 export interface BlockGrid {
@@ -323,6 +318,7 @@ export interface PageSection {
 	border_radius?: number | null;
 	border_width?: number | null;
 	border_color?: string | null;
+	width?: `flex-1` | `w-3/4` | `w-2/3` | `w-1/2` | `w-1/3` | `w-1/4` | null;
 	blocks?: PageSectionsBlock[] | string[];
 }
 
@@ -448,9 +444,9 @@ export interface DirectusTranslation {
 export interface Schema {
 	block_button: BlockButton[];
 	block_code: BlockCode[];
-	block_column_item: BlockColumnItem[];
+	block_column_item_block_column_item_content: BlockColumnItemBlockColumnItemContent[];
 	block_columns: BlockColumn[];
-	block_columns_items: BlockColumnsItem[];
+	block_columns_columns: BlockColumnsColumn[];
 	block_grid: BlockGrid[];
 	block_grid_items: BlockGridItem[];
 	block_image: BlockImage[];
@@ -480,9 +476,9 @@ export interface Schema {
 export enum CollectionNames {
 	block_button = 'block_button',
 	block_code = 'block_code',
-	block_column_item = 'block_column_item',
+	block_column_item_block_column_item_content = 'block_column_item_block_column_item_content',
 	block_columns = 'block_columns',
-	block_columns_items = 'block_columns_items',
+	block_columns_columns = 'block_columns_columns',
 	block_grid = 'block_grid',
 	block_grid_items = 'block_grid_items',
 	block_image = 'block_image',

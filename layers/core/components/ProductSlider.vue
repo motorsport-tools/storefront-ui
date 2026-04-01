@@ -56,6 +56,7 @@ const SliderInit = async () => {
 </script>
 
 <template>
+  <div class="product-slider">
     <h2
       v-if="heading"
       class="text-center mb-6 font-bold typography-headline-3 md:typography-headline-2 block"
@@ -113,6 +114,7 @@ const SliderInit = async () => {
         </template>
       </Carousel>
     </div>
+  </div>
 </template>
 <style>
 .loading .carousel:not(.is-vertical) .carousel__slide--clone:first-child {

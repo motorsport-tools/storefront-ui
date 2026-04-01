@@ -11,6 +11,15 @@ export default <Config>{
     './app.vue',
     'node_modules/@storefront-ui/vue/**/*.{js,mjs}'
   ],
+  safelist: [
+    'flex-1',
+    'w-full',
+    'w-1/4',
+    'w-1/2',
+    'w-3/4',
+    'w-1/3',
+    'w-2/3',
+  ],
   plugins: [sfTypography],
   css: ['~/assets/css/tailwind.css'],
   corePlugins: {

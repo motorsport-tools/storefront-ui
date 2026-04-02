@@ -56,64 +56,62 @@ const SliderInit = async () => {
 </script>
 
 <template>
-  <div class="product-slider">
-    <h2
-      v-if="heading"
-      class="text-center mb-6 font-bold typography-headline-3 md:typography-headline-2 block"
+  <h2
+    v-if="heading"
+    class="text-center mb-6 font-bold typography-headline-3 md:typography-headline-2 block"
+  >
+    {{ heading }}
+  </h2>
+  <div ref="wrapperRef" class="loading w-full h-auto">
+    <Carousel
+      v-bind="sliderOptions"
+      ref="sliderRef"
+      class="product_slider"
+      aria-roledescription="carousel"
+      @init="SliderInit"
     >
-      {{ heading }}
-    </h2>
-    <div ref="wrapperRef" class="loading w-full h-auto">
-      <Carousel
-        v-bind="sliderOptions"
-        ref="sliderRef"
-        class="product_slider"
-        aria-roledescription="carousel"
-        @init="SliderInit"
+      <Slide
+        v-for="(productTemplate, index) in productTemplateList"
+        :key="index"
+        aria-roledescription="slide"
       >
-        <Slide
-          v-for="(productTemplate, index) in productTemplateList"
-          :key="index"
-          aria-roledescription="slide"
-        >
-          <LazyUiProductCard
-              v-if="!loading"
-              :key="productTemplate?.id || index"
-              :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product || productTemplate as Product) || '' "
-              :name="productTemplate?.name || ''"
-              :image-url="productTemplate?.image"
-              :brand="productTemplate?.brand"
-              :image-alt="productTemplate?.name || ''"
-              :regular-price="getRegularPrice(productTemplate.firstVariant as Product)"
-              :special-price="getSpecialPrice(productTemplate.firstVariant as Product)"
-              :is-in-wishlist="productTemplate?.isInWishlist || false"
-              :rating-count="productTemplate.ratingCount || 0"
-              :rating="productTemplate.rating || 0"
-              :first-variant="productTemplate.firstVariant as CustomProductWithStockFromRedis"
-              :ribbon-id="productTemplate.firstVariant?.ribbon?.id"
-              :ribbon-html="productTemplate.firstVariant?.ribbon?.html"
-              :ribbon-bg-color="productTemplate.firstVariant?.ribbon?.bgColor"
-              :ribbon-text-color="productTemplate.firstVariant?.ribbon?.textColor"
-            />
-            <UiProductCardSkeleton
-              v-else
-            />
-        </Slide>
+        <LazyUiProductCard
+            v-if="!loading"
+            :key="productTemplate?.id || index"
+            :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product || productTemplate as Product) || '' "
+            :name="productTemplate?.name || ''"
+            :image-url="productTemplate?.image"
+            :brand="productTemplate?.brand"
+            :image-alt="productTemplate?.name || ''"
+            :regular-price="getRegularPrice(productTemplate.firstVariant as Product)"
+            :special-price="getSpecialPrice(productTemplate.firstVariant as Product)"
+            :is-in-wishlist="productTemplate?.isInWishlist || false"
+            :rating-count="productTemplate.ratingCount || 0"
+            :rating="productTemplate.rating || 0"
+            :first-variant="productTemplate.firstVariant as CustomProductWithStockFromRedis"
+            :ribbon-id="productTemplate.firstVariant?.ribbon?.id"
+            :ribbon-html="productTemplate.firstVariant?.ribbon?.html"
+            :ribbon-bg-color="productTemplate.firstVariant?.ribbon?.bgColor"
+            :ribbon-text-color="productTemplate.firstVariant?.ribbon?.textColor"
+          />
+          <UiProductCardSkeleton
+            v-else
+          />
+      </Slide>
 
-        <template #addons>
-          <Navigation
-            v-if="productTemplateList.length > sliderRef?.data?.config?.itemsToShow"
-          >
-            <template #prev>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
-            </template>
-            <template #next>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
-            </template>
-          </Navigation>
-        </template>
-      </Carousel>
-    </div>
+      <template #addons>
+        <Navigation
+          v-if="productTemplateList.length > sliderRef?.data?.config?.itemsToShow"
+        >
+          <template #prev>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
+          </template>
+          <template #next>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
+          </template>
+        </Navigation>
+      </template>
+    </Carousel>
   </div>
 </template>
 <style>

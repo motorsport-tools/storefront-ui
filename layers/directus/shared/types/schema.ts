@@ -139,6 +139,11 @@ export interface BlockLunchboxSectionContent {
 	collection?: string | null;
 }
 
+export interface BlockOrderStatu {
+	/** @primaryKey */
+	id: number;
+}
+
 export interface BlockProduct {
 	/** @primaryKey */
 	id: number;
@@ -328,7 +333,7 @@ export interface PageSectionsBlock {
 	/** @primaryKey */
 	id: number;
 	page_sections_id?: PageSection | string | null;
-	item?: BlockSlider | BlockProduct | BlockLunchbox | BlockImage | BlockRichtext | BlockGrid | BlockButton | BlockColumn | BlockCode | BlockScript | string | null;
+	item?: BlockSlider | BlockProduct | BlockLunchbox | BlockImage | BlockRichtext | BlockGrid | BlockButton | BlockColumn | BlockCode | BlockScript | BlockOrderStatu | string | null;
 	collection?: string | null;
 }
 
@@ -455,6 +460,7 @@ export interface Schema {
 	block_lunchbox: BlockLunchbox[];
 	block_lunchbox_content: BlockLunchboxContent[];
 	block_lunchbox_section_content: BlockLunchboxSectionContent[];
+	block_order_status: BlockOrderStatu[];
 	block_products: BlockProduct[];
 	block_richtext: BlockRichtext[];
 	block_script: BlockScript[];
@@ -487,6 +493,7 @@ export enum CollectionNames {
 	block_lunchbox = 'block_lunchbox',
 	block_lunchbox_content = 'block_lunchbox_content',
 	block_lunchbox_section_content = 'block_lunchbox_section_content',
+	block_order_status = 'block_order_status',
 	block_products = 'block_products',
 	block_richtext = 'block_richtext',
 	block_script = 'block_script',

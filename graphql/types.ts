@@ -390,6 +390,15 @@ export type StockSubscribeResponse = AsyncData<
   H3Error
 >;
 
+export type SearchOrderResponse = {
+  searchOrder: {
+    model: string;
+    resId: number;
+    accessToken: string;
+    pid: number;
+  };
+};
+
 export interface AttributeFacet {
   id: string
   label: string

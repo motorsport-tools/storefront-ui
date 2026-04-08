@@ -9,6 +9,7 @@ import BlocksBlockCode from '#layers/directus/components/Blocks/BlockCode.vue'
 import BlocksBlockScript from '#layers/directus/components/Blocks/BlockScript.vue'
 import BlocksBlockColumns from '#layers/directus/components/Blocks/BlockColumns.vue'
 import BlocksBlockColumnContent from '#layers/directus/components/Blocks/BlockColumnContent.vue'
+import BlocksBlockOrderStatus from '#layers/directus/components/Blocks/BlockOrderStatus.vue'
 
 export default function useBlockRegistry() {
 
@@ -23,7 +24,8 @@ export default function useBlockRegistry() {
         block_code: BlocksBlockCode,
         block_script: BlocksBlockScript,
         block_columns: BlocksBlockColumns,
-        block_column_item_content: BlocksBlockColumnContent
+        block_column_item_content: BlocksBlockColumnContent,
+        block_order_status: BlocksBlockOrderStatus
     }
 
     const getBlockComponent = (collection: string) => {

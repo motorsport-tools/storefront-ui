@@ -24,6 +24,7 @@ import GetProductTemplateListQueryForRecentViews from './GetProductTemplateListQ
 import AccessQuery from './AccessQuery';
 import PaymentPayQuery from './PaymentPayQuery';
 import GetRmaOperationsQuery from './GetRmaOperationsQuery';
+import SearchOrderQuery from './SearchOrderQuery';
 
 enum QueryName {
   GetProductVariantQuery = 'GetProductVariantQuery',
@@ -53,6 +54,7 @@ enum QueryName {
   AccessQuery = 'AccessQuery',
   PaymentPayQuery = 'PaymentPayQuery',
   GetRmaOperationsQuery = 'GetRmaOperationsQuery',
+  SearchOrderQuery = 'SearchOrderQuery',
 }
 
 const Queries: Record<QueryName, string> = {
@@ -82,6 +84,7 @@ const Queries: Record<QueryName, string> = {
   AccessQuery,
   PaymentPayQuery,
   GetRmaOperationsQuery,
+  SearchOrderQuery,
 };
 
 const QueriesToByPassCache: string[] = [
@@ -89,6 +92,8 @@ const QueriesToByPassCache: string[] = [
   QueryName.WishlistLoadQuery,
   QueryName.LoadCartQuery,
   QueryName.LoadCartLiteQuery,
+  QueryName.SearchOrderQuery,
+  QueryName.AccessQuery,
 ];
 
 export { Queries, QueryName, QueriesToByPassCache };

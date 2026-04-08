@@ -483,6 +483,14 @@ export type LoginOutput = {
   wishlistItems: Maybe<Array<Maybe<WishlistItem>>>;
 };
 
+export type LookupOrderResult = {
+  __typename?: 'LookupOrderResult';
+  accessToken: Maybe<Scalars['String']['output']>;
+  model: Maybe<Scalars['String']['output']>;
+  pid: Maybe<Scalars['Int']['output']>;
+  resId: Maybe<Scalars['Int']['output']>;
+};
+
 export type MailingContact = {
   __typename?: 'MailingContact';
   companyName: Maybe<Scalars['String']['output']>;
@@ -1233,6 +1241,7 @@ export type Query = {
   rmaByOrder: Maybe<Array<Rma>>;
   rmaOperations: Maybe<Array<RmaOperation>>;
   rmas: Maybe<Array<Rma>>;
+  searchOrder: Maybe<LookupOrderResult>;
   validate: Maybe<PaymentLinkValidation>;
   websiteFooter: Maybe<Array<WebsiteMenu>>;
   websiteHomepage: Maybe<Homepage>;
@@ -1421,6 +1430,12 @@ export type QueryRmaByOrderArgs = {
 
 export type QueryRmasArgs = {
   accessToken: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QuerySearchOrderArgs = {
+  email: Scalars['String']['input'];
+  orderNumber: Scalars['String']['input'];
 };
 
 

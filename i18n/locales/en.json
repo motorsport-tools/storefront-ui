@@ -612,5 +612,13 @@
         }
       }
     }
+  },
+  "orderSearch": {
+    "heading": "Track Your Order",
+    "description": "Enter your details below to check the status of your order.",
+    "orderIdLabel": "Order ID",
+    "emailLabel": "Email Address",
+    "submit": "Check Status",
+    "error": "There was a problem getting your order, if this problem persists please contact us."
   }
 }

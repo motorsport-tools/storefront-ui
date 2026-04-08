@@ -14,7 +14,7 @@ export default defineEventHandler(async (event: H3Event) => {
     if (model == 'sale.order') {
         //If sale order - handle it
 
-        return sendRedirect(event, `/order/${Number(res_id)}?access_token=${encodeURIComponent(access_token)}&model=${encodeURIComponent(model)}&pid=${Number(pid)}`)
+        return sendRedirect(event, `/order/${Number(res_id)}?access_token=${encodeURIComponent(String(access_token))}&model=${encodeURIComponent(String(model))}&pid=${Number(pid)}`)
 
     }
 })

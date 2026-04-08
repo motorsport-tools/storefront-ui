@@ -7,13 +7,22 @@ definePageMeta({
 });
 
 const route = useRoute()
+const router = useRouter()
 const { access_token, model, pid } = route.query
 const res_id = Number(route.params?.id)
 
 const { getGuestOrder, order, loading } = useOrders()
 
+const removeAccessTokenFromUrl = async () => {
+  if (!route.query.access_token) return
+  const query = { ...route.query }
+  delete query.access_token
+  await router.replace({ query })
+}
+
 onMounted(async () => {
   await getGuestOrder(Number(res_id), Number(pid), String(model), String(access_token))
+  await removeAccessTokenFromUrl()
 })
 
 </script>

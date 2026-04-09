@@ -8,15 +8,34 @@ interface Props {
 }
 const props = defineProps<Props>()
 
+const { t } = useI18n()
+
 const { search, loading, errorMessage } = useSearchOrder();
 
-const i18n = useI18n();
-
 const orderNumber = ref('');
-const email = ref('');
+const email = ref(false);
+const paddle = ref('');
 
 const handleSubmit = async () => {
-    const result = await search(email.value, orderNumber.value);
+    const val = String(orderNumber.value || '').trim();
+
+    if(email.value) {
+        await navigateTo(`/`)
+        return
+    }
+
+    if (val.indexOf('MST-') !== 0) {
+        errorMessage.value = t('orderSearch.invalidOrderId')
+        return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(paddle.value)) {
+        errorMessage.value = t('orderSearch.invalidEmail')
+        return;
+    }
+
+    const result = await search(paddle.value, orderNumber.value);
 
     if (result) {
         const { model, resId, accessToken, pid } = result;
@@ -51,20 +70,33 @@ const handleSubmit = async () => {
                         type="text"
                         :placeholder="$t('orderSearch.orderIdLabel')"
                         required
+                        :disabled="loading"
                     />
                 </div>
 
                 <div class="flex flex-col gap-1.5">
-                    <label for="email" class="text-sm font-medium text-neutral-900">
+                    <input
+                        id="email"
+                        v-model="email"
+                        type="text"
+                        name="email"
+                        autocomplete="nope"
+                        tabindex="-1"
+                        aria-hidden="true"
+                        class="absolute opacity-0 pointer-events-none -z-10 h-0 w-0"
+                        :disabled="loading"
+                    />
+                    <label for="paddle" class="text-sm font-medium text-neutral-900">
                         {{ $t('orderSearch.emailLabel') }}
                     </label>
                     <UiFormCustomSfInput
-                        id="email"
-                        v-model="email"
-                        name="email"
+                        id="paddle"
+                        v-model="paddle"
+                        name="paddle"
                         type="email"
                         :placeholder="$t('orderSearch.emailLabel')"
                         required
+                        :disabled="loading"
                     />
                 </div>
 

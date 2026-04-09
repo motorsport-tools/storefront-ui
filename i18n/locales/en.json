@@ -619,6 +619,8 @@
     "orderIdLabel": "Order ID",
     "emailLabel": "Email Address",
     "submit": "Check Status",
+    "invalidOrderId": "Order ID must start with MST-",
+    "invalidEmail": "Please enter a valid email address",
     "error": "There was a problem getting your order, if this problem persists please contact us."
   }
 }

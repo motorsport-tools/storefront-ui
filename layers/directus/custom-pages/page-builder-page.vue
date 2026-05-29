@@ -13,7 +13,7 @@ const { isVisualEditingEnabled, apply } = useVisualEditing()
 
 const cacheKey = `pages-directus-${permalink}`
 
-const globals = useNuxtApp().payload?.data['site-data']
+const globals = useNuxtApp().payload?.data['site-data'] ? useNuxtApp().payload.data['site-data'] : { organization: null }
 
 const {
 	data: page,

@@ -12,7 +12,7 @@ watch(
   }
 )
 
-const siteGlobals = useNuxtApp().payload.data['site-data'].globals
+const siteGlobals = useNuxtApp().payload.data['site-data'].globals ? useNuxtApp().payload.data['site-data'].globals : {}
 
 const drawerRef = ref()
 const { open, close, isOpen } = useDisclosure()

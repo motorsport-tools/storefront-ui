@@ -65,6 +65,10 @@ ENV NUXT_SWR_CACHE_TIME=3600
 
 COPY . ./
 RUN yarn install --frozen-lockfile
+
+ARG CACHE_BUST=1
+RUN echo "Building version: ${CACHE_BUST}"
+
 RUN yarn build
 
 #RUN yarn add -W nuxt \

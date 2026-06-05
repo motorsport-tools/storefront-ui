@@ -28,10 +28,8 @@ export default defineEventHandler(async (event) => {
 								'type',
 								{
 									page: ['id', 'permalink'],
-									//post: ['id', 'slug'],
 									children: ['id', 'title', 'url', 'type', {
 										page: ['id', 'permalink'],
-										//post: ['id', 'slug']
 									}],
 								},
 							],
@@ -82,10 +80,6 @@ export default defineEventHandler(async (event) => {
 		]);
 		return { globals, headerNavigation, footerNavigation };
 	} catch (error) {
-		//throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
-		console.log('Error fetching site data');
-		console.error('The exact error is:', error);
-
 		return { global: null, headerNavigation: null, footerNavigation: null };
 	}
 })

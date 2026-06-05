@@ -84,6 +84,10 @@ export default defineEventHandler(async (event) => {
 		]);
 		return { globals, headerNavigation, footerNavigation };
 	} catch {
-		throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
+		//throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
+		console.log('Error fetching site data');
+		console.log('Directus Connection: ', directusServer);
+
+		return { global: null, headerNavigation: null, footerNavigation: null };
 	}
 })

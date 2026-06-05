@@ -314,6 +314,7 @@ export default defineNuxtConfig({
   experimental: {
     crossOriginPrefetch: true,
     asyncContext: true,
+    appManifest: false,
   },
   sitemap: {
     sources: ['/api/sitemap/urls/products', '/api/sitemap/urls/categories'],

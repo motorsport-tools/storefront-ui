@@ -63,6 +63,11 @@ export interface BlockColumnsColumn {
 	collection?: string | null;
 }
 
+export interface BlockFaq {
+	/** @primaryKey */
+	id: number;
+}
+
 export interface BlockGrid {
 	/** @primaryKey */
 	id: number;
@@ -241,6 +246,25 @@ export interface BlockSliderSlidesBlockContent {
 	sort?: number | null;
 }
 
+export interface FaqCategory {
+	/** @primaryKey */
+	id: number;
+	/** @required */
+	name: string;
+	slug?: string | null;
+}
+
+export interface FAQ {
+	/** @primaryKey */
+	id: number;
+	status?: 'published' | 'draft' | 'archived';
+	sort?: number | null;
+	category?: FaqCategory | string | null;
+	title?: string | null;
+	content?: string | null;
+	slug?: string | null;
+}
+
 export interface Globals {
 	/** @primaryKey */
 	id: number;
@@ -333,7 +357,7 @@ export interface PageSectionsBlock {
 	/** @primaryKey */
 	id: number;
 	page_sections_id?: PageSection | string | null;
-	item?: BlockSlider | BlockProduct | BlockLunchbox | BlockImage | BlockRichtext | BlockGrid | BlockButton | BlockColumn | BlockCode | BlockScript | BlockOrderStatu | string | null;
+	item?: BlockSlider | BlockProduct | BlockLunchbox | BlockImage | BlockRichtext | BlockGrid | BlockButton | BlockColumn | BlockCode | BlockScript | BlockOrderStatu | BlockFaq | string | null;
 	collection?: string | null;
 }
 
@@ -454,6 +478,7 @@ export interface Schema {
 	block_column_item_block_column_item_content: BlockColumnItemBlockColumnItemContent[];
 	block_columns: BlockColumn[];
 	block_columns_columns: BlockColumnsColumn[];
+	block_faq: BlockFaq[];
 	block_grid: BlockGrid[];
 	block_grid_items: BlockGridItem[];
 	block_image: BlockImage[];
@@ -467,6 +492,8 @@ export interface Schema {
 	block_slider: BlockSlider[];
 	block_slider_slides: BlockSliderSlide[];
 	block_slider_slides_block_content: BlockSliderSlidesBlockContent[];
+	faq_category: FaqCategory[];
+	FAQs: FAQ[];
 	globals: Globals;
 	navigation: Navigation[];
 	navigation_items: NavigationItem[];
@@ -487,6 +514,7 @@ export enum CollectionNames {
 	block_column_item_block_column_item_content = 'block_column_item_block_column_item_content',
 	block_columns = 'block_columns',
 	block_columns_columns = 'block_columns_columns',
+	block_faq = 'block_faq',
 	block_grid = 'block_grid',
 	block_grid_items = 'block_grid_items',
 	block_image = 'block_image',
@@ -500,6 +528,8 @@ export enum CollectionNames {
 	block_slider = 'block_slider',
 	block_slider_slides = 'block_slider_slides',
 	block_slider_slides_block_content = 'block_slider_slides_block_content',
+	faq_category = 'faq_category',
+	FAQs = 'FAQs',
 	globals = 'globals',
 	navigation = 'navigation',
 	navigation_items = 'navigation_items',

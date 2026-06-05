@@ -5,7 +5,12 @@ FROM node:${NODE_VERSION}-slim AS base
 
 ENV DOCKER_BUILDKIT=1
 
-RUN yarn set version ${YARN_VERSION}
+RUN npm install -g corepack@latest --force
+
+RUN corepack enable
+
+RUN corepack prepare yarn@${YARN_VERSION} --activate
+
 WORKDIR /src
 
 # Build

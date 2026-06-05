@@ -60,7 +60,7 @@
     "unenv": "^1.10.0",
     "vue": "^3.4.27",
     "vue-instantsearch": "^4.22.2",
-    "vue-router": "^4.3.2",
+    "vue-router": "4",
     "vue-slider-component": "^4.1.0-beta.7",
     "vue-toastification": "next",
     "vue3-carousel-nuxt": "^1.1.6"

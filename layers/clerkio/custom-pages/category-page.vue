@@ -108,7 +108,7 @@ const limitOptions = [
                     
                     <div class="col-span-12 lg:col-span-8 xl:col-span-9">
                         
-                        <div class="flex justify-start items-center mb-6">
+                        <div class="flex flex-col gap-3 mb-6 md:flex-row md:items-center">
                             <SearchSortBy 
                                 :options="sortingOptions"
                                 class="mr-4"
@@ -118,7 +118,7 @@ const limitOptions = [
                                 class="mr-2 flex flex-row items-center"
                             />
                             <SearchPageOfPage
-                                class="ml-auto text-sm"
+                                class="md:ml-auto text-sm"
                             />
                         </div>
                         <div class="flex justify-between items-center mb-6">

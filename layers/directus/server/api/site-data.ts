@@ -4,7 +4,7 @@ import {
 	type RegularCollections
 } from '@directus/sdk'
 
-export default defineEventHandler(async (event) => {
+export default defineCachedEventHandler(async (event) => {
 	const globalsCollection = 'globals' as RegularCollections<String>
 	const navigationCollection = 'navigation' as RegularCollections<String>
 	try {
@@ -81,5 +81,19 @@ export default defineEventHandler(async (event) => {
 		return { globals, headerNavigation, footerNavigation };
 	} catch (error) {
 		return { global: null, headerNavigation: null, footerNavigation: null };
+	}
+}, {
+	maxAge: 3600,
+	name: 'siteDataCache',
+	getKey: () => 'site-data',
+	shouldBypassCache: (event) => {
+		const query = getQuery(event)
+		if (query.token && (query.preview || query['visual-editing'])) {
+			return true
+		}
+		if (getHeader(event, 'x-invalidate') === '1') {
+			return true
+		}
+		return false
 	}
 })

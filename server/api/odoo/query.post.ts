@@ -28,8 +28,9 @@ const customCache = cachedFunction(
       const body = await readBody(event)
       const queryName = body?.[0]?.queryName
 
-      const globalQueryWhitelist = ['GetCategoriesQuery', 'GetProductTemplateQuery']
-      const isGlobalQuery = globalQueryWhitelist.includes(queryName)
+      // Queries cached globally (shared key, no pricelist/session dependency)
+      const globalCacheQueries = ['GetCategoriesQuery', 'GetProductTemplateQuery', 'GetCategoryQuery', 'GetCountriesQuery', 'GetStatesQuery']
+      const isGlobalQuery = globalCacheQueries.includes(queryName)
 
       const isoCode = getCookie(event, 'i18n_redirected') || 'en'
       const lang = isoCode.split('-')[0].toLowerCase() // Use base lang for keys

@@ -4,7 +4,7 @@ const config: CodegenConfig = {
   overwrite: true,
   schema: [
     {
-      'https://odoo.motorsport-tools.co.uk/graphql/vsf': {},
+      'https://odoo.motorsport-tools.com/graphql/vsf': {},
     },
   ],
   config: {

@@ -17,11 +17,11 @@ WORKDIR /src
 FROM base AS build
 
 
-ARG NUXT_PUBLIC_ODOO_BASE_URL="https://odoo.motorsport-tools.com/"
-ARG NUXT_PUBLIC_ODOO_BASE_IMAGE_URL="https://odoo.motorsport-tools.com/"
-ARG REDIS_URL="redis://10.154.0.2:6379"
-ARG NUXT_STORAGE_URL="redis://10.154.0.2:6379"
-ARG DIRECTUS_URL="https://dir.motorsport-tools.com"
+ARG NUXT_PUBLIC_ODOO_BASE_URL="https://odoo.motorsport-tools.co.uk/"
+ARG NUXT_PUBLIC_ODOO_BASE_IMAGE_URL="https://odoo.motorsport-tools.co.uk/"
+ARG REDIS_URL="redis://10.154.0.8:6379"
+ARG NUXT_STORAGE_URL="redis://10.154.0.8:6379"
+ARG DIRECTUS_URL="https://dir.motorsport-tools.co.uk"
 ARG PORT=3000
 ARG NUXT_STORAGE_PASSWORD
 ARG DIRECTUS_SERVER_TOKEN
@@ -83,10 +83,10 @@ RUN yarn build
 # Run
 FROM base
 
-ARG NUXT_STORAGE_URL="redis://10.154.0.2:6379"
-ARG NUXT_PUBLIC_ODOO_BASE_URL="https://odoo.motorsport-tools.com/"
-ARG NUXT_PUBLIC_ODOO_BASE_IMAGE_URL="https://odoo.motorsport-tools.com/"
-ARG DIRECTUS_URL="https://dir.motorsport-tools.com"
+ARG NUXT_STORAGE_URL="redis://10.154.0.8:6379"
+ARG NUXT_PUBLIC_ODOO_BASE_URL="https://odoo.motorsport-tools.co.uk/"
+ARG NUXT_PUBLIC_ODOO_BASE_IMAGE_URL="https://odoo.motorsport-tools.co.uk/"
+ARG DIRECTUS_URL="https://dir.motorsport-tools.co.uk"
 
 ARG PORT=3000
 ARG NUXT_STORAGE_PASSWORD

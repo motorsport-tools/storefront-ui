@@ -80,6 +80,7 @@ const handleSubmit = async (e:number) => {
                 v-if="allPaymentMethods.length > 0"
                 v-for="method in allPaymentMethods"
                 class="relative"
+                :class="method.code === 'afterpay_clearpay' && order.amount_total > 1200.00 ? 'hidden' : ''"
             >
                 <input
                     v-model="form.paymentMethodId"

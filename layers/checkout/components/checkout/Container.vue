@@ -9,7 +9,6 @@ const props = defineProps<{
     steps?: Array<any>
 }>()
 
-console.log('Steps', props.steps)
 
 </script>
 <template>

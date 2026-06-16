@@ -42,6 +42,7 @@ const addressFormFieldsInput = ref<AddressFormFieldsInputExtendedFields>({
   street: "",
   zip: "",
   street2: "",
+  phone: "",
 });
 
 if (props.isEditForm) {
@@ -52,6 +53,7 @@ if (props.isEditForm) {
   addressFormFieldsInput.value.countryId = props.address?.country?.id || 0
   addressFormFieldsInput.value.stateId = props.address?.state?.id || 0
   addressFormFieldsInput.value.zip = props.address?.zip ?? ""
+  addressFormFieldsInput.value.phone = props.address?.phone ?? ""
 }
 
 const billingAddresIsTheSameAsShipping = ref(false);
@@ -135,7 +137,7 @@ const handleSubmit = async () => {
         :placeholder="$t('form.cityLabel')"
       />
     </label>
-    <label>
+    <label class="md:col-span-2">
       <UiFormLabel>{{ $t("form.postalCodeLabel") }}</UiFormLabel>
       <SfInput
         v-model="addressFormFieldsInput.zip"
@@ -143,6 +145,16 @@ const handleSubmit = async () => {
         autocomplete="postal-code"
         required
         :placeholder="$t('form.postalCodeLabel')"
+      />
+    </label>
+    <label class="md:col-span-2">
+      <UiFormLabel>{{ $t("form.phoneLabel") }}</UiFormLabel>
+      <SfInput
+        v-model="addressFormFieldsInput.phone"
+        name="phone"
+        autocomplete="phone"
+        required
+        :placeholder="$t('form.phoneLabel')"
       />
     </label>
     <label

@@ -36,7 +36,6 @@ const handleOpenFormForEditAddress = (
 };
 
 const handleOpenFormToAddAddress = () => {
-  console.log('Click')
   edit.value = false;
   open();
 };
@@ -58,7 +57,7 @@ const handleCloseAfterSaveAddress = async () => {
     :key="address.id"
   >
     <AccountAddressData
-      @click="handleOpenFormForEditAddress(address)"
+      @on-click="handleOpenFormForEditAddress(address)"
       :header="address.name || address.street || ''"
       :button-text="$t('account.accountSettings.personalData.edit')"
     >
@@ -69,6 +68,7 @@ const handleCloseAfterSaveAddress = async () => {
       <p>{{ `${address?.state?.name || ""}` }}</p>
       <p>{{ `${address.country?.name}` }}</p>
       <p>{{ `${address.zip}` }}</p>
+      <p v-if="address.phone">{{ `${address.phone}`}}</p>
       <template v-slot:footer>
         <SfButton
           variant="secondary"

@@ -19,8 +19,8 @@ const handleSelectRate = async (serviceId: string) => {
 }
 </script>
 <template>
-    <table class="hidden md:block text-left typography-text-sm">
-        <caption class="hidden">
+    <table class="block text-left typography-text-sm">
+        <caption class="hidden md:block text-left typography-text-sm text-neutral-600">
             {{ $t("shippingMethod.rates.caption") }}
         </caption>
         <thead v-show="!summary" class="border-b-2 border-neutral-200">

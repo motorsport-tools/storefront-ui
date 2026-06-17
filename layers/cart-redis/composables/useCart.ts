@@ -33,9 +33,12 @@ export const useCart = () => {
 
   const loading = useState<boolean>('cartLoading', () => false)
 
+  const cartError = ref('')
+
   const loadCart = async (full: boolean = false) => {
     try {
       loading.value = true
+      cartError.value = ''
 
       const data = await $fetch<{ cart: Cart }>(`/api/odoo/cart-load`, {
         method: 'POST',
@@ -48,7 +51,7 @@ export const useCart = () => {
       cart.value = data.cart || ({} as Cart)
       frequentlyTogetherProducts.value = (data.cart?.frequentlyBoughtTogether || []).filter((p): p is Product => p !== null)
     } catch (error: any) {
-      return toast.error(error?.data?.message)
+      cartError.value = error?.data?.message || error?.message || 'Could not add to cart. Please try again.'
     } finally {
       loading.value = false
     }
@@ -252,6 +255,7 @@ export const useCart = () => {
     updateItemQuantity,
     removeItemFromCart,
     frequentlyTogetherProducts,
+    cartError,
     cart,
     totalItemsInCart,
     cartIsEmpty,

@@ -9,11 +9,23 @@ const SHOULD_BYPASS_ERROR_QUERIES = [
   'LoadCartQuery',
 ]
 
+const SHOULD_BYPASS_ERROR_MUTATIONS = [
+  'LoginMutation',
+  'RegisterUserMutation',
+  'ContactUsMutation',
+  'NewsletterSubscribeMutation',
+  'CartAddItem',
+]
+
 const avoidErrorThrowForSomeRequests = (options: any) => {
   if (options.body) {
     try {
-      const queryName = JSON.parse(options.body)?.[0]?.queryName
-      if (SHOULD_BYPASS_ERROR_QUERIES?.includes(queryName)) {
+      const payload = JSON.parse(options.body)?.[0] ?? {}
+      if (SHOULD_BYPASS_ERROR_QUERIES?.includes(payload?.queryName)) {
+        return true
+      }
+
+      if (SHOULD_BYPASS_ERROR_MUTATIONS?.includes(payload?.mutationName)) {
         return true
       }
 

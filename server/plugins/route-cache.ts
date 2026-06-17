@@ -21,6 +21,7 @@ const routesToSkipCache = [
   '/sitemap.xml',
   '/__nuxt_island/**',
   '/_ipx/**',
+  '/my-account/**'
 ]
 
 type Handler = {

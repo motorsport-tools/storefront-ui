@@ -20,7 +20,7 @@ const props = defineProps<Props>()
 const emit = defineEmits(['openReturnsPolicy'])
 const { productTemplate, productVariant } = toRefs(props)
 
-const { cart, cartAdd } = useCart()
+const { cart, cartAdd, loading: cartLoading, cartError } = useCart()
 const { resetCheckoutFromStep } = useCheckout()
 
 const quantitySelectorValue = ref(1)
@@ -189,9 +189,16 @@ watch(() => productVariant.value?.id, (newId) => {
                 <SfIconShoppingCartCheckout />
                 {{ productsInCart }} {{ $t('cartProductsIn') }}
             </div>
+
+            <ClientOnly v-if="cartError" class="mt-3">
+                <UiFormError>
+                    {{ cartError }}
+                </UiFormError>
+            </ClientOnly>
+
             <div class="flex flex-col md:flex-row flex-wrap gap-4">
                 <SfButton
-                    :disabled="loadingProductVariant || !isStock"
+                    :disabled="loadingProductVariant || !isStock || cartLoading"
                     type="button"
                     size="lg"
                     class="flex-grow-[2] flex-shrink basis-auto whitespace-nowrap"
@@ -200,9 +207,10 @@ watch(() => productVariant.value?.id, (newId) => {
                     <template #prefix>
                         <SfIconShoppingCart size="sm" />
                     </template>
-                    {{ $t("addToCart") }}
+                    {{ cartLoading ? 'Adding…' : $t('addToCart') }}
                 </SfButton>
             </div>
+
         </div>
         <div class="flex flex-col">
             <ClientOnly>

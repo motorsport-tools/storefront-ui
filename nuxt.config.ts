@@ -10,6 +10,7 @@ const toOrigin = (value?: string) => {
 
 const odooOrigin = toOrigin(process.env.NUXT_PUBLIC_ODOO_BASE_URL)
 const directusOrigin = toOrigin(process.env.DIRECTUS_URL)
+const swrCacheTime = Number(process.env?.NUXT_SWR_CACHE_TIME || 3600)
 
 export default defineNuxtConfig({
   modules: [
@@ -43,10 +44,12 @@ export default defineNuxtConfig({
     '/images/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
     '/img/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
     '/favicon.ico': { headers: { 'cache-control': 'public, max-age=604800' } },
+    '/sitemap_index.xml': { swr: swrCacheTime },
+    '/__sitemap__/**': { swr: swrCacheTime },
   },
   $production: {
     routeRules: {
-      '/': { swr: Number(process.env?.NUXT_SWR_CACHE_TIME) },
+      '/': { swr: swrCacheTime },
       '/product/**': { swr: 300 }, //5 min
       '/my/orders/**': { cache: false },
       '/payment/**': { cache: false },
@@ -54,6 +57,8 @@ export default defineNuxtConfig({
       '/images/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
       '/img/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
       '/favicon.ico': { headers: { 'cache-control': 'public, max-age=604800' } },
+      '/sitemap_index.xml': { swr: swrCacheTime },
+      '/__sitemap__/**': { swr: swrCacheTime },
     },
 
   },

@@ -15,7 +15,7 @@ export const usePayment = () => {
   const loadPaymentMethods = async (orderId = null) => {
     try {
       loading.value = true;
-      const data = await $sdk().odoo.query<any, PaymentMethodListResponse>({
+      const data = await $sdk().odoo.queryNoCache<any, PaymentMethodListResponse>({
         queryName: QueryName.GetPaymentMethodsQuery,
       }, orderId ? {
         orderId: orderId

@@ -31,6 +31,7 @@ export default defineNuxtConfig({
     'nuxt-viewport',
     '@nuxtjs/sitemap',
     '@nuxtjs/critters',
+    'nuxt-posthog'
   ],
   routeRules: {
     '/payment/**': { cache: false },

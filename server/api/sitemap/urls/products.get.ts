@@ -1,12 +1,29 @@
-import { defineSitemapEventHandler } from '#imports'
+import { defineSitemapEventHandler, useRuntimeConfig } from '#imports'
 import type { SitemapUrlInput } from '#sitemap/types'
-import { Product, ProductList, ProductTemplateListResponse } from '~/graphql'
+import { getRequestHost, getRequestIP } from 'h3'
+import type { Product } from '~/graphql'
 
-export default defineSitemapEventHandler(async (event: any) => {
+type SitemapProduct = Pick<Product, 'slug' | 'image' | 'imageFilename'>
 
-  const query = `
-query GetProducts {
-  products(pageSize: 1000) {
+type ProductsGraphqlResponse = {
+  data?: {
+    products?: {
+      totalCount?: number
+      products?: Array<SitemapProduct | null>
+    }
+  }
+  errors?: Array<{
+    message?: string
+  }>
+}
+
+const rawPageSize = Number.parseInt(process.env.NUXT_SITEMAP_PRODUCT_PAGE_SIZE || '1000', 10)
+const PRODUCT_PAGE_SIZE = Number.isFinite(rawPageSize) && rawPageSize > 0 ? rawPageSize : 1000
+
+const query = `
+query GetProducts($currentPage: Int!, $pageSize: Int!) {
+  products(currentPage: $currentPage, pageSize: $pageSize) {
+    totalCount
     products {
       slug
       image
@@ -16,32 +33,92 @@ query GetProducts {
 }
 `
 
-  const odooBaseUrl = `${process.env?.NUXT_PUBLIC_ODOO_BASE_URL}graphql/vsf`
+export default defineSitemapEventHandler(async (event) => {
+  const config = useRuntimeConfig(event)
 
-  const data: ProductTemplateListResponse = await $fetch(odooBaseUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ query })
-  })
+  const baseUrl = String(
+    config.public.odooBaseUrl ||
+    process.env.NUXT_PUBLIC_ODOO_BASE_URL ||
+    ''
+  ).replace(/\/+$/, '')
 
+  if (!baseUrl) {
+    console.error('[sitemap/products] Missing Odoo base URL')
+    return []
+  }
 
-  return data?.data?.products?.products?.map((product: Product) => {
+  const odooBaseUrl = `${baseUrl}/graphql/vsf`
 
-    const url: SitemapUrlInput = {
-      loc: product.slug,
-      _sitemap: 'products'
+  const headers: Record<string, string> = {
+    accept: 'application/json',
+    'content-type': 'application/json',
+    'request-host': String((config.public as any).middlewareUrl || getRequestHost(event)),
+  }
+
+  const ip = getRequestIP(event, { xForwardedFor: true })
+  if (ip) {
+    headers['REAL-IP'] = ip
+  }
+
+  const fetchProductPage = async (currentPage: number): Promise<ProductsGraphqlResponse['data']['products']> => {
+    const response = await $fetch<ProductsGraphqlResponse>(odooBaseUrl, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        query,
+        variables: {
+          currentPage,
+          pageSize: PRODUCT_PAGE_SIZE,
+        },
+      }),
+    })
+
+    if (response?.errors?.length) {
+      const message = response.errors.map((error) => error.message).filter(Boolean).join('; ')
+      throw new Error(`[sitemap/products] Odoo GraphQL error: ${message}`)
     }
 
-    if (product.image) {
-      url.images = [{
-        loc: product.image,
-        caption: product.imageFilename || '',
-        title: product.imageFilename || '',
-      },]
-    }
+    return response?.data?.products
+  }
 
-    return url
-  }) satisfies SitemapUrlInput[] || [];
+  const firstPage = await fetchProductPage(1)
+
+  const totalCount = firstPage?.totalCount || 0
+  const totalPages = Math.ceil(totalCount / PRODUCT_PAGE_SIZE)
+
+  const products: SitemapProduct[] = [
+    ...(firstPage?.products || []).filter(Boolean) as SitemapProduct[],
+  ]
+
+  for (let currentPage = 2; currentPage <= totalPages; currentPage += 1) {
+    const page = await fetchProductPage(currentPage)
+
+    products.push(
+      ...((page?.products || []).filter(Boolean) as SitemapProduct[])
+    )
+  }
+
+  const sitemapUrls: SitemapUrlInput[] = products
+    .filter((product) => product.slug && product.slug !== 'false' && product.slug.startsWith('/'))
+    .map((product) => {
+      const url: SitemapUrlInput = {
+        loc: product.slug as string,
+        lastmod: new Date().toISOString(),
+        _sitemap: 'products',
+      }
+
+      if (product.image) {
+        url.images = [
+          {
+            loc: product.image,
+            caption: product.imageFilename || '',
+            title: product.imageFilename || '',
+          },
+        ]
+      }
+
+      return url
+    })
+
+  return sitemapUrls
 })

@@ -64,6 +64,7 @@ if (allPaymentMethods.value.length > 0) {
 // Handle selecting a payment method
 function selectPaymentMethod(method: PaymentMethod) {
   selectedMethod.value = method;
+  console.log('Selected Method:', method)
   emit('update:active-payment', method);  
 }
 </script>

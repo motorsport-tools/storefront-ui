@@ -31,7 +31,6 @@ export default defineNuxtConfig({
     'nuxt-viewport',
     '@nuxtjs/sitemap',
     '@nuxtjs/critters',
-    'nuxt-posthog'
   ],
   routeRules: {
     '/payment/**': { cache: false },
@@ -323,14 +322,36 @@ export default defineNuxtConfig({
     appManifest: false,
   },
   sitemap: {
-    sources: ['/api/sitemap/urls/products', '/api/sitemap/urls/categories'],
-    cacheMaxAgeSeconds: 3600000,
+    autoLastmod: true,
+    defaultSitemapsChunkSize: Number(process.env.NUXT_SITEMAP_DEFAULT_CHUNK_SIZE || 10000),
+    cacheMaxAgeSeconds: Number(process.env.NUXT_SITEMAP_CACHE_SECONDS || 3600),
     runtimeCacheStorage: {
       driver: process.env.NUXT_STORAGE_DRIVER || '',
       url: process.env.NUXT_STORAGE_URL,
       password: process.env.NUXT_STORAGE_PASSWORD,
-      ttl: 3600000,
-    }
+      ttl: Number(process.env.NUXT_SITEMAP_CACHE_SECONDS || 3600),
+    },
+    sitemaps: {
+      pages: {
+        sources: ['/api/sitemap/urls/pages'],
+        includeAppSources: true,
+      },
+      products: {
+        sources: ['/api/sitemap/urls/products'],
+        chunks: Number(process.env.NUXT_SITEMAP_PRODUCT_CHUNK_SIZE || 2000),
+
+        ...(Number(process.env.NUXT_SITEMAP_PRODUCT_CHUNK_COUNT || 0) > 0
+          ? { chunkCount: Number(process.env.NUXT_SITEMAP_PRODUCT_CHUNK_COUNT) }
+          : {}),
+      },
+      /*
+      // Dont need as already caught by /pages
+      categories: {
+        sources: ['/api/sitemap/urls/categories'],
+        chunks: false,
+      },
+      */
+    },
   },
   tailwindcss: {
     viewer: false,

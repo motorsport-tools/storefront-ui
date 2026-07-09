@@ -28,6 +28,7 @@ export default defineSitemapEventHandler(async (event: any) => {
     .filter((category: Category) => category.slug && category.slug !== 'false')
     .map((category: any) => ({
       loc: category.slug,
+      lastmod: new Date().toISOString(),
       _sitemap: 'categories'
     } satisfies SitemapUrlInput))
 

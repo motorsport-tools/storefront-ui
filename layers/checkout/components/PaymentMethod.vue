@@ -67,6 +67,7 @@ const allPaymentMethods = computed(() => {
 
 function updateSelectedMethod(method: PaymentMethod) {
   selectedMethod.value = method;
+  console.log('Selected Method:', method)
   emit("update:activePayment", method);
 }
 </script>

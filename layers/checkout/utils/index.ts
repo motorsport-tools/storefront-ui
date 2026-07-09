@@ -10,6 +10,8 @@ const getPaymentProviderComponentName = (providerCode: string) => {
       return "ProviderRvvup"
     case "stripe":
       return "ProviderStripe"
+    case "custom":
+      return "ProviderTrade";
     default:
       return "UnknownPaymentProvider";
   }

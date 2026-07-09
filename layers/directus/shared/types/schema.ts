@@ -315,6 +315,7 @@ export interface Page {
 	status?: 'published' | 'draft' | 'archived';
 	sort?: number | null;
 	date_created?: string | null;
+	date_updated?: string | null;
 	seo?: ExtensionSeoMetadata | null;
 	/** @description Unique URL - must start with can have multiple segments i.e. /about/company @required */
 	permalink: string;

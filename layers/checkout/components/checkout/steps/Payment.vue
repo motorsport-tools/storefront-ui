@@ -25,6 +25,7 @@ const form = reactive({
     paymentMethod: null as any | null 
 })
 
+const { $clientPosthog } = useNuxtApp()
 const { loadPaymentMethods, paymentProviders, loading: paymentLoading } = usePayment();
 
 const allPaymentMethods = computed(() => {
@@ -59,6 +60,11 @@ const handleSubmit = async (e:number) => {
     const selectedMethod = allPaymentMethods.value.find(m => m.id === e)
     
     if (!selectedMethod) return
+
+    $clientPosthog?.capture('Payment Method Selected', {
+        paymentMethodId: form.paymentMethodId,
+        paymentMethod: selectedMethod.name,
+    })
 
     form.paymentMethod = toRaw(selectedMethod)
     

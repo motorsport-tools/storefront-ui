@@ -78,7 +78,7 @@ export const useCheckout = () => {
     // Mark current step as complete and move to next
     const completeStep = (data?: Record<string, any>) => {
         const currentStep = steps.value.find(s => s.id === currentStepId.value)
-        console.log('Completing step', currentStepId.value, 'with data', data)
+
         if (currentStep) {
             currentStep.completed = true
             if (data) {

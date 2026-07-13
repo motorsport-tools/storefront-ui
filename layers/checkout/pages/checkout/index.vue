@@ -19,7 +19,7 @@ const { hydrateAuthOnce, loadUser, isAuthenticated } = useAuth()
 const isLoading = computed(() => cartLoading.value || deliveryLoading.value);
 const selectedProvider = ref<PaymentMethod | null>(null)
 
-const { $i18n } = useNuxtApp()
+const { $i18n, $clientPosthog } = useNuxtApp()
 
 const { steps, visibleSteps, isLastStep, currentStepId, currentStepIndex, allStepsCompleted, registerSteps, completeStep, goToStep, updateStepData, getAllData, getStepData, resetCheckout } = useCheckout()
 
@@ -90,6 +90,12 @@ onMounted(async () => {
         await loadUser(true)
     }
     registerSteps(checkoutSteps)
+    $clientPosthog?.capture('Checkout Loaded', {  
+        cartId: cart.value?.order?.id,
+        name: cart.value?.order?.name,
+        amount: cart.value?.order?.amountTotal,
+        items: cart.value?.order?.orderLines?.length,
+     })
 })
 </script>
 <template>

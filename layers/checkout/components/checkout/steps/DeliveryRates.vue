@@ -18,6 +18,7 @@ const emit = defineEmits<{
 
 const { loadRates, setRate, ratesLoading, rates, loading } = useDeliveryMethod()
 const { cart } = useCart();
+const { $clientPosthog } = useNuxtApp()
 const form = reactive({
     deliveryRate: props.exData?.id || null
 })
@@ -45,6 +46,11 @@ onMounted(async () => {
 const handleSubmit = async () => {
     if(form.deliveryRate) {
         await setRate({serviceId: form.deliveryRate})
+
+        $clientPosthog?.capture('Shipping Rate Selected', {
+            serviceId: form.deliveryRate,
+            method: rates.value?.find(s => s.serviceId == form.deliveryRate)?.courierName,
+        })
         nextTick()
         emit('complete', { ...form })
     }

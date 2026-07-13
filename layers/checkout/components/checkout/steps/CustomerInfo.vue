@@ -112,6 +112,11 @@ const handleSubmit = async () => {
                 :disabled="loading"
                 type="submit"
                 class="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
+                v-posthog-capture="{
+                    name: 'Contact Information - Continue',
+                    properties: {
+                    },
+                }"
             >
                 Continue
             </button>

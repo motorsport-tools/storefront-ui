@@ -54,6 +54,10 @@ const readyToPay = computed(() => {
       class="w-full mb-4 md:mb-0"
       :disabled="!readyToPay || loading"
       @click="providerPaymentHandler"
+      v-posthog-capture="{
+        name: 'Place Order Clicked',
+        properties: {}
+      }"
     >
       <span v-if="loading">
         <SfLoaderCircular

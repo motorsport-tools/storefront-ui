@@ -5,10 +5,22 @@ import {
     SfIconWarehouse,
     SfIconSafetyCheck
 } from '@storefront-ui/vue'
+import type { CustomProductWithStockFromRedis } from '~/graphql';
+
+interface Props {
+    clickAndCollect: boolean,
+    productVariant: CustomProductWithStockFromRedis
+}
+const props = defineProps<Props>()
+const { productVariant } = toRefs(props)
 
 const { deliveryMethods, loadDeliveryMethods, loading } = useDeliveryMethod()
 
-const tomorrow = useNextDeliveryDateUK()
+const deliveryLead = computed(() => {
+    return productVariant.value?.combinationInfoVariant?.stock > 0 ? 0 : 2
+})
+
+const tomorrow = useNextDeliveryDateUK(deliveryLead.value)
 const collection = useClickAndCollectTime()
 
 const emit = defineEmits(['openReturnsPolicy'])
@@ -43,12 +55,17 @@ onMounted(async () => {
             </i18n-t>
         </p>
     </div>
-    <div class="flex mt-4">
+    <div 
+        class="flex mt-4"
+    >
         <SfIconWarehouse
             size="sm"
             class="flex-shrink-0 mr-1 text-neutral-500"
         />
-        <p class="text-sm">
+        <p 
+            v-if="clickAndCollect"
+            class="text-sm"
+        >
             <i18n-t
                 keypath="additionalInfo.pickup"
                 scope="global"
@@ -57,6 +74,12 @@ onMounted(async () => {
                     {{ collection }}
                 </template>
             </i18n-t>
+        </p>
+        <p
+            v-else
+            class="text-sm"
+        >
+            {{ $t("additionalInfo.pickupUnavailable") }}
         </p>
     </div>
     <div class="flex mt-4">

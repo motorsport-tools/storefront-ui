@@ -12,9 +12,12 @@ export const mountUrlSlugForProductVariant = (product: Product): string => {
 
 export function useNextDeliveryDateUK(leadTimeDays = 0) {
   return computed(() => {
-    const now = new Date()
+    const baseDate = new Date()
+    if (leadTimeDays > 0) {
+      baseDate.setDate(baseDate.getDate() + leadTimeDays)
+    }
 
-    // Get current UK time
+    // Get UK time of the base date
     const ukTime = new Intl.DateTimeFormat('en-GB', {
       timeZone: 'Europe/London',
       hour12: false,
@@ -23,7 +26,7 @@ export function useNextDeliveryDateUK(leadTimeDays = 0) {
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit'
-    }).formatToParts(now)
+    }).formatToParts(baseDate)
 
     const hour = parseInt(ukTime.find(p => p.type === 'hour').value, 10)
     const minute = parseInt(ukTime.find(p => p.type === 'minute').value, 10)
@@ -32,35 +35,27 @@ export function useNextDeliveryDateUK(leadTimeDays = 0) {
     const inWindow = (hour > 9 || (hour === 9 && minute >= 0)) &&
       (hour < 15 || (hour === 15 && minute <= 30))
 
-    const resultDate = new Date()
+    const resultDate = new Date(baseDate)
 
     if (inWindow) {
       if (weekday === 'Fri') {
-        // Friday in window → Monday
-        const daysUntilMonday = (8 - resultDate.getDay()) % 7 || 7
-        resultDate.setDate(resultDate.getDate() + daysUntilMonday)
+        // Friday in window → Monday (add 3 days)
+        resultDate.setDate(resultDate.getDate() + 3)
       } else {
         // Other weekdays → Tomorrow
         resultDate.setDate(resultDate.getDate() + 1)
       }
     } else {
       if (weekday === 'Thu') {
-        // Thursday after 15:30 → Monday
-        const daysUntilMonday = (8 - resultDate.getDay()) % 7 || 7
-        resultDate.setDate(resultDate.getDate() + daysUntilMonday)
+        // Thursday after 15:30 → Monday (add 4 days)
+        resultDate.setDate(resultDate.getDate() + 4)
       } else if (weekday === 'Fri') {
-        // Friday after 15:30 → Tuesday
-        const daysUntilTuesday = (9 - resultDate.getDay()) % 7 || 7
-        resultDate.setDate(resultDate.getDate() + daysUntilTuesday)
+        // Friday after 15:30 → Tuesday (add 4 days)
+        resultDate.setDate(resultDate.getDate() + 4)
       } else {
         // Other weekdays → Day after tomorrow
         resultDate.setDate(resultDate.getDate() + 2)
       }
-    }
-
-    // Add extra lead time
-    if (leadTimeDays > 0) {
-      resultDate.setDate(resultDate.getDate() + leadTimeDays)
     }
 
     // Format as "Fri Nov 07"

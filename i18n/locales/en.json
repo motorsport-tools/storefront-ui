@@ -295,6 +295,7 @@
   "orderNumber": "Order number",
   "productDetails": "Product Details",
   "productSpecifications": "Product Specifications",
+  "productNoSpecifications": "No specifications available for this product",
   "customerReviews": "Customer Reviews",
   "loadingReviews": "Loading Reviews...",
   "recommendedProducts": "Recommended with this product",
@@ -313,6 +314,7 @@
     "shipping": "UK customers estimated delivery by {date}.",
     "addAddress": "Add an address",
     "pickup": "Free Click and Collect as early as: {collect}",
+    "pickupUnavailable": "This product is not eligable for Click and Collect",
     "checkAvailability": "Check availability nearby",
     "returns": "30-Day returns. {details}",
     "details": "Details"

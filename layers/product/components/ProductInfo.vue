@@ -216,6 +216,7 @@ watch(() => productVariant.value?.id, (newId) => {
             <ClientOnly>
                 <LazyUiProductDelivery
                     @openReturnsPolicy="onOpenReturnsPolicy"
+                    :clickAndCollect="!productVariant?.combinationInfoVariant?.allow_out_of_stock_order"
                 />
             </ClientOnly>
         </div>

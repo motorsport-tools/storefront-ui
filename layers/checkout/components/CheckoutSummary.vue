@@ -94,7 +94,8 @@ const readyToPay = computed(() => {
     <component
       v-if="
         !!selectedMethod?.providerCode &&
-        !hasFullPaymentWithGiftCard
+        !hasFullPaymentWithGiftCard &&
+        isLastStep
       "
       :is="getPaymentProviderComponentName(selectedMethod?.providerCode)"
       :key="selectedMethod?.id"

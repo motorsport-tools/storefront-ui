@@ -321,7 +321,7 @@ export default defineNuxtConfig({
     asyncContext: true,
     appManifest: false,
   },
-  sitemap: {
+    sitemap: {
     autoLastmod: true,
     defaultSitemapsChunkSize: Number(process.env.NUXT_SITEMAP_DEFAULT_CHUNK_SIZE || 10000),
     cacheMaxAgeSeconds: Number(process.env.NUXT_SITEMAP_CACHE_SECONDS || 3600),
@@ -334,23 +334,36 @@ export default defineNuxtConfig({
     sitemaps: {
       pages: {
         sources: ['/api/sitemap/urls/pages'],
-        includeAppSources: true,
+
+        /*
+         * Important:
+         * Directus pages are already injected into Nuxt routes by
+         * modules/routes-generator/index.ts.
+         *
+         * If includeAppSources is true, @nuxtjs/sitemap also reads those
+         * generated Nuxt routes, causing Directus page URLs to appear twice:
+         *
+         * 1. from the Nuxt app route tree
+         * 2. from /api/sitemap/urls/pages
+         */
+        includeAppSources: false,
       },
+
+      categories: {
+        sources: ['/api/sitemap/urls/categories'],
+        includeAppSources: false,
+        chunks: false,
+      },
+
       products: {
         sources: ['/api/sitemap/urls/products'],
+        includeAppSources: false,
         chunks: Number(process.env.NUXT_SITEMAP_PRODUCT_CHUNK_SIZE || 2000),
 
         ...(Number(process.env.NUXT_SITEMAP_PRODUCT_CHUNK_COUNT || 0) > 0
           ? { chunkCount: Number(process.env.NUXT_SITEMAP_PRODUCT_CHUNK_COUNT) }
           : {}),
       },
-      /*
-      // Dont need as already caught by /pages
-      categories: {
-        sources: ['/api/sitemap/urls/categories'],
-        chunks: false,
-      },
-      */
     },
   },
   tailwindcss: {

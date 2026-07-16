@@ -52,7 +52,7 @@ export default defineNuxtConfig({
       '/': { swr: swrCacheTime },
       '/product/**': { swr: 300 }, //5 min
       '/my/orders/**': { cache: false },
-      '/payment/**': { cache: false },
+      '/payment/**': { cache: false, robots: false },
       '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
       '/images/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
       '/img/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
@@ -146,7 +146,7 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en',
       },
-      meta: [{ name: 'robots', content: 'noindex, nofollow' }],
+      meta: [{ name: 'robots', content: 'index, follow' }],
     },
   },
   site: {
@@ -334,23 +334,22 @@ export default defineNuxtConfig({
     sitemaps: {
       pages: {
         sources: ['/api/sitemap/urls/pages'],
-        includeAppSources: true,
+        includeAppSources: false,
       },
       products: {
         sources: ['/api/sitemap/urls/products'],
+        includeAppSources: false,
         chunks: Number(process.env.NUXT_SITEMAP_PRODUCT_CHUNK_SIZE || 2000),
 
         ...(Number(process.env.NUXT_SITEMAP_PRODUCT_CHUNK_COUNT || 0) > 0
           ? { chunkCount: Number(process.env.NUXT_SITEMAP_PRODUCT_CHUNK_COUNT) }
           : {}),
       },
-      /*
-      // Dont need as already caught by /pages
       categories: {
         sources: ['/api/sitemap/urls/categories'],
         chunks: false,
+        includeAppSources: false,
       },
-      */
     },
   },
   tailwindcss: {

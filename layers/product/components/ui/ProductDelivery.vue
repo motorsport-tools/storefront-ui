@@ -17,7 +17,7 @@ const { productVariant } = toRefs(props)
 const { deliveryMethods, loadDeliveryMethods, loading } = useDeliveryMethod()
 
 const deliveryLead = computed(() => {
-    return productVariant.value?.combinationInfoVariant?.stock > 0 ? 0 : 2
+    return productVariant.value?.combinationInfoVariant?.stock <= 0 && productVariant.value?.combinationInfoVariant?.allow_out_of_stock_order ? 2 : 0
 })
 
 const tomorrow = useNextDeliveryDateUK(deliveryLead.value)

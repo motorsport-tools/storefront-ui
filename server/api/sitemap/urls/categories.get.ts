@@ -49,12 +49,12 @@ export default defineSitemapEventHandler(async (event) => {
   }
 
   /*
-   * This intentionally uses your existing Odoo endpoint:
+   * This intentionally uses existing Odoo endpoint:
    *
    *   /vsf/categories
    *
    * That endpoint is already part of graphql_alokai.controllers.main and is
-   * the same lightweight category slug source your storefront architecture
+   * the same lightweight category slug source storefront architecture
    * expects.
    */
   const categorySlugs = await $fetch<string[]>(

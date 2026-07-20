@@ -150,8 +150,8 @@ export default defineNuxtConfig({
     },
   },
   site: {
-    url: '',
-    name: 'Motorspor-Tools',
+    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://motorsport-tools.com',
+    name: 'Motorsport-Tools',
     defaultLocale: 'en',
   },
   robots: {

@@ -311,6 +311,7 @@
     "availability": "Only {stock} left"
   },
   "additionalInfo": {
+    "oversized": "Oversized product, will require pallet delivery",
     "shipping": "UK customers estimated delivery by {date}.",
     "addAddress": "Add an address",
     "pickup": "Free Click and Collect as early as: {collect}",

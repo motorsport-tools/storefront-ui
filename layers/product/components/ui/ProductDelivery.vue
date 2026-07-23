@@ -3,13 +3,15 @@ import {
     SfLink,
     SfIconPackage,
     SfIconWarehouse,
-    SfIconSafetyCheck
+    SfIconSafetyCheck,
+    SfIconWarning
 } from '@storefront-ui/vue'
 import type { CustomProductWithStockFromRedis } from '~/graphql';
 
 interface Props {
     clickAndCollect: boolean,
     productVariant: CustomProductWithStockFromRedis
+    oversized: boolean
 }
 const props = defineProps<Props>()
 const { productVariant } = toRefs(props)
@@ -30,7 +32,20 @@ onMounted(async () => {
 })
 </script>
 <template>
-    <div class="flex first:mt-4">
+    <div 
+        v-if="oversized"
+        role="alert"
+        class="flex mt-4 bg-warning-200 pr-2 pl-2 py-2 ring-1 ring-warning-200 rounded-md"
+    >
+        <SfIconWarning 
+            size="sm"
+            class="flex-shrink-0 mr-1 text-warning-700"
+        />
+        <p class="text-sm text-warning-700 font-medium">
+            {{ $t("additionalInfo.oversized") }}
+        </p>
+    </div>
+    <div class="flex mt-4">
         <SfIconPackage
             size="sm"
             class="flex-shrink-0 mr-1 text-neutral-500"

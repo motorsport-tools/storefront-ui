@@ -9,6 +9,7 @@ export default `
   metaKeyword
   metaTitle
   jsonLd
+  requiresPalletShipping
   firstVariant{
     id
     combinationInfoVariant

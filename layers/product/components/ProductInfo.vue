@@ -217,6 +217,7 @@ watch(() => productVariant.value?.id, (newId) => {
                 <LazyUiProductDelivery
                     @openReturnsPolicy="onOpenReturnsPolicy"
                     :clickAndCollect="!productVariant?.combinationInfoVariant?.allow_out_of_stock_order"
+                    :oversized="productTemplate?.requiresPalletShipping || false"
                 />
             </ClientOnly>
         </div>

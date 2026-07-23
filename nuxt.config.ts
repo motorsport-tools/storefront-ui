@@ -221,6 +221,12 @@ export default defineNuxtConfig({
       include: ["lodash-es"],
     },
   },
+  icon: {
+    clientBundle: {
+      scan: true,
+      sizeLimitKb: 256,
+    },
+  },
   build: {
     transpile: [
       "tslib",

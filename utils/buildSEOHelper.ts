@@ -69,12 +69,12 @@ const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
             },
             entity?.metaDescription && {
                 hid: "og:description",
-                name: "og:description",
+                property: "og:description",
                 content: entity.metaDescription || `Browsing ${entity.name} ${entityType}`,
             },
             {
                 hid: "og:title",
-                name: "og:title",
+                property: "og:title",
                 content: defaultTitle,
             },
             {
@@ -87,6 +87,21 @@ const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
                 name: "twitter:description",
                 content: entity.metaDescription || `Browsing ${entity.name} ${entityType}`,
             },
+            entity?.metaImage && {
+                hid: "og:image",
+                property: "og:image",
+                content: entity.metaImage
+            },
+            entity?.metaImage && {
+                hid: "twitter:image",
+                name: "twitter:image",
+                content: entity.metaImage
+            },
+            entity?.metaImage && {
+                hid: "twitter:card",
+                name: "twitter:card",
+                content: "summary_large_image",
+            },
             entity?.robots && {
                 hid: "robots",
                 name: "robots",
@@ -97,6 +112,12 @@ const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
             entity?.jsonLd && {
                 type: "application/ld+json",
                 children: JSON.stringify(entity.jsonLd),
+            },
+        ].filter(Boolean),
+        link: [
+            {
+                rel: "canonical",
+                href,
             },
         ],
     };

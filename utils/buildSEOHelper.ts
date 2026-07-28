@@ -111,8 +111,7 @@ const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
         script: [
             entity?.jsonLd && {
                 type: "application/ld+json",
-                innerHTML: JSON.stringify(entity.jsonLd),
-                safe: false
+                innerHTML: JSON.stringify(typeof entity.jsonLd === 'string' ? JSON.parse(entity.jsonLd) : entity.jsonLd),
             },
         ].filter(Boolean),
         link: [

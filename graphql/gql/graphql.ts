@@ -1090,6 +1090,7 @@ export type Product = {
   qty: Maybe<Scalars['Float']['output']>;
   rating: Maybe<Scalars['Int']['output']>;
   ratingCount: Maybe<Scalars['Int']['output']>;
+  requiresPalletShipping: Maybe<Scalars['Boolean']['output']>;
   ribbon: Maybe<Ribbon>;
   ribbonId: Maybe<Ribbon>;
   showAvailableQty: Maybe<Scalars['Boolean']['output']>;

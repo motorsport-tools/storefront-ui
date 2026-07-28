@@ -10,7 +10,7 @@
   
   <script setup lang="ts">
   import { ref, onMounted, onBeforeUnmount } from 'vue';
-  import type { AddressEnum, PaymentMethod } from '~/graphql';
+  import { AddressEnum, type PaymentMethod } from '~/graphql';
   import { useCountryList } from '~/layers/core/composable/useCountryList';
   
   const props = defineProps({
@@ -182,7 +182,7 @@
 
       // Handle pickup/collection methods
       const collectionMethods = deliveryMethods.value.filter(
-        method => method.name?.toLowerCase().includes('collect')
+        method => method.name?.toLowerCase().includes('collect') || method.name?.toLowerCase().includes('pallet')
       );
       
       for (const method of collectionMethods) {
@@ -307,7 +307,7 @@
         console.log('Shipping address changed:', event.address);
         
         // Update cart address in Odoo
-        const addressUpdated = await syncAddressToCart('delivery', event.address);
+        const addressUpdated = await syncAddressToCart(AddressEnum.Shipping, event.address);
         
         if (addressUpdated) {
             try {
@@ -372,8 +372,8 @@
                 event.shippingAddress.email = event.billingDetails.email
             }
 
-            const shippingAddressUpdated = await syncAddressToCart('delivery', event.shippingAddress)
-            const billingAddressUpdated = await syncAddressToCart('billing', event.billingDetails)
+            const shippingAddressUpdated = await syncAddressToCart(AddressEnum.Shipping, event.shippingAddress)
+            const billingAddressUpdated = await syncAddressToCart(AddressEnum.Billing, event.billingDetails)
             if(!shippingAddressUpdated && !billingAddressUpdated) {
                 error.value = 'Invalid billing or shipping address'
                 event.paymentFailed()

@@ -98,6 +98,7 @@ export default defineNuxtConfig({
           "'self'",
           odooOrigin,
           directusOrigin,
+          'https://api.motorsport-tools.com',
           'https://js.stripe.com',
           'https://api.stripe.com',
           'https://q.stripe.com',

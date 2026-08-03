@@ -38,6 +38,7 @@ export default defineNuxtConfig({
     '/my-account/**': { cache: false },
     '/my-account/order/*': { cache: false },
     '/my/orders/**': { cache: false },
+    '/my/invoices/**': { cache: false },
     '/order/*': { cache: false },
     '/shop/*': { cache: false },
     '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
@@ -51,7 +52,10 @@ export default defineNuxtConfig({
     routeRules: {
       '/': { swr: swrCacheTime },
       '/product/**': { swr: 300 }, //5 min
+      '/my-account/**': { cache: false },
+      '/my-account/order/*': { cache: false },
       '/my/orders/**': { cache: false },
+      '/my/invoices/**': { cache: false },
       '/payment/**': { cache: false, robots: false },
       '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
       '/images/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },

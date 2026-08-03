@@ -9,7 +9,7 @@ onMounted(() => {
     isMounted.value = true
 })
 
-const displayCount = computed(() => isMounted.value ? totalItemsInCart.value : 0)
+const displayCount = computed(() => isMounted.value ? totalItemsInCart : 0)
 
 </script>
 

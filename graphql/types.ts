@@ -24,6 +24,8 @@ import type {
   ApplyCouponList,
   ApplyGiftCardList,
   OrderLine,
+  PaymentTransaction,
+  TradeCreditPrepareResponse,
 } from "./gql/graphql";
 import type { H3Error } from "h3";
 import type { AsyncData } from "#app";
@@ -454,3 +456,15 @@ export interface StripeDropinType {
   mount: (selector: string) => void
   submit: () => void
 }
+
+/* Trade Credit */
+
+export type TradeCreditPreparePaymentResponse = {
+  tradeCreditTransaction: TradeCreditPrepareResponse;
+};
+
+export type TradeCreditTransactionResponse = {
+  tradeCreditCreateTransaction: {
+    transaction: PaymentTransaction;
+  };
+};

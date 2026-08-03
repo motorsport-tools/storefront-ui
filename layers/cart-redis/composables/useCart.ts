@@ -22,15 +22,12 @@ import { useToast } from "vue-toastification"
 import { CartToast } from "#components"
 
 
-
-
 export const useCart = () => {
   const { $sdk } = useNuxtApp()
   const { $i18n } = useNuxtApp()
   const toast = useToast()
   const cart = useState<Cart>("cart", () => ({}) as Cart)
   const frequentlyTogetherProducts = useState<Product[]>('frequently-together-products', () => [])
-
   const loading = useState<boolean>('cartLoading', () => false)
 
   const cartError = ref('')

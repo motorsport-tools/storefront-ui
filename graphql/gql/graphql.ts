@@ -621,6 +621,10 @@ export type Mutation = {
   stripeTransaction: Maybe<StripeTransactionResult>;
   /** Two-Factor Verification */
   totpVerification: Maybe<TwoFactorOutput>;
+  /** Confirm trade credit transaction */
+  tradeCreditCreateTransaction: Maybe<Scalars['GenericScalar']['output']>;
+  /** Prepare trade credit transaction */
+  tradeCreditTransaction: Maybe<TradeCreditPrepareResponse>;
   /** Update a billing or shipping address and set it on the shopping cart. */
   updateAddress: Maybe<Partner>;
   /** Update cart order address - Stripe Express checkout */
@@ -788,6 +792,18 @@ export type MutationTotpVerificationArgs = {
   code: Scalars['String']['input'];
   rememberDevice?: InputMaybe<Scalars['Boolean']['input']>;
   userId: Scalars['Int']['input'];
+};
+
+
+export type MutationTradeCreditCreateTransactionArgs = {
+  orderId: InputMaybe<Scalars['Int']['input']>;
+  providerId: Scalars['Int']['input'];
+};
+
+
+export type MutationTradeCreditTransactionArgs = {
+  orderId: InputMaybe<Scalars['Int']['input']>;
+  providerId: Scalars['Int']['input'];
 };
 
 
@@ -1590,6 +1606,14 @@ export type StripeProviderInfoResult = {
 export type StripeTransactionResult = {
   __typename?: 'StripeTransactionResult';
   transaction: Maybe<Scalars['GenericScalar']['output']>;
+};
+
+export type TradeCreditPrepareResponse = {
+  __typename?: 'TradeCreditPrepareResponse';
+  amount: Maybe<Scalars['Float']['output']>;
+  availableCredit: Maybe<Scalars['Float']['output']>;
+  eligible: Maybe<Scalars['Boolean']['output']>;
+  warning: Maybe<Scalars['String']['output']>;
 };
 
 /** Summary of payment transaction */

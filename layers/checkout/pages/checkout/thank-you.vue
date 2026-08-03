@@ -30,7 +30,7 @@ onMounted(async () => {
     error.value = err as Error
   } finally {
     loading.value = false
-    if(orderData.value && ['Authorized', 'Confirmed'].includes(orderData.value.order?.lastTransaction?.state)) {
+    if(orderData.value && ['Authorized', 'Confirmed', 'Draft'].includes(orderData.value.order?.lastTransaction?.state)) {
       // Clear checkout progress from localStorage
       const STORAGE_KEY = 'checkout_progress'
       localStorage.removeItem(STORAGE_KEY)

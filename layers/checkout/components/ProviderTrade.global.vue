@@ -1,9 +1,28 @@
 <template>
     <div>
-        <p>This payment will be credited on your account</p>
+        <div v-if="!loading" class="border-t pt-4 mt-4">
+            <UiAlert 
+                v-if="paymentInfo?.warning"
+                size="sm"
+                class="flex items-start bg-warning-200 ring-1 ring-warning-200 w-full mb-4"
+            >
+                <SfIconWarning class="text-sm mr-2 text-warning-700 shrink-0" />
+                <span class="font-medium">{{ paymentInfo?.warning }}</span>
+            </UiAlert>
+            <div 
+                v-if="paymentInfo?.availableCredit"
+                class="flex flex-row grow pr-2"
+            >
+                <p class="grow pr-2"><strong>Available Credit:</strong></p>
+                <p class="flex text-right">{{ $currency(paymentInfo.availableCredit) }}</p>
+            </div>
+        </div>
     </div>
 </template>
 <script lang="ts" setup>
+import { 
+    SfIconWarning,
+} from '@storefront-ui/vue'
 import type { PaymentMethod } from '~/graphql'
 
 const props = defineProps({
@@ -19,35 +38,57 @@ const props = defineProps({
 
 const loading = ref(false)
 
+const {
+    transaction,
+    preparePayment,
+    openCreditTransaction,
+    confirmCreditTransaction,
+} = useTradeCreditPayment(
+    props.method.providerId, 
+    props.cart?.order?.id,   
+    props.method?.code
+)
+
 const emit = defineEmits([
     'isPaymentReady',
     'providerPaymentHandler',
     'paymentLoading',
 ]);
 
-const TradePaymentHandler = async () => {
-    console.log('Trade Payment Handler')
+const paymentInfo = ref<any>({})
 
-    
+const tradeCreditHandler = async () => {
+    emit('paymentLoading', true)
+    emit('isPaymentReady', false)
 
-    return true
+    await openCreditTransaction(props.cart?.order?.id)
+
+    const confirm = await confirmCreditTransaction(transaction.value?.reference)
+
+    window.location.href = confirm.redirectUrl
+
 }
 
 const initCheckout = async () => {
     emit('paymentLoading', true);
     loading.value = true
-    console.log('Init Trade Checkout')
+
+    paymentInfo.value = await preparePayment(props.cart?.order?.id)
 
     loading.value = false
     emit('paymentLoading', false);
-    emit('isPaymentReady', true);
+    emit('isPaymentReady', paymentInfo?.value?.eligible);
 
-    emit('providerPaymentHandler', TradePaymentHandler);
+    emit('providerPaymentHandler', tradeCreditHandler);
 
 }
 
 onMounted( async () => {
     initCheckout()
+})
+
+onBeforeUnmount(() => {
+    paymentInfo.value = {}
 })
 
 </script>

@@ -40,6 +40,9 @@ import UpdateCartAddress from "./UpdateCartAddress";
 import StockNotificationMutation from "./StockNotificationMutation";
 import UpdatePartnerCheckoutAddress from "./UpdatePartnerCheckoutAddress";
 import RestoreCart from "./RestoreCart";
+import TradeCreditPrepare from "./TradeCreditPrepare";
+import TradeCreditTransaction from "./TradeCreditTransaction";
+import TradeCreditConfirmTransaction from "./TradeCreditConfirm";
 
 enum MutationName {
   LoginMutation = "LoginMutation",
@@ -84,6 +87,9 @@ enum MutationName {
   StockNotificationMutation = "StockNotificationMutation",
   UpdatePartnerCheckoutAddress = "UpdatePartnerCheckoutAddress",
   RestoreCart = "RestoreCart",
+  TradeCreditPreparePayment = "TradeCreditPreparePayment",
+  TradeCreditTransaction = "TradeCreditTransaction",
+  TradeCreditConfirmTransaction = "TradeCreditConfirmTransaction"
 }
 
 const Mutations: Record<MutationName, string> = {
@@ -128,7 +134,10 @@ const Mutations: Record<MutationName, string> = {
   UpdateCartAddress,
   StockNotificationMutation,
   UpdatePartnerCheckoutAddress,
-  RestoreCart
+  RestoreCart,
+  TradeCreditPreparePayment: TradeCreditPrepare,
+  TradeCreditTransaction: TradeCreditTransaction,
+  TradeCreditConfirmTransaction,
 };
 
 export { Mutations, MutationName };

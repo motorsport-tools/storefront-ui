@@ -1,7 +1,7 @@
 import { internalOrderFragment } from "../fragments/orderFragment";
 export default `
-query ($id: Int!) {
-  order(id: $id){
+query ($id: Int!, $token: String) {
+  order(id: $id, token: $token){
     id
     name
     amountTotal

@@ -1,6 +1,6 @@
 export default `
-mutation ($reference: String!) {
-    tradeCreditConfirmTransaction(reference: $reference) {
+mutation ($order_id: Int!) {
+    tradeCreditConfirmTransaction(orderId: $order_id) {
       success
       redirectUrl
     }

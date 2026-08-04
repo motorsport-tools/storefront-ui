@@ -23,6 +23,7 @@ export default defineEventHandler(async (event: H3Event) => {
             statusMessage: 'Invalid Order ID',
         })
     }
+    const token = queryVars.access_token as string
 
     const response = await $fetch(`${config.public.odooBaseUrl}graphql/vsf`, {
         method: 'POST',
@@ -33,7 +34,7 @@ export default defineEventHandler(async (event: H3Event) => {
             'Cookie': `session_id=${getCookie(event, 'session_id')}`,
 
         },
-        body: JSON.stringify({ query: Queries[QueryName.GetOrderQuery], variables: { id } }),
+        body: JSON.stringify({ query: Queries[QueryName.GetOrderQuery], variables: { id, token } }),
         credentials: 'include',
     })
 

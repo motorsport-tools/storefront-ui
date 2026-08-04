@@ -10,7 +10,6 @@ import type {
 
 export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig(event)
-    const cookie = getRequestHeader(event, 'cookie')
 
     const queryVars = getQuery(event)
     if (!queryVars.access_token || (!queryVars.report_type || queryVars.report_type !== 'pdf')) {
@@ -26,19 +25,26 @@ export default defineEventHandler(async (event) => {
             statusMessage: 'Invalid Invoice ID',
         })
     }
+    const token = queryVars.access_token as string
 
     //Check Access to Invoice Id
     const response = await $fetch<any>(`${config.public.odooBaseUrl}graphql/vsf`, {
         method: 'POST',
         headers: {
-            cookie: cookie || '',
+            'accept': 'application/json',
+            'content-type': 'application/json',
+            'REAL-IP': getRequestIP(event) || '',
+            'Cookie': `session_id=${getCookie(event, 'session_id')}`,
+
         },
         body: {
             query: Queries[QueryName.GetInvoiceQuery],
             variables: {
-                id: id
+                id: id,
+                token: token
             }
-        }
+        },
+        credentials: 'include',
     })
 
     const invoice = (response?.data?.invoice as Invoice) || {}
@@ -56,7 +62,6 @@ export default defineEventHandler(async (event) => {
     const proxyUrl: string = process.env.NUXT_PUBLIC_ODOO_BASE_URL || ''
     const path = event.path
     const target = joinURL(proxyUrl, path)
-    console.log('Target: ', target)
 
     setResponseHeaders(event, {
         'Cache-Control': 'no-store, max-age=0',

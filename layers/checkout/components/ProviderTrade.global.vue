@@ -41,7 +41,6 @@ const loading = ref(false)
 const {
     transaction,
     preparePayment,
-    openCreditTransaction,
     confirmCreditTransaction,
 } = useTradeCreditPayment(
     props.method.providerId, 
@@ -61,9 +60,7 @@ const tradeCreditHandler = async () => {
     emit('paymentLoading', true)
     emit('isPaymentReady', false)
 
-    await openCreditTransaction(props.cart?.order?.id)
-
-    const confirm = await confirmCreditTransaction(transaction.value?.reference)
+    const confirm = await confirmCreditTransaction(props.cart?.order?.id)
 
     window.location.href = confirm.redirectUrl
 

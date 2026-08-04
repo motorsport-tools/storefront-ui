@@ -2,8 +2,6 @@ import type {
     PaymentTransaction,
     MutationTradeCreditTransactionArgs,
     TradeCreditPreparePaymentResponse,
-    MutationTradeCreditCreateTransactionArgs,
-    TradeCreditTransactionResponse,
     MutationTradeCreditConfirmTransactionArgs,
     TradeCreditConfirmTransactionResponse
 
@@ -12,11 +10,6 @@ import { MutationName } from "~/server/mutations";
 
 export const useTradeCreditPayment = (providerId: number, cartId: number, pmCode: string) => {
     const { $sdk } = useNuxtApp()
-
-    const transaction = useState<PaymentTransaction>(
-        `transaction-${cartId}`,
-        () => ({}) as PaymentTransaction
-    );
 
     const preparePayment = async (orderId: number | null = null) => {
         const data = await $sdk().odoo.mutation<
@@ -31,21 +24,7 @@ export const useTradeCreditPayment = (providerId: number, cartId: number, pmCode
         return data?.tradeCreditTransaction || {}
     }
 
-    const openCreditTransaction = async (orderId: number | null = null) => {
-        const data = await $sdk().odoo.mutation<
-            MutationTradeCreditCreateTransactionArgs,
-            TradeCreditTransactionResponse
-        >(
-            {
-                mutationName: MutationName.TradeCreditTransaction,
-            },
-            { providerId, orderId }
-        )
-
-        transaction.value = data?.tradeCreditCreateTransaction?.transaction || {}
-    }
-
-    const confirmCreditTransaction = async (reference: string | null = null) => {
+    const confirmCreditTransaction = async (orderId: number | null = null) => {
         const data = await $sdk().odoo.mutation<
             MutationTradeCreditConfirmTransactionArgs,
             TradeCreditConfirmTransactionResponse
@@ -53,16 +32,14 @@ export const useTradeCreditPayment = (providerId: number, cartId: number, pmCode
             {
                 mutationName: MutationName.TradeCreditConfirmTransaction,
             },
-            { reference }
+            { order_id: orderId }
         )
 
         return data?.tradeCreditConfirmTransaction || {}
     }
 
     return {
-        transaction,
         preparePayment,
-        openCreditTransaction,
         confirmCreditTransaction
     }
 }

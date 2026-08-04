@@ -21,7 +21,11 @@ const routesToSkipCache = [
   '/sitemap.xml',
   '/__nuxt_island/**',
   '/_ipx/**',
-  '/my-account/**'
+  '/my-account/**',
+  '/my/**',
+  '/mail/**',
+  '/order/**',
+  '/payment/**'
 ]
 
 type Handler = {
@@ -31,14 +35,43 @@ type Handler = {
   method: RouterMethod | RouterMethod[]
 }
 
+function matchRoute(pattern: string, route: string): boolean {
+  if (pattern === route) {
+    return true
+  }
+  if (pattern.endsWith('/**')) {
+    const base = pattern.slice(0, -3)
+    return route === base || route.startsWith(base + '/')
+  }
+  if (pattern.endsWith('/*')) {
+    const base = pattern.slice(0, -2)
+    if (route === base) return true
+    if (route.startsWith(base + '/')) {
+      const subpath = route.slice(base.length + 1)
+      return !subpath.includes('/')
+    }
+    return false
+  }
+  return false
+}
+
 export default defineNitroPlugin((nitroApp) => {
   const handlerList: Handler[] = eval('handlers')
 
   const skipRoutesSet = new Set(routesToSkipCache)
-
+  /*
   const enHandler = handlerList.filter((r) => {
     const isRouteToSkip = skipRoutesSet.has(r.route)
     return !isRouteToSkip
+  })
+  */
+
+  const enHandler = handlerList.filter((r) => {
+    if (skipRoutesSet.has(r.route)) {
+      return false
+    }
+    const shouldSkip = routesToSkipCache.some((pattern) => matchRoute(pattern, r.route))
+    return !shouldSkip
   })
 
   if (enHandler.length > 0) {

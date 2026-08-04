@@ -35,6 +35,7 @@ export default defineNuxtConfig({
   routeRules: {
     '/payment/**': { cache: false },
     '/mail/**': { cache: false },
+    '/my/**': { cache: false },
     '/my-account/**': { cache: false },
     '/my-account/order/*': { cache: false },
     '/my/orders/**': { cache: false },
@@ -52,6 +53,7 @@ export default defineNuxtConfig({
     routeRules: {
       '/': { swr: swrCacheTime },
       '/product/**': { swr: 300 }, //5 min
+      '/my/**': { cache: false },
       '/my-account/**': { cache: false },
       '/my-account/order/*': { cache: false },
       '/my/orders/**': { cache: false },
@@ -175,6 +177,7 @@ export default defineNuxtConfig({
       "GetProductVariantQuery",
       "SearchOrderQuery",
       "AccessQuery",
+      "GetInvoiceQuery",
     ],
     public: {
       odooBaseImageUrl: "",

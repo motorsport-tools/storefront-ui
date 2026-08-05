@@ -37,6 +37,7 @@ onMounted(async () => {
 
 const { updatePartnerCheckoutAddress, loading } = useAddresses()
 const { countries, pending, error } = useCountryList()
+const { loadCart } = useCart()
 
 
 const selectedCountry = computed<Country>(
@@ -86,6 +87,7 @@ const handleSubmit = async () => {
         await updatePartnerCheckoutAddress( { type: props.addressType, address: data })
         nextTick()
         emit('complete', { ...form })
+        await loadCart(false)
         return
     }
 }

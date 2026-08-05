@@ -37,17 +37,19 @@ const initStripeCheckout = async () => {
     }
     loading.value = true
     await loadPaymentMethods( props.orderData?.saleOrder?.id )
-    console.log('-- Payment Providers:', paymentProviders.value);
 
     await getStripeAcquirerInfo()
 
-    console.log('-- Acquirer Info:', acquirerInfo.value);
-
     const inlineFormValues = await getStripeInlineFormValues(props.orderData.saleOrder.id || null)
 
-    console.log('-- Inline Form Values:', inlineFormValues);
-
-    const paymentMethodTypes = paymentProviders.value?.flatMap(provider => provider.paymentMethods?.map(pm => inlineFormValues['payment_methods_mapping'][pm.code] ?? pm.code)) || ['card'];
+    const paymentMethodTypes =
+    paymentProviders.value
+        ?.filter(provider => provider.code === 'stripe')
+        .flatMap(provider =>
+            provider.paymentMethods?.map(
+                pm => inlineFormValues.payment_methods_mapping[pm.code] ?? pm.code
+            ) ?? []
+        ) || ['card'];
 
     if(!stripeRef.value) {
         stripeRef.value = Stripe(acquirerInfo.value?.publishable_key, {

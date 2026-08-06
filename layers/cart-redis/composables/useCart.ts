@@ -245,6 +245,10 @@ export const useCart = () => {
     cart.value = {} as Cart
   }
 
+  const setCart = async (value: Cart) => {
+    cart.value = value
+  }
+
   return {
     loading,
     loadCart,
@@ -261,6 +265,7 @@ export const useCart = () => {
     isCollectEligible,
     updateCartAddress,
     applyDiscount,
+    setCart,
     clearCart,
     reviveCart
   };

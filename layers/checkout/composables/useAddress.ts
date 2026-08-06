@@ -18,6 +18,7 @@ import {
   type responseAddresses,
   type MutationUpdatePartnerCheckoutAddressArgs,
   type UpdatePartnerCheckoutAddressResponse,
+  type Cart,
 } from "~/graphql";
 import { MutationName } from "~/server/mutations";
 import { QueryName } from "~/server/queries";
@@ -166,8 +167,9 @@ export const useAddresses = () => {
     params: MutationUpdatePartnerCheckoutAddressArgs
   ) => {
     loading.value = true
+    let data
     try {
-      const data = await $sdk().odoo.mutation<
+      data = await $sdk().odoo.mutation<
         MutationUpdatePartnerCheckoutAddressArgs,
         UpdatePartnerCheckoutAddressResponse
       >({ mutationName: MutationName.UpdatePartnerCheckoutAddress }, params)
@@ -176,6 +178,7 @@ export const useAddresses = () => {
     } finally {
       loading.value = false
     }
+    return data?.updatePartnerCheckoutAddress as Cart
   }
 
   return {

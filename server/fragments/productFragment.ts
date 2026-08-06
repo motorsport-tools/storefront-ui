@@ -54,6 +54,7 @@ export default `
   slug
   sku
   isInWishlist
+  saleDelay
   categories {
     id
     name

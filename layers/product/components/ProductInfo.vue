@@ -218,6 +218,7 @@ watch(() => productVariant.value?.id, (newId) => {
                     @openReturnsPolicy="onOpenReturnsPolicy"
                     :clickAndCollect="!productVariant?.combinationInfoVariant?.allow_out_of_stock_order"
                     :oversized="productTemplate?.requiresPalletShipping || false"
+                    :productVariant="productVariant"
                 />
             </ClientOnly>
         </div>

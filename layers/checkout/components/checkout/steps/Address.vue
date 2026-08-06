@@ -2,6 +2,7 @@
 import { type Partner, type UpdateAddressInput, type AddAddressInput, AddressEnum, type Country, type State, type AddAddressResponse } from "~/graphql"
 import { SfInput, SfSwitch, SfSelect, SfCheckbox, SfIconCheckBox } from "@storefront-ui/vue"
 import { useCountryList } from "~/layers/core/composable/useCountryList"
+import { stripIgnoredCharacters } from "graphql";
 
 const props = defineProps<{
     stepData?: Record<string, any>
@@ -37,7 +38,7 @@ onMounted(async () => {
 
 const { updatePartnerCheckoutAddress, loading } = useAddresses()
 const { countries, pending, error } = useCountryList()
-const { loadCart } = useCart()
+const { setCart } = useCart()
 
 
 const selectedCountry = computed<Country>(
@@ -84,10 +85,10 @@ const handleSubmit = async () => {
             delete data.name
         }
 
-        await updatePartnerCheckoutAddress( { type: props.addressType, address: data })
+        const cartData = await updatePartnerCheckoutAddress( { type: props.addressType, address: data })
         nextTick()
+        await setCart(cartData)
         emit('complete', { ...form })
-        await loadCart(false)
         return
     }
 }

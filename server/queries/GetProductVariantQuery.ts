@@ -14,6 +14,7 @@ export default `
         image
         imageFilename
         slug
+        saleDelay
         ribbon {
           id
           html

@@ -173,6 +173,7 @@
     "email": "Email",
     "name": "Name",
     "phone": "Phone number",
+    "vat": "VAT number",
     "subescribe": "Subscribe to newsletter?",
     "hasSubscribe": "Subscribe to newsletter",
     "phonePlaceholder": "eg. 123 456 7890",

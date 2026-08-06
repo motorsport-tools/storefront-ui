@@ -16,6 +16,7 @@ const form = reactive({
     name: props.exData?.name || '',
     email: props.exData?.email || '',
     phone: props.exData?.phone || '',
+    vat: props.exData?.vat || '',
     subscribe: false,
 })
 
@@ -43,6 +44,7 @@ const handleSubmit = async () => {
             email: String(form.email),
             name: String(form.name),
             phone: String(form.phone),
+            vat: String(form.vat),
             subscribeNewsletter:  form.subscribe,
         };
     
@@ -59,6 +61,7 @@ const handleSubmit = async () => {
             <p><strong>{{ $t("contactInfo.name") }}</strong>:<br/>{{ form.name }}</p>
             <p><strong>{{ $t("contactInfo.email") }}</strong>:<br/>{{ form.email }}</p>
             <p><strong>{{ $t("contactInfo.phone") }}</strong>:<br/>{{ form.phone }}</p>
+            <p v-if="form.vat"><strong>{{ $t('contactInfo.vat') }}</strong>:<br/> {{ form.vat }}</p>
             <p v-if="form.subscribe" class="flex flex-row items-center   mt-2"><SfIconCheckBox class="text-green-700" size="sm"/> <strong class="ml-2">{{ $t("contactInfo.hasSubscribe") }}</strong></p>
         </div>
     </div>
@@ -99,6 +102,18 @@ const handleSubmit = async () => {
                     type="tel"
                     placeholder="+44 123 456"
                     required
+                />
+            </label>
+            <div class="mt-4" />
+            <label>
+                <UiFormLabel>{{ $t("contactInfo.vat") }}</UiFormLabel>
+                <SfInput
+                    v-model="form.vat"
+                    name="vat"
+                    type="text"
+                    pattern="^(?:[Gg][Bb]\d{9}|[Dd][Ee]\d{9}|[Bb][Ee][01]?\d{9}|[Ff][Rr][A-Za-z0-9]{2}\d{9})$"
+                placeholder="GB123456782"
+
                 />
             </label>
             <div class="mt-4">

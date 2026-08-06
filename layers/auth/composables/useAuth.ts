@@ -105,20 +105,23 @@ export const useAuth = () => {
 
   const updatePartner = async (params: MutationCreateUpdatePartnerArgs) => {
     loading.value = true;
+    try {
+      const data = await $sdk().odoo.mutation<
+        MutationCreateUpdatePartnerArgs,
+        CreateUpdatePartnerResponse
+      >({ mutationName: MutationName.CreateUpdatePartner }, params);
 
-    const data = await $sdk().odoo.mutation<
-      MutationCreateUpdatePartnerArgs,
-      CreateUpdatePartnerResponse
-    >({ mutationName: MutationName.CreateUpdatePartner }, params);
+      user.value = data?.createUpdatePartner;
 
-    user.value = data?.createUpdatePartner;
-
-    if (userCookie.value) {
-      setAuthCookie(data?.createUpdatePartner as Partner)
-    }
-    //If update partner, update data on cart also
-    if (cart.value?.order?.partner) {
-      cart.value.order.partner = data?.createUpdatePartner
+      if (userCookie.value) {
+        setAuthCookie(data?.createUpdatePartner as Partner)
+      }
+      //If update partner, update data on cart also
+      if (cart.value?.order?.partner) {
+        cart.value.order.partner = data?.createUpdatePartner
+      }
+    } finally {
+      loading.value = false;
     }
 
     //toast.success("Partner updated successfully");

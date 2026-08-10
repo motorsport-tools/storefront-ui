@@ -622,7 +622,7 @@ export type Mutation = {
   /** Two-Factor Verification */
   totpVerification: Maybe<TwoFactorOutput>;
   /** Confirm trade credit transaction */
-  tradeCreditCreateTransaction: Maybe<Scalars['GenericScalar']['output']>;
+  tradeCreditConfirmTransaction: Maybe<TradeCreditConfirmResult>;
   /** Prepare trade credit transaction */
   tradeCreditTransaction: Maybe<TradeCreditPrepareResponse>;
   /** Update a billing or shipping address and set it on the shopping cart. */
@@ -707,6 +707,7 @@ export type MutationCreateUpdatePartnerArgs = {
   name: Scalars['String']['input'];
   phone: InputMaybe<Scalars['String']['input']>;
   subscribeNewsletter: Scalars['Boolean']['input'];
+  vat: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -795,9 +796,8 @@ export type MutationTotpVerificationArgs = {
 };
 
 
-export type MutationTradeCreditCreateTransactionArgs = {
-  orderId: InputMaybe<Scalars['Int']['input']>;
-  providerId: Scalars['Int']['input'];
+export type MutationTradeCreditConfirmTransactionArgs = {
+  orderId: Scalars['Int']['input'];
 };
 
 
@@ -1109,6 +1109,7 @@ export type Product = {
   requiresPalletShipping: Maybe<Scalars['Boolean']['output']>;
   ribbon: Maybe<Ribbon>;
   ribbonId: Maybe<Ribbon>;
+  saleDelay: Maybe<Scalars['Int']['output']>;
   showAvailableQty: Maybe<Scalars['Boolean']['output']>;
   sku: Maybe<Scalars['String']['output']>;
   slug: Maybe<Scalars['String']['output']>;
@@ -1343,6 +1344,7 @@ export type QueryGuestOrderArgs = {
 
 export type QueryInvoiceArgs = {
   id: InputMaybe<Scalars['Int']['input']>;
+  token: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -1378,6 +1380,7 @@ export type QueryMailingListsArgs = {
 
 export type QueryOrderArgs = {
   id: InputMaybe<Scalars['Int']['input']>;
+  token: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -1606,6 +1609,12 @@ export type StripeProviderInfoResult = {
 export type StripeTransactionResult = {
   __typename?: 'StripeTransactionResult';
   transaction: Maybe<Scalars['GenericScalar']['output']>;
+};
+
+export type TradeCreditConfirmResult = {
+  __typename?: 'TradeCreditConfirmResult';
+  redirectUrl: Maybe<Scalars['String']['output']>;
+  success: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type TradeCreditPrepareResponse = {

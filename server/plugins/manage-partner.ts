@@ -41,8 +41,6 @@ export default defineNitroPlugin((nitro) => {
                         ...session.data,
                         pricelistId: pricelistId
                     })
-
-                    console.log('Stored pricelist from loadUser:', pricelistId)
                 }
 
             }
@@ -54,8 +52,6 @@ export default defineNitroPlugin((nitro) => {
                 })
 
                 await session.clear()
-
-                console.log('Logout - Session cleared')
             }
         }
     })

@@ -88,7 +88,21 @@ export const useAuth = () => {
     }
   };
 
+  const isRouteCachedFromServer = () => {
+    if (import.meta.server) {
+      const route = useRoute()
+      return route.path === '/' || route.path.startsWith('/product/')
+    }
+    return false
+  }
+
   const hydrateAuthOnce = async () => {
+    if (isRouteCachedFromServer()) {
+      user.value = getPublicUser()
+      authHydrated.value = false
+      return null
+    }
+
     if (authHydrated.value) {
       return user.value
     }
@@ -238,6 +252,9 @@ export const useAuth = () => {
   }
 
   const isAuthenticated = computed(() => {
+    if (isRouteCachedFromServer()) {
+      return false
+    }
     return Boolean(userCookie.value)
   });
 

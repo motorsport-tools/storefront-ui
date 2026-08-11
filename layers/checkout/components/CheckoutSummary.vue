@@ -74,7 +74,7 @@ const readyToPay = computed(() => {
       <i18n-t keypath="termsInfo" scope="global">
         <template #terms>
           <SfLink
-            href="#"
+            href="/terms-of-service"
             class="focus:outline focus:outline-offset-2 focus:outline-2 outline-secondary-600 rounded"
           >
             {{ $t("termsAndConditions") }}
@@ -82,7 +82,7 @@ const readyToPay = computed(() => {
         </template>
         <template #privacyPolicy>
           <SfLink
-            href="#"
+            href="/privacy-policy"
             class="focus:outline focus:outline-offset-2 focus:outline-2 outline-secondary-600 rounded"
           >
             {{ $t("privacyPolicy") }}

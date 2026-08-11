@@ -93,7 +93,7 @@ onMounted(() => {
               <UiPaymentIcons
                 class="my-4"
               />
-              <p class="text-center text-sm">{{ $t('cartDetailsProtected') }} <NuxtLink class="text-blue-600 hover:underline hover:text-blue-700" href="/privacy">{{ $t('learnMore') }}</NuxtLink></p>
+              <p class="text-center text-sm">{{ $t('cartDetailsProtected') }} <NuxtLink class="text-blue-600 hover:underline hover:text-blue-700" href="/privacy-policy">{{ $t('learnMore') }}</NuxtLink></p>
             </UiOrderSummary>
           </div>
         </div>

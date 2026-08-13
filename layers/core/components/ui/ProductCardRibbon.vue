@@ -4,6 +4,7 @@ import {
   SfIconSell,
   SfIconBlock,
   SfIconRadioButtonChecked,
+  SfIconWarehouse,
   
 } from '@storefront-ui/vue'
 
@@ -38,6 +39,9 @@ const icon = computed(() => {
   }
   if(props.ribbon?.id == 4) {
     return SfIconRadioButtonChecked
+  }
+  if(props.ribbon?.id == 5) {
+    return SfIconWarehouse
   }
 })
 </script>

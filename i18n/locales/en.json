@@ -319,7 +319,8 @@
     "pickupUnavailable": "This product is not eligable for Click and Collect",
     "checkAvailability": "Check availability nearby",
     "returns": "30-Day returns. {details}",
-    "details": "Details"
+    "details": "Details",
+    "preorder": "This item is a pre-order and will be ready to ship when released"
   },
   "sale": "Sale",
   "readMore": "Read more",

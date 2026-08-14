@@ -24,6 +24,9 @@ const deliveryLead = computed(() => {
 
 const tomorrow = useNextDeliveryDateUK(deliveryLead.value)
 const collection = useClickAndCollectTime()
+const isPreorder = computed(() => {
+    return productVariant.value?.isPreorder
+})
 
 const emit = defineEmits(['openReturnsPolicy'])
 
@@ -45,7 +48,20 @@ onMounted(async () => {
             {{ $t("additionalInfo.oversized") }}
         </p>
     </div>
-    <div class="flex mt-4">
+    <div 
+        v-if="isPreorder"
+        class="flex mt-4 items-center"
+    >
+        <Icon name="mdi:clock" class="flex-shrink-0 mr-1 text-neutral-500" />
+        <p class="text-sm ">
+            {{ $t("additionalInfo.preorder") }}
+        </p>
+    </div>
+    
+    <div 
+        v-else
+        class="flex mt-4 items-center"
+    >
         <SfIconPackage
             size="sm"
             class="flex-shrink-0 mr-1 text-neutral-500"
@@ -71,7 +87,7 @@ onMounted(async () => {
         </p>
     </div>
     <div 
-        class="flex mt-4"
+        class="flex mt-4 items-center"
     >
         <SfIconWarehouse
             size="sm"
@@ -97,7 +113,7 @@ onMounted(async () => {
             {{ $t("additionalInfo.pickupUnavailable") }}
         </p>
     </div>
-    <div class="flex mt-4">
+    <div class="flex mt-4 items-center">
         <SfIconSafetyCheck
             size="sm"
             class="flex-shrink-0 mr-1 text-neutral-500"

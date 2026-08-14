@@ -15,6 +15,7 @@ export default `
         imageFilename
         slug
         saleDelay
+        isPreorder
         ribbon {
           id
           html

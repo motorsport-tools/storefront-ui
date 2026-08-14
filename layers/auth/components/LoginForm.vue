@@ -6,12 +6,16 @@ import {
   SfInput,
   SfLoaderCircular,
 } from "@storefront-ui/vue";
+import { isValidEmail } from '~~/utils/validation'
 
-const { login, loading } = useAuth();
+const { login, loading, authError } = useAuth();
 const { resetCheckoutFromStep } = useCheckout();
 const email = ref("");
 const password = ref("");
 const rememberMe = ref<boolean>();
+
+const showErrors = ref(false)
+const emailValid = computed(() => isValidEmail(email.value))
 
 const props = defineProps({
     redirectTo: String
@@ -31,11 +35,17 @@ if(!props.redirectTo && queryRedirect) {
 }
 
 const handleLogin = async () => {
+    showErrors.value = true
+    if (!emailValid.value || !password.value.trim()) return
     resetCheckoutFromStep('customer')
     await login({ email: email.value, password: password.value }, redirectUrl );
 };
 
 const NuxtLink = resolveComponent("NuxtLink");
+
+onMounted(() => {
+  authError.value = ''
+})
 </script>
 
 <template>
@@ -43,6 +53,10 @@ const NuxtLink = resolveComponent("NuxtLink");
       class="border-neutral-200 md:border flex flex-col gap-4 md:p-6 rounded-md"
       @submit.prevent="handleLogin"
     >
+        <UiFormError v-if="authError">
+            {{ authError }}
+        </UiFormError>
+        
         <label>
             <UiFormLabel>{{ $t("form.emailLabel") }}</UiFormLabel>
             <SfInput
@@ -51,6 +65,7 @@ const NuxtLink = resolveComponent("NuxtLink");
             type="email"
             autocomplete="email"
             required
+            :invalid="showErrors && !emailValid"
             />
         </label>
 
@@ -61,6 +76,7 @@ const NuxtLink = resolveComponent("NuxtLink");
             name="password"
             autocomplete="current-password"
             required
+            :invalid="showErrors && !password.trim()"
             />
         </label>
 

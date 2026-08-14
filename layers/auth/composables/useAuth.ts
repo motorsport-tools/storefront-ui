@@ -41,6 +41,7 @@ export const useAuth = () => {
   const toast = useToast()
 
   const loading = ref(false)
+  const authError = useState<string>('auth-error', () => '')
   const resetEmail = useCookie<string>("reset-email");
   const authHydrated = useState<boolean>("auth-hydrated", () => false)
 
@@ -154,6 +155,7 @@ export const useAuth = () => {
   const signup = async (params: MutationRegisterArgs) => {
     try {
       loading.value = true
+      authError.value = ''
       const data = await $sdk().odoo.mutation<MutationRegisterArgs, SignUpUserResponse>(
         {
           mutationName: MutationName.RegisterUserMutation,
@@ -165,7 +167,7 @@ export const useAuth = () => {
       router.push('/my-account/personal-data')
 
     } catch (error: any) {
-      toast.error(error.data?.message)
+      authError.value = error?.data?.message || 'We couldn\'t create your account. Please try again.'
       return
     } finally {
       loading.value = false
@@ -175,6 +177,7 @@ export const useAuth = () => {
   const login = async (params: MutationLoginArgs, redirectTo: any | false = false) => {
     try {
       loading.value = true;
+      authError.value = ''
 
       const data = await $sdk().odoo.mutation<
         MutationLoginArgs,
@@ -189,14 +192,16 @@ export const useAuth = () => {
         redirectTo = "/my-account/personal-data"
       }
       router.push(redirectTo)
+    } catch (error: any) {
+      authError.value = error?.data?.message || 'The email or password you entered is incorrect.'
     } finally {
       loading.value = false
     }
   }
 
   const resetPassword = async (params: MutationResetPasswordArgs) => {
+    loading.value = true
     try {
-      loading.value = true
       const data = await $sdk().odoo.mutation<
         MutationResetPasswordArgs,
         ResetPasswordResponse
@@ -219,8 +224,8 @@ export const useAuth = () => {
   };
 
   const updatePassword = async (params: MutationUpdatePasswordArgs) => {
+    loading.value = true
     try {
-      loading.value = true
       const data = await $sdk().odoo.mutation<
         MutationUpdatePasswordArgs,
         UpdatePasswordResponse
@@ -271,6 +276,7 @@ export const useAuth = () => {
     changeForgottenPassword,
     user,
     loading,
+    authError,
     Pid,
     successResetEmail,
     updatePassword,

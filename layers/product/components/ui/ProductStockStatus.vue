@@ -3,6 +3,7 @@ import {
     SfIconCheckCircle,
     SfIconCancel,
     SfIconEmail,
+    SfIconError,
     SfButton,
 } from '@storefront-ui/vue'
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
     isStock?: boolean,
     allowOutOfStockOrder?: boolean,
     outOfStockMessage?: string,
+    isPreorder?: boolean,
     loading?: boolean
 }
 const props = defineProps<Props>()
@@ -50,13 +52,15 @@ const subscribeStock = async () => {
             :class="$attrs.class"
         >
             <div 
-                class="flex flex-row items-center text-sm uppercase font-bold py-1"
-                :class="{'text-green-500': isStock, 'text-red-500': !isStock}"
+                class="flex flex-row align-center items-center text-sm uppercase font-bold py-1"
+                :class="{'text-green-500': isStock && !isPreorder, 'text-yellow-500': isPreorder, 'text-red-500': !isStock}"
                 data-test="stock-status"
             >
-                <SfIconCheckCircle v-if="isStock" size="sm" />
+                <SfIconCheckCircle v-if="isStock && !isPreorder" size="sm" />
+                <SfIconError v-else-if="isPreorder" size="sm" />
                 <SfIconCancel v-else size="sm" />
-                <span class="ml-1 mr-2">{{ $t(`stock.${isStock}`) }}</span>
+                <span class="ml-1 mr-2" v-if="!isPreorder">{{ $t(`stock.${isStock}`) }}</span>
+                <span class="ml-1 mr-2" v-else>{{ $t('stock.preorder') }}</span>
             </div>
             <div 
                 v-if="showAvailability && stock <= (availableThreshold || 0) && stock >= 1"

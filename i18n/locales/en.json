@@ -309,7 +309,8 @@
   "stock": {
     "true": "In stock",
     "false": "Out of stock",
-    "availability": "Only {stock} left"
+    "availability": "Only {stock} left",
+    "preorder": "Pre-order"
   },
   "additionalInfo": {
     "oversized": "Oversized product, will require pallet delivery",

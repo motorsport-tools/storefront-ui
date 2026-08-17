@@ -137,6 +137,7 @@ watch(() => productVariant.value?.id, (newId) => {
                 :isStock="isStock"
                 :allowOutOfStockOrder="productVariant?.combinationInfoVariant?.allow_out_of_stock_order || false"
                 :outOfStockMessage="productVariant?.combinationInfoVariant?.out_of_stock_message || ''"
+                :isPreorder="productVariant.isPreorder || false"
                 :loading="loadingProductVariant"
             />
         </div>

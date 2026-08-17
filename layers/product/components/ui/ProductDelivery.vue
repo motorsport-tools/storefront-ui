@@ -53,8 +53,8 @@ onMounted(async () => {
         class="flex mt-4 items-center"
     >
         <Icon name="mdi:clock" class="flex-shrink-0 mr-1 text-neutral-500" />
-        <p class="text-sm ">
-            {{ $t("additionalInfo.preorder") }}
+        <p class="text-sm">
+            <strong>{{ $t("additionalInfo.preorder") }}</strong>
         </p>
     </div>
     

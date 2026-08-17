@@ -1086,6 +1086,7 @@ export type Product = {
   imageFilename: Maybe<Scalars['String']['output']>;
   isInStock: Maybe<Scalars['Boolean']['output']>;
   isInWishlist: Maybe<Scalars['Boolean']['output']>;
+  isPreorder: Maybe<Scalars['Boolean']['output']>;
   /** Specific to Product Variant */
   isVariantPossible: Maybe<Scalars['Boolean']['output']>;
   jsonLd: Maybe<Scalars['GenericScalar']['output']>;

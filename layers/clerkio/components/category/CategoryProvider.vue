@@ -4,11 +4,12 @@ import { history } from 'instantsearch.js/es/lib/routers';
 import type { Category } from "~/graphql";
 const props = defineProps<{
     indexName: string;
-    category?: object | any;
+    category?: Category | object | any;
 }>();
 
 const { indexName } = toRefs(props);
 const searchClient = useSearchClient({ isCategoryPage: true })
+
 
 const currentHitsPerPage = ref(80)
 provide('hitsPerPage', currentHitsPerPage)
@@ -93,6 +94,9 @@ watch(
             :key="`category-${props.category?.id}`"
             :filters="categoryFilter"
         />
+        <CategoryHitsProvider>
+            <CategoryJsonLd :category="props.category"/>
+        </CategoryHitsProvider>
 
         <slot></slot>
 

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { SfButton, SfIconTune, useDisclosure } from '@storefront-ui/vue'
-import generateSeo, { type SeoEntity } from '~/utils/buildSEOHelper'
 import type { Category } from "~/graphql";
 
 definePageMeta({
@@ -32,13 +31,6 @@ watch(isTabletScreen, (value) => {
     close()
   }
 })
-
-useHead(computed(() => {
-    if (category.value?.id) {
-        return generateSeo<SeoEntity>(category.value, 'Category')
-    }
-    return {}
-}))
 
 const searchTitle = computed( () => {
     return $i18n.t('category')+` `+`: ${category.value?.name || ''}`

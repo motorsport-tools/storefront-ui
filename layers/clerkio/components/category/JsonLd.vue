@@ -3,7 +3,6 @@ import generateSeo, { type SeoEntity } from '~/utils/buildSEOHelper'
 
 const props = defineProps<{ category: any }>()
 
-// Provided by CategoryHitsProvider (Options API widget using createWidgetMixin + connectHits)
 const hits = inject<Ref<any[]>>('ais-hits', ref([]))
 
 const { url: siteUrl } = useSiteConfig()
@@ -51,4 +50,6 @@ useHead(computed(() => {
 }))
 </script>
 
-<template><slot /></template>
+<template>
+    <slot />
+</template>

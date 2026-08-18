@@ -42,7 +42,6 @@ onMounted(async () => {
 })
 </script>
 <template>
-    {{ deliveryLead }}
     <div 
         v-if="oversized"
         role="alert"

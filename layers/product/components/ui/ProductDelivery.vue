@@ -20,9 +20,9 @@ const { deliveryMethods, loadDeliveryMethods, loading } = useDeliveryMethod()
 
 const deliveryLead = computed(() => {
     const variant = productVariant.value?.combinationInfoVariant
-    const saleDelay = parseInt(variant?.saleDelay || 0, 10)
+    const saleDelay = parseInt(productVariant.value?.saleDelay || 0, 10)
 
-    if (variant?.stock <= 0 && variant?.allow_out_of_stock_order) {
+    if (productVariant.value?.stock <= 0 && variant?.allow_out_of_stock_order) {
         return saleDelay || 2
     }
 
@@ -42,6 +42,7 @@ onMounted(async () => {
 })
 </script>
 <template>
+    {{ deliveryLead }}
     <div 
         v-if="oversized"
         role="alert"

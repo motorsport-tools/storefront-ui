@@ -1,4 +1,7 @@
 import productFragment from '../fragments/productFragment';
+import alternativeProductsFragment from '../fragments/alternativeProductsFragment';
+import frequentlyTogetherProductsFragment from '../fragments/frequentlyTogetherProductsFragment';
+
 export default `
   query(
     $id: Int = null
@@ -11,6 +14,8 @@ export default `
       barcode: $barcode
     ) {
         ${productFragment}
+        ${alternativeProductsFragment}
+        ${frequentlyTogetherProductsFragment}
     }
   }
 `;

@@ -33,8 +33,6 @@ export default `
       textColor
     }
   }
-  ${alternativeProductsFragment}
-  ${frequentlyTogetherProductsFragment}
   smallImage
   price
   name
@@ -48,7 +46,7 @@ export default `
     image
     imageFilename
   }
-  rating
+  ratingAvg
   ratingCount
   combinationInfo
   slug

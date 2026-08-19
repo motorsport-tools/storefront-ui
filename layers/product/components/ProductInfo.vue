@@ -124,7 +124,7 @@ watch(() => productVariant.value?.id, (newId) => {
         </span>
         <UiProductRating
             class="block"
-            :rating="productTemplate?.rating || 0"
+            :rating="productTemplate?.ratingAvg || 0"
             :ratingCount="productTemplate?.ratingCount || 0"
         />
         <div class="my-4">

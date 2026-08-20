@@ -13,7 +13,7 @@ const { loadCart } = useCart()
 
 const accessToken = route.query.access_token as string
 const saleOrderId = parseInt(route.query.sale_order_id as string)
-const amount = parseFloat(route.query.amount as string)
+const amount = route.query.amount as string
 
 const isValidated = ref(false)
 const validationError = ref<string | null>(null)
@@ -24,10 +24,13 @@ const providerPaymentHandler = ref()
 const loading = ref(false);
 
 const removeAccessTokenFromUrl = async () => {
+  return
+  /*
   if (!route.query.access_token) return
   const query = { ...route.query }
   delete query.access_token
   await router.replace({ query })
+  */
 }
 
 const readyToPay = computed(() => {

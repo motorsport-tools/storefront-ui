@@ -17,6 +17,9 @@ watch(isOpen, (val) => {
         emit('onMenuClose')
     }
 })
+const firstName = computed(() =>
+  String((user.value as any)?.name ?? '').trim().split(' ')[0] || '',
+)
 
 onMounted( () => {
   loginLink.value = isAuthenticated.value ? '/my-account/personal-data' : '/login'
@@ -71,7 +74,7 @@ onMounted( () => {
                         {{ $t('welcome') }}
                     </p>
                     <p class="text-sm font-bold text-primary-700">
-                        {{ user.name }}
+                        {{ firstName }}
                     </p>
                 </div>
                 <div class="flex flex-col text-black max-w-sm pt-2">

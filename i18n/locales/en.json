@@ -351,6 +351,7 @@
     "accountSettings": {
       "heading": "Account Settings",
       "section": {
+        "overview": "Overview",
         "personalData": "Personal Data",
         "billingDetails": "Billing Details",
         "shippingDetails": "Delivery Details"
@@ -534,6 +535,7 @@
       "requestedOn": "Requested on"
     },
     "state": {
+      "Confirmed": "RMA Confirmed",
       "Draft": "RMA Pending",
       "Approved": "RMA Processing",
       "Done": "RMA Complete",

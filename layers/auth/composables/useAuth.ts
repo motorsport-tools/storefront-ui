@@ -189,7 +189,7 @@ export const useAuth = () => {
       authHydrated.value = true
       cart.value.order = data?.login?.cart || {} as Cart
       if (!redirectTo) {
-        redirectTo = "/my-account/personal-data"
+        redirectTo = "/my-account"
       }
       router.push(redirectTo)
     } catch (error: any) {
@@ -260,7 +260,7 @@ export const useAuth = () => {
     if (isRouteCachedFromServer()) {
       return false
     }
-    return Boolean(userCookie.value)
+    return Boolean(userCookie.value) && Boolean(user.value?.id) && !user.value?.isPublic
   });
 
   const Pid = computed(() => {

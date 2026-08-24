@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { SfButton, SfLoaderCircular, SfIconDownload, SfIconArrowBack, SfIconInfo } from "@storefront-ui/vue";
 import type { Order, OrderLine, Rma } from "~/graphql";
+import { formatDate } from '~~/utils/date'
 
 const props = defineProps<{
   order: Order;
@@ -95,7 +96,7 @@ const NuxtLink = resolveComponent("NuxtLink");
                     <p class="font-medium">
                         {{ $t("account.myOrders.orderDetails.orderDate") }}
                     </p>
-                    <p><span>{{ order?.dateOrder ? new Date(order.dateOrder).toLocaleDateString('en-GB') : '--' }}</span></p>
+                    <p><span>{{ order?.dateOrder ? formatDate(order?.dateOrder) : '--' }}</span></p>
                 </li>
                 <li>
                     <p class="font-medium">
@@ -206,12 +207,14 @@ const NuxtLink = resolveComponent("NuxtLink");
                                     <p class="text-base font-medium">
                                         {{ rma.name }}
                                     </p>
+                                    <p class="text-xs text-neutral-600">{{ rma.product.name }}</p>
+                                    <p class="text-xs text-neutral-700">{{ rma.product.sku }}</p>
                                     <p class="text-xs text-neutral-500">
                                         {{ $t('rma.section.requestedOn') }}: {{ rma.date ? new Date(rma.date).toLocaleDateString('en-GB') : '--' }}
                                     </p>
                                 </td>
-                                <td class="p-4 flex justify-center">
-                                    <RmaStatus :status="(rma.state as any)"/>
+                                <td class="p-4 flex shrink-0 justify-center align-middle">
+                                    <RmaStatus class="text-xs" :status="(rma.state as any)"/>
                                 </td>
                             </tr>
                         </tbody>

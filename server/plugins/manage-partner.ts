@@ -24,8 +24,6 @@ export default defineNitroPlugin((nitro) => {
                         ...session.data,
                         pricelistId: pricelistId
                     })
-
-                    console.log('Stored pricelist from login:', pricelistId)
                 }
             }
             // LoadUser query

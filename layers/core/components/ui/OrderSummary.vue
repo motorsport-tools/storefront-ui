@@ -19,7 +19,6 @@ const mergedCoupons = computed(() => {
         }
       }) 
 
-      console.log(lineCoupons)
     return [...cart.value?.order?.coupons || [], ...lineCoupons]
   }
   return []

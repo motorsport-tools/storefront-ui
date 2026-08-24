@@ -202,6 +202,11 @@ query ($id: Int!, $token: String) {
       name
       state
       date
+      product {
+        id
+        name
+        sku
+      }
     }
     rmaCount
     isRmaEligible

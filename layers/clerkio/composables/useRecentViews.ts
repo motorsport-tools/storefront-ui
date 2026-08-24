@@ -58,7 +58,7 @@ export const useRecentViews = () => {
           products: (list.value ?? []).slice(0, limit).join(','),
           visitor: visitorId,
           key: config.public.clerkApiKey,
-          limie: limit,
+          limit: limit,
         },
       })
     )

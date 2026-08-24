@@ -43,6 +43,10 @@ const sections = [
       icon: SfIconPerson,
       subsections: [
           {
+            label: t("account.accountSettings.section.overview"),
+            link: "/my-account",
+          },
+          {
               label: t("account.accountSettings.section.personalData"),
               link: "/my-account/personal-data",
           },
@@ -200,7 +204,7 @@ const handleLogout = async () => {
                       'first-of-type:py-4 md:first-of-type:px-4 md:first-of-type:py-2 px-0 md:px-4 rounded-md active:bg-primary-100 !text-neutral-900',
                       {
                         'font-medium bg-primary-100':
-                        router.currentRoute.value.path.startsWith(link),
+                        router.currentRoute.value.path ==link,
                       },
                     ]"
                   >

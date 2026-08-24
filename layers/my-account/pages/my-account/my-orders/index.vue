@@ -8,6 +8,7 @@ import {
   type PaymentTransaction,
   SortEnum,
 } from "~/graphql";
+import { formatDate } from '~~/utils/date'
 
 definePageMeta({
   layout: "account",
@@ -96,7 +97,7 @@ const ordersList = computed(() => orders.value?.orders || []);
           <p class="block typography-text-sm font-medium">
             {{ $t("account.myOrders.orderDate") }}
           </p>
-          <span class="block typography-text-sm mb-2">{{ order?.dateOrder }}</span>
+          <span class="block typography-text-sm mb-2">{{ formatDate(order?.dateOrder) }}</span>
         </li>
         <li>
           <p class="block typography-text-sm font-medium">{{ $t("account.myOrders.amount") }}</p>
@@ -161,7 +162,7 @@ const ordersList = computed(() => orders.value?.orders || []);
           class="border-b border-neutral-200 last:border-transparent"
         >
           <td class="py-4 pr-4 lg:whitespace-nowrap">{{ order?.name }}</td>
-          <td class="p-4 lg:whitespace-nowrap">{{ order?.dateOrder }}</td>
+          <td class="p-4 lg:whitespace-nowrap">{{ formatDate(order?.dateOrder) }}</td>
           <td class="p-4">
             {{ $currency(order?.amountTotal ? order?.amountTotal : 0) }}
           </td>

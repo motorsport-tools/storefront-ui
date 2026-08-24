@@ -21,11 +21,23 @@ const routesToSkipCache = [
   '/sitemap.xml',
   '/__nuxt_island/**',
   '/_ipx/**',
+  '/my-account',
   '/my-account/**',
+  '/my',
   '/my/**',
   '/mail/**',
+  '/order',
   '/order/**',
-  '/payment/**'
+  '/payment',
+  '/payment/**',
+  '/checkout',
+  '/checkout/**',
+  '/cart',
+  '/cart/**',
+  '/login',
+  '/signup',
+  '/reset-password',
+  '/reset-password-success'
 ]
 
 type Handler = {
@@ -103,6 +115,12 @@ export default defineNitroPlugin((nitroApp) => {
           swr: true,
           staleMaxAge: Number(process.env?.NUXT_SWR_CACHE_TIME),
           shouldBypassCache: (event: H3Event) => {
+            const path = event.path.split('?')[0]
+            const shouldSkip = routesToSkipCache.some((pattern) => matchRoute(pattern, path))
+            if (shouldSkip) {
+              return true
+            }
+
             const query = getQuery(event)
             if (query.token && (query.preview || query['visual-editing'])) {
               return true

@@ -112,15 +112,12 @@
    */
   const syncAddressToCart = async (type: AddressEnum, stripeAddress: any) => {
     try {
-      console.log(`Syncing ${type} address from Stripe`, stripeAddress);
-      
       if (!stripeAddress || !countries.value?.countries?.length) {
         console.warn('Missing address data or countries list');
         return false;
       }
       
       const odooAddress = mapStripeAddressToOdoo(stripeAddress, countries.value.countries);
-      console.log('Mapped Odoo address:', odooAddress);
       
       if (odooAddress) {
         await updateCartAddress(type, odooAddress, false);
@@ -143,12 +140,8 @@
       checkoutRates.value = [];
       
       if (!deliveryMethods.value?.length) {
-        console.warn('No delivery methods available');
         return;
       }
-      
-      console.log('Preparing shipping rates from delivery methods:', 
-      deliveryMethods.value.map(m => m.name));
       
       // We don't want non easy ship
       const shippingMethods = deliveryMethods.value.filter(
@@ -157,7 +150,6 @@
       
       for (const method of shippingMethods) {
         try {
-          console.log(`Loading rates for: ${method.id} and cart ${props.cart.order.id}`);
           const x = await loadRates({ carrierId: method.id, orderId: props.cart.order.id });
           if(!x) {
             throw Error
@@ -195,8 +187,6 @@
           },
         });
       }
-      
-      console.log('Prepared checkout rates:', checkoutRates.value);
     } catch (err) {
       console.error('Error preparing shipping rates:', err);
       error.value = 'Failed to load shipping options';
@@ -208,8 +198,6 @@
    */
   const handleShippingMethodSelection = async (shippingRate: any) => {
     try {
-      console.log('Selected shipping rate:', shippingRate);
-      
       if (!shippingRate?.id) return false;
       
       // Check if it's a collection method or shipping rate
@@ -304,8 +292,6 @@
       
       // Set up event listeners
       stripeDropin.value?.on('shippingaddresschange', async (event) => {
-        console.log('Shipping address changed:', event.address);
-        
         // Update cart address in Odoo
         const addressUpdated = await syncAddressToCart(AddressEnum.Shipping, event.address);
         
@@ -333,8 +319,6 @@
       });
       
       stripeDropin.value?.on('shippingratechange', async (event) => {
-        console.log('Shipping rate chosen:', event.shippingRate);
-        
         const success = await handleShippingMethodSelection(event.shippingRate);
         
         if (success) {
@@ -361,7 +345,6 @@
       
       stripeDropin.value?.on('confirm', async (event) => {
         try {
-            console.log('Submit Event: ', event)
             emit('processing');
 
             //Update order with full billingDetails + shippingAddress
@@ -387,8 +370,6 @@
 
             //Open Transaction in Odoo
             await openStripeTransaction(inlineFormValues['is_tokenization_required'], true);
-
-            console.log('Transaction value:', transaction.value)
 
             //Confirm Stripe Payment
             const confirmOptions = {

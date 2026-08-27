@@ -15,6 +15,8 @@ const SHOULD_BYPASS_ERROR_MUTATIONS = [
   'ContactUsMutation',
   'NewsletterSubscribeMutation',
   'CartAddItem',
+  'UpdatePasswordMutation',
+  'CreateUpdatePartner',
 ]
 
 const avoidErrorThrowForSomeRequests = (options: any) => {

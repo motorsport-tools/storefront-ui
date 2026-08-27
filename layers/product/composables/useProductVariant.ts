@@ -5,44 +5,44 @@ import type {
 } from "~/graphql";
 import { QueryName } from "~/server/queries";
 
-export const useProductVariant = (slugWithCombinationIds: string) => {
-  const { $sdk } = useNuxtApp();
+export const useProductVariant = (slug: string) => {
+  const { $sdk } = useNuxtApp()
 
-  const loadingProductVariant = ref(false);
-  const productVariant = useState<CustomProductWithStockFromRedis>(`product-variant-${slugWithCombinationIds.replace(/[^a-zA-Z0-9]/g, '-')}`, () => ({}) as CustomProductWithStockFromRedis)
+  const productVariant = useState<CustomProductWithStockFromRedis>(`product-variant-${slug}`, () => ({}) as CustomProductWithStockFromRedis)
 
+  const variantParams = ref<QueryProductVariantArgs | null>(null)
+
+  const { data, status, error, refresh } = useAsyncData<ProductVariantResponse>(
+    `product-variant-${slug}`,
+    () =>
+      $sdk().odoo.query<QueryProductVariantArgs, ProductVariantResponse>(
+        { queryName: QueryName.GetProductVariantQuery },
+        variantParams.value as QueryProductVariantArgs,
+        { headers: useRequestHeaders() },
+      ),
+    { immediate: false },
+  )
+
+  const loadingProductVariant = computed(() => status.value === 'pending')
+
+  const setVariant = () => {
+    productVariant.value = (data.value?.productVariant?.product || {}) as CustomProductWithStockFromRedis
+    if (!productVariant.value?.id) {
+      showError({ statusCode: 404, message: 'Product not found' })
+    }
+  }
+
+  watch(data, () => {
+    if (data.value) setVariant()
+  })
+  watch(error, (err: unknown) => {
+    if (err) showError({ statusCode: 500, message: 'Error loading product variant' })
+  })
 
   const loadProductVariant = async (params: QueryProductVariantArgs) => {
-
-    if (import.meta.server) {
-      return
-    }
-
-    loadingProductVariant.value = true
-
-    const dataKey = `product-variant-${params.productTemplateId}-${params.combinationId?.join('-') || 'none'}`
-
-    try {
-
-      const data = await $sdk().odoo.query<QueryProductVariantArgs, ProductVariantResponse>(
-        { queryName: QueryName.GetProductVariantQuery },
-        params
-      )
-
-      if (data?.productVariant) {
-
-        if (data?.productVariant?.product?.displayName) {
-          data.productVariant.product.name = data.productVariant.product.displayName.replace(/\[[^\]]*\]/g, '').trim()
-        }
-
-        productVariant.value = data.productVariant.product || {} as CustomProductWithStockFromRedis
-
-      }
-    } catch (err) {
-      productVariant.value = {} as any
-    } finally {
-      loadingProductVariant.value = false
-    }
+    variantParams.value = params
+    await refresh()
+    if (data.value) setVariant()
   }
 
   const getRegularPrice = computed(

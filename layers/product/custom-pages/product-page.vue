@@ -115,7 +115,6 @@ const breadcrumbs = computed(() => {
 })
 
 const doOpenReturnsPolicy = () => {
-    console.log('Page got emit openReturnsPolicy')
     modalReturnsPolicy.value.open()
     emit('openReturnsPolicy')
 }

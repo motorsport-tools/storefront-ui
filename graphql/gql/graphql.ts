@@ -1105,7 +1105,9 @@ export type Product = {
   /** Specific to Product Template */
   productVariants: Maybe<Array<Product>>;
   qty: Maybe<Scalars['Float']['output']>;
-  rating: Maybe<Scalars['Int']['output']>;
+  /** Average customer rating (0-5) */
+  ratingAvg: Maybe<Scalars['Float']['output']>;
+  /** Total number of customer reviews */
   ratingCount: Maybe<Scalars['Int']['output']>;
   requiresPalletShipping: Maybe<Scalars['Boolean']['output']>;
   ribbon: Maybe<Ribbon>;
@@ -1462,7 +1464,7 @@ export type QuerySearchOrderArgs = {
 
 export type QueryValidateArgs = {
   accessToken: InputMaybe<Scalars['String']['input']>;
-  amount: InputMaybe<Scalars['Float']['input']>;
+  amount: InputMaybe<Scalars['String']['input']>;
   saleOrderId: InputMaybe<Scalars['Int']['input']>;
 };
 

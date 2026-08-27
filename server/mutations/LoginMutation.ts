@@ -18,6 +18,7 @@ export default `
           street
           street2
           city
+          loyaltyPoints
           state {
             id
             name

@@ -62,6 +62,6 @@ partner{
     }
     email
     phone
-    loyalty_points
+    loyaltyPoints
   }
 `;

@@ -4,13 +4,14 @@ import { useOrders } from "~/layers/orders/composable/useOrders";
 import type { Order, QueryOrdersArgs, Product } from '~~/graphql'
 import { SortEnum } from '~~/graphql'
 import { formatDate } from '~~/utils/date'
+import { formatNumber } from '~~/utils/number'
 
 definePageMeta({
   layout: 'account',
   middleware: ['auth-check'],
 })
 
-const { user } = useAuth()
+const { user, loadUser } = useAuth()
 const { getOrders, orders, loading } = useOrders()
 const NuxtLink = resolveComponent('NuxtLink')
 const { getRecommendationsData, data: recommendedProducts, loading: recommendLoading } = useProductRecommendations()
@@ -33,7 +34,8 @@ const itemCount = computed(() =>
 
 const loaded = ref(false)
 
-onMounted(() => {
+onMounted(async () => {
+  await loadUser(true)
   const params: QueryOrdersArgs = {
     currentPage: 1,
     pageSize: 1,
@@ -45,6 +47,7 @@ onMounted(() => {
   })
 
   getRecommendationsData(user.value?.email)
+
 })
 
 const clickProduct = (e: Event, p: number,  n: number) => {  
@@ -163,7 +166,6 @@ const clickProduct = (e: Event, p: number,  n: number) => {
                     );
             "
         ></div>
-
         <!-- Content -->
         <div class="relative z-10 flex items-center justify-between">
             <div>
@@ -172,7 +174,7 @@ const clickProduct = (e: Event, p: number,  n: number) => {
                 </div>
 
                 <div class="mt-1 text-4xl font-bold leading-none text-white">
-                    0
+                    {{ formatNumber(user.loyaltyPoints) }}
                 </div>
                 <p class="text-xs mt-2 text-white">* Coming Soon</p>
             </div>

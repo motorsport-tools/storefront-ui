@@ -11,21 +11,31 @@ import { updateCart, reduceCart } from "../utils/cartHelpers.js"
 export default defineNitroPlugin((nitro) => {
   nitro.hooks.hook("beforeResponse", async (event, { body }) => {
     if (event.method == "POST") {
-      await cartAddItem(event, body)
-      await cartRemoveItem(event, body)
-      await cartUpdateItem(event, body)
-      await updateAddress(event, body)
-      await updateShipping(event, body)
-      await setEasyshipRate(event, body)
-      await addAddress(event, body)
-      await createUpdatePartner(event, body)
-      await applyCoupon(event, body)
-      await applyGiftCard(event, body)
-      await clearCartAfterCreditCardPaymentConfirmation(event, body)
-      await clearCartAfterGiftCardPaymentConfirmation(event, body)
-      await userLogin(event, body)
-      await updatePartnerCheckoutAddress(event, body)
-      await restoreCart(event, body)
+      try {
+        let resBody = body
+        if (typeof body === 'string') {
+          try {
+            resBody = JSON.parse(body)
+          } catch (e) {}
+        }
+        await cartAddItem(event, resBody)
+        await cartRemoveItem(event, resBody)
+        await cartUpdateItem(event, resBody)
+        await updateAddress(event, resBody)
+        await updateShipping(event, resBody)
+        await setEasyshipRate(event, resBody)
+        await addAddress(event, resBody)
+        await createUpdatePartner(event, resBody)
+        await applyCoupon(event, resBody)
+        await applyGiftCard(event, resBody)
+        await clearCartAfterCreditCardPaymentConfirmation(event, resBody)
+        await clearCartAfterGiftCardPaymentConfirmation(event, resBody)
+        await userLogin(event, resBody)
+        await updatePartnerCheckoutAddress(event, resBody)
+        await restoreCart(event, resBody)
+      } catch (err) {
+        console.error("Error in manage-cart nitro plugin:", err)
+      }
     }
   });
 });
@@ -190,8 +200,10 @@ async function clearCartAfterGiftCardPaymentConfirmation(
 
 async function userLogin(event: any, body: any) {
   const requestBody = await readBody(event);
-  if (requestBody[0]?.mutationName === MutationName.LoginMutation) {
-    updateCart(event, { order: body.login.cart })
+  if (requestBody?.[0]?.mutationName === MutationName.LoginMutation) {
+    if (body?.login?.cart) {
+      updateCart(event, { order: body.login.cart })
+    }
   }
 }
 

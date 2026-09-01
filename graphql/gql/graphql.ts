@@ -231,6 +231,17 @@ export type CheckoutRedirectOutput = {
   accessToken: Maybe<Scalars['String']['output']>;
 };
 
+export type ClaimLoyaltyList = ClaimRewards & {
+  __typename?: 'ClaimLoyaltyList';
+  error: Maybe<Scalars['String']['output']>;
+  order: Maybe<Order>;
+};
+
+export type ClaimRewards = {
+  error: Maybe<Scalars['String']['output']>;
+  order: Maybe<Order>;
+};
+
 export type Company = {
   __typename?: 'Company';
   city: Maybe<Scalars['String']['output']>;
@@ -571,6 +582,8 @@ export type Mutation = {
   applyGiftCard: Maybe<ApplyGiftCardList>;
   /** Add Multiple Items */
   cartAddMultipleItems: Maybe<CartData>;
+  /** Claim loyalty rewards */
+  cartClaimLoyalty: Maybe<ClaimLoyaltyList>;
   /** Cart Clear */
   cartClear: Maybe<Order>;
   /** Remove Multiple Items */
@@ -662,6 +675,12 @@ export type MutationApplyGiftCardArgs = {
 
 export type MutationCartAddMultipleItemsArgs = {
   products: Array<InputMaybe<ProductInput>>;
+};
+
+
+export type MutationCartClaimLoyaltyArgs = {
+  code: InputMaybe<Scalars['String']['input']>;
+  rewardId: Scalars['Int']['input'];
 };
 
 
@@ -974,6 +993,7 @@ export type Partner = {
   imageFilename: Maybe<Scalars['String']['output']>;
   isCompany: Scalars['Boolean']['output'];
   isPublic: Maybe<Scalars['Boolean']['output']>;
+  loyaltyPoints: Maybe<Scalars['Int']['output']>;
   mobile: Maybe<Scalars['String']['output']>;
   name: Maybe<Scalars['String']['output']>;
   parentId: Maybe<Partner>;
@@ -1089,7 +1109,7 @@ export type Product = {
   isPreorder: Maybe<Scalars['Boolean']['output']>;
   /** Specific to Product Variant */
   isVariantPossible: Maybe<Scalars['Boolean']['output']>;
-  jsonLd: Maybe<Scalars['GenericScalar']['output']>;
+  jsonLd: Maybe<Scalars['String']['output']>;
   jsonLdBreadcrumb: Maybe<Scalars['GenericScalar']['output']>;
   mediaGallery: Maybe<Array<ProductImage>>;
   metaDescription: Maybe<Scalars['String']['output']>;
@@ -1259,6 +1279,7 @@ export type Query = {
   productVariant: ProductVariant;
   products: Maybe<Products>;
   rates: Maybe<Array<Maybe<EasyshipRate>>>;
+  rewards: Maybe<Rewards>;
   rmaByOrder: Maybe<Array<Rma>>;
   rmaOperations: Maybe<Array<RmaOperation>>;
   rmas: Maybe<Array<Rma>>;
@@ -1502,6 +1523,34 @@ export enum ReviveEnum {
   Merge = 'MERGE',
   Squash = 'SQUASH'
 }
+
+/** A loyalty reward that the customer can claim on the current cart. */
+export type Reward = {
+  __typename?: 'Reward';
+  /** loyalty.card ID that grants this reward */
+  couponId: Maybe<Scalars['Int']['output']>;
+  /** Reward description shown to the customer */
+  description: Maybe<Scalars['String']['output']>;
+  /** Discount amount (percentage or fixed) */
+  discount: Maybe<Scalars['Float']['output']>;
+  /** 'order', 'cheapest', 'specific' */
+  discountApplicability: Maybe<Scalars['String']['output']>;
+  /** 'percent', 'per_point', 'per_order' */
+  discountMode: Maybe<Scalars['String']['output']>;
+  /** loyalty.reward record ID */
+  id: Maybe<Scalars['Int']['output']>;
+  /** Reward display name */
+  name: Maybe<Scalars['String']['output']>;
+  /** Points required to claim this reward */
+  requiredPoints: Maybe<Scalars['Float']['output']>;
+  /** 'discount', 'product', 'free_shipping', etc. */
+  rewardType: Maybe<Scalars['String']['output']>;
+};
+
+export type Rewards = {
+  __typename?: 'Rewards';
+  rewards: Maybe<Array<Maybe<Reward>>>;
+};
 
 export type Ribbon = {
   __typename?: 'Ribbon';

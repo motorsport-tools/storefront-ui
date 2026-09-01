@@ -187,7 +187,9 @@ export const useAuth = () => {
       user.value = data?.login?.user?.partner as Partner
       setAuthCookie(data?.login?.user?.partner as Partner)
       authHydrated.value = true
-      cart.value.order = data?.login?.cart || {} as Cart
+      if (cart.value) {
+        cart.value.order = data?.login?.cart || {} as Cart
+      }
       if (!redirectTo) {
         redirectTo = "/my-account"
       }

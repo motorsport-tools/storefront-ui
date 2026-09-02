@@ -164,7 +164,7 @@ export const useAuth = () => {
       )
       user.value = data.register.partner
       await login({ email: params.email, password: params.password })
-      router.push('/my-account/personal-data')
+      router.push('/my-account')
 
     } catch (error: any) {
       authError.value = error?.data?.message || 'We couldn\'t create your account. Please try again.'
@@ -196,7 +196,7 @@ export const useAuth = () => {
       router.push(redirectTo)
     } catch (error: any) {
       console.error('Login error:', error)
-      const extractedMessage = error?.data?.message || error?.data?.[0]?.message || error?.message || error?.statusMessage
+      const extractedMessage = error?.data?.message || error?.data?.[0]?.message || error?.message
       authError.value = extractedMessage || 'The email or password you entered is incorrect.'
     } finally {
       loading.value = false

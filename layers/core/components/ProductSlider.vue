@@ -35,7 +35,7 @@ const sliderOptions = computed(() => ({
   breakpoints: {
     0: {
       itemsToShow: 1,
-      snapAlign: 'start',
+      snapAlign: 'center',
     },
     430: {
       itemsToShow: 2,
@@ -150,14 +150,16 @@ const clickProduct = (e: Event, p: number, n: number) => {
   overscroll-behavior: auto !important;
 }
 
-.product_slider .carousel__track,
-.product_slider .carousel__slide {
-  justify-content: flex-start !important;
+.loading .product_slider .carousel__slide {
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
 }
 
 @media (min-width: 430px) {
   .loading .product_slider .carousel__slide {
     width: calc(50% - 5px) !important;
+    justify-content: flex-start;
   }
 }
 @media (min-width: 768px) {

@@ -132,6 +132,7 @@ function getPositionClass(position: string): string {
             loading="lazy"
             provider="directus"
             :src="data?.background_image?.filename_disk"
+            sizes="100vw sm:50vw md:33vw lg:25vw"
             format="webp"
             quality="75"
             :alt="data?.background_image?.title || `Image background for ${data?.link_title}`"

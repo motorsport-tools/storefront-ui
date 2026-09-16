@@ -67,7 +67,7 @@ onMounted(() => {
             :loading="itemKey >= 1 ? 'lazy' : 'eager'"
             :fetchpriority="itemKey == 0 ? 'high' : 'auto'"
             :src="slide?.background_image?.filename_disk"
-            sizes="100vw sm:1024px lg:1280px xl:1536px"
+            sizes="100vw sm:640px md:1024px lg:1280px"
             format="webp"
             quality="75"
             provider="directus"

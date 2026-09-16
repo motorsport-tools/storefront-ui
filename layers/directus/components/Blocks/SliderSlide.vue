@@ -21,7 +21,7 @@ const { getBlockComponent } = useBlockRegistry()
             :loading="itemKey >= 1? 'lazy': 'eager'"
             :fetchpriority="itemKey == 0? 'high': 'auto'"
             :src="`/assets/${slide?.background_image?.id}`"
-            sizes="100vw sm:1024px lg:1280px xl:1536px"
+            sizes="100vw sm:640px md:1024px lg:1280px"
             format="webp"
             quality="75"
             provider="directus"

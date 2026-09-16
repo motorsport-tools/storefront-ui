@@ -11,14 +11,21 @@ export default defineNuxtPlugin(() => {
         ; ((window as any).mt.q = (window as any).mt.q || []).push(args)
       }
 
-  const script = document.createElement('script')
-  script.id = 'mautic-script'
-  script.type = 'text/javascript'
-  script.async = true
-  script.src = 'https://mautic.motorsport-tools.co.uk/mtc.js'
+  const loadMauticScript = () => {
+    if (document.getElementById('mautic-script')) return
+    const script = document.createElement('script')
+    script.id = 'mautic-script'
+    script.type = 'text/javascript'
+    script.async = true
+    script.src = 'https://mautic.motorsport-tools.co.uk/mtc.js'
+    document.body.appendChild(script)
+  }
 
-  // Append as the last body script, i.e. right before </body>.
-  document.body.appendChild(script)
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(loadMauticScript, { timeout: 4000 })
+  } else {
+    setTimeout(loadMauticScript, 2000)
+  }
 
-    ; (window as any).mt('send', 'pageview')
+  ; (window as any).mt('send', 'pageview')
 })

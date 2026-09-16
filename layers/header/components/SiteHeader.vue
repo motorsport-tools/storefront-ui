@@ -21,7 +21,7 @@ provide(
   categoriesForMegaMenu
 )
 
-await loadCategoriesForMegaMenu({ filter: { parent: true }, pageSize: 100 })
+loadCategoriesForMegaMenu({ filter: { parent: true }, pageSize: 100 })
 
 
 

@@ -22,8 +22,10 @@ const { getBlockComponent } = useBlockRegistry()
             :fetchpriority="itemKey == 0? 'high': 'auto'"
             :src="`/assets/${slide?.background_image?.id}`"
             sizes="100vw sm:1024px lg:1280px xl:1536px"
+            :width="slide?.background_image?.width || 1280"
+            :height="slide?.background_image?.height || 480"
             format="webp"
-            quality="75"
+            quality="70"
             provider="directus"
             :alt="slide?.background_image.title? slide?.background_image.title : `Promotional image slide ${itemKey}`"
         />

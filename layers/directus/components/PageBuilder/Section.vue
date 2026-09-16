@@ -12,7 +12,8 @@ const { styleObject } = useSectionStyles(props.sectionData)
         :class="sectionData?.full_width ? 'w-full' : 'narrow-container'"
     >
         <div 
-            class="page-builder-section flex flex-col px-4 lg:px-0 overflow-hidden"
+            class="page-builder-section flex flex-col overflow-hidden"
+            :class="!sectionData?.full_width ? 'px-4 lg:px-0' : ''"
             :style="styleObject"
         >
             <component

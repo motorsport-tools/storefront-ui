@@ -80,6 +80,7 @@ const openManageSettings = () => {
                         src="img/mst-cars-logo-red-white.svg"
                         loading="lazy"
                         width="100"
+                        height="32"
                         alt="MST Cars Logo"
                     />
                 </div>

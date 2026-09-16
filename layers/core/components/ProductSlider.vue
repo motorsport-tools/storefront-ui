@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import 'vue3-carousel/carousel.css'
 import { Carousel, Slide, Navigation } from 'vue3-carousel'
+import UiProductCard from '~/layers/core/components/ui/ProductCard.vue'
+import UiProductCardSkeleton from '~/layers/core/components/ui/ProductCardSkeleton.vue'
 
 import type { CustomProductWithStockFromRedis, Product } from '~/graphql'
 
@@ -11,12 +13,16 @@ const props = defineProps({
     default: () => [],
   },
   blockId: Number,
+  loading: {
+    type: Boolean,
+    default: false,
+  }
 })
 const { getRegularPrice, getSpecialPrice } = useProductAttributes()
 
 const sliderRef = ref()
 const wrapperRef = ref()
-const sliderOptions = {
+const sliderOptions = computed(() => ({
   ignoreAnimations: true,
   itemsToScroll: 1,
   clamp: true,
@@ -24,11 +30,12 @@ const sliderOptions = {
   slideEffect: 'slide',
   touchDrag: true,
   transition: 300,
-  wrapAround: true,
+  wrapAround: props.productTemplateList.length > 1,
+  snapAlign: 'start',
   breakpoints: {
     0: {
       itemsToShow: 1,
-      snapAlign: 'center',
+      snapAlign: 'start',
     },
     430: {
       itemsToShow: 2,
@@ -43,9 +50,7 @@ const sliderOptions = {
       snapAlign: 'start',
     },
   },
-}
-
-const { loading } = useProductTemplateList(`product-slider--block-${props.blockId}`)
+}))
 
 const SliderInit = async () => {
   await nextTick()
@@ -56,7 +61,7 @@ const SliderInit = async () => {
 
 const { Pid } = useAuth()
 
-const clickProduct = (e: Event, p: number,  n: number) => {  
+const clickProduct = (e: Event, p: number, n: number) => {  
   if (typeof window !== 'undefined' && window.Clerk) {
     window.Clerk('call', 'log/click', {
       visitor: useCookie('clerk_visitor').value || 'auto',
@@ -76,8 +81,9 @@ const clickProduct = (e: Event, p: number,  n: number) => {
   >
     {{ heading }}
   </h2>
-  <div ref="wrapperRef" class="loading w-full h-auto">
+  <div ref="wrapperRef" class="loading w-full min-h-[380px] md:min-h-[410px] overflow-hidden">
     <Carousel
+      v-if="productTemplateList && productTemplateList.length > 0 && !loading"
       v-bind="sliderOptions"
       ref="sliderRef"
       class="product_slider"
@@ -86,12 +92,11 @@ const clickProduct = (e: Event, p: number,  n: number) => {
     >
       <Slide
         v-for="(product, index) in productTemplateList"
-        :key="index"
+        :key="product?.id || index"
         aria-roledescription="slide"
       >
-          <LazyUiProductCard
-              v-if="!loading"
-              @click="clickProduct($event, product.id, i)"
+          <UiProductCard
+              @click="clickProduct($event, product.id, index)"
               :data-clerk-product-id="product.id"
               :key="product?.id"
               :pid="Pid"
@@ -112,14 +117,11 @@ const clickProduct = (e: Event, p: number,  n: number) => {
               :ribbon-bg-color="product.ribbon_bg_color"
               :ribbon-text-color="product.ribbon_text_color"
           />
-          <UiProductCardSkeleton
-            v-else
-          />
       </Slide>
 
       <template #addons>
         <Navigation
-          v-if="productTemplateList.length > sliderRef?.data?.config?.itemsToShow"
+          v-if="productTemplateList.length > (sliderRef?.data?.config?.itemsToShow || 1)"
         >
           <template #prev>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" focusable="false"><path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"></path></svg>
@@ -130,6 +132,12 @@ const clickProduct = (e: Event, p: number,  n: number) => {
         </Navigation>
       </template>
     </Carousel>
+    <div
+      v-else
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 min-h-[380px] py-4"
+    >
+      <UiProductCardSkeleton v-for="n in 5" :key="n" />
+    </div>
   </div>
 </template>
 <style>
@@ -141,6 +149,12 @@ const clickProduct = (e: Event, p: number,  n: number) => {
   overflow: hidden;
   overscroll-behavior: auto !important;
 }
+
+.product_slider .carousel__track,
+.product_slider .carousel__slide {
+  justify-content: flex-start !important;
+}
+
 @media (min-width: 430px) {
   .loading .product_slider .carousel__slide {
     width: calc(50% - 5px) !important;

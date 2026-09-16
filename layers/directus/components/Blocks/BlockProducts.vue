@@ -5,34 +5,36 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-//const { loadProductTemplateList, productTemplateList } = useProductTemplateList(`product-slider--block-${props.blockData.id}`)
-
 const { loading, data: products, loadProductData } = useProductList(`product-slider--block-${props.blockData.id}`)
 
-const sliderKey = ref(0)
+const getParams = (data: BlockProduct) => {
+  const params: Record<string, any> = {
+    pageSize: data?.number_products || 10,
+    sort: data?.sort_by && data?.sort_direction ? { [data.sort_by]: data.sort_direction } : { "newest": "ASC" },
+  }
+  if (data?.tag) params.tag = data.tag
+  return params
+}
+
+// Pre-fetch during SSR / component setup
+await loadProductData(getParams(props.blockData))
 
 watch(
   () => props.blockData,
   async (newVal) => {
-    const params: Record<string, any> = {
-      pageSize: newVal?.number_products || 10,
-      sort: newVal?.sort_by && newVal?.sort_direction ?  { [newVal?.sort_by]: newVal?.sort_direction } : { "newest": "ASC" },
+    if (newVal) {
+      await loadProductData(getParams(newVal))
     }
-
-    if (newVal?.tag) params.tag = newVal.tag;
-    //await loadProductTemplateList(params);
-    await loadProductData(params);
-    sliderKey.value++;
   },
-  { immediate: true, deep: true }
-);
+  { deep: true }
+)
 
 </script>
 <template>
     <ProductSlider
-      :key="sliderKey"
       :heading="blockData?.title"
-      :product-template-list="products"
+      :product-template-list="products || []"
       :blockId="props.blockData.id"
+      :loading="loading"
     />
 </template>

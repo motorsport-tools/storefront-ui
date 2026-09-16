@@ -13,6 +13,31 @@ const { getBlockComponent } = useBlockRegistry()
 const slideRef = ref<HTMLElement | null>(null)
 const isVisible = ref(false)
 
+const img = useImage()
+
+if (props.itemKey === 0 && props.slide?.background_image?.filename_disk) {
+    try {
+        const heroSrc = img(props.slide.background_image.filename_disk, {
+            format: 'webp',
+            quality: 70,
+            provider: 'directus',
+            width: 640
+        })
+        useHead({
+            link: [
+                {
+                    rel: 'preload',
+                    as: 'image',
+                    href: heroSrc,
+                    fetchpriority: 'high'
+                }
+            ]
+        })
+    } catch {
+        // Fallback if image resolution fails
+    }
+}
+
 onMounted(() => {
     if (!slideRef.value) return
 
@@ -43,8 +68,10 @@ onMounted(() => {
             :fetchpriority="itemKey == 0 ? 'high' : 'auto'"
             :src="slide?.background_image?.filename_disk"
             sizes="100vw sm:1024px lg:1280px xl:1536px"
+            :width="slide?.background_image?.width || 1280"
+            :height="slide?.background_image?.height || 480"
             format="webp"
-            quality="75"
+            quality="70"
             provider="directus"
             :alt="slide?.background_image?.title ? slide?.background_image.title : `Promotional image slide ${itemKey}`"
         />

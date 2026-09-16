@@ -39,13 +39,20 @@ export default defineNuxtPlugin(() => {
     visitor: visitorCookie.value || 'auto',
   })
 
-  // Create and inject the script
-  const script = document.createElement('script')
-  script.id = 'clerk-script'
-  script.type = 'text/javascript'
-  script.async = true
-  script.src = 'https://cdn.clerk.io/clerk.js'
+  // Defer script loading to requestIdleCallback
+  const loadClerkScript = () => {
+    if (document.getElementById('clerk-script')) return
+    const script = document.createElement('script')
+    script.id = 'clerk-script'
+    script.type = 'text/javascript'
+    script.async = true
+    script.src = 'https://cdn.clerk.io/clerk.js'
+    document.head.appendChild(script)
+  }
 
-  document.head.appendChild(script)
-
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(loadClerkScript, { timeout: 4000 })
+  } else {
+    setTimeout(loadClerkScript, 2000)
+  }
 })

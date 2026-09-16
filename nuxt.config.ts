@@ -31,6 +31,7 @@ export default defineNuxtConfig({
     'nuxt-viewport',
     '@nuxtjs/sitemap',
     '@nuxtjs/critters',
+    '@nuxtjs/fontaine',
   ],
   routeRules: {
     '/my-account': { cache: false },
@@ -214,9 +215,13 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     families: {
-      "Figtree": [300, 400, 500, 600, 700, 800],
+      "Figtree": [400, 600, 700, 800],
     },
     display: 'swap',
+    download: true,
+    prefetch: true,
+    preconnect: true,
+    preload: true,
   },
 
   i18n: {

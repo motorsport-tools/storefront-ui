@@ -50,7 +50,7 @@ const SliderInit = async () => {
 }
 </script>
 <template>
-    <div ref="wrapperRef" class="loading w-full h-auto">
+    <div ref="wrapperRef" class="loading w-full min-h-[240px] lg:min-h-[480px] h-60 lg:h-[30rem] overflow-hidden">
         <Carousel
             v-bind="sliderOptions"
             :key="sliderKey"

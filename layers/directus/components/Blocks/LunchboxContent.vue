@@ -83,6 +83,18 @@ const dims = computed(() => {
   return { width: width, height: height }
 })
 
+const numWidth = computed(() => {
+  const w = dims.value.width
+  const parsed = typeof w === 'number' ? w : parseInt(String(w), 10)
+  return (!isNaN(parsed) && parsed > 0) ? parsed : (props.data?.background_image?.width || 600)
+})
+
+const numHeight = computed(() => {
+  const h = dims.value.height
+  const parsed = typeof h === 'number' ? h : parseInt(String(h), 10)
+  return (!isNaN(parsed) && parsed > 0) ? parsed : (props.data?.background_image?.height || 400)
+})
+
 function getPositionClass(position: string): string {
   switch (position) {
     default:
@@ -123,8 +135,8 @@ function getPositionClass(position: string): string {
             format="webp"
             quality="75"
             :alt="data?.background_image?.title || `Image background for ${data?.link_title}`"
-            :width="dims.width"
-            :height="dims.height"
+            :width="numWidth"
+            :height="numHeight"
             densities="1"
         />
         <div class="inline-block absolute p-2 z-1 text-white font-bold text-2xl sm:text-3xl md:text-4xl drop-shadow-md" v-html="data?.content" :class="getPositionClass(data?.text_position || 'bottom-left')">

@@ -29,13 +29,13 @@ const openManageSettings = () => {
                 <div
                     class="pb-6 md:pb-0 md:pr-12"
                 >
-                    <h2 class="text-xl md:text-lg font-medium pb-2 md:pb-0">{{ $t('cookieBar.about.label') }}</h2>
-                    <p class="text-sm text-gray-600 whitespace-pre-line">{{ $t('cookieBar.about.description') }}</p>
+                    <h2 class="text-xl md:text-lg font-bold text-neutral-900 pb-2 md:pb-0">{{ $t('cookieBar.about.label') }}</h2>
+                    <p class="text-sm text-neutral-800 whitespace-pre-line font-medium">{{ $t('cookieBar.about.description') }}</p>
                     <SfButton
                         @click="openManageSettings()"
                         variant="tertiary"
                         size="sm"
-                        class="!text-gray-600 hover:!bg-transparent hover:!text-gray-600"
+                        class="!text-neutral-900 font-semibold underline hover:!bg-transparent hover:!text-black mt-1"
                     >
                         {{ $t('cookieBar.about.manageLabel') }}
                     </SfButton>
@@ -49,7 +49,7 @@ const openManageSettings = () => {
                     <SfButton @click="setAllCookiesState(false)"
                         variant="secondary"
                         size="sm"
-                        class="!text-gray-600 !border-gray-600">
+                        class="!text-neutral-900 !border-neutral-900 font-medium">
                         {{ $t('cookieBar.about.rejectLabel') }}
                     </SfButton>
                     

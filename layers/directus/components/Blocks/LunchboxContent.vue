@@ -128,15 +128,13 @@ function getPositionClass(position: string): string {
         :title="`${data?.link_title}`"
     >
         <NuxtImg
-            class="w-full h-full object-cover absolute z-0"
+            class="w-full h-full object-cover absolute inset-0 z-0"
             loading="lazy"
             provider="directus"
             :src="data?.background_image?.filename_disk"
             format="webp"
             quality="75"
             :alt="data?.background_image?.title || `Image background for ${data?.link_title}`"
-            :width="numWidth"
-            :height="numHeight"
             densities="1"
         />
         <div class="inline-block absolute p-2 z-1 text-white font-bold text-2xl sm:text-3xl md:text-4xl drop-shadow-md" v-html="data?.content" :class="getPositionClass(data?.text_position || 'bottom-left')">

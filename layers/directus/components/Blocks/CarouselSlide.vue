@@ -63,15 +63,13 @@ onMounted(() => {
 
         <NuxtImg
             v-if="slide?.background_image"
-            class="cs__img w-full h-full object-cover absolute z-0"
+            class="cs__img w-full h-full object-cover absolute inset-0 z-0"
             :loading="itemKey >= 1 ? 'lazy' : 'eager'"
             :fetchpriority="itemKey == 0 ? 'high' : 'auto'"
             :src="slide?.background_image?.filename_disk"
             sizes="100vw sm:1024px lg:1280px xl:1536px"
-            :width="slide?.background_image?.width || 1280"
-            :height="slide?.background_image?.height || 480"
             format="webp"
-            quality="70"
+            quality="75"
             provider="directus"
             :alt="slide?.background_image?.title ? slide?.background_image.title : `Promotional image slide ${itemKey}`"
         />

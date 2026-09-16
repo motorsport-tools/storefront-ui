@@ -249,7 +249,7 @@ export default defineNuxtConfig({
     vueI18n: "~/i18n.config.ts",
   },
   delayHydration: {
-    mode: "init",
+    mode: "mount",
   },
   vite: {
     optimizeDeps: {
@@ -295,6 +295,7 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
+    compress: true,
     compressPublicAssets: {
       gzip: true, brotli: true
     },

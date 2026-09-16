@@ -4,7 +4,6 @@ import type { EventHandler, RouterMethod, H3Event } from 'h3'
 const routesToSkipCache = [
   '/api/odoo/all',
   '/api/odoo/query-no-cache',
-  '/api/route-resolver',
   '/api/sitemap/urls/categories',
   '/api/sitemap/urls/products',
   '/api/sitemap/urls/pages',

@@ -2,8 +2,6 @@
 defineProps<{
   filled?: boolean;
 }>();
-
-const img = useImage()
 </script>
 
 <template>
@@ -14,6 +12,5 @@ const img = useImage()
     preload
     width="262"
     height="57"
-    :placeholder="img(`/img/motorsport-tools-logo.svg`)"
   />
 </template>

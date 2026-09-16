@@ -105,7 +105,11 @@ export default defineEventHandler(async (event) => {
         const page = pageData[0]
 
         return page
-    } catch {
-        throw createError({ statusCode: 500, statusMessage: 'Page not found' })
+    } catch (err: any) {
+        // Re-throw H3 errors (e.g. the 404 above) without wrapping them
+        if (err?.statusCode) {
+            throw err
+        }
+        throw createError({ statusCode: 500, statusMessage: 'Internal server error fetching page' })
     }
 })

@@ -6,6 +6,7 @@ interface ClerkProductsResponse<T = any> {
 export const useProductRecommendations = () => {
 
     const config = useRuntimeConfig()
+    const clerkVisitorCookie = useCookie<string | null>('clerk_visitor')
     const state = useState(`useProductRecommendations`, () => ({
         data: [] as any[],
         loading: false,
@@ -17,7 +18,7 @@ export const useProductRecommendations = () => {
     const getRecommendationsData = async (email: string, limit: number = 8) => {
         state.value.loading = true
 
-        const visitorId = useCookie('clerk_visitor').value || 'auto'
+        const visitorId = clerkVisitorCookie.value || 'auto'
 
         try {
             const data = await $fetch<ClerkProductsResponse>('/api/search/v2/recommendations/visitor/complementary', {

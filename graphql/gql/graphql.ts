@@ -993,7 +993,7 @@ export type Partner = {
   imageFilename: Maybe<Scalars['String']['output']>;
   isCompany: Scalars['Boolean']['output'];
   isPublic: Maybe<Scalars['Boolean']['output']>;
-  loyaltyPoints: Maybe<Scalars['Int']['output']>;
+  loyaltyPoints: Maybe<Scalars['Float']['output']>;
   mobile: Maybe<Scalars['String']['output']>;
   name: Maybe<Scalars['String']['output']>;
   parentId: Maybe<Partner>;

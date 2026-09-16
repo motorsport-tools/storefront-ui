@@ -25,6 +25,7 @@ export const useRecentViews = () => {
     loading: false,
   }))
 
+  const clerkVisitorCookie = useCookie<string | null>('clerk_visitor')
   const config = useRuntimeConfig()
 
   const setState = (data: any) => {
@@ -48,14 +49,14 @@ export const useRecentViews = () => {
 
     state.value.loading = true
 
-    const visitorId = useCookie('clerk_visitor').value || 'auto'
+    const visitorId = clerkVisitorCookie.value || 'auto'
 
     const { data } = await useAsyncData(
       `useRecentViews-${recentViewsVisitor.value}-${JSON.stringify(list.value)}-${limit}`,
       () => $fetch<ClerkProductsResponse>('/api/search/v2/products', {
         method: 'GET',
         query: {
-          products: (list.value ?? []).slice(0, limit).join(','),
+          products: JSON.stringify((list.value ?? []).slice(0, limit)),
           visitor: visitorId,
           key: config.public.clerkApiKey,
           limit: limit,

@@ -9,6 +9,7 @@ import GetPaymentMethodsQuery from './GetPaymentMethodsQuery';
 import GetProductTemplateListQuery from './GetProductTemplateListQuery';
 import GetProductTemplateQuery from './GetProductTemplateQuery';
 import GetProductVariantQuery from './GetProductVariantQuery';
+import GetProductListQuery from './GetProductListQuery';
 import GetOrdersQuery from './GetOrdersQuery';
 import GetOrderQuery from './GetOrderQuery';
 import GetGuestOrderQuery from './GetGuestOrderQuery';
@@ -34,6 +35,7 @@ enum QueryName {
   GetCategoryQuery = 'GetCategoryQuery',
   GetProductTemplateListQuery = 'GetProductTemplateListQuery',
   GetProductTemplateQuery = 'GetProductTemplateQuery',
+  GetProductListQuery = 'GetProductListQuery',
   //GetWishlist = 'GetWishlist',
   LoadCartQuery = 'LoadCartQuery',
   LoadCartLiteQuery = 'LoadCartLiteQuery',
@@ -65,6 +67,7 @@ const Queries: Record<QueryName, string> = {
   GetCategoryQuery,
   GetProductTemplateListQuery,
   GetProductTemplateQuery,
+  GetProductListQuery,
   WishlistLoadQuery,
   LoadCartQuery,
   LoadCartLiteQuery,

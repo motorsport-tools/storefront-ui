@@ -33,7 +33,6 @@ export default `
       textColor
     }
   }
-  smallImage
   price
   name
   description

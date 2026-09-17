@@ -32,6 +32,7 @@ export default defineNuxtConfig({
     '@nuxtjs/sitemap',
     '@nuxtjs/critters',
     '@nuxtjs/fontaine',
+    'nuxt-security',
   ],
   routeRules: {
     '/my-account': { cache: false },
@@ -94,6 +95,23 @@ export default defineNuxtConfig({
   security: {
     headers: {
       xFrameOptions: 'SAMEORIGIN',
+      // HSTS: tell browsers to always use HTTPS for 1 year, include subdomains
+      strictTransportSecurity: {
+        maxAge: 31536000,
+        includeSubdomains: true,
+        preload: true,
+      },
+      // Prevent MIME-type sniffing
+      xContentTypeOptions: 'nosniff',
+      // Referrer policy - send origin only on same-site, nothing cross-site
+      referrerPolicy: 'strict-origin-when-cross-origin',
+      // Disable browser features not used by the storefront
+      permissionsPolicy: {
+        camera: [],
+        microphone: ['self'],
+        geolocation: ['self'],
+        payment: ['self', '"https://js.stripe.com"', '"https://www.paypal.com"', '"https://pay.google.com"', '"https://payments.google.com"'],
+      },
       contentSecurityPolicy: {
         'default-src': ["'self'"],
         'base-uri': ["'self'"],
@@ -110,24 +128,24 @@ export default defineNuxtConfig({
           'https://js.stripe.com',
           'https://cdn.clerk.io',
           'https://api.clerk.io',
-          'https://mautic.motorsport-tools.co.uk',
+          'https://*.motorsport-tools.com',
+          'https://*.motorsport-tools.co.uk',
           odooOrigin,
         ].filter(Boolean),
         'style-src': [
           "'self'",
           "'unsafe-inline'",
-          'https://fonts.googleapis.com',
         ],
         'font-src': [
           "'self'",
           'data:',
-          'https://fonts.gstatic.com',
         ],
         'connect-src': [
           "'self'",
           odooOrigin,
           directusOrigin,
-          'https://api.motorsport-tools.com',
+          'https://*.motorsport-tools.com',
+          'https://*.motorsport-tools.co.uk',
           'https://js.stripe.com',
           'https://api.stripe.com',
           'https://q.stripe.com',
@@ -144,6 +162,9 @@ export default defineNuxtConfig({
           'https://*.clearpay.co.uk',
           'https://*.afterpay.com',
           'https://*.clerk.io',
+          'https://api.iconify.design',
+          'https://api.unisvg.com',
+          'https://api.simplesvg.com',
         ].filter(Boolean),
         'frame-src': [
           "'self'",
@@ -167,6 +188,12 @@ export default defineNuxtConfig({
         'upgrade-insecure-requests': true,
       }
     },
+    // Protect against oversized request payloads (DoS prevention)
+    requestSizeLimiter: {
+      maxRequestSizeInBytes: 2_000_000,        // 2 MB default
+      maxUploadFileRequestInBytes: 10_000_000, // 10 MB for file uploads
+    },
+    rateLimiter: false,
   },
   app: {
     head: {
@@ -215,12 +242,14 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     families: {
-      "Figtree": [400, 600, 700, 800],
+      "Figtree": [400, 700, 800],
     },
+    subsets: ['latin'],
     display: 'swap',
     download: true,
-    prefetch: true,
-    preconnect: true,
+    inject: true,
+    prefetch: false,
+    preconnect: false,
     preload: true,
   },
 

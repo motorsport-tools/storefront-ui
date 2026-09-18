@@ -44,8 +44,8 @@ export default defineNuxtConfig({
       security: {
         headers: {
           crossOriginResourcePolicy: 'cross-origin',
-          crossOriginEmbedderPolicy: 'credentialless',
-          crossOriginOpenerPolicy: 'same-origin',
+          crossOriginEmbedderPolicy: false,
+          crossOriginOpenerPolicy: 'same-origin-allow-popups',
         }
       }
     },
@@ -54,8 +54,8 @@ export default defineNuxtConfig({
       security: {
         headers: {
           crossOriginResourcePolicy: 'cross-origin',
-          crossOriginEmbedderPolicy: 'credentialless',
-          crossOriginOpenerPolicy: 'same-origin',
+          crossOriginEmbedderPolicy: false,
+          crossOriginOpenerPolicy: 'same-origin-allow-popups',
         }
       }
     },
@@ -119,7 +119,7 @@ export default defineNuxtConfig({
         includeSubdomains: true,
         preload: true,
       },
-      crossOriginEmbedderPolicy: 'require-corp',
+      crossOriginEmbedderPolicy: 'credentialless',
       crossOriginResourcePolicy: 'same-site',
       crossOriginOpenerPolicy: 'same-origin',
       // Prevent MIME-type sniffing

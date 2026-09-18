@@ -190,6 +190,7 @@ export default defineNuxtConfig({
           'https://api.clerk.io',
           'https://*.motorsport-tools.com',
           'https://*.motorsport-tools.co.uk',
+          'https://*.gstatic.com',
           odooOrigin,
         ].filter(Boolean),
         'style-src': [

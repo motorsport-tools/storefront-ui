@@ -61,8 +61,46 @@ export default defineNuxtConfig({
     },
     '/cart': { cache: false },
     '/cart/**': { cache: false },
-    '/payment': { cache: false },
-    '/payment/**': { cache: false },
+    '/payment': {
+      cache: false,
+      security: {
+        headers: {
+          crossOriginResourcePolicy: 'cross-origin',
+          crossOriginEmbedderPolicy: false,
+          crossOriginOpenerPolicy: 'same-origin-allow-popups',
+        }
+      }
+    },
+    '/payment/**': {
+      cache: false,
+      security: {
+        headers: {
+          crossOriginResourcePolicy: 'cross-origin',
+          crossOriginEmbedderPolicy: false,
+          crossOriginOpenerPolicy: 'same-origin-allow-popups',
+        }
+      }
+    },
+    '/guest/login': {
+      cache: false,
+      security: {
+        headers: {
+          crossOriginResourcePolicy: 'cross-origin',
+          crossOriginEmbedderPolicy: false,
+          crossOriginOpenerPolicy: 'same-origin-allow-popups',
+        }
+      }
+    },
+    '/guest/login/**': {
+      cache: false,
+      security: {
+        headers: {
+          crossOriginResourcePolicy: 'cross-origin',
+          crossOriginEmbedderPolicy: false,
+          crossOriginOpenerPolicy: 'same-origin-allow-popups',
+        }
+      }
+    },
     '/login': { cache: false },
     '/signup': { cache: false },
     '/reset-password': { cache: false },

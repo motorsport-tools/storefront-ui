@@ -43,11 +43,22 @@ export default defineNuxtConfig({
       cache: false,
       security: {
         headers: {
-          crossOriginResourcePolicy: 'cross-origin'
+          crossOriginResourcePolicy: 'cross-origin',
+          crossOriginEmbedderPolicy: 'credentialless',
+          crossOriginOpenerPolicy: 'same-origin',
         }
       }
     },
-    '/checkout/**': { cache: false },
+    '/checkout/**': {
+      cache: false,
+      security: {
+        headers: {
+          crossOriginResourcePolicy: 'cross-origin',
+          crossOriginEmbedderPolicy: 'credentialless',
+          crossOriginOpenerPolicy: 'same-origin',
+        }
+      }
+    },
     '/cart': { cache: false },
     '/cart/**': { cache: false },
     '/payment': { cache: false },
@@ -108,7 +119,9 @@ export default defineNuxtConfig({
         includeSubdomains: true,
         preload: true,
       },
+      crossOriginEmbedderPolicy: 'require-corp',
       crossOriginResourcePolicy: 'same-site',
+      crossOriginOpenerPolicy: 'same-origin',
       // Prevent MIME-type sniffing
       xContentTypeOptions: 'nosniff',
       // Referrer policy - send origin only on same-site, nothing cross-site

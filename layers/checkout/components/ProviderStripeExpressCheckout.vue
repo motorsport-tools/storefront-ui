@@ -431,7 +431,12 @@
   
   // Initialize component
   onMounted( async () => {
-    const { proxy, onLoaded } = useScript('https://js.stripe.com/v3/')
+    const { proxy, onLoaded } = useScript('https://js.stripe.com/v3/', {
+        useScriptOptions: {
+            crossorigin: false,
+            referrerpolicy: false
+        }
+    })
     onLoaded(() => {
       initStripeExpressCheckout()
     })

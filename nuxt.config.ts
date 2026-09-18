@@ -241,6 +241,7 @@ export default defineNuxtConfig({
         ],
         'worker-src': ["'self'", 'blob:'],
         'form-action': ["'self'"],
+        'script-src-attr': ["'unsafe-inline'"],
         'frame-ancestors': [
           "'self'",
           'https://pay.google.com',

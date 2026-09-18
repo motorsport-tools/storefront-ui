@@ -87,6 +87,7 @@ onMounted(() => {
                 class="w-full mb-4 md:mb-0"
                 :tag="NuxtLink"
                 :to="goToCheckout()"
+                external
               >
                 {{ $t('goToCheckout') }}
               </SfButton>

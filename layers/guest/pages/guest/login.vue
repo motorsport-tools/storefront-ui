@@ -62,6 +62,7 @@ onMounted(async () => {
                         to="/checkout"
                         class="w-full my-4"
                         variant="secondary"
+                        external
                     >
                         {{ $t('guest.continueAsGuest') }}
                     </SfButton>

@@ -39,7 +39,14 @@ export default defineNuxtConfig({
     '/my-account/**': { cache: false },
     '/my': { cache: false },
     '/my/**': { cache: false },
-    '/checkout': { cache: false },
+    '/checkout': {
+      cache: false,
+      security: {
+        headers: {
+          crossOriginResourcePolicy: 'cross-origin'
+        }
+      }
+    },
     '/checkout/**': { cache: false },
     '/cart': { cache: false },
     '/cart/**': { cache: false },
@@ -101,6 +108,7 @@ export default defineNuxtConfig({
         includeSubdomains: true,
         preload: true,
       },
+      crossOriginResourcePolicy: 'same-site',
       // Prevent MIME-type sniffing
       xContentTypeOptions: 'nosniff',
       // Referrer policy - send origin only on same-site, nothing cross-site
@@ -112,6 +120,7 @@ export default defineNuxtConfig({
         geolocation: ['self'],
         payment: ['self', '"https://js.stripe.com"', '"https://www.paypal.com"', '"https://pay.google.com"', '"https://payments.google.com"'],
       },
+
       contentSecurityPolicy: {
         'default-src': ["'self'"],
         'base-uri': ["'self'"],

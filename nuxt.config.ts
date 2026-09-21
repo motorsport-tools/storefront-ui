@@ -205,10 +205,12 @@ export default defineNuxtConfig({
         'style-src': [
           "'self'",
           "'unsafe-inline'",
+          "https://*.motorsport-tools.com",
         ],
         'font-src': [
           "'self'",
           'data:',
+          "https://*.motorsport-tools.com",
         ],
         'connect-src': [
           "'self'",

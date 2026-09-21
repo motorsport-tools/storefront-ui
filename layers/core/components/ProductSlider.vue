@@ -61,17 +61,6 @@ const SliderInit = async () => {
 
 const { Pid } = useAuth()
 
-const clickProduct = (e: Event, p: number, n: number) => {  
-  if (typeof window !== 'undefined' && window.Clerk) {
-    window.Clerk('call', 'log/click', {
-      visitor: useCookie('clerk_visitor').value || 'auto',
-      api: 'search/products',
-      n: n,
-      labels: ['Product Slider'],
-      product: p
-    })
-  }
-}
 </script>
 
 <template>
@@ -91,31 +80,27 @@ const clickProduct = (e: Event, p: number, n: number) => {
       @init="SliderInit"
     >
       <Slide
-        v-for="(product, index) in productTemplateList"
-        :key="product?.id || index"
+        v-for="(productTemplate, index) in productTemplateList"
+        :key="productTemplate?.id || index"
         aria-roledescription="slide"
       >
           <UiProductCard
-              @click="clickProduct($event, product.id, index)"
-              :data-clerk-product-id="product.id"
-              :key="product?.id"
-              :pid="Pid"
-              :isSearch="true"
-              :slug=" mountUrlSlugForProductVariant(product.firstVariant as Product || product as Product) || '' "
-              :name="product?.name || ''"
-              :sku="product?.sku || ''"
-              :brand="product?.brand"
-              :regular-price="product.on_sale ? product.list_price : 0"
-              :special-price="product.price"
-              :rating-count="product.ratingCount || 0"
-              :rating="product.rating || 0"
-              :first-variant="product as unknown as CustomProductWithStockFromRedis"
-              :image-alt="product?.name || ''"
-              :image-url="product.image_slug"
-              :ribbon-id="product.ribbon_id"
-              :ribbon-html="product.ribbon_html"
-              :ribbon-bg-color="product.ribbon_bg_color"
-              :ribbon-text-color="product.ribbon_text_color"
+              :key="productTemplate?.id || index"
+              :slug=" mountUrlSlugForProductVariant(productTemplate.firstVariant as Product || productTemplate as Product) || '' "
+              :name="productTemplate?.name || ''"
+              :image-url="productTemplate?.image"
+              :brand="productTemplate?.brand"
+              :image-alt="productTemplate?.name || ''"
+              :regular-price="getRegularPrice(productTemplate.firstVariant as Product)"
+              :special-price="getSpecialPrice(productTemplate.firstVariant as Product)"
+              :is-in-wishlist="productTemplate?.isInWishlist || false"
+              :rating-count="productTemplate.ratingCount || 0"
+              :rating="productTemplate.rating || 0"
+              :first-variant="productTemplate.firstVariant as CustomProductWithStockFromRedis"
+              :ribbon-id="productTemplate.firstVariant?.ribbon?.id"
+              :ribbon-html="productTemplate.firstVariant?.ribbon?.html"
+              :ribbon-bg-color="productTemplate.firstVariant?.ribbon?.bgColor"
+              :ribbon-text-color="productTemplate.firstVariant?.ribbon?.textColor"
           />
       </Slide>
 

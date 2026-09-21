@@ -11,6 +11,10 @@ const props = defineProps({
     default: () => [],
   },
   blockId: Number,
+  loading: {
+    type: Boolean,
+    default: false,
+  }
 })
 const { Pid } = useAuth()
 const { getRegularPrice, getSpecialPrice } = useProductAttributes()
@@ -62,7 +66,7 @@ const clickProduct = (e: Event, p: number,  n: number) => {
       visitor: useCookie('clerk_visitor').value || 'auto',
       api: 'search/v2/products',
       n: n,
-      labels: ['Recent views'],
+      labels: [`${props.heading} - Slider`],
       product: p
     })
   }
@@ -78,6 +82,7 @@ const clickProduct = (e: Event, p: number,  n: number) => {
     </h2>
     <div ref="wrapperRef" class="loading w-full h-auto">
       <Carousel
+        v-if="productTemplateList && productTemplateList.length > 0 && !loading"
         v-bind="sliderOptions"
         ref="sliderRef"
         class="product_slider"
@@ -94,8 +99,8 @@ const clickProduct = (e: Event, p: number,  n: number) => {
           aria-roledescription="slide"
         >
             <LazyUiProductCard
-                v-if="!loading"
                 @click="clickProduct($event, product.id, index)"
+                :data-clerk-product-id="product.id"
                 :key="product?.id || index"
                 :pid="Pid"
                 :isSearch="true"
@@ -114,9 +119,6 @@ const clickProduct = (e: Event, p: number,  n: number) => {
                 :ribbon-bg-color="product.ribbon_bg_color"
                 :ribbon-text-color="product.ribbon_text_color"
             />            
-            <UiProductCardSkeleton
-              v-else
-            />
         </Slide>
 
         <template #addons>
@@ -132,6 +134,12 @@ const clickProduct = (e: Event, p: number,  n: number) => {
           </Navigation>
         </template>
       </Carousel>
+      <div
+        v-else
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 min-h-[380px] py-4"
+      >
+        <UiProductCardSkeleton v-for="n in 5" :key="n" />
+      </div>
     </div>
 </template>
 <style>
@@ -143,9 +151,17 @@ const clickProduct = (e: Event, p: number,  n: number) => {
   overflow: hidden;
   overscroll-behavior: auto !important;
 }
+
+.loading .product_slider .carousel__slide {
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+}
+
 @media (min-width: 430px) {
   .loading .product_slider .carousel__slide {
     width: calc(50% - 5px) !important;
+    justify-content: flex-start;
   }
 }
 @media (min-width: 768px) {

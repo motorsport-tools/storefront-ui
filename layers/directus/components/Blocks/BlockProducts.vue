@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { type BlockProduct } from '../../shared/types/schema'
+import ClerkSlider from '~/layers/clerkio/components/ui/ClerkSlider.vue';
 interface Props {
     blockData: BlockProduct
 }
@@ -31,10 +32,10 @@ watch(
 
 </script>
 <template>
-    <ProductSlider
-      :heading="blockData?.title"
-      :product-template-list="products || []"
-      :blockId="props.blockData.id"
-      :loading="loading"
+    <ClerkSlider
+        :heading="blockData?.title"
+        :product-template-list="products || []"
+        :blockId="props.blockData.id"
+        :loading="loading"
     />
 </template>

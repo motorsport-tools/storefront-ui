@@ -117,6 +117,15 @@ export default defineNuxtConfig({
     '/favicon.ico': { headers: { 'cache-control': 'public, max-age=604800' } },
     '/sitemap_index.xml': { swr: swrCacheTime },
     '/__sitemap__/**': { swr: swrCacheTime },
+    '/product/*': {
+      security: {
+        headers: {
+          crossOriginResourcePolicy: 'cross-origin',
+          crossOriginEmbedderPolicy: false,
+          crossOriginOpenerPolicy: 'same-origin-allow-popups',
+        }
+      }
+    }
   },
   $production: {
     routeRules: {
@@ -126,8 +135,8 @@ export default defineNuxtConfig({
       '/my-account/**': { cache: false },
       '/my': { cache: false },
       '/my/**': { cache: false },
-      '/checkout': { cache: false },
-      '/checkout/**': { cache: false },
+      '/checkout': { cache: false, robots: false },
+      '/checkout/**': { cache: false, robots: false },
       '/cart': { cache: false },
       '/cart/**': { cache: false },
       '/payment': { cache: false, robots: false },

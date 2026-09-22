@@ -41,65 +41,23 @@ export default defineNuxtConfig({
     '/my/**': { cache: false },
     '/checkout': {
       cache: false,
-      security: {
-        headers: {
-          crossOriginResourcePolicy: 'cross-origin',
-          crossOriginEmbedderPolicy: false,
-          crossOriginOpenerPolicy: 'same-origin-allow-popups',
-        }
-      }
     },
     '/checkout/**': {
       cache: false,
-      security: {
-        headers: {
-          crossOriginResourcePolicy: 'cross-origin',
-          crossOriginEmbedderPolicy: false,
-          crossOriginOpenerPolicy: 'same-origin-allow-popups',
-        }
-      }
     },
     '/cart': { cache: false },
     '/cart/**': { cache: false },
     '/payment': {
       cache: false,
-      security: {
-        headers: {
-          crossOriginResourcePolicy: 'cross-origin',
-          crossOriginEmbedderPolicy: false,
-          crossOriginOpenerPolicy: 'same-origin-allow-popups',
-        }
-      }
     },
     '/payment/**': {
       cache: false,
-      security: {
-        headers: {
-          crossOriginResourcePolicy: 'cross-origin',
-          crossOriginEmbedderPolicy: false,
-          crossOriginOpenerPolicy: 'same-origin-allow-popups',
-        }
-      }
     },
     '/guest/login': {
       cache: false,
-      security: {
-        headers: {
-          crossOriginResourcePolicy: 'cross-origin',
-          crossOriginEmbedderPolicy: false,
-          crossOriginOpenerPolicy: 'same-origin-allow-popups',
-        }
-      }
     },
     '/guest/login/**': {
       cache: false,
-      security: {
-        headers: {
-          crossOriginResourcePolicy: 'cross-origin',
-          crossOriginEmbedderPolicy: false,
-          crossOriginOpenerPolicy: 'same-origin-allow-popups',
-        }
-      }
     },
     '/login': { cache: false },
     '/signup': { cache: false },
@@ -117,15 +75,6 @@ export default defineNuxtConfig({
     '/favicon.ico': { headers: { 'cache-control': 'public, max-age=604800' } },
     '/sitemap_index.xml': { swr: swrCacheTime },
     '/__sitemap__/**': { swr: swrCacheTime },
-    '/product/*': {
-      security: {
-        headers: {
-          crossOriginResourcePolicy: 'cross-origin',
-          crossOriginEmbedderPolicy: false,
-          crossOriginOpenerPolicy: 'same-origin-allow-popups',
-        }
-      }
-    }
   },
   $production: {
     routeRules: {
@@ -167,9 +116,9 @@ export default defineNuxtConfig({
         includeSubdomains: true,
         preload: true,
       },
-      crossOriginEmbedderPolicy: 'credentialless',
-      crossOriginResourcePolicy: 'same-site',
-      crossOriginOpenerPolicy: 'same-origin',
+      crossOriginResourcePolicy: 'cross-origin',
+      crossOriginEmbedderPolicy: false,
+      crossOriginOpenerPolicy: 'same-origin-allow-popups',
       // Prevent MIME-type sniffing
       xContentTypeOptions: 'nosniff',
       // Referrer policy - send origin only on same-site, nothing cross-site

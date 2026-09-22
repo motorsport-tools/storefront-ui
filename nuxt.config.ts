@@ -158,6 +158,7 @@ export default defineNuxtConfig({
 
   },
   security: {
+    nonce: true,
     headers: {
       xFrameOptions: 'SAMEORIGIN',
       // HSTS: tell browsers to always use HTTPS for 1 year, include subdomains
@@ -194,6 +195,8 @@ export default defineNuxtConfig({
         'script-src': [
           "'self'",
           "'unsafe-inline'",
+          "'nonce-{{nonce}}'",
+          "'strict-dynamic'",
           'https://js.stripe.com',
           'https://cdn.clerk.io',
           'https://api.clerk.io',

@@ -189,7 +189,6 @@ watch(result, result => {
             :placeholder="$t('searchPlaceholder')"
             wrapper-class="flex-grow pr-0"
             size="sm"
-            @input="omniSearch()"
             @keydown.enter.prevent="handleInputEnter"
             @keydown="handleInputKeydown"
             ref="searchInputRef"

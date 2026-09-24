@@ -30,14 +30,14 @@ export const useClerkOmniSearch = (formSearchTemplateRef?: any, options = { limi
 
     watch(searchInputValue, async (val) => {
         if (!val || val.length < 3) {
-            if (abortController) {
-                abortController.abort()
-            }
+            if (abortController) abortController.abort()
             loading.value = false
             showInstantSearch.value = false
             omniResults.value = []
             return
         }
+
+        await omniSearch()
     })
 
     const enterPress = () => {

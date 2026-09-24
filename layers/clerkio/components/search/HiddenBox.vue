@@ -7,6 +7,13 @@ export default {
     mixins: [
         createWidgetMixin({ connector: connectSearchBox }) 
     ],
+    watch: {
+        '$route.query.q'(newQ) {
+            if (this.state && typeof this.state.refine === 'function') {
+                this.state.refine(newQ || '');
+            }
+        }
+    },
     render() {
         return null;
     }

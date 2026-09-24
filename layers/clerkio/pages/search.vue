@@ -9,7 +9,7 @@ const query = computed(() => route.query.q ? route.query.q : null)
 const searchTitle = computed( () => {
     let title = null
     if(route.query.q) {
-        title = '"'+route.query.q+'"'
+        title = '"'+decodeURIComponent(String(route.query.q))+'"'
     } else {
         title = $i18n.t('All Products')+' '
     }
@@ -69,7 +69,7 @@ const limitOptions = [
             {{ $t('searchPage.showResults') }} {{ searchTitle }}
         </h1>
         <div class="grid grid-cols-12 lg:gap-x-6">
-            <LazySearchPageSidebar
+            <SearchPageSidebar
                 class="hidden lg:block col-span-12 lg:col-span-4 xl:col-span-3"
             />
 
@@ -103,7 +103,7 @@ const limitOptions = [
                     </SfButton>
                 </div>
                 <SearchLoadingProvider v-slot="{ isSearchStalled }">
-                    <LazySearchProductsLoading v-if="isSearchStalled" />
+                    <SearchProductsLoading v-if="isSearchStalled" />
                     <div v-show="!isSearchStalled" class="flex flex-col">
                         <SearchResults
                             :pid="user?.publicPricelist?.id || 4"

@@ -95,7 +95,7 @@ const limitOptions = [
                 </h1>
                 <div class="grid grid-cols-12 lg:gap-x-6">
                     
-                    <LazyCategoryPageSidebar
+                    <CategoryPageSidebar
                         class="hidden lg:block col-span-12 lg:col-span-4 xl:col-span-3"
                         :category="category"
                     />
@@ -139,7 +139,7 @@ const limitOptions = [
                         </div>
                         
                         <SearchLoadingProvider v-slot="{ isSearchStalled }">
-                            <LazySearchProductsLoading v-if="isSearchStalled" />
+                            <SearchProductsLoading v-if="isSearchStalled" />
                             <div v-show="!isSearchStalled">
                                 <SearchResults
                                     :pid="user?.publicPricelist?.id || 4"

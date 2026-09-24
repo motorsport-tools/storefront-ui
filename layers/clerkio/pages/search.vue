@@ -103,10 +103,8 @@ const limitOptions = [
                     </SfButton>
                 </div>
                 <SearchLoadingProvider v-slot="{ isSearchStalled }">
-                    <template v-if="isSearchStalled">
-                        <LazySearchProductsLoading />
-                    </template>
-                    <template v-else>
+                    <LazySearchProductsLoading v-if="isSearchStalled" />
+                    <template v-show="!isSearchStalled">
                         <SearchResults
                             :pid="user?.publicPricelist?.id || 4"
                         />

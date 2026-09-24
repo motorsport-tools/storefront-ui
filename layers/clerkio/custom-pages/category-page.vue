@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { SfButton, SfIconTune, useDisclosure } from '@storefront-ui/vue'
 import type { Category } from "~/graphql";
-defineRouteRules({
-  delayHydration: 'idle',
-})
+
 definePageMeta({
   layout: 'category'
 })

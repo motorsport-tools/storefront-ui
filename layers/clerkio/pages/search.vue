@@ -29,10 +29,6 @@ watch(isTabletScreen, (value) => {
   }
 })
 
-defineRouteRules({
-  delayHydration: 'idle',
-})
-
 definePageMeta({
     layout: 'search'
 })

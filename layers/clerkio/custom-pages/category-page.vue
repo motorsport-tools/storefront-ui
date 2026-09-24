@@ -140,12 +140,12 @@ const limitOptions = [
                         
                         <SearchLoadingProvider v-slot="{ isSearchStalled }">
                             <LazySearchProductsLoading v-if="isSearchStalled" />
-                            <template v-show="!isSearchStalled">
+                            <div v-show="!isSearchStalled">
                                 <SearchResults
                                     :pid="user?.publicPricelist?.id || 4"
                                     :isCategoryPage="true"
                                 />
-                            </template>
+                            </div>
                         </SearchLoadingProvider>
                     </div>
                     

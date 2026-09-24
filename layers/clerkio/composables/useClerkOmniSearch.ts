@@ -24,10 +24,15 @@ export const useClerkOmniSearch = (formSearchTemplateRef?: any, options = { limi
     const omniResults = useState<ClerkSearchResponse[]>(`clerk-results-${formSearchTemplateRef}`, () => [])
     const showInstantSearch = ref(false)
 
+    let abortController: AbortController | null = null
+
     const loading = useState(`clerk-loading-omni`, () => false)
 
     watch(searchInputValue, async (val) => {
         if (!val || val.length < 3) {
+            if (abortController) {
+                abortController.abort()
+            }
             loading.value = false
             showInstantSearch.value = false
             omniResults.value = []
@@ -38,10 +43,20 @@ export const useClerkOmniSearch = (formSearchTemplateRef?: any, options = { limi
     const enterPress = () => {
         if (!searchInputValue.value) return
 
+        if (abortController) {
+            abortController.abort()
+        }
+
         router.push({ path: '/search', query: { q: searchInputValue.value } })
     }
 
     const omniSearch = async () => {
+        if (abortController) {
+            abortController.abort()
+        }
+
+        abortController = new AbortController()
+
         loading.value = true
 
         if (searchInputValue.value.length < 3) {
@@ -55,6 +70,7 @@ export const useClerkOmniSearch = (formSearchTemplateRef?: any, options = { limi
         try {
             const predictive = await $fetch<ClerkSearchResponse>('/api/search/v3/search/omni', {
                 method: 'POST',
+                signal: abortController.signal,
                 body: {
                     key: config.public.clerkApiKey,
                     visitor: visitorId,

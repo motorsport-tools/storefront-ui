@@ -29,6 +29,10 @@ watch(isTabletScreen, (value) => {
   }
 })
 
+defineRouteRules({
+  delayHydration: 'idle',
+})
+
 definePageMeta({
     layout: 'search'
 })
@@ -103,7 +107,7 @@ const limitOptions = [
                     </SfButton>
                 </div>
                 <SearchLoadingProvider v-slot="{ isSearchStalled }">
-                    <SearchProductsLoading v-if="isSearchStalled" />
+                    <SearchProductsLoading v-show="isSearchStalled" />
                     <div v-show="!isSearchStalled" class="flex flex-col">
                         <SearchResults
                             :pid="user?.publicPricelist?.id || 4"

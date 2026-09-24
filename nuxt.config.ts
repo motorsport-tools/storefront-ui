@@ -416,6 +416,7 @@ export default defineNuxtConfig({
     crossOriginPrefetch: true,
     asyncContext: true,
     appManifest: false,
+    inlineRouteRules: true,
   },
   sitemap: {
     autoLastmod: true,

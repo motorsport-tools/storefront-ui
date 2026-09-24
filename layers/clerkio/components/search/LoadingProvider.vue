@@ -18,7 +18,7 @@ const connectSearchMetaData =
   (renderFn: Function, unmountFn: Function) =>
     (widgetParams = {}) => ({
       init () {
-        renderFn({ searchMetadata: { isSearchStalled: true } }, true)
+        renderFn({ searchMetadata: {} }, true)
       },
 
       render ({ searchMetadata }) {

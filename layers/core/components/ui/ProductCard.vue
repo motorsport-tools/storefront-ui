@@ -59,6 +59,11 @@ const props = defineProps({
     required: false,
     default: 'lazy',
   },
+  fetchpriority: {
+    type: String as PropType<'high' | 'low' | 'auto' | undefined>,
+    required: false,
+    default: 'auto',
+  },
   pid: {
     type: Number,
     default: 4,
@@ -162,6 +167,7 @@ const ribbon = computed(() => {
           :width="250"
           :height="250"
           :loading="loading"
+          :fetchpriority="fetchpriority"
         />
       </NuxtLink>
       <UiProductCardRibbon

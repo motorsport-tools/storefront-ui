@@ -37,6 +37,8 @@ const clickProduct = (e: Event, p: number,  n: number) => {
                     :key="product?.id"
                     :pid="Pid"
                     :isSearch="true"
+                    :loading="i < 4 ? 'eager' : 'lazy'"
+                    :fetchpriority="i === 0 ? 'high' : 'auto'"
                     :slug=" mountUrlSlugForProductVariant(product.firstVariant as Product || product as Product) || '' "
                     :name="product?.name || ''"
                     :sku="product?.sku || ''"

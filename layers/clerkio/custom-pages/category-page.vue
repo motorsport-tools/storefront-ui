@@ -64,8 +64,19 @@ const limitOptions = [
         class="w-full narrow-container bg-white mb-20"
         data-testid="search-layout"
     >
-        <div v-if="pending">
-            Loading
+        <div v-if="pending" class="w-full narrow-container bg-white mb-20">
+            <!-- Skeleton breadcrumb -->
+            <div class="flex gap-2 mt-5 mb-5">
+                <div class="h-4 w-12 bg-gray-200 rounded animate-pulse"></div>
+                <span class="text-gray-300">/</span>
+                <div class="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
+            </div>
+            <!-- Skeleton heading -->
+            <div class="h-8 w-64 bg-gray-200 rounded animate-pulse mb-10"></div>
+            <!-- Skeleton product grid -->
+            <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-8">
+                <LazyUiProductCardSkeleton v-for="n in 8" :key="n" />
+            </div>
         </div>
         <div v-else-if="category">
             <CategoryProvider 
@@ -84,7 +95,7 @@ const limitOptions = [
                 </h1>
                 <div class="grid grid-cols-12 lg:gap-x-6">
                     
-                    <CategoryPageSidebar
+                    <LazyCategoryPageSidebar
                         class="hidden lg:block col-span-12 lg:col-span-4 xl:col-span-3"
                         :category="category"
                     />
@@ -128,15 +139,15 @@ const limitOptions = [
                         </div>
                         
                         <SearchLoadingProvider v-slot="{ isSearchStalled }">
-                            <SearchProductsLoading
-                                v-show="isSearchStalled"
-                            />
-                            <SearchResults
-                                v-show="!isSearchStalled"
-                                :pid="user?.publicPricelist?.id || 4"
-                                :isCategoryPage="true"
-                            />
-                            
+                            <template v-if="isSearchStalled">
+                                <LazySearchProductsLoading />
+                            </template>
+                            <template v-else>
+                                <SearchResults
+                                    :pid="user?.publicPricelist?.id || 4"
+                                    :isCategoryPage="true"
+                                />
+                            </template>
                         </SearchLoadingProvider>
                     </div>
                     

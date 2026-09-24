@@ -69,7 +69,7 @@ const limitOptions = [
             {{ $t('searchPage.showResults') }} {{ searchTitle }}
         </h1>
         <div class="grid grid-cols-12 lg:gap-x-6">
-            <SearchPageSidebar
+            <LazySearchPageSidebar
                 class="hidden lg:block col-span-12 lg:col-span-4 xl:col-span-3"
             />
 
@@ -103,16 +103,17 @@ const limitOptions = [
                     </SfButton>
                 </div>
                 <SearchLoadingProvider v-slot="{ isSearchStalled }">
-                    <SearchProductsLoading
-                        v-show="isSearchStalled"
-                    />
-                    <SearchResults
-                        v-show="!isSearchStalled"
-                        :pid="user?.publicPricelist?.id || 4"
-                    />
-                    <SearchPageOfPage
-                        class="ml-auto text-sm"
-                    />
+                    <template v-if="isSearchStalled">
+                        <LazySearchProductsLoading />
+                    </template>
+                    <template v-else>
+                        <SearchResults
+                            :pid="user?.publicPricelist?.id || 4"
+                        />
+                        <SearchPageOfPage
+                            class="ml-auto text-sm"
+                        />
+                    </template>
                 </SearchLoadingProvider>
             </div>
         </div>

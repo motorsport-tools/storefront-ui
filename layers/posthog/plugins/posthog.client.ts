@@ -6,7 +6,6 @@ export default defineNuxtPlugin({
     name: 'posthog',
     setup: async (nuxtApp) => {
         const config = useRuntimeConfig().public.posthog;
-
         if (config.disabled || !config)
             return {
                 provide: {

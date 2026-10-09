@@ -18,6 +18,8 @@ const props = defineProps({
     },
 })
 
+const { $clientPosthog } = useNuxtApp()
+
 const stripeRef = ref<any>(null)
 const stripeDropin = ref<StripeDropinType | null>(null)
 const dropinDivElement = ref(null)
@@ -136,6 +138,7 @@ const initStripeCheckout = async () => {
             emit('paymentLoading', false);
             //TODO: Output stripe validation error somewhere..
             console.error('Payment Error: ', error)
+            $clientPosthog?.captureException(error)
         }
 
         try {
@@ -153,6 +156,7 @@ const initStripeCheckout = async () => {
             emit('isPaymentReady', true);
             emit('paymentLoading', false);
             console.error('Payment Error: ', error)
+            $clientPosthog?.captureException(error)
         }
     }
 

@@ -5,9 +5,12 @@ export default `
     displayName
     price
     description
+    brand
     image
     imageFilename
     slug
+    ratingAvg
+    ratingCount
     firstVariant{
       id
       combinationInfoVariant

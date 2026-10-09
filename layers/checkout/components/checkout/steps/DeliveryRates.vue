@@ -28,6 +28,9 @@ watch(
   async (active) => {
     if (active) {
         await loadRates({ carrierId: cart.value?.order?.shippingMethod?.id, orderId: cart.value?.order?.id})
+        if(!rates.value.length) {
+            $clientPosthog?.captureException(new Error("No Shipping Rates Available"))
+        }
     }
   },
   { immediate: true }

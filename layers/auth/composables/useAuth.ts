@@ -195,9 +195,9 @@ export const useAuth = () => {
       }
       router.push(redirectTo)
     } catch (error: any) {
-      console.error('Login error:', error)
-      const extractedMessage = error?.data?.message || error?.data?.[0]?.message || error?.message
-      authError.value = extractedMessage || 'The email or password you entered is incorrect.'
+      //const extractedMessage = error?.data?.message || error?.data?.[0]?.message || error?.message
+      //authError.value = extractedMessage || 'The email or password you entered is incorrect.'
+      authError.value = 'The email or password you entered is incorrect.'
     } finally {
       loading.value = false
     }

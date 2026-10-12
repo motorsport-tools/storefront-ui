@@ -208,6 +208,7 @@ export default defineNuxtConfig({
         'frame-ancestors': [
           "'self'",
           'https://pay.google.com',
+          'https://api.motorsport-tools.com',
           directusOrigin,
         ].filter(Boolean),
         'upgrade-insecure-requests': true,

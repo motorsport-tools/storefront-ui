@@ -16,12 +16,14 @@ const emit = defineEmits<{
     update: [data: Record<string, any>]
 }>()
 
-const { loadRates, setRate, ratesLoading, rates, loading } = useDeliveryMethod()
+const { loadRates, setRate, ratesLoading, rates } = useDeliveryMethod()
 const { cart } = useCart();
 const { $clientPosthog } = useNuxtApp()
 const form = reactive({
     deliveryRate: props.exData?.id || null
 })
+
+const loading = ref(false)
 
 watch(
   () => props.active,
@@ -48,14 +50,19 @@ onMounted(async () => {
 
 const handleSubmit = async () => {
     if(form.deliveryRate) {
-        await setRate({serviceId: form.deliveryRate})
+        try {
+            loading.value = true
+            await setRate({serviceId: form.deliveryRate})
 
-        $clientPosthog?.capture('Shipping Rate Selected', {
-            serviceId: form.deliveryRate,
-            method: rates.value?.find(s => s.serviceId == form.deliveryRate)?.courierName,
-        })
-        nextTick()
-        emit('complete', { ...form })
+            $clientPosthog?.capture('Shipping Rate Selected', {
+                serviceId: form.deliveryRate,
+                method: rates.value?.find(s => s.serviceId == form.deliveryRate)?.courierName,
+            })
+            nextTick()
+            emit('complete', { ...form })
+        } finally {
+            loading.value = false
+        }
     }
 }
 </script>
@@ -80,7 +87,7 @@ const handleSubmit = async () => {
                 <UiMSTLoader 
                     :size="40"
                 />
-                <p class="mb-2">Please wait... gathering shipment information</p>
+                <p class="mt-2 mb-2">Please wait... gathering shipment information</p>
             </div>
 
             <div 
@@ -100,10 +107,16 @@ const handleSubmit = async () => {
                 <p>{{ $t("shippingMethod.rates.none") }}</p>
             </div>
             <button
-                :disabled="loading"
+                v-if="!ratesLoading"
+                :disabled="ratesLoading || loading"
                 type="submit"
-                class="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
+                class="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
             >
+                <SfLoaderCircular 
+                    v-if="loading" 
+                    size="sm" 
+                    class="animate-spin text-current mr-2" 
+                />
                 Continue
             </button>
         </form>

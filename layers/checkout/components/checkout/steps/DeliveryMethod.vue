@@ -168,7 +168,8 @@ const handleSubmit = async () => {
             <button 
                 :disabled="loading"
                 type="submit"
-                class="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
+                class="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors
+                disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
                 v-posthog-capture="{
                     name: 'Delivery Method Selected',
                     properties: {
@@ -176,6 +177,11 @@ const handleSubmit = async () => {
                     },
                 }"
             >
+                <SfLoaderCircular 
+                    v-if="loading" 
+                    size="sm" 
+                    class="animate-spin text-current mr-2" 
+                />
                 Continue
             </button>
         </form>

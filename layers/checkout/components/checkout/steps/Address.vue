@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type Partner, type UpdateAddressInput, type AddAddressInput, AddressEnum, type Country, type State, type AddAddressResponse } from "~/graphql"
-import { SfInput, SfSwitch, SfSelect, SfCheckbox, SfIconCheckBox } from "@storefront-ui/vue"
+import { SfInput, SfSwitch, SfSelect, SfCheckbox, SfIconCheckBox, SfLoaderCircular } from "@storefront-ui/vue"
 import { useCountryList } from "~/layers/core/composable/useCountryList"
 import { stripIgnoredCharacters } from "graphql";
 
@@ -238,7 +238,7 @@ const handleSubmit = async () => {
             <button
                 :disabled="loading"
                 type="submit"
-                class="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors"
+                class="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
                 v-posthog-capture="{
                     name: `${props.addressType} Address Submitted`,
                     properties: {
@@ -246,6 +246,11 @@ const handleSubmit = async () => {
                     }
                 }"
             >
+                <SfLoaderCircular 
+                    v-if="loading" 
+                    size="sm" 
+                    class="animate-spin text-current mr-2" 
+                />
                 Continue
             </button>
         </form>

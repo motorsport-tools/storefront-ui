@@ -62,11 +62,12 @@ const handleSelectRate = async (serviceId: string) => {
                         {{ rate.courierName }}
                     </p>
                     <p class="text-xs text-neutral-500">
-                        {{ rate.deliveryDays }}
+                        Est: {{ rate.deliveryDays }}
                     </p>
                 </td>
                 <td class="p-4 px-4 w-full text-right">
-                    {{ $currency(rate.totalCharge) }}
+                    <strong v-if="rate.totalCharge <= 0">FREE</strong>
+                    <span v-else>{{ $currency(rate.totalCharge) }}</span>
                 </td>
             </tr>
         </tbody>

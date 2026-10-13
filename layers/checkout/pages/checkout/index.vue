@@ -70,7 +70,7 @@ const checkoutSteps = [
         exData: (cart.value?.order?.shippingRate),
         condition: () => {
             const methodData = getStepData('delivery-method')
-            if(methodData.value?.deliveryMethod === 10 || methodData.value?.deliveryMethod === 11) {
+            if(methodData.value?.deliveryMethod === 10 || methodData.value?.deliveryMethod === 11 || methodData.value?.deliveryMethod === 14) {
                 return true
             }
             return false

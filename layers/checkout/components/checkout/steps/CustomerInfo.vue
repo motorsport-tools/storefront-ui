@@ -7,6 +7,8 @@ const props = defineProps<{
     exData?: Partner
 }>()
 
+const { $clientPosthog } = useNuxtApp()
+
 const emit = defineEmits<{
     complete: [data: Record<string, any>]
     update: [data: Record<string, any>]
@@ -49,6 +51,12 @@ const handleSubmit = async () => {
         };
     
         await updatePartner(data)
+        $clientPosthog?.identify(
+            data.email,
+            { 
+                email: data.email, name: data.name
+            }
+        )
         nextTick()
         emit('complete', { ...form })
     }

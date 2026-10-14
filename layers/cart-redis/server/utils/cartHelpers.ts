@@ -1,4 +1,4 @@
-import type { AttributeValue, Cart, EasyshipRate, OrderLine, CustomProductWithStockFromRedis } from "~/graphql";
+import type { AttributeValue, Cart, EasyshipRate, OrderLine, CustomProductWithStockFromRedis, CartMessage } from "~/graphql";
 
 export async function hydrateCartWithStock(cart: Cart, websiteId = 1) {
     const productIds = cart?.order?.orderLines?.map((line: any) => line?.product?.id).filter(Boolean) || []
@@ -34,6 +34,11 @@ export const reduceCart = (cartData: Cart) => ({
         amountSubtotal: cartData?.order?.amountSubtotal,
         amountDiscounts: cartData?.order?.amountDiscounts,
         amountGiftCards: cartData?.order?.amountGiftCards,
+        cartMessage: cartData?.order?.cartMessage?.map((message: CartMessage) => ({
+            type: message?.type,
+            text: message?.text,
+            title: message?.title
+        })),
         shippingMethod: {
             id: cartData?.order?.shippingMethod?.id,
             name: cartData?.order?.shippingMethod?.name,

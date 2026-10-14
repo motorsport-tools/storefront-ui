@@ -71,6 +71,28 @@ onMounted(() => {
           data-testid="cart-page-content"
       >
         <div class="col-span-7 mb-10 lg:mb-0">
+          <div 
+            v-if="cart.order?.cartMessage"
+            class="col-span-12"
+          >
+            <UiAlert
+              v-for="message in cart.order.cartMessage"
+              size="base"
+              :variant="message.type"
+              class="w-full mb-4 text-left !block"
+            >
+              <h3 
+                v-if="message.title"
+              >
+                {{ message.title }}
+              </h3>
+              <div 
+                class="whitespace-pre-line"
+                v-html="message.text"
+              >
+              </div>
+            </UiAlert>
+          </div>
           <div v-for="(orderLine, index) in cart.order?.orderLines?.filter(line => line.isRewardLine === false && line.isDelivery === false)" :key="orderLine?.id">
             <CartCollectedProductCard :order-line="orderLine" :class="{ 'border-t': index === 0 }" />
           </div>

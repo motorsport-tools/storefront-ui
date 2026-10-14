@@ -6,6 +6,11 @@ amountDelivery
 amountSubtotal
 amountDiscounts
 amountGiftCards
+cartMessage {
+  type
+  text
+  title
+}
 onlyServices
 coupons {
   id

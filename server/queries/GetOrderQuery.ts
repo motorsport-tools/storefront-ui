@@ -10,6 +10,11 @@ query ($id: Int!, $token: String) {
     amountSubtotal
     amountDiscounts
     amountGiftCards
+    cartMessage {
+      type
+      text
+      title
+    }
     coupons {
       id
       code

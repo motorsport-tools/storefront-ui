@@ -15,7 +15,7 @@ const sizeClasses = {
 export interface AlertProps {
   size?: 'sm' | 'base';
   strong?: boolean;
-  variant?: 'primary' | 'secondary' | 'negative' | 'neutral' | 'positive';
+  variant?: 'primary' | 'secondary' | 'negative' | 'neutral' | 'positive' | 'info';
 }
 
 const props = withDefaults(defineProps<AlertProps>(), {
@@ -33,6 +33,8 @@ const classes = computed(() => [
     [`text-negative-800 ${props.strong ? 'bg-negative-600' : 'bg-negative-100'}`]: props.variant === 'negative',
     [`text-neutral-900 border border-neutral-200 ${props.strong ? 'bg-neutral-600' : 'bg-neutral-100'}`]:
       props.variant === 'neutral',
+    [`text-green-900 ${props.strong ? 'bg-green-600' : 'bg-green-100'}`]: props.variant === 'positive',
+    [`text-blue-900 ${props.strong ? 'bg-blue-600' : 'bg-blue-100'}`]: props.variant === 'info',
   },
 ]);
 </script>

@@ -96,7 +96,7 @@ onMounted(() => {
           <div v-for="(orderLine, index) in cart.order?.orderLines?.filter(line => line.isRewardLine === false && line.isDelivery === false)" :key="orderLine?.id">
             <CartCollectedProductCard :order-line="orderLine" :class="{ 'border-t': index === 0 }" />
           </div>
-          <Discount v-if="$viewport.isLessThan('lg')" class="mb-2" />
+          <UiDiscount v-if="$viewport.isLessThan('lg')" class="mb-2" />
         </div>
 
         <div class="relative col-span-5 md:sticky md:top-10 h-fit">

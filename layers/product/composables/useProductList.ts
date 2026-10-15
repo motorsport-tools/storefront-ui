@@ -19,6 +19,7 @@ interface ClerkProductsResponse<T = any> {
 
 export const useProductList = (customIndex: string = '') => {
     const { $sdk } = useNuxtApp()
+    const nuxtApp = useNuxtApp()
     const config = useRuntimeConfig()
     const clerkVisitorCookie = useCookie<string | null>('clerk_visitor')
     const headers = useRequestHeaders()
@@ -61,6 +62,8 @@ export const useProductList = (customIndex: string = '') => {
     }
 
     const loadProductData = async (params: QueryProductsArgs) => {
+        if (import.meta.client && nuxtApp.isHydrating && state.value.data.length) return
+
         await loadProductList(params)
         const visitorId = clerkVisitorCookie.value || 'auto'
 

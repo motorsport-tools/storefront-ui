@@ -95,7 +95,7 @@ const clickProduct = (e: Event, p: number,  n: number) => {
       >
         <Slide
           v-for="(product, index) in productTemplateList"
-          :key="index"
+          :key="product?.id || index"
           aria-roledescription="slide"
         >
             <LazyUiProductCard

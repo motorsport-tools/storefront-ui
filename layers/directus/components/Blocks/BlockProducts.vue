@@ -33,6 +33,7 @@ watch(
 </script>
 <template>
     <ClerkSlider
+        :key="products?.map(p => p.id).join('-')"
         :heading="blockData?.title"
         :product-template-list="products || []"
         :blockId="props.blockData.id"

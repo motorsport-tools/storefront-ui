@@ -168,6 +168,13 @@ export type CartLineInput = {
   quantity: Scalars['Int']['input'];
 };
 
+export type CartMessage = {
+  __typename?: 'CartMessage';
+  text: Scalars['String']['output'];
+  title: Maybe<Scalars['String']['output']>;
+  type: Scalars['String']['output'];
+};
+
 export type Categories = {
   categories: Maybe<Array<Maybe<Category>>>;
   totalCount: Scalars['Int']['output'];
@@ -884,6 +891,7 @@ export type Order = {
   amountTax: Maybe<Scalars['Float']['output']>;
   amountTotal: Maybe<Scalars['Float']['output']>;
   amountUntaxed: Maybe<Scalars['Float']['output']>;
+  cartMessage: Maybe<Array<CartMessage>>;
   cartQuantity: Maybe<Scalars['Int']['output']>;
   clientOrderRef: Maybe<Scalars['String']['output']>;
   coupons: Maybe<Array<Coupon>>;

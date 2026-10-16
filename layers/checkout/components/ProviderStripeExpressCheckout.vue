@@ -131,7 +131,39 @@
       return false;
     }
   };
-  
+
+  /*
+  * Prepare the initial rates - for the initial load static methods only.
+  */
+  const initPrepareShippingRates = async () => {
+    try {
+      checkoutRates.value = [];
+      
+      if (!deliveryMethods.value?.length) {
+        return;
+      }
+      
+      // Handle pickup/collection methods
+      const collectionMethods = deliveryMethods.value.filter(
+        method => method.name?.toLowerCase().includes('collect') || method.name?.toLowerCase().includes('pallet')
+      );
+      
+      for (const method of collectionMethods) {
+        checkoutRates.value.push({
+          id: String(method.id),
+          displayName: method.name,
+          amount: parseInt(method.price * 100), // Convert to cents for Stripe
+          deliveryEstimate: {
+            minimum: { unit: 'hour', value: 1 }
+          },
+        });
+      }
+    } catch (err) {
+      console.error('Error preparing shipping rates:', err);
+      error.value = 'Failed to load shipping options';
+    }
+  };
+
   /**
    * Prepare shipping rates in Stripe format
    */
@@ -237,7 +269,7 @@
         loadDeliveryMethods()
       ]);
       
-      await prepareShippingRates();
+      initPrepareShippingRates();
       
       // Initialize Stripe
       if (!stripeRef.value) {

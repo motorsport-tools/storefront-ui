@@ -88,6 +88,9 @@ const limitOptions = [
                         :options="limitOptions"
                         class="mr-2 flex flex-row items-center"
                     />
+                    <SearchPageOfPage
+                        class="md:ml-auto text-sm"
+                    />
                 </div>
                 <div class="flex justify-between items-center mb-6">
                     <SearchStats class="mb-0"/>
@@ -107,9 +110,6 @@ const limitOptions = [
                     <div v-show="!isSearchStalled" class="flex flex-col">
                         <SearchResults
                             :pid="user?.publicPricelist?.id || 4"
-                        />
-                        <SearchPageOfPage
-                            class="ml-auto text-sm"
                         />
                     </div>
                 </SearchLoadingProvider>

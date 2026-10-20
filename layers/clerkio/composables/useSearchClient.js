@@ -464,7 +464,7 @@ export const useSearchClient = (config = {}) => {
             const indexPath = this.getIndexPath(request.indexName);
             const url = `${this.apiUrl}${indexPath}`;
 
-            const visitorId = useCookie('clerk_visitor').value || 'auto'
+            const visitorId = import.meta.client ? (useCookie('clerk_visitor').value || 'auto') : 'auto'
 
             // Make API call
             const options = {

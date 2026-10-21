@@ -63,7 +63,7 @@ export const useSearchClient = (config = {}) => {
             const { params } = request;
             const apiRequest = {
                 query: params.query || '',
-                limit: params.hitsPerPage || 20,
+                limit: params.hitsPerPage ?? 20,
                 offset: (params.page || 0) * (params.hitsPerPage || 20),
                 semantic: 0, // Set to 1 if you want semantic search
             };
@@ -210,7 +210,7 @@ export const useSearchClient = (config = {}) => {
          */
         transformResponse(apiResponse, request) {
             const { params } = request;
-            const hitsPerPage = params.hitsPerPage || 20;
+            const hitsPerPage = params.hitsPerPage ?? 20;
             const page = params.page || 0;
 
             const currentQuery = JSON.stringify({
@@ -420,7 +420,7 @@ export const useSearchClient = (config = {}) => {
                         nbHits: 0,
                         page: 0,
                         nbPages: 0,
-                        hitsPerPage: request.params.hitsPerPage || 20,
+                        hitsPerPage: request.params.hitsPerPage ?? 20,
                         processingTimeMS: 0,
                         query: request.params.query || '',
                         params: '',
@@ -436,20 +436,11 @@ export const useSearchClient = (config = {}) => {
          */
         async searchSingle(request) {
             const start = Date.now()
-
-            const normalizedRequest = {
+            const cacheKey = JSON.stringify({
                 indexName: request.indexName,
-                query: request.params.query || '',
-                page: request.params.page || 0,
-                facets: Array.isArray(request.params.facets)
-                    ? request.params.facets.sort().join(',')
-                    : (request.params.facets || ''),
-                facetFilters: JSON.stringify(request.params.facetFilters || []),
-                numericFilters: JSON.stringify(request.params.numericFilters || []),
-                hitsPerPage: request.params.hitsPerPage || 20,
-            }
-
-            const cacheKey = JSON.stringify(normalizedRequest)
+                ...request.params,
+                facets: [].concat(request.params.facets || []).slice().sort(),
+            })
 
             // Check cache
             const cached = this.cache.get(cacheKey);

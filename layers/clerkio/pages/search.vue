@@ -17,16 +17,16 @@ const searchTitle = computed( () => {
     return title
 })
 
-const breadcrumbs = [
+const breadcrumbs = computed(() => [
     { name: "Home", link: "/" },
     { name: "Search", link: "/search" },
     { name: `Results ${searchTitle.value}`}
-]
+])
 
 watch(isTabletScreen, (value) => {
-  if (value && isOpen.value) {
-    close()
-  }
+    if (value && isOpen.value) {
+        close()
+    }
 })
 
 definePageMeta({

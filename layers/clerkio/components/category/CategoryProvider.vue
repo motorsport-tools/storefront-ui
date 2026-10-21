@@ -8,7 +8,6 @@ import {
     createServerRootMixin,
 } from "vue-instantsearch/vue3/es";
 import { renderToString } from 'vue/server-renderer';
-import { history } from 'instantsearch.js/es/lib/routers';
 import type { Category } from "~/graphql";
 
 const props = defineProps<{
@@ -17,13 +16,7 @@ const props = defineProps<{
 }>();
 
 useHead({
-    link: [
-        {
-            rel: 'preconnect',
-            href: 'https://api.clerk.io',
-            crossorigin: '',
-        }
-    ]
+    link: [{ rel: 'preconnect', href: 'https://api.clerk.io', crossorigin: '' }]
 })
 
 const { indexName } = toRefs(props);
@@ -32,56 +25,45 @@ const searchClient = useSearchClient({ isCategoryPage: true })
 const currentHitsPerPage = ref(80)
 provide('hitsPerPage', currentHitsPerPage)
 
-const routing = import.meta.server
-    ? undefined
-    : {
-        router: history({
-            cleanUrlOnDispose: false,
-        }),
-        stateMapping: {
-            stateToRoute(uiState) {
-                const indexState = uiState[indexName.value]
 
-                if (indexState?.hitsPerPage) {
-                    currentHitsPerPage.value = indexState.hitsPerPage
-                }
+const { createNuxtRouter } = useSearchRouter()
 
-                return {
-                    brands: indexState?.refinementList?.brand,
-                    has_stock: indexState?.toggle?.has_stock,
-                    on_sale: indexState?.toggle?.on_sale,
-                    fits: indexState?.refinementList?.fits,
-                    price: indexState?.refinementList?.price,
-                    page: indexState?.page,
-                    limit: indexState?.hitsPerPage,
-                }
-            },
-            routeToState(routeState) {
-                const state = {
-                    [indexName.value]: {
-                        refinementList: {
-                            ...(routeState.brands ? { brand: routeState.brands } : {}),
-                            ...(routeState.fits ? { fits: routeState.fits } : {}),
-                        },
-                        toggle: {
-                            ...(routeState.has_stock ? { has_stock: routeState.has_stock } : {}),
-                            ...(routeState.on_sale ? { on_sale: routeState.on_sale } : {}),
-                        },
-                    } as any,
-                }
-
-                if (routeState.page) {
-                    state[indexName.value].page = Number(routeState.page)
-                }
-
-                if (routeState.limit) {
-                    state[indexName.value].hitsPerPage = Number(routeState.limit)
-                }
-
-                return state
-            },
+const routing = {
+    router: createNuxtRouter(),
+    stateMapping: {
+        stateToRoute(uiState: any) {
+            const s = uiState[indexName.value] || {}
+            return {
+                brands: s.refinementList?.brand,
+                fits: s.refinementList?.fits,
+                has_stock: s.toggle?.has_stock,
+                on_sale: s.toggle?.on_sale,
+                price: s.range?.price,
+                page: s.page && s.page > 1 ? s.page : undefined,
+                limit: s.hitsPerPage,
+            }
         },
-    }
+        routeToState(r: any) {
+            const state: any = {
+                refinementList: {
+                    ...(r.brands ? { brand: r.brands } : {}),
+                    ...(r.fits ? { fits: r.fits } : {}),
+                },
+                toggle: {
+                    ...(r.has_stock === 'true' ? { has_stock: true } : {}),
+                    ...(r.on_sale === 'true' ? { on_sale: true } : {}),
+                },
+                range: r.price ? { price: r.price } : {},
+            }
+            if (r.page) state.page = Number(r.page)
+            if (r.limit) {
+                state.hitsPerPage = Number(r.limit)
+                currentHitsPerPage.value = Number(r.limit)
+            }
+            return { [indexName.value]: state }
+        },
+    },
+}
 
 const categoryFilter = ref('')
 watch(
@@ -92,23 +74,21 @@ watch(
     { immediate: true }
 )
 
-const serverRootMixin = ref(
-    createServerRootMixin({
-        searchClient,
-        indexName: indexName.value,
-        future: {
-            preserveSharedStateOnUnmount: true,
-            persistHierarchicalRootCount: false,
-        },
-    })
-)
+const serverRootMixin = createServerRootMixin({
+    searchClient,
+    indexName: indexName.value,
+    routing,
+    initialUiState: routing.stateMapping.routeToState(routing.router.read()),
+    future: {
+        preserveSharedStateOnUnmount: true,
+        persistHierarchicalRootCount: false,
+    },
+})
 
-const { instantsearch } = serverRootMixin.value.data()
-
+const { instantsearch } = serverRootMixin.data()
 provide('$_ais_ssrInstantSearchInstance', instantsearch)
 
 const searchKey = `category-${props.category?.id ?? 'all'}`
-
 
 const { data: ssrState } = useAsyncData(searchKey, async () => {
     if (import.meta.client) return null
@@ -134,7 +114,7 @@ const { data: ssrState } = useAsyncData(searchKey, async () => {
                     return h(AisInstantSearchSsr, null, () => [
                         h(AisConfigure, {
                             filters: currentFilter,
-                            hitsPerPage: 80,
+                            hitsPerPage: currentHitsPerPage.value,
                         }),
                         h(AisRefinementList, { attribute: 'brand', operator: 'or', showMoreLimit: 200 }),
                         h(AisRefinementList, { attribute: 'fits', operator: 'or' }),
@@ -157,24 +137,15 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <AisInstantSearchSsr
-        :key="searchKey"
-        :index-name="indexName"
-        :search-client="searchClient"
-        :routing="routing"
-        :future="{
-            preserveSharedStateOnUnmount: true,
-            persistHierarchicalRootCount: false,
-        }"
-    >
+    <AisInstantSearchSsr>
         <AisConfigure
             :key="`category-configure-${props.category?.id}`"
             :filters="categoryFilter"
+            :hits-per-page="currentHitsPerPage"
         />
         <CategoryHitsProvider>
             <CategoryJsonLd :category="props.category" />
         </CategoryHitsProvider>
-
         <slot></slot>
     </AisInstantSearchSsr>
 </template>

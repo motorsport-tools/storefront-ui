@@ -6,12 +6,10 @@ import {
     AisToggleRefinement,
     AisRangeInput,
     AisHierarchicalMenu,
-    AisSearchBox,
     createServerRootMixin,
 } from "vue-instantsearch/vue3/es";
 import { SearchHiddenBox } from '#components'
 import { renderToString } from 'vue/server-renderer';
-import { history } from 'instantsearch.js/es/lib/routers';
 
 const props = defineProps<{
     indexName: string;
@@ -33,77 +31,60 @@ const searchClient = useSearchClient()
 const currentHitsPerPage = ref(80)
 provide('hitsPerPage', currentHitsPerPage)
 
-const routing = import.meta.server
-    ? undefined
-    : {
-        router: history({
-            cleanUrlOnDispose: false,
-        }),
-        stateMapping: {
-            stateToRoute(uiState) {
-                const indexState = uiState[indexName.value]
-                if (indexState?.hitsPerPage) {
-                    currentHitsPerPage.value = indexState.hitsPerPage
-                }
+const { createNuxtRouter } = useSearchRouter()
 
-                return {
-                    q: indexState?.query,
-                    categories: indexState?.hierarchicalMenu?._category_lvl0,
-                    brands: indexState?.refinementList?.brand,
-                    has_stock: indexState?.toggle?.has_stock,
-                    on_sale: indexState?.toggle?.on_sale,
-                    fits: indexState?.refinementList?.fits,
-                    price: indexState?.refinementList?.price,
-                    page: indexState?.page,
-                    limit: indexState?.hitsPerPage,
-                }
-            },
-            routeToState(routeState) {
-                console.log('[AIS routeToState]', JSON.stringify(routeState))
-                const state = {
-                    [indexName.value]: {
-                        query: routeState.q,
-                        hierarchicalMenu: {
-                            ...(routeState.categories ? { _category_lvl0: routeState.categories } : {}),
-                        },
-                        refinementList: {
-                            ...(routeState.brands ? { brand: routeState.brands } : {}),
-                            ...(routeState.fits ? { fits: routeState.fits } : {}),
-                        },
-                        toggle: {
-                            ...(routeState.has_stock ? { has_stock: routeState.has_stock } : {}),
-                            ...(routeState.on_sale ? { on_sale: routeState.on_sale } : {}),
-                        },
-                    } as any,
-                }
-                if (routeState.page) {
-                    state[indexName.value].page = Number(routeState.page)
-                }
-                if (routeState.limit) {
-                    state[indexName.value].hitsPerPage = Number(routeState.limit)
-                }
-
-                return state
-            },
+const routing = {
+    router: createNuxtRouter(),
+    stateMapping: {
+        stateToRoute(uiState: any) {
+            const s = uiState[indexName.value] || {}
+            return {
+                q: s.query,
+                categories: s.hierarchicalMenu?._category_lvl0,
+                brands: s.refinementList?.brand,
+                fits: s.refinementList?.fits,
+                has_stock: s.toggle?.has_stock,
+                on_sale: s.toggle?.on_sale,
+                price: s.range?.price,
+                page: s.page && s.page > 1 ? s.page : undefined,
+                limit: s.hitsPerPage,
+            }
         },
-    }
-
-const route = useRoute()
-const q = String(Array.isArray(route.query.q) ? route.query.q[0] : route.query.q ?? '')
-
-const serverRootMixin = ref(
-    createServerRootMixin({
-        searchClient,
-        indexName: indexName.value,
-        initialUiState: { [indexName.value]: { query: q } },
-        future: {
-            preserveSharedStateOnUnmount: true,
-            persistHierarchicalRootCount: true,
+        routeToState(r: any) {
+            const state: any = {
+                query: r.q,
+                hierarchicalMenu: r.categories ? { _category_lvl0: r.categories } : {},
+                refinementList: {
+                    ...(r.brands ? { brand: r.brands } : {}),
+                    ...(r.fits ? { fits: r.fits } : {}),
+                },
+                toggle: {
+                    ...(r.has_stock === 'true' ? { has_stock: true } : {}),
+                    ...(r.on_sale === 'true' ? { on_sale: true } : {}),
+                },
+                range: r.price ? { price: r.price } : {},
+            }
+            if (r.page) state.page = Number(r.page)
+            if (r.limit) {
+                state.hitsPerPage = Number(r.limit)
+                currentHitsPerPage.value = Number(r.limit)
+            }
+            return { [indexName.value]: state }
         },
-    })
-)
+    },
+}
 
-const { instantsearch } = serverRootMixin.value.data()
+const serverRootMixin = createServerRootMixin({
+    searchClient,
+    indexName: indexName.value,
+    routing: routing,
+    future: {
+        preserveSharedStateOnUnmount: true,
+        persistHierarchicalRootCount: true,
+    },
+})
+
+const { instantsearch } = serverRootMixin.data()
 
 provide('$_ais_ssrInstantSearchInstance', instantsearch)
 
@@ -134,9 +115,10 @@ const { data: ssrState } = useAsyncData(searchKey, async () => {
                 },
 
                 render() {
+                    const HiddenBoxComponent = resolveComponent('SearchHiddenBox')
                     return h(AisInstantSearchSsr, null, () => [
                         h(AisConfigure, { hitsPerPage: 80 }),
-                        h(SearchHiddenBox),
+                        h(HiddenBoxComponent),
                         h(AisHierarchicalMenu, {
                             attributes: [
                                 '_category_lvl0', '_category_lvl1', '_category_lvl2',
@@ -164,15 +146,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <AisInstantSearchSsr
-        :index-name="indexName"
-        :search-client="searchClient"
-        :routing="routing"
-        :future="{
-            preserveSharedStateOnUnmount: true,
-            persistHierarchicalRootCount: false,
-        }"
-    >
+    <AisInstantSearchSsr>
         <SearchHiddenBox />
         <slot name="default"></slot>
     </AisInstantSearchSsr>

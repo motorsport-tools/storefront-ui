@@ -99,7 +99,7 @@ const limitOptions = [
                         class="hidden lg:block col-span-12 lg:col-span-4 xl:col-span-3"
                         :category="category"
                     />
-
+                    
                     <LazyCategoryMobileSidebar :is-open="isOpen" @close="close" class="lg:hidden">
                         <template #default>
                             <CategoryPageSidebar

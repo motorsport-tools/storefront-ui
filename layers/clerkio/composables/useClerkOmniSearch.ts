@@ -46,8 +46,7 @@ export const useClerkOmniSearch = (formSearchTemplateRef?: any, options = { limi
         if (abortController) {
             abortController.abort()
         }
-
-        router.push({ path: '/search', query: { q: searchInputValue.value } })
+        navigateTo({ path: '/search', query: { q: searchInputValue.value } })
     }
 
     const omniSearch = async () => {

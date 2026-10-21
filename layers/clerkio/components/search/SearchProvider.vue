@@ -88,7 +88,14 @@ const { instantsearch } = serverRootMixin.data()
 
 provide('$_ais_ssrInstantSearchInstance', instantsearch)
 
-const searchKey = `search-${indexName.value}`
+const route = useRoute()
+
+const normQuery = () =>
+    Object.keys(route.query).sort()
+        .map(k => `${k}=${[].concat(route.query[k] as any).join(',')}`)
+        .join('&')
+
+const searchKey = `search-${indexName.value}-${normQuery()}`
 
 const { data: ssrState } = useAsyncData(searchKey, async () => {
     if (import.meta.client) return null

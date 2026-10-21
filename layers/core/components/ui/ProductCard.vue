@@ -175,31 +175,33 @@ const ribbon = computed(() => {
             size="xs"
             class="absolute top-0 left-0 p-2"
       />
-      <SfButton
-        v-if="isAuthenticated"
-        type="button"
-        variant="tertiary"
-        size="sm"
-        square
-        :class="[
-          'absolute top-0 right-0 mr-2 mt-2 bg-white border border-neutral-200 !rounded-full',
-          { '!bg-green-200': isInWishlist(firstVariant?.id) },
-        ]"
-        aria-label="Add to wishlist"
-        @click="handleWishListClick(firstVariant as CustomProductWithStockFromRedis)"
-        :title="wishlistButtonTitle(firstVariant?.id)"
-      >
-        <Icon 
-          v-if="isInWishlist(firstVariant?.id)"
-          name="ic:outline-star"
-          size="16px"
-        />
-        <Icon 
-          v-else
-          name="ic:outline-star-border"
-          size="16px"
-        />
-      </SfButton>
+      <ClientOnly>
+        <SfButton
+          v-if="isAuthenticated"
+          type="button"
+          variant="tertiary"
+          size="sm"
+          square
+          :class="[
+            'absolute top-0 right-0 mr-2 mt-2 bg-white border border-neutral-200 !rounded-full',
+            { '!bg-green-200': isInWishlist(firstVariant?.id) },
+          ]"
+          aria-label="Add to wishlist"
+          @click="handleWishListClick(firstVariant as CustomProductWithStockFromRedis)"
+          :title="wishlistButtonTitle(firstVariant?.id)"
+        >
+          <Icon 
+            v-if="isInWishlist(firstVariant?.id)"
+            name="ic:outline-star"
+            size="16px"
+          />
+          <Icon 
+            v-else
+            name="ic:outline-star-border"
+            size="16px"
+          />
+        </SfButton>
+      </ClientOnly>
     </div>
     <div
       class="p-2 border-t border-neutral-200 typography-text-sm flex flex-col justify-between gap-1 h-full"

@@ -25,18 +25,18 @@ export const useSearchRouter = () => {
         let stop: (() => void) | undefined
         let disposed = false
         const isHere = () => !disposed && router.currentRoute.value.path === basePath
-
+        const q = router.currentRoute.value.query
 
         const read = () => ({
-            q: toStr(route.query.q),
-            categories: toArray(route.query.categories),
-            brands: toArray(route.query.brands),
-            fits: toArray(route.query.fits),
-            has_stock: toStr(route.query.has_stock),
-            on_sale: toStr(route.query.on_sale),
-            price: toStr(route.query.price),
-            page: toStr(route.query.page),
-            limit: toStr(route.query.limit),
+            q: toStr(q.q),
+            categories: toArray(q.categories),
+            brands: toArray(q.brands),
+            fits: toArray(q.fits),
+            has_stock: toStr(q.has_stock),
+            on_sale: toStr(q.on_sale),
+            price: toStr(q.price),
+            page: toStr(q.page),
+            limit: toStr(q.limit),
         })
 
         let lastWritten: string | null = null
@@ -52,6 +52,7 @@ export const useSearchRouter = () => {
             },
             onUpdate(cb: (state: any) => void) {
                 if (import.meta.server) return
+                stop?.()
                 disposed = false
                 stop = watch(() => router.currentRoute.value.fullPath, (fp) => {
                     if (!isHere()) return

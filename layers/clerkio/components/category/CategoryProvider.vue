@@ -7,6 +7,7 @@ import {
     AisRangeInput,
     createServerRootMixin,
 } from "vue-instantsearch/vue3/es";
+import { SearchHiddenBox } from '#components'
 import { renderToString } from 'vue/server-renderer';
 import type { Category } from "~/graphql";
 
@@ -24,7 +25,6 @@ const searchClient = useSearchClient({ isCategoryPage: true })
 
 const currentHitsPerPage = ref(80)
 provide('hitsPerPage', currentHitsPerPage)
-
 
 const { createNuxtRouter } = useSearchRouter()
 
@@ -88,11 +88,16 @@ const serverRootMixin = createServerRootMixin({
 const { instantsearch } = serverRootMixin.data()
 provide('$_ais_ssrInstantSearchInstance', instantsearch)
 
-const searchKey = `category-${props.category?.id ?? 'all'}`
+const route = useRoute()
+
+const normQuery = () =>
+    Object.keys(route.query).sort()
+        .map(k => `${k}=${[].concat(route.query[k] as any).join(',')}`)
+        .join('&')
+
+const searchKey = `category-${props.category?.id ?? 'all'}-${normQuery()}`
 
 const { data: ssrState } = useAsyncData(searchKey, async () => {
-    if (import.meta.client) return null
-
     const currentFilter = props.category?.id
         ? `_all_categories in ['${props.category.id}']`
         : ''
@@ -100,7 +105,7 @@ const { data: ssrState } = useAsyncData(searchKey, async () => {
     return instantsearch.findResultsState({
         component: {
             $options: {
-                components: { AisInstantSearchSsr, AisConfigure, AisRefinementList, AisToggleRefinement, AisRangeInput },
+                components: { AisInstantSearchSsr, AisConfigure, SearchHiddenBox,AisRefinementList, AisToggleRefinement, AisRangeInput },
 
                 data() {
                     return { instantsearch }
@@ -111,11 +116,13 @@ const { data: ssrState } = useAsyncData(searchKey, async () => {
                 },
 
                 render() {
+                    const HiddenBoxComponent = resolveComponent('SearchHiddenBox')
                     return h(AisInstantSearchSsr, null, () => [
                         h(AisConfigure, {
                             filters: currentFilter,
                             hitsPerPage: currentHitsPerPage.value,
                         }),
+                        h(HiddenBoxComponent),
                         h(AisRefinementList, { attribute: 'brand', operator: 'or', showMoreLimit: 200 }),
                         h(AisRefinementList, { attribute: 'fits', operator: 'or' }),
                         h(AisToggleRefinement, { attribute: 'has_stock' }),
@@ -143,6 +150,7 @@ onBeforeMount(() => {
             :filters="categoryFilter"
             :hits-per-page="currentHitsPerPage"
         />
+        <SearchHiddenBox />
         <CategoryHitsProvider>
             <CategoryJsonLd :category="props.category" />
         </CategoryHitsProvider>

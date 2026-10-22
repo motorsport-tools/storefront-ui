@@ -119,9 +119,8 @@ const handleSubmit = async () => {
                     v-model="form.vat"
                     name="vat"
                     type="text"
-                    pattern="^(?:[Gg][Bb]\d{9}|[Dd][Ee]\d{9}|[Bb][Ee][01]?\d{9}|[Ff][Rr][A-Za-z0-9]{2}\d{9})$"
-                placeholder="GB123456782"
-
+                    pattern="^(?:[Aa][Tt][Uu]\d{8}|[Bb][Ee]\d{10}|[Bb][Gg]\d{9,10}|[Cc][Yy]\d{8}[A-Za-z]|[Cc][Zz]\d{8,10}|[Dd][Ee]\d{9}|[Dd][Kk]\d{8}|[Ee][Ee]\d{9}|(?:[Ee][Ll]|[Gg][Rr])\d{9}|[Ee][Ss][A-Za-z0-9]\d{7}[A-Za-z0-9]|[Ff][Ii]\d{8}|[Ff][Rr][A-Za-z0-9]{2}\d{9}|[Gg][Bb](?:\d{9}|\d{12}|[Gg][Dd]\d{3}|[Hh][Aa]\d{3})|[Hh][Rr]\d{11}|[Hh][Uu]\d{8}|[Ii][Ee]\d{7}[A-Ww][A-Ww]?|[Ii][Ee](?:[0-9A-Za-z\+\*]\d{7}[A-Ww])|[Ii][Tt]\d{11}|[Ll][Tt]\d{9,12}|[Ll][Uu]\d{8}|[Ll][Vv]\d{11}|[Mm][Tt]\d{8}|[Nn][Ll]\d{9}[Bb]\d{2}|[Pp][Ll]\d{10}|[Pp][Tt]\d{9}|[Rr][Oo]\d{2,10}|[Ss][Ee]\d{12}|[Ss][Ii]\d{8}|[Ss][Kk]\d{10}|[Aa][Uu]\d{11}|[Cc][Aa]\d{9}[Rr][Tt]\d{4}|[Ii][Nn]\d{2}[A-Za-z]{5}\d{4}[A-Za-z][A-Za-z0-9][Zz][A-Za-z0-9]|[Nn][Zz]\d{8,9}|[Zz][Aa]4\d{9}|[Cc][Hh][Ee]-\d{3}\.\d{3}\.\d{3}[Mm][Ww][Ss][Tt])$"
+                    placeholder="GB123456782"
                 />
             </label>
             <div class="mt-4">

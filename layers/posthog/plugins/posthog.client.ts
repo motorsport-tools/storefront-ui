@@ -21,6 +21,7 @@ export default defineNuxtPlugin({
             api_host: config.host,
             capture_pageview: false,
             capture_pageleave: !!config.capturePageLeaves,
+            disable_surveys: true,
             bootstrap: {
                 featureFlags: posthogFeatureFlags.value,
                 featureFlagPayloads: posthogFeatureFlagPayloads.value,

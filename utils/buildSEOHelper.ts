@@ -45,20 +45,10 @@ const validateSEO = (entity: SeoEntity, fullPath: string, entityType: string) =>
     warnings.forEach((warning) => console.warn(warning));
 };
 
-const buildCanonical = () => {
-    const route = useRoute()
-    const siteUrl = (useSiteConfig().url || 'https://motorsport-tools.com').replace(/\/+$/, '')
-    const path = route.path === '/' ? '/' : route.path.replace(/\/+$/, '')
-    const page = Number(route.query?.page)
-    const pageQuery = Number.isInteger(page) && page > 1 ? `?page=${page}` : ''
-    return `${siteUrl}${path}${pageQuery}`
-}
-
 const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
     if (!entity) return
 
-    const href = buildCanonical()
-    validateSEO(entity, href, entityType);
+    validateSEO(entity, String(entity.name ?? entity.id ?? ''), entityType);
 
     const defaultTitle =
         entity.metaTitle || entity.name || `${entityType} page`;
@@ -123,12 +113,6 @@ const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
                 children: typeof entity.jsonLd === 'string' ? JSON.parse(entity.jsonLd) : entity.jsonLd,
             },
         ].filter(Boolean),
-        link: [
-            {
-                rel: "canonical",
-                href,
-            },
-        ],
     };
 };
 

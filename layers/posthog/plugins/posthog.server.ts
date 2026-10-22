@@ -2,6 +2,8 @@ import type { JsonType } from 'posthog-js';
 import { defineNuxtPlugin } from '#app';
 import { PostHog } from 'posthog-node'
 
+let sharedPosthog: PostHog | null = null
+
 export default defineNuxtPlugin({
     name: 'posthog-server',
     enforce: 'pre',
@@ -21,7 +23,7 @@ export default defineNuxtPlugin({
             return {};
         }
 
-
+        /*
         const posthog = new PostHog(config.publicKey, { host: config.host });
         await posthog.reloadFeatureFlags();
 
@@ -31,6 +33,10 @@ export default defineNuxtPlugin({
 
         useState<Record<string, boolean | string> | undefined>('ph-feature-flags', () => featureFlags);
         useState<Record<string, JsonType> | undefined>('ph-feature-flag-payloads', () => featureFlagPayloads);
+        */
+
+        sharedPosthog ??= new PostHog(config.publicKey, { host: config.host })
+        const posthog = sharedPosthog
 
         if (config.captureServerErrors) {
             nuxtApp.hook('app:error', (error) => {

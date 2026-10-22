@@ -1,3 +1,25 @@
+const SERVER_CACHE_TTL = 5 * 60 * 1000 // 5 minutes
+const SERVER_CACHE_MAX = 1000
+const serverSearchCache = new Map()
+
+const getServerCached = (key) => {
+    const hit = serverSearchCache.get(key)
+    if (!hit) return null
+    if (Date.now() - hit.timestamp > SERVER_CACHE_TTL) {
+        serverSearchCache.delete(key)
+        return null
+    }
+    return hit.data
+}
+
+const setServerCached = (key, data) => {
+    if (serverSearchCache.size >= SERVER_CACHE_MAX) {
+        // Drop the oldest entry
+        serverSearchCache.delete(serverSearchCache.keys().next().value)
+    }
+    serverSearchCache.set(key, { data, timestamp: Date.now() })
+}
+
 export const useSearchClient = (config = {}) => {
     const runtimeConfig = useRuntimeConfig()
     const defaultConfig = {
@@ -443,10 +465,15 @@ export const useSearchClient = (config = {}) => {
             })
 
             // Check cache
+            if (import.meta.server) {
+                const serverCached = getServerCached(cacheKey)
+                if (serverCached) return serverCached
+            }
             const cached = this.cache.get(cacheKey);
             if (cached && Date.now() - cached.timestamp < this.cacheTTL) {
                 return cached.data;
             }
+
 
             // Transform request
             const apiRequest = this.transformRequest(request);
@@ -481,6 +508,10 @@ export const useSearchClient = (config = {}) => {
                 data: result,
                 timestamp: Date.now(),
             });
+
+            if (import.meta.server) {
+                setServerCached(cacheKey, result)
+            }
 
             return result;
         }

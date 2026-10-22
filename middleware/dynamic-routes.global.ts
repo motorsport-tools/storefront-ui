@@ -48,8 +48,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
             component: component,
         })
 
-        //return { ...to, matched: router.resolve(to.path).matched }
-        return to.fullPath
+        return { ...to, matched: router.resolve(to.path).matched }
     } catch (error) {
         console.error('[dynamic-routes] Error in dynamic route middleware:', error)
         return abortNavigation(createError({

@@ -99,19 +99,20 @@ const normQuery = () => {
 
 const searchKey = `category-${props.category?.id ?? 'all'}-${normQuery()}`
 
-const { data: ssrState } = useAsyncData(searchKey, async () => {
-    if (import.meta.client) return null
+const ssrState = useState<any>(`ais-${searchKey}`, () => null)
+
+onServerPrefetch(async () => {
     const currentFilter = props.category?.id
         ? `_all_categories in ['${props.category.id}']`
         : ''
 
-    return instantsearch.findResultsState({
+    ssrState.value = await instantsearch.findResultsState({
         component: {
             $options: {
                 components: { 
                     AisInstantSearchSsr, 
                     AisConfigure, 
-                    SearchHiddenBox, 
+                    SearchHiddenBox,
                     AisClearRefinements,
                     AisRefinementList, 
                     AisToggleRefinement, 
@@ -133,6 +134,7 @@ const { data: ssrState } = useAsyncData(searchKey, async () => {
                             hitsPerPage: currentHitsPerPage.value,
                         }),
                         h(HiddenBoxComponent),
+                        h(AisClearRefinements),
                         h(AisRefinementList, { attribute: 'brand', operator: 'or', showMoreLimit: 200 }),
                         h(AisRefinementList, { attribute: 'fits', operator: 'or' }),
                         h(AisToggleRefinement, { attribute: 'has_stock' }),
@@ -151,10 +153,6 @@ onBeforeMount(() => {
         instantsearch.hydrate(ssrState.value)
     }
 })
-
-const ssrStamp = import.meta.server
-    ? `STAMP-v1 | key=${searchKey} | reqUrl=${useRequestURL().href} | routerQuery=${JSON.stringify(router.currentRoute.value.query)}`
-    : 'client'
 </script>
 
 <template>

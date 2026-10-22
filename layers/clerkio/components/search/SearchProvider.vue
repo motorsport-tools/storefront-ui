@@ -130,6 +130,7 @@ const { data: ssrState } = useAsyncData(searchKey, async () => {
                     return h(AisInstantSearchSsr, null, () => [
                         h(AisConfigure, { hitsPerPage: 80 }),
                         h(HiddenBoxComponent),
+                        h(AisClearRefinements),
                         h(AisHierarchicalMenu, {
                             attributes: [
                                 '_category_lvl0', '_category_lvl1', '_category_lvl2',

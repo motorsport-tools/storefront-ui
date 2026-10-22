@@ -104,7 +104,11 @@ export default defineNuxtConfig({
       '/sitemap_index.xml': { swr: swrCacheTime },
       '/__sitemap__/**': { swr: swrCacheTime },
     },
-
+    $development: {
+      routeRules: {
+        '/**': { swr: false, cache: false },
+      },
+    },
   },
   security: {
     nonce: true,
@@ -419,6 +423,7 @@ export default defineNuxtConfig({
     asyncContext: true,
     appManifest: false,
     inlineRouteRules: true,
+    payloadExtraction: false,
   },
   sitemap: {
     autoLastmod: true,

@@ -45,7 +45,7 @@ const props = defineProps<{
         <SearchSidebarHeading>
             {{ $t('filters.heading') }}
             <template #affix>
-                <!--<SearchSidebarClearFiltersButton/>-->
+                <SearchSidebarClearFiltersButton/>
             </template>
         </SearchSidebarHeading>
         <SearchFacetFilter 

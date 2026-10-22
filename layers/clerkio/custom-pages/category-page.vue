@@ -12,19 +12,21 @@ const { user } = useAuth()
 const { open, close, isOpen } = useDisclosure()
 const route = useRoute()
 const { loadCategory } = useCategory()
-const { category, setCategory } = useCategoryData()
+const { setCategory } = useCategoryData()
 
-const { data,  pending } = await useAsyncData(
+const { data, pending } = await useAsyncData(
   `category-${route.path}`,
   () => loadCategory({ slug: route.path }),
-  { watch: [() => route.path], lazy: false, server: true }
+  { lazy: false, server: true }
 )
 
-watch(() => data.value, (val:Category | null) => {
-    if(val) {
+const pageCategory = computed<Category | null>(() => data.value ?? null)
+
+watch(pageCategory, (val: Category | null) => {
+    if (val) {
         setCategory(val)
     }
-},{ immediate: true })
+}, { immediate: true })
 
 watch(isTabletScreen, (value) => {
   if (value && isOpen.value) {
@@ -33,7 +35,7 @@ watch(isTabletScreen, (value) => {
 })
 
 const searchTitle = computed( () => {
-    return $i18n.t('category')+` `+`: ${category.value?.name || ''}`
+    return $i18n.t('category')+` `+`: ${pageCategory.value?.name || ''}`
 })
 
 
@@ -78,14 +80,14 @@ const limitOptions = [
                 <LazyUiProductCardSkeleton v-for="n in 8" :key="n" />
             </div>
         </div>
-        <div v-else-if="category">
+        <div v-else-if="pageCategory">
             <CategoryProvider 
-                :key="`category-${category?.id}`"
+                :key="`category-${pageCategory?.id}`"
                 index-name="categories" 
-                :category="category"
+                :category="pageCategory"
             >
                 <UiBreadcrumb
-                    :breadcrumbs="category?.breadcrumb"
+                    :breadcrumbs="pageCategory?.breadcrumb"
                     class="self-start mt-5 mb-5"
                 />
                 <h1
@@ -97,14 +99,14 @@ const limitOptions = [
                     
                     <CategoryPageSidebar
                         class="hidden lg:block col-span-12 lg:col-span-4 xl:col-span-3"
-                        :category="category"
+                        :category="pageCategory"
                     />
                     
                     <LazyCategoryMobileSidebar :is-open="isOpen" @close="close" class="lg:hidden">
                         <template #default>
                             <CategoryPageSidebar
                                 class="px-3"
-                                :category="category"
+                                :category="pageCategory"
                             />
                         </template>
                     </LazyCategoryMobileSidebar>

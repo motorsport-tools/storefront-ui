@@ -4,6 +4,7 @@ import {
     AisConfigure,
     AisRefinementList,
     AisToggleRefinement,
+    AisClearRefinements,
     AisRangeInput,
     AisHierarchicalMenu,
     createServerRootMixin,
@@ -25,6 +26,7 @@ useHead({
     ]
 })
 
+const nuxtApp = useNuxtApp()
 const { indexName } = toRefs(props);
 const searchClient = useSearchClient()
 
@@ -88,12 +90,13 @@ const { instantsearch } = serverRootMixin.data()
 
 provide('$_ais_ssrInstantSearchInstance', instantsearch)
 
-const route = useRoute()
-
-const normQuery = () =>
-    Object.keys(route.query).sort()
-        .map(k => `${k}=${[].concat(route.query[k] as any).join(',')}`)
+const router = useRouter()
+const normQuery = () => {
+    const query = router.currentRoute.value.query
+    return Object.keys(query).sort()
+        .map(k => `${k}=${[].concat(query[k] as any).join(',')}`)
         .join('&')
+}
 
 const searchKey = `search-${indexName.value}-${normQuery()}`
 
@@ -107,6 +110,7 @@ const { data: ssrState } = useAsyncData(searchKey, async () => {
                     AisInstantSearchSsr,
                     AisConfigure,
                     SearchHiddenBox,
+                    AisClearRefinements,
                     AisRefinementList,
                     AisToggleRefinement,
                     AisRangeInput,
@@ -146,7 +150,7 @@ const { data: ssrState } = useAsyncData(searchKey, async () => {
 })
 
 onBeforeMount(() => {
-    if (ssrState.value) {
+    if (nuxtApp.isHydrating && ssrState.value) {
         instantsearch.hydrate(ssrState.value)
     }
 })

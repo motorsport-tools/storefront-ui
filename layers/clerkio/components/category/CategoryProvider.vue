@@ -3,6 +3,7 @@ import {
     AisConfigure,
     AisInstantSearchSsr,
     AisRefinementList,
+    AisClearRefinements,
     AisToggleRefinement,
     AisRangeInput,
     createServerRootMixin,
@@ -20,6 +21,7 @@ useHead({
     link: [{ rel: 'preconnect', href: 'https://api.clerk.io', crossorigin: '' }]
 })
 
+const nuxtApp = useNuxtApp()
 const { indexName } = toRefs(props);
 const searchClient = useSearchClient({ isCategoryPage: true })
 
@@ -78,7 +80,6 @@ const serverRootMixin = createServerRootMixin({
     searchClient,
     indexName: indexName.value,
     routing,
-    initialUiState: routing.stateMapping.routeToState(routing.router.read()),
     future: {
         preserveSharedStateOnUnmount: true,
         persistHierarchicalRootCount: false,
@@ -88,16 +89,18 @@ const serverRootMixin = createServerRootMixin({
 const { instantsearch } = serverRootMixin.data()
 provide('$_ais_ssrInstantSearchInstance', instantsearch)
 
-const route = useRoute()
-
-const normQuery = () =>
-    Object.keys(route.query).sort()
-        .map(k => `${k}=${[].concat(route.query[k] as any).join(',')}`)
+const router = useRouter()
+const normQuery = () => {
+    const query = router.currentRoute.value.query
+    return Object.keys(query).sort()
+        .map(k => `${k}=${[].concat(query[k] as any).join(',')}`)
         .join('&')
+}
 
 const searchKey = `category-${props.category?.id ?? 'all'}-${normQuery()}`
 
 const { data: ssrState } = useAsyncData(searchKey, async () => {
+    if (import.meta.client) return null
     const currentFilter = props.category?.id
         ? `_all_categories in ['${props.category.id}']`
         : ''
@@ -105,8 +108,15 @@ const { data: ssrState } = useAsyncData(searchKey, async () => {
     return instantsearch.findResultsState({
         component: {
             $options: {
-                components: { AisInstantSearchSsr, AisConfigure, SearchHiddenBox,AisRefinementList, AisToggleRefinement, AisRangeInput },
-
+                components: { 
+                    AisInstantSearchSsr, 
+                    AisConfigure, 
+                    SearchHiddenBox, 
+                    AisClearRefinements,
+                    AisRefinementList, 
+                    AisToggleRefinement, 
+                    AisRangeInput,  
+                },
                 data() {
                     return { instantsearch }
                 },
@@ -137,10 +147,14 @@ const { data: ssrState } = useAsyncData(searchKey, async () => {
 })
 
 onBeforeMount(() => {
-    if (ssrState.value) {
+    if (nuxtApp.isHydrating && ssrState.value) {
         instantsearch.hydrate(ssrState.value)
     }
 })
+
+const ssrStamp = import.meta.server
+    ? `STAMP-v1 | key=${searchKey} | reqUrl=${useRequestURL().href} | routerQuery=${JSON.stringify(router.currentRoute.value.query)}`
+    : 'client'
 </script>
 
 <template>

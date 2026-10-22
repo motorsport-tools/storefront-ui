@@ -24,22 +24,24 @@ export const useSearchRouter = () => {
         const basePath = route.path
         let stop: (() => void) | undefined
         let disposed = false
-        const isHere = () => !disposed && router.currentRoute.value.path === basePath
-        const q = router.currentRoute.value.query
-
-        const read = () => ({
-            q: toStr(q.q),
-            categories: toArray(q.categories),
-            brands: toArray(q.brands),
-            fits: toArray(q.fits),
-            has_stock: toStr(q.has_stock),
-            on_sale: toStr(q.on_sale),
-            price: toStr(q.price),
-            page: toStr(q.page),
-            limit: toStr(q.limit),
-        })
-
         let lastWritten: string | null = null
+
+        const isHere = () => !disposed && router.currentRoute.value.path === basePath
+
+        const read = () => {
+            const q = router.currentRoute.value.query
+            return {
+                q: toStr(q.q),
+                categories: toArray(q.categories),
+                brands: toArray(q.brands),
+                fits: toArray(q.fits),
+                has_stock: toStr(q.has_stock),
+                on_sale: toStr(q.on_sale),
+                price: toStr(q.price),
+                page: toStr(q.page),
+                limit: toStr(q.limit),
+            }
+        }
 
         return {
             read,
@@ -48,7 +50,7 @@ export const useSearchRouter = () => {
                 const target = router.resolve({ path: basePath, query: cleanQuery(routeState) })
                 if (target.fullPath === router.currentRoute.value.fullPath) return
                 lastWritten = target.fullPath
-                router.replace(target.fullPath)
+                router.replace(target)
             },
             onUpdate(cb: (state: any) => void) {
                 if (import.meta.server) return
@@ -56,7 +58,8 @@ export const useSearchRouter = () => {
                 disposed = false
                 stop = watch(() => router.currentRoute.value.fullPath, (fp) => {
                     if (!isHere()) return
-                    if (fp === lastWritten) { lastWritten = null; return }
+                    if (lastWritten !== null && fp === lastWritten) { lastWritten = null; return }
+                    lastWritten = null
                     cb(read())
                 })
             },
@@ -64,10 +67,7 @@ export const useSearchRouter = () => {
                 return router.resolve({ path: basePath, query: cleanQuery(routeState) }).href
             },
             start() { disposed = false },
-            dispose() {
-                disposed = true
-                stop?.()
-            },
+            dispose() { disposed = true; stop?.() },
         }
     }
 

@@ -67,6 +67,7 @@ function matchRoute(pattern: string, route: string): boolean {
 }
 
 export default defineNitroPlugin((nitroApp) => {
+  if (import.meta.dev) return
   const handlerList: Handler[] = eval('handlers')
 
   const skipRoutesSet = new Set(routesToSkipCache)

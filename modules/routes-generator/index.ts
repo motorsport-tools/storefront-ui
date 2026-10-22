@@ -88,15 +88,16 @@ export default defineNuxtModule({
       fetchWebpageSlugs(),
     ])
 
-    categorySlugs.forEach((slug) => {
-      extendRouteRules(slug, { swr: swrValue })
-    })
+    if (!nuxt.options.dev) {
+      categorySlugs.forEach((slug) => {
+        extendRouteRules(slug, { swr: swrValue })
+      })
 
-    websitePagesUrls.forEach((url) => {
-      const path = url.startsWith('/') ? url : `/${url}`
-      console.log('Page path: ', path)
-      extendRouteRules(path, { swr: swrValue })
-    })
+      websitePagesUrls.forEach((url) => {
+        const path = url.startsWith('/') ? url : `/${url}`
+        extendRouteRules(path, { swr: swrValue })
+      })
+    }
 
     console.info(
       `[routes-generator] ✅ ${categorySlugs.length} categories and ${websitePagesUrls.length} website pages loaded`

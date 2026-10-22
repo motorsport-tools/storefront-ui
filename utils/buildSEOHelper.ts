@@ -45,10 +45,19 @@ const validateSEO = (entity: SeoEntity, fullPath: string, entityType: string) =>
     warnings.forEach((warning) => console.warn(warning));
 };
 
-const { href } = useRequestURL()
+const buildCanonical = () => {
+    const route = useRoute()
+    const siteUrl = (useSiteConfig().url || 'https://motorsport-tools.com').replace(/\/+$/, '')
+    const path = route.path === '/' ? '/' : route.path.replace(/\/+$/, '')
+    const page = Number(route.query?.page)
+    const pageQuery = Number.isInteger(page) && page > 1 ? `?page=${page}` : ''
+    return `${siteUrl}${path}${pageQuery}`
+}
+
 const generateSeo = <T extends SeoEntity>(entity: T, entityType: string) => {
     if (!entity) return
 
+    const href = buildCanonical()
     validateSEO(entity, href, entityType);
 
     const defaultTitle =

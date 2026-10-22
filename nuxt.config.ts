@@ -423,7 +423,7 @@ export default defineNuxtConfig({
     asyncContext: true,
     appManifest: false,
     inlineRouteRules: true,
-    payloadExtraction: false,
+    //payloadExtraction: false,
   },
   sitemap: {
     autoLastmod: true,

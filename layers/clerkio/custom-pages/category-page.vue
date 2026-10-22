@@ -49,16 +49,16 @@ const sortingOptions = [
     { value: "categories/sort/created_at:desc", label: "Newest" },
 ];
 
-const limitOptions = [
-    { value: 80, label: "80", default: true },
-    { value: 60, label: "60" },
-    { value: 40, label: "40" },
-    { value: 20, label: "20" },
-    { value: 16, label: "16" },
-    { value: 12, label: "12" },
-    { value: 8, label: "8" },
-    { value: 4, label: "4" },
-]
+const { $viewport } = useNuxtApp()
+const defaultHitsPerPage = useState<number>('category-default-hits-per-page', () =>
+    $viewport.isLessThan('md') ? 24 : 80
+)
+
+const limitOptions = [80, 60, 40, 24, 20, 16, 12, 8, 4].map(value => ({
+    value,
+    label: String(value),
+    ...(value === defaultHitsPerPage.value ? { default: true } : {}),
+}))
 
 </script>
 <template>

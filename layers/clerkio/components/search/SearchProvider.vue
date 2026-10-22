@@ -29,8 +29,12 @@ useHead({
 const nuxtApp = useNuxtApp()
 const { indexName } = toRefs(props);
 const searchClient = useSearchClient()
+const { $viewport } = useNuxtApp()
 
-const currentHitsPerPage = ref(80)
+const defaultHitsPerPage = useState<number>('category-default-hits-per-page', () =>
+    $viewport.isLessThan('md') ? 24 : 80
+)
+const currentHitsPerPage = ref(defaultHitsPerPage.value)
 provide('hitsPerPage', currentHitsPerPage)
 
 const { createNuxtRouter } = useSearchRouter()

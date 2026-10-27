@@ -3310,7 +3310,7 @@
     "@nuxt/kit" "^3.7.3"
     defu "^6.1.2"
 
-"@nuxtjs/fontaine@^0.4.2":
+"@nuxtjs/fontaine@0.4.4":
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/@nuxtjs/fontaine/-/fontaine-0.4.4.tgz#ededc00d82c53ea3f61639aa7886b2bf46dbe366"
   integrity sha512-sC2xsqtFzXDN72fGJc9NxoC+WymJgiVGVL7V/yksUruOqeKhnsmnqx1nXlu88cnt/K9IQADGpOzgvhIjg+G+mg==

@@ -6,8 +6,12 @@ const props = defineProps({
 const noCode = ['next_order_coupons', 'promotion']
 
 const { removeItemFromCart } = useCart()
-const removeLine = (id:number) => {
-    removeItemFromCart(id)
+const removeLine = (id:number, isLine: boolean) => {
+    if (isLine) {
+        removeItemFromCart(id)
+    } else {
+        return
+    }
 }
 </script>
 <template>
@@ -26,8 +30,7 @@ const removeLine = (id:number) => {
     </div>
     <button
         class="self-start text-xs text-red-500 hover:underline"
-        v-if="discount.isLine"
-        @click="removeLine(discount.id)"
+        @click="removeLine(discount.id, discount.isLine)"
         title="Remove Discount"
     >
         Remove

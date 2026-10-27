@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { SfLoaderCircular } from '@storefront-ui/vue';
+import type { Coupon } from '~/graphql';
 const { cart, totalItemsInCart, cartHasDiscount  } = useCart();
 
 const mergedCoupons = computed(() => {
@@ -7,19 +8,18 @@ const mergedCoupons = computed(() => {
     const lineCoupons = cart.value?.order?.orderLines
       .filter(line => line.isRewardLine)
       .flatMap(line => {
-        if (line.coupon && line.coupon.length > 0) {
-          return line.coupon
-        } else {
-          return {
-            id: line.id,
-            name: line?.product?.name,
-            priceSubtotal: line.priceSubtotal,
-            isLine: true,
-          }
+        return {
+          id: line.id,
+          name: line?.coupon?.[0]?.name || line?.product?.name,
+          code: line?.coupon?.[0]?.code || null,
+          programType: line?.coupon?.[0]?.programType,
+          priceSubtotal: line.priceSubtotal,
+          isLine: true,
         }
       }) 
 
-    return [...cart.value?.order?.coupons || [], ...lineCoupons]
+    //return [...cart.value?.order?.coupons || [], ...lineCoupons]
+    return [...lineCoupons]
   }
   return []
 })
@@ -39,7 +39,6 @@ const amountSubtotal = computed(() => {
 </script>
 
 <template>
-  
   <div
     class="shadow-lg md:rounded-md md:border md:border-neutral-100"
     data-testid="order-summary"

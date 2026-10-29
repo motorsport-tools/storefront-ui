@@ -146,6 +146,8 @@ export default defineNuxtConfig({
           'https:',
         ],
         'script-src': [
+          'https://marketing.mst-account.com',
+          'https://www.google.com/recaptcha/',
           "'self'",
           "'unsafe-inline'",
           "'nonce-{{nonce}}'",
@@ -159,6 +161,7 @@ export default defineNuxtConfig({
           odooOrigin,
         ].filter(Boolean),
         'style-src': [
+          'https://marketing.mst-account.com',
           "'self'",
           "'unsafe-inline'",
           "https://*.motorsport-tools.com",
@@ -169,6 +172,8 @@ export default defineNuxtConfig({
           "https://*.motorsport-tools.com",
         ],
         'connect-src': [
+          'https://marketing.mst-account.com',
+          'https://www.google.com/recaptcha/',
           "'self'",
           odooOrigin,
           directusOrigin,
@@ -195,6 +200,9 @@ export default defineNuxtConfig({
           'https://api.simplesvg.com',
         ].filter(Boolean),
         'frame-src': [
+          'https://marketing.mst-account.com',
+          'https://www.google.com/recaptcha/',
+          'https://recaptcha.google.com/recaptcha/',
           "'self'",
           'https://js.stripe.com',
           'https://hooks.stripe.com',
@@ -207,7 +215,7 @@ export default defineNuxtConfig({
           'https://*.afterpay.com',
         ],
         'worker-src': ["'self'", 'blob:'],
-        'form-action': ["'self'"],
+        'form-action': ["'self'", 'https://marketing.mst-account.com'],
         'script-src-attr': ["'unsafe-inline'"],
         'frame-ancestors': [
           "'self'",
